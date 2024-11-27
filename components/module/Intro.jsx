@@ -8,7 +8,7 @@ export default function Intro() {
             <div className='w-full h-full max-w-7xl mx-auto grid grid-cols-4'>
                 <IntroCard
                     icon={
-                        <div className="w-20 aspect-square bg-yellow-500 grid place-items-center">
+                        <div className="w-16 aspect-square bg-yellow-500 grid place-items-center">
                             <BiSolidBookBookmark size={40} />
                         </div>
                     }
@@ -17,7 +17,7 @@ export default function Intro() {
                 />
                 <IntroCard
                     icon={
-                        <div className="w-20 aspect-square bg-sky-600 grid place-items-center">
+                        <div className="w-16 aspect-square bg-sky-600 grid place-items-center">
                             <BiWifi size={40} />
                         </div>
                     }
@@ -26,7 +26,7 @@ export default function Intro() {
                 />
                 <IntroCard
                     icon={
-                        <div className="w-20 aspect-square bg-fuchsia-600 grid place-items-center">
+                        <div className="w-16 aspect-square bg-fuchsia-600 grid place-items-center">
                             <BiAward size={40} />
                         </div>
                     }
@@ -34,7 +34,7 @@ export default function Intro() {
                     description={'Cycles of time to be explored.'}
                 />
                 <Link href={'#'} className="group w-full h-full grid place-content-center bg-yellow-500">
-                    <div className="h-20 gap-2">
+                    <div className="h-16 gap-2">
                         <div className="text-lg md:text-xl">Don't Hestitate to Ask</div>
                         <div className="uppercase group-hover:space-x-4 transition-all transform duration-200 flex items-center space-x-2 text-2xl">
                             <span>Contact us</span>

@@ -5,11 +5,13 @@ import Event from "@/components/section/home/Event";
 import Message from "@/components/section/home/Message";
 import Notice from "@/components/section/home/Notice";
 import Media from "@/components/section/home/Media";
+import EventAndNotice from "@/components/section/home/EventAndNotice";
 
 export default function Home() {
     return (
-        <main className="space-y-20">
+        <main>
             <Hero/>
+            <EventAndNotice/>
             <BecomeMember/>
             <AchievementShowcase/>
             <Event/>
