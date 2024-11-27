@@ -1,0 +1,119 @@
+/* styles/suneditor-custom.css */
+
+.sun-editor-content {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* Heading Styles */
+.sun-editor-content h1,
+.sun-editor-content h2,
+.sun-editor-content h3,
+.sun-editor-content h4,
+.sun-editor-content h5,
+.sun-editor-content h6 {
+    margin: 1rem 0 0.5rem;
+    font-weight: bold;
+    color: #222;
+}
+
+/* Table Styles */
+.sun-editor-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    border: 1px solid #ddd;
+}
+
+.sun-editor-content th,
+.sun-editor-content td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.sun-editor-content th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+/* List Styles */
+.sun-editor-content ul,
+.sun-editor-content ol {
+    padding-left: 1.5rem;
+    margin: 1rem 0;
+}
+
+.sun-editor-content ul {
+    list-style-type: disc;
+}
+
+.sun-editor-content ol {
+    list-style-type: decimal;
+}
+
+/* Text Formatting Styles */
+.sun-editor-content b,
+.sun-editor-content strong {
+    font-weight: bold;
+}
+
+.sun-editor-content i,
+.sun-editor-content em {
+    font-style: italic;
+}
+
+.sun-editor-content u {
+    text-decoration: underline;
+}
+
+.sun-editor-content strike {
+    text-decoration: line-through;
+}
+
+/* Link Styles */
+.sun-editor-content a {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.sun-editor-content a:hover {
+    color: #0056b3;
+    text-decoration: none;
+}
+
+/* Blockquote Styles */
+.sun-editor-content blockquote {
+    margin: 1rem 0;
+    padding: 10px 20px;
+    background-color: #f9f9f9;
+    border-left: 5px solid #ccc;
+    font-style: italic;
+}
+
+/* Code Block Styles */
+.sun-editor-content pre {
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+.sun-editor-content code {
+    font-family: Consolas, "Courier New", monospace;
+    color: #d63384;
+}
+
+/* Alignment Styles */
+.sun-editor-content .text-left {
+    text-align: left;
+}
+
+.sun-editor-content .text-center {
+    text-align: center;
+}
+
+.sun-editor-content .text-right {
+    text-align: right;
+}
