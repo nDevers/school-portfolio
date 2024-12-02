@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BiAward, BiCalendar, BiSolidBookBookmark, BiWifi } from "react-icons/bi";
+import { BiAward, BiBookReader, BiCalendar, BiSolidBookBookmark, BiWifi } from "react-icons/bi";
 import { BsArrowRightCircleFill } from "react-icons/bs";
 
 export default function Intro() {
@@ -18,7 +18,7 @@ export default function Intro() {
                 <IntroCard
                     icon={
                         <div className="text-2xl md:text-4xl w-10 md:w-16 aspect-square bg-sky-600 grid place-items-center">
-                            <BiWifi/>
+                            <BiBookReader/>
                         </div>
                     }
                     title={'STUDENTS: 150'}
