@@ -35,7 +35,7 @@ export default function CarouselHero() {
 
 
     return (
-        <div className="w-full h-full">
+        <div className="w-full h-[200px] sm:h-[250px] md:h-[300px] lg:h-[400px] xl:h-[450px]">
             <Carousel
                 opts={{ loop: true }}
                 plugins={[plugin.current]}

@@ -1,4 +1,4 @@
-import NewsCard from '@/components/card/NewsCard'
+import NewsCard from '@/components/card/BlogCard'
 
 export default function CurrentNewsPage() {
     const news = [

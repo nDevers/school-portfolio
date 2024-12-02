@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export default function NoticeCard({ item }) {
     return (
-        <Card>
+        <Card className='rounded-none'>
             <div className='flex items-center justify-between p-2 sm:p-3 md:p-4 hover:bg-muted'>
                 <Link href={`/notice/${item?.id}`} className='flex-grow'>
                     <div className='space-y-2'>

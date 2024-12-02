@@ -40,7 +40,7 @@ export default function AchievementShowcase() {
 
     return (
         <div
-            className="w-full h-full bg-gradient-to-b from-primary to-background"
+            className="w-full h-full bg-gradient-to-b from-primary to-background my-10"
             style={{
                 background: 'linear-gradient(to bottom, var(--tw-gradient-from) 60%, var(--tw-gradient-to) 40%)',
             }}

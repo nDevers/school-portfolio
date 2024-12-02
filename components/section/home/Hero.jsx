@@ -3,7 +3,7 @@ import Intro from '@/components/module/Intro'
 
 export default function Hero() {
     return (
-        <section className='w-full h-[50vh] md:h-[80vh]'>
+        <section className='w-full h-full'>
             <div className='w-full h-3/4'>
                 <CarouselHero />
             </div>

@@ -3,9 +3,9 @@ import { Card } from "@/components/ui/card"
 import Link from "next/link"
 import { HiOutlineCalendar } from "react-icons/hi"
 
-export default function NewsCard({ item }) {
+export default function BlogCard({ item }) {
     return (
-        <Card className='overflow-hidden group'>
+        <Card className='overflow-hidden group rounded-none'>
             <Link href={`/media/current-news/${item?.id}`}>
                 <div className='w-full h-32 sm:h-40 md:h-52 lg:h-60 overflow-hidden'>
                     <img
