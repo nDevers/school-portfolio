@@ -71,7 +71,7 @@ export default function Notice() {
                             ))}
                         </div>
                         <div> 
-                            <Link href={'#'} className='bg-muted/60 w-full p-2 md:p-4 flex'>Read More +</Link>
+                            <Link href={'#'} className='bg-foreground/15 hover:bg-foreground/20 w-full p-2 md:p-4 flex'>Read More +</Link>
                         </div>
                     </div>
                 </div>

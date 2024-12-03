@@ -36,7 +36,7 @@ export default function Gallery() {
     };
 
     return (
-        <div className="w-full h-full py-10">
+        <div className="w-full h-full pt-10">
             <div className="space-y-10">
                 <h1 className="whitespace-nowrap text-3xl md:text-4xl text-center text-primary font-satisfy font-bold">
                     {appConfig.Title} at a Glance

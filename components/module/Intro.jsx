@@ -36,7 +36,7 @@ export default function Intro() {
                 <Link href={'#'} className="group w-full h-full grid place-content-center bg-yellow-500 text-white">
                     <div className="h-full gap-2">
                         <div className="text-xs md:text-sm">Don't Hestitate to Ask</div>
-                        <div className="uppercase flex items-center space-x-2 text-base md:text-xl">
+                        <div className="uppercase flex items-center space-x-2 font-bold text-lg md:text-3xl">
                             <span>Contact us</span>
                             <BsArrowRightCircleFill />
                         </div>
