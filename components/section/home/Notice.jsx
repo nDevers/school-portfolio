@@ -46,31 +46,33 @@ export default function Notice() {
     ];
 
     return (
-        <section className='sp'>
+        <section>
             <div className='max-w-7xl mx-auto'>
                 <div className='w-full h-full max-w-7xl mx-auto grid md:grid-cols-4 gap-4 md:gap-0'>
-                    <div className='md:col-span-3 space-y-4 pt-4 px-2'>
+                    <div className='md:col-span-3 space-y-4 sp'>
                         <SectionTitle title={'Notice'} />
                         <div className='grid gap-2 md:gap-4 mb-4'>
                             {data?.map(item => (
                                 <NoticeCard key={item?.id} item={item} />
                             ))}
                         </div>
-                        <div className='w-full'>
-                            <Link href={'/notice'}><InvertButton title='View All' /> </Link>
-                        </div>
                     </div>
-                    <div className='bg-muted divide-y'>
-                        <h1 className="p-2 md:p-4 uppercase whitespace-nowrap text-lg md:text-xl text-primary">Open Now</h1>
-                        {links.map((link, index) => (
-                            <LinkGradient
-                                key={index}
-                                index={index}
-                                href={link.href}
-                                title={link.title}
-                                description={link.description}
-                            />
-                        ))}
+                    <div className='flex flex-col'>
+                        <div className='bg-muted divide-y flex flex-col flex-grow'>
+                            <h1 className="p-2 md:p-4 uppercase whitespace-nowrap text-lg md:text-xl text-primary">Open Now</h1>
+                            {links.map((link, index) => (
+                                <LinkGradient
+                                    key={index}
+                                    index={index}
+                                    href={link.href}
+                                    title={link.title}
+                                    description={link.description}
+                                />
+                            ))}
+                        </div>
+                        <div> 
+                            <Link href={'#'} className='bg-muted/60 w-full p-2 md:p-4 flex'>Read More +</Link>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -4,11 +4,11 @@ import { BsArrowRightCircleFill } from "react-icons/bs";
 
 export default function Intro() {
     return (
-        <div className='w-full h-full bg-zinc-700 dark:bg-zinc-200 text-background'>
+        <div className='w-full h-full bg-muted'>
             <div className='w-full h-full max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4'>
                 <IntroCard
                     icon={
-                        <div className="text-2xl md:text-4xl w-10 md:w-16 aspect-square bg-yellow-500 grid place-items-center">
+                        <div className="text-2xl md:text-4xl w-10 md:w-16 aspect-square bg-yellow-500 text-white grid place-items-center">
                             <BiCalendar/>
                         </div>
                     }
@@ -17,23 +17,23 @@ export default function Intro() {
                 />
                 <IntroCard
                     icon={
-                        <div className="text-2xl md:text-4xl w-10 md:w-16 aspect-square bg-sky-600 grid place-items-center">
+                        <div className="text-2xl md:text-4xl w-10 md:w-16 aspect-square bg-sky-600 text-white grid place-items-center">
                             <BiBookReader/>
                         </div>
                     }
                     title={'STUDENTS: 150'}
-                    description={'This age group is playing their way to greater independence, socio- emotional growth and self'}
+                    description={'This age group is playing their way to greater independence, socio-emotional growth and self'}
                 />
                 <IntroCard
                     icon={
-                        <div className="text-2xl md:text-4xl w-10 md:w-16 aspect-square bg-fuchsia-600 grid place-items-center">
+                        <div className="text-2xl md:text-4xl w-10 md:w-16 aspect-square bg-fuchsia-600 text-white grid place-items-center">
                             <BiAward/>
                         </div>
                     }
                     title={'GRADUATION RATE 100%'}
                     description={'Children in this classroom are working on forging social skills through emotional growth and self'}
                 />
-                <Link href={'#'} className="group w-full h-full grid place-content-center bg-yellow-500">
+                <Link href={'#'} className="group w-full h-full grid place-content-center bg-yellow-500 text-white">
                     <div className="h-full gap-2">
                         <div className="text-xs md:text-sm">Don't Hestitate to Ask</div>
                         <div className="uppercase flex items-center space-x-2 text-base md:text-xl">
