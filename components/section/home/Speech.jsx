@@ -5,7 +5,7 @@ export default function Speech() {
     return (
         <div className='w-full h-full'>
             <div className='w-full h-full max-w-7xl mx-auto grid md:grid-cols-4 gap-4 md:gap-0'>
-                <div className='md:col-span-3 space-y-4 pt-4 px-2'>
+                <div className='md:col-span-3 space-y-6 pt-10 px-2'>
                     <h1 className="uppercase whitespace-nowrap text-lg md:text-xl">Head of the Institute</h1>
                     <div className='flex space-x-4'>
                         <img
