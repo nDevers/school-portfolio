@@ -34,7 +34,7 @@ export default function MarqueeNotice() {
         <div className="flex items-center text-sm md:text-base">
             {/* Notice Label */}
             <div className="hidden sm:block px-3 md:px-6 py-1 md:py-2 bg-secondary text-white font-bold">
-                Notice
+                ঘোষণা
             </div>
             
             {/* Marquee with Notices */}

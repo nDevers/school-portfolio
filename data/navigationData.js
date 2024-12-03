@@ -2,18 +2,9 @@ const navigationData = [
     { title: "প্রচ্ছদ", href: "/" },
     {
         title: "প্রশাসন", subItems: [
-            { title: "Mission", href: "/about/mission" },
-            { title: "Vision", href: "/about/vision" },
-            { title: "Aim & Objective", href: "/about/aim" },
-        ]
-    },
-    {
-        title: "শিক্ষার্থীদের তথ্য", subItems: [
-            { title: "Member List", href: "/member/list" },
-            { title: "About Membership", href: "/member/about-membership" },
-            { title: "Membership Criteria", href: "/member/membership-criteria" },
-            { title: "Membership Fee", href: "/member/membership-fee" },
-            { title: "Membership Upgrade", href: "/member/membership-upgrade" },
+            { title: "শিক্ষকবৃন্দ", href: "/about/mission" },
+            { title: "প্রাক্তন প্রধান শিক্ষক", href: "/about/aim" },
+            { title: "পরিচালনা পরিষদ", href: "/about/aim" },
         ]
     },
     {
@@ -22,7 +13,14 @@ const navigationData = [
             { title: "ভর্তি ফরম", href: "/member/about-membership" },
         ]
     },
-    { title: "ডাউনলোড", href: "/legal-document" },
+    {
+        title: "অন্যান্য", subItems: [
+            { title: "কৃতি শিক্ষার্থী", href: "/about/vision" },
+            { title: "শূণ্যপদের তালিকা", href: "/about/aim" },
+            { title: "ছুটির তালিকা", href: "/about/aim" },
+            { title: "যানবাহন সুবিধা", href: "/about/aim" },
+        ]
+    },
     { title: "রুটিন", href: "/legal-document" },
     { title: "ফলাফল", href: "/legal-document" },
     { title: "নোটিশ", href: "/legal-document" },
