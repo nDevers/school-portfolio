@@ -2,33 +2,33 @@ const navigationData = [
     { title: "প্রচ্ছদ", href: "/" },
     {
         title: "প্রশাসন", subItems: [
-            { title: "শিক্ষকবৃন্দ", href: "/about/mission" },
-            { title: "প্রাক্তন প্রধান শিক্ষক", href: "/about/aim" },
-            { title: "পরিচালনা পরিষদ", href: "/about/aim" },
+            { title: "শিক্ষকবৃন্দ", href: "/academic/board" },
+            { title: "প্রাক্তন প্রধান শিক্ষক", href: "/academic/teachers" },
+            { title: "পরিচালনা পরিষদ", href: "/academic/teachers-ex" },
         ]
     },
     {
         title: "ভর্তি", subItems: [
-            { title: "ভর্তি তথ্য", href: "/member/list" },
-            { title: "ভর্তি ফরম", href: "/member/about-membership" },
+            { title: "ভর্তি তথ্য", href: "/admission/info" },
+            { title: "ভর্তি ফরম", href: "/admission/form" },
         ]
     },
     {
         title: "অন্যান্য", subItems: [
-            { title: "কৃতি শিক্ষার্থী", href: "/about/vision" },
-            { title: "শূণ্যপদের তালিকা", href: "/about/aim" },
-            { title: "ছুটির তালিকা", href: "/about/aim" },
-            { title: "যানবাহন সুবিধা", href: "/about/aim" },
+            { title: "কৃতি শিক্ষার্থী", href: "/other/meritorious-student" },
+            { title: "শূণ্যপদের তালিকা", href: "/other/career" },
+            { title: "ছুটির তালিকা", href: "/other/holiday" },
+            { title: "যানবাহন সুবিধা", href: "/other/transportation" },
         ]
     },
-    { title: "রুটিন", href: "/legal-document" },
-    { title: "ফলাফল", href: "/legal-document" },
-    { title: "নোটিশ", href: "/legal-document" },
-    { title: "ব্লগ", href: "/legal-document" },
+    { title: "রুটিন", href: "/routine" },
+    { title: "ফলাফল", href: "/result" },
+    { title: "নোটিশ", href: "/notice" },
+    { title: "ব্লগ", href: "/blog" },
     {
         title: "গ্যালারী", subItems: [
-            { title: "ফটো গ্যালারী", href: "/media/photo" },
-            { title: "ভিডিও গ্যালারী", href: "/media/video" },
+            { title: "ফটো গ্যালারী", href: "/gallery/photo" },
+            { title: "ভিডিও গ্যালারী", href: "/gallery/video" },
         ]
     },
     { title: "যোগাযোগ", href: "/contact" }
