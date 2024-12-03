@@ -2,41 +2,29 @@
 import React, { useState, useEffect } from 'react';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import appConfig from '@/configs/appConfig';
+import apiConfig from '@/configs/apiConfig';
 
 export default function Gallery() {
-    const images = [
-        '/carousel/carousel (1).jpg',
-        '/carousel/carousel (2).jpg',
-        '/carousel/carousel (3).jpg',
-        '/carousel/carousel (4).jpg',
-        '/carousel/carousel (5).jpg',
-        '/carousel/carousel (1).jpg',
-        '/carousel/carousel (2).jpg',
-        '/carousel/carousel (3).jpg',
-        '/carousel/carousel (4).jpg',
-        '/carousel/carousel (5).jpg',
-    ];
-
-    const predefinedSizes = [
-        'col-span-2 row-span-2',
-        'col-span-1 row-span-1',
-        'col-span-1 row-span-2',
-        'col-span-2 row-span-1',
-    ];
-
-    const filledImages = Array.from({ length: Math.ceil(images.length / predefinedSizes.length) * predefinedSizes.length })
-        .map((_, index) => images[index % images.length]);
-
-    const [loading, setLoading] = useState(new Array(filledImages.length).fill(true));
+    const [images, setImages] = useState([]);
+    const [loading, setLoading] = useState([]);
 
     useEffect(() => {
-        // Check if images are already cached and loaded
-        filledImages.forEach((src, index) => {
-            const img = new Image();
-            img.src = src;
-            img.onload = () => handleImageLoad(index);
-            img.onerror = () => handleImageLoad(index); // Fail-safe for load errors
-        });
+        // Fetch images from an API (e.g., Unsplash)
+        const fetchImages = async () => {
+            try {
+                const response = await fetch(
+                    `https://api.unsplash.com/photos?query=school&client_id=${apiConfig.UNSPLASH_ACCESS_KEY}`
+                );
+                const data = await response.json();
+                const imageUrls = data.map((item) => item.urls.small);
+                setImages(imageUrls);
+                setLoading(new Array(imageUrls.length).fill(true));
+            } catch (error) {
+                console.error('Error fetching images:', error);
+            }
+        };
+
+        fetchImages();
     }, []);
 
     const handleImageLoad = (index) => {
@@ -54,14 +42,10 @@ export default function Gallery() {
                     {appConfig.Title} at a Glance
                 </h1>
                 <PhotoProvider>
-                    <div className="grid grid-flow-dense auto-rows-[1fr] grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-1">
-                        {filledImages.map((src, index) => (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1">
+                        {images.map((src, index) => (
                             <PhotoView key={index} src={src}>
-                                <div
-                                    className={`relative flex overflow-hidden cursor-pointer ${
-                                        predefinedSizes[index % predefinedSizes.length]
-                                    }`}
-                                >
+                                <div className="relative w-full h-full aspect-square overflow-hidden cursor-pointer">
                                     {loading[index] && (
                                         <div className="absolute inset-0 flex items-center justify-center bg-gray-200 animate-pulse">
                                             <div className="w-8 h-8 border-4 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
@@ -74,7 +58,7 @@ export default function Gallery() {
                                             loading[index] ? 'invisible' : 'visible'
                                         }`}
                                         onLoad={() => handleImageLoad(index)}
-                                        onError={() => handleImageLoad(index)}
+                                        onError={() => handleImageLoad(index)} // Fail-safe for load errors
                                     />
                                 </div>
                             </PhotoView>
