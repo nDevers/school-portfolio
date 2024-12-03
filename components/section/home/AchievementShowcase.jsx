@@ -9,31 +9,31 @@ export default function AchievementShowcase() {
             id: 1,
             number: 120,
             type: 'Awards Won',
-            icon: <FaAward size={40} />,
+            icon: <FaAward />,
         },
         {
             id: 2,
             number: 50,
             type: 'Qualified Teachers',
-            icon: <FaChalkboardTeacher size={40} />,
+            icon: <FaChalkboardTeacher />,
         },
         {
             id: 3,
             number: 300,
             type: 'Graduates This Year',
-            icon: <FaUserGraduate size={40} />,
+            icon: <FaUserGraduate />,
         },
         {
             id: 4,
             number: 15,
             type: 'Sports Championships',
-            icon: <MdSportsSoccer size={40} />,
+            icon: <MdSportsSoccer />,
         },
         {
             id: 5,
             number: 5000,
             type: 'Books in Library',
-            icon: <MdLibraryBooks size={40} />,
+            icon: <MdLibraryBooks />,
         },
     ];
 
@@ -45,10 +45,10 @@ export default function AchievementShowcase() {
                 </h1>
             </div>
             <div className="h-2/3 p-0 overflow-hidden max-w-7xl mx-auto">
-                <div className="w-full h-full grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 p-0">
+                <div className="w-full h-full grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 p-2 gap-2">
                     {data?.map((item) => (
                         <div key={item.id} className="flex items-start gap-2">
-                            <div className="text-2xl md:text-4xl w-10 md:w-16 aspect-square bg-yellow-500 text-white grid place-items-center">{item.icon}</div>
+                            <div className="text-xl md:text-2xl lg:text-4xl w-10 md:w-16 aspect-square bg-yellow-500 text-white grid place-items-center">{item.icon}</div>
                             <div className="md:space-y-2 px-2">
                                 <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold"><AnimatedCounter from={0} to={item?.number} /></h1>
                                 <p className="text-xs opacity-80 md:text-sm">{item?.type}</p>

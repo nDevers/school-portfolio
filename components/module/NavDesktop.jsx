@@ -4,20 +4,21 @@ import * as React from "react"
 import Link from "next/link"
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarSub, MenubarSubContent, MenubarSubTrigger, MenubarTrigger} from "@/components/ui/menubar"
 import { getNavigationData } from "@/data/navigationData"
+import { HiChevronDown } from "react-icons/hi"
 
 export default function NavDesktop() {
     const navigationItems =  getNavigationData()
     return (
-        <div className="hidden md:block">
+        <div className="hidden md:block font-bengali">
             <Menubar>
                 {navigationItems.map((item) => (
                     <MenubarMenu key={item.title}>
                         {item.subItems ? (
-                            <MenubarTrigger>{item.title}</MenubarTrigger>
+                            <MenubarTrigger className='text-base space-x-1'> <span>{item.title}</span> <HiChevronDown /> </MenubarTrigger>
                         ) : (
                             // Wrap top-level item with no subItems in a Link
                             <Link href={item.href} passHref>
-                                <MenubarTrigger>{item.title}</MenubarTrigger>
+                                <MenubarTrigger className='text-base'>{item.title}</MenubarTrigger>
                             </Link>
                         )}
                         {item.subItems && (
