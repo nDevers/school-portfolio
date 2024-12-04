@@ -1,7 +1,7 @@
-'use client'
 import PageTitle from "@/components/admin/common/PageTitle";
 import AcademicProfileCard from "@/components/card/AcademicProfileCard";
-import React from "react";
+import PaginationController from "@/components/common/PaginationController";
+import constConfig from "@/configs/constConfig";
 
 // Dummy Data
 const profiles = [
@@ -47,17 +47,42 @@ const profiles = [
   },
 ];
 
-export default function TeacherExPage() {
+async function getData(page, pageSize) {
+  const start = (page - 1) * pageSize;
+  const end = start + pageSize;
+  const paginatedProfiles = profiles.slice(start, end);
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ data: paginatedProfiles, total: profiles.length });
+    }, 1000); // Simulate a delay
+  });
+}
+
+export default async function TeacherExPage({ searchParams }) {
+  const currentPage = Number(searchParams['page'] ?? '1');
+  const itemsPerPage = Number(searchParams['items'] ?? constConfig?.ItemsPerPage);
+
+  const { data, total } = await getData(currentPage, itemsPerPage);
+  const totalPages = Math.ceil(total / itemsPerPage);
+
   return (
     <div className="w-full h-full max-w-7xl mx-auto sp my-6 space-y-6">
       <PageTitle title="প্রাক্তন প্রধান শিক্ষক" />
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-        {profiles.map((profile, index) => (
+        {data.map((profile, index) => (
           <div key={index} src={profile?.image}>
             <AcademicProfileCard profile={profile} />
           </div>
         ))}
       </div>
+
+      {/* Pagination */}
+      <PaginationController
+        currentPage={currentPage}
+        totalPages={totalPages}
+        itemsPerPage={itemsPerPage}
+      />
     </div>
   );
 }

@@ -8,6 +8,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination";
+import { useCallback, useMemo } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 export default function PaginationController({ currentPage, totalPages, itemsPerPage }) {
@@ -15,46 +16,39 @@ export default function PaginationController({ currentPage, totalPages, itemsPer
     const pathname = usePathname();
 
     // Function to navigate to a specific page
-    const goToPage = (page) => {
-        if (page < 1 || page > totalPages) return
-        router.push(pathname + '?page=' + page + '&items=' + itemsPerPage);
-    };
+    const goToPage = useCallback((page) => {
+        if (page < 1 || page > totalPages) return;
+        router.push(`${pathname}?page=${page}&items=${itemsPerPage}`);
+    }, [router, pathname, totalPages, itemsPerPage]);
 
     // Function to generate page numbers with ellipsis
     const generatePageNumbers = () => {
+        const visiblePages = 3; // Number of pages to show around current
         const pages = [];
 
-        if (totalPages <= itemsPerPage) {
-            // Display all pages when totalPages is 5 or less
-            for (let i = 1; i <= totalPages; i++) {
-                pages.push(i);
-            }
+        if (totalPages <= visiblePages + 2) {
+            for (let i = 1; i <= totalPages; i++) pages.push(i);
+        } else if (currentPage <= visiblePages) {
+            pages.push(...Array.from({ length: visiblePages }, (_, i) => i + 1), '...', totalPages);
+        } else if (currentPage >= totalPages - visiblePages + 1) {
+            pages.push(1, '...', ...Array.from({ length: visiblePages }, (_, i) => totalPages - visiblePages + i + 1));
         } else {
-            // Handle pages with ellipsis
-            if (currentPage <= 3) {
-                // Show first 3 pages, ellipsis, and last page
-                pages.push(1, 2, 3, '...', totalPages);
-            } else if (currentPage >= totalPages - 2) {
-                // Show first page, ellipsis, and last 3 pages
-                pages.push(1, '...', totalPages - 2, totalPages - 1, totalPages);
-            } else {
-                // Show first page, ellipsis, current page ± 1, ellipsis, last page
-                pages.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages);
-            }
+            pages.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages);
         }
 
         return pages;
     };
 
-    const pages = generatePageNumbers();
+    const pages = useMemo(() => generatePageNumbers(), [currentPage, totalPages]);
 
     return (
         <Pagination className={'mt-20'}>
             <PaginationContent>
                 <PaginationItem>
                     <PaginationPrevious
-                        href='#'
+                        href="#"
                         onClick={() => goToPage(currentPage - 1)}
+                        aria-label="Previous page"
                         className={currentPage <= 1 ? 'pointer-events-none cursor-not-allowed' : 'cursor-pointer'}
                     />
                 </PaginationItem>
@@ -67,7 +61,8 @@ export default function PaginationController({ currentPage, totalPages, itemsPer
                             <PaginationLink
                                 href="#"
                                 onClick={() => goToPage(page)}
-                                className={currentPage === page && 'bg-primary hover:bg-primary'}
+                                aria-current={currentPage === page ? 'page' : undefined}
+                                className={currentPage === page ? 'bg-primary hover:bg-primary' : ''}
                             >
                                 {page}
                             </PaginationLink>
@@ -79,6 +74,7 @@ export default function PaginationController({ currentPage, totalPages, itemsPer
                     <PaginationNext
                         href='#'
                         onClick={() => goToPage(currentPage + 1)}
+                        aria-label="Previous page"
                         className={currentPage === totalPages ? 'pointer-events-none cursor-not-allowed' : 'cursor-pointer'}
                     />
                 </PaginationItem>
