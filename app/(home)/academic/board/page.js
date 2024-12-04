@@ -2,7 +2,6 @@
 import PageTitle from "@/components/admin/common/PageTitle";
 import AcademicProfileCard from "@/components/card/AcademicProfileCard";
 import React from "react";
-import { PhotoProvider } from "react-photo-view";
 
 // Dummy Data
 const profiles = [
@@ -37,13 +36,11 @@ export default function BoardPage() {
     <div className="w-full h-full max-w-7xl mx-auto sp my-6 space-y-6">
       <PageTitle title="পরিচালনা পরিষদ" />
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-        <PhotoProvider>
-          {profiles.map((profile, index) => (
-            <div key={index} src={profile?.image}>
-              <AcademicProfileCard profile={profile} />
-            </div>
-          ))}
-        </PhotoProvider>
+        {profiles.map((profile, index) => (
+          <div key={index} src={profile?.image}>
+            <AcademicProfileCard profile={profile} />
+          </div>
+        ))}
       </div>
     </div>
   );
