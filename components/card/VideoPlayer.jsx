@@ -3,6 +3,7 @@ import React, { useState, useMemo } from 'react';
 import ReactPlayer from 'react-player';
 import { Dialog, DialogTrigger, DialogContent, DialogClose } from '@/components/ui/dialog';
 import getYoutubeVideo from '@/util/getYoutubeVideo';
+import { HiPlay } from 'react-icons/hi';
 
 export default function VideoPlayer({ videoUrl }) {
     const [selectedVideo, setSelectedVideo] = useState(null);
@@ -17,14 +18,14 @@ export default function VideoPlayer({ videoUrl }) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <div className="relative w-full aspect-video cursor-pointer">
+                <div className="relative group w-full aspect-video cursor-pointer" onClick={() => setSelectedVideo(videoUrl)}>
                     {/* Display YouTube Thumbnail */}
                     <img
                         src={thumbnailUrl}
                         alt={`Thumbnail for Video`}
-                        className="object-cover w-full h-full rounded-md hover:scale-105 transition-transform duration-300"
-                        onClick={() => setSelectedVideo(videoUrl)}
+                        className="object-cover w-full h-full rounded-md group-hover:scale-105 transition-transform duration-300"
                     />
+                    <HiPlay className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-background text-6xl scale-0 group-hover:scale-100 transition-transform duration-200 opacity-0 group-hover:opacity-50'/>
                 </div>
             </DialogTrigger>
 
