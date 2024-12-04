@@ -1,5 +1,6 @@
 import PageTitle from "@/components/admin/common/PageTitle";
 import AcademicProfileCard from "@/components/card/AcademicProfileCard";
+import { cn } from "@/lib/utils";
 import React from "react";
 
 // Dummy Data
@@ -36,7 +37,9 @@ export default function BoardPage() {
       <PageTitle title="পরিচালনা পরিষদ" />
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         {profiles.map((profile, index) => (
-          <AcademicProfileCard key={index} profile={profile} />
+          <div key={index} className={cn(index === 0 ? 'col-span-2 lg:col-span-4' : '')}>
+            <AcademicProfileCard profile={profile} />
+          </div>
         ))}
       </div>
     </div>
