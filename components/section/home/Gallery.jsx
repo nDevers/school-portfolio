@@ -44,24 +44,26 @@ export default function Gallery() {
                 <PhotoProvider>
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1">
                         {images.map((src, index) => (
-                            <PhotoView key={index} src={src}>
+                            <div key={index}>
                                 <div className="relative w-full h-full aspect-square overflow-hidden cursor-pointer">
                                     {loading[index] && (
                                         <div className="absolute inset-0 flex items-center justify-center bg-gray-200 animate-pulse">
                                             <div className="w-8 h-8 border-4 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
                                         </div>
                                     )}
-                                    <img
-                                        src={src}
-                                        alt={`Image ${index + 1}`}
-                                        className={`object-cover hover:contrast-125 hover:brightness-100 brightness-90 hover:scale-110 transition-all transform duration-300 ${
-                                            loading[index] ? 'invisible' : 'visible'
-                                        }`}
-                                        onLoad={() => handleImageLoad(index)}
-                                        onError={() => handleImageLoad(index)} // Fail-safe for load errors
-                                    />
+                                    <PhotoView src={src}>
+                                        <img
+                                            src={src}
+                                            alt={`Image ${index + 1}`}
+                                            className={`object-cover hover:contrast-125 hover:brightness-100 brightness-90 hover:scale-110 transition-all transform duration-300 ${
+                                                loading[index] ? 'invisible' : 'visible'
+                                            }`}
+                                            onLoad={() => handleImageLoad(index)}
+                                            onError={() => handleImageLoad(index)} // Fail-safe for load errors
+                                        />
+                                    </PhotoView>
                                 </div>
-                            </PhotoView>
+                            </div>
                         ))}
                     </div>
                 </PhotoProvider>
