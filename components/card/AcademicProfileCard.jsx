@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { MdLocationOn, MdPhone, MdWork } from 'react-icons/md'
+import { HiLocationMarker, HiPhone, HiStar } from 'react-icons/hi'
 import { PhotoProvider, PhotoView } from 'react-photo-view'
 
 export default function AcademicProfileCard({ profile }) {
@@ -17,13 +17,13 @@ export default function AcademicProfileCard({ profile }) {
                     </PhotoView>
                 </div>
                 <div className='p-2 text-base bg-muted'>
-                    <p>{profile?.name}</p>
+                    <strong>{profile?.name}</strong>
                     <p>{profile?.designation}</p>
                 </div>
-                <div className='p-2 bg-muted/20'>
-                    <p className='flex space-x-2'><MdLocationOn className='mt-1 text-lg' /> <span>{profile?.address}</span></p>
-                    <p className='flex space-x-2'><MdPhone className='mt-1 text-lg' /> <span>{profile?.contact}</span></p>
-                    <p className='flex space-x-2'><MdWork className='mt-1 text-lg' /> <span>{profile?.profession}</span></p>
+                <div className='p-2 space-y-1 bg-muted/20'>
+                    <p className='flex space-x-2'><HiStar className='mt-0.5 text-lg text-foreground/30' /> <span>{profile?.profession}</span></p>
+                    <p className='flex space-x-2'><HiLocationMarker className='mt-0.5 text-lg text-foreground/30' /> <span>{profile?.address}</span></p>
+                    <p className='flex space-x-2'><HiPhone className='mt-0.5 text-lg text-foreground/30' /> <span>{profile?.contact}</span></p>
                 </div>
             </div>
         </PhotoProvider>
