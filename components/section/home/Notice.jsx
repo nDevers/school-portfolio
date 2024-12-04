@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import SectionTitle from '@/components/common/SectionTitle';
-import NoticeCard from '@/components/common/NoticeCard';
+import FileCard from '@/components/card/FileCard';
 import LinkGradient from '@/components/common/LinkGradient';
 
 export default function Notice() {
@@ -52,7 +52,7 @@ export default function Notice() {
                         <SectionTitle title={'নোটিশ'} />
                         <div className='grid gap-2 md:gap-4 mb-4'>
                             {data?.map(item => (
-                                <NoticeCard key={item?.id} item={item} />
+                                <FileCard key={item?.id} item={item} />
                             ))}
                         </div>
                     </div>
