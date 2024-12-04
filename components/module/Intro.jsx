@@ -33,7 +33,7 @@ export default function Intro() {
                     title={'GRADUATION RATE 100%'}
                     description={'Children in this classroom are working on forging social skills through emotional growth and self'}
                 />
-                <Link href={'#'} className="group w-full h-full grid place-content-center bg-yellow-500 text-white">
+                <Link href={'/contact'} className="group w-full h-full grid place-content-center bg-yellow-500 text-white">
                     <div className="h-full gap-2">
                         <div className="text-xs md:text-sm">Don't Hestitate to Ask</div>
                         <div className="uppercase flex items-center space-x-2 font-bold text-lg md:text-3xl">

@@ -31,7 +31,7 @@ export default function Speech() {
                                 quo voluptas ab.
                             </p>
                             <div className='flex items-end justify-end text-xs'>
-                                <Link href={'#'} className='hover:underline'>Read More</Link>
+                                <Link href={'/academic/speech'} className='hover:underline'>Read More</Link>
                             </div>
                         </div>
                     </div>

@@ -1,7 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
-import appConfig from '@/configs/appConfig';
 import apiConfig from '@/configs/apiConfig';
 
 export default function Gallery() {
@@ -38,8 +37,8 @@ export default function Gallery() {
     return (
         <div className="w-full h-full pt-10">
             <div className="space-y-10">
-                <h1 className="whitespace-nowrap text-3xl md:text-4xl text-center text-primary font-satisfy font-bold">
-                    {appConfig.Title} at a Glance
+                <h1 className="whitespace-nowrap text-3xl md:text-4xl text-center text-primary font-bold">
+                    এক নজরে আমাদের স্কুল
                 </h1>
                 <PhotoProvider>
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1">

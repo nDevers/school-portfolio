@@ -2,6 +2,7 @@ const navigationData = [
     { title: "প্রচ্ছদ", href: "/" },
     {
         title: "প্রশাসন", subItems: [
+            { title: "প্রধান শিক্ষকের বার্তা", href: "/academic/speech" },
             { title: "শিক্ষকবৃন্দ", href: "/academic/teachers" },
             { title: "প্রাক্তন প্রধান শিক্ষক", href: "/academic/teachers-ex" },
             { title: "পরিচালনা পরিষদ", href: "/academic/board" },
