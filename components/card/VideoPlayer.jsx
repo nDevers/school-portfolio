@@ -1,9 +1,9 @@
 'use client';
 import React, { useState, useMemo } from 'react';
 import ReactPlayer from 'react-player';
-import { Dialog, DialogTrigger, DialogContent, DialogClose } from '@/components/ui/dialog';
 import getYoutubeVideo from '@/util/getYoutubeVideo';
 import { HiPlay } from 'react-icons/hi';
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 
 export default function VideoPlayer({ videoUrl }) {
     const [selectedVideo, setSelectedVideo] = useState(null);
@@ -16,8 +16,8 @@ export default function VideoPlayer({ videoUrl }) {
     }, [videoUrl]);
 
     return (
-        <Dialog>
-            <DialogTrigger asChild>
+        <AlertDialog>
+            <AlertDialogTrigger asChild>
                 <div className="relative group w-full aspect-video cursor-pointer" onClick={() => setSelectedVideo(videoUrl)}>
                     {/* Display YouTube Thumbnail */}
                     <img
@@ -27,10 +27,10 @@ export default function VideoPlayer({ videoUrl }) {
                     />
                     <HiPlay className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-background text-6xl scale-0 group-hover:scale-100 transition-transform duration-200 opacity-0 group-hover:opacity-50'/>
                 </div>
-            </DialogTrigger>
+            </AlertDialogTrigger>
 
             {/* Modal for Video Player */}
-            <DialogContent className="w-full aspect-auto max-w-5xl bg-transparent p-0 border-none">
+            <AlertDialogContent className="w-full aspect-auto max-w-5xl bg-transparent p-0 border-none">
                 {/* ReactPlayer */}
                 <div className="w-full h-full rounded-3xl overflow-hidden">
                     <ReactPlayer
@@ -44,10 +44,10 @@ export default function VideoPlayer({ videoUrl }) {
                 </div>
 
                 {/* Custom Close Button */}
-                <DialogClose asChild>
+                <AlertDialogCancel asChild className="absolute top-0 right-0 bg-black text-white rounded-full p-2 opacity-50 hover:opacity-100 transition-opacity">
                     <button
-                        className="absolute top-0 right-0 bg-black text-white rounded-full p-2 opacity-50 hover:opacity-100 transition-opacity"
-                        onClick={() => setSelectedVideo(null)} // Close the video
+                        // className="absolute top-0 right-0 bg-black text-white rounded-full p-2 opacity-50 hover:opacity-100 transition-opacity"
+                        // onClick={() => setSelectedVideo(null)} // Close the video
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -64,8 +64,8 @@ export default function VideoPlayer({ videoUrl }) {
                             />
                         </svg>
                     </button>
-                </DialogClose>
-            </DialogContent>
-        </Dialog>
+                </AlertDialogCancel>
+            </AlertDialogContent>
+        </AlertDialog>
     )
 }
