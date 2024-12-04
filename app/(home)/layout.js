@@ -9,7 +9,7 @@ import '@/components/admin/sun-editor/suneditor-custom.css';        // Custom Su
 
 export default function Layout({ children }) {
     return (
-        <div>
+        <div className='font-bengali'>
             <MarqueeNotice/>
             <Navigation/>
             <div className="w-full h-full">{children}</div>

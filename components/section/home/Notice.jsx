@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import SectionTitle from '@/components/common/SectionTitle';
-import { InvertButton } from '@/components/common/Buttons';
 import NoticeCard from '@/components/common/NoticeCard';
 import LinkGradient from '@/components/common/LinkGradient';
 
