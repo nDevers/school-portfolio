@@ -4,7 +4,7 @@ import { MdLocationOn, MdPhone, MdWork } from 'react-icons/md'
 export default function AcademicProfileCard({ profile }) {
   return (
     <div className='border w-fit mx-auto overflow-hidden'>
-        <img src={profile?.image} alt="profile" className='w-full h-full max-h-60 object-cover'/>
+        <img src={profile?.image} alt="profile" className='w-full h-60 object-cover'/>
         <div className='p-2 text-base bg-muted'>
             <p>{profile?.name}</p>
             <p>{profile?.designation}</p>
