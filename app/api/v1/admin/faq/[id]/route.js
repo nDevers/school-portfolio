@@ -82,17 +82,19 @@ const handleUpdateFaqById = async (request, context) => {
         return NOT_FOUND(`FAQ entry with ID "${userInput?.id}" not found.`, request);
     }
 
-    // Check if FAQ entry with the same question already exists
-    const existingQuestion = await model.findUnique({
-        where: {
-            question: userInput?.question,
-        },
-        select: {
-            id: true,
+    if (userInput?.question) {
+        // Check if FAQ entry with the same question already exists
+        const existingQuestion = await model.findUnique({
+            where: {
+                question: userInput?.question,
+            },
+            select: {
+                id: true,
+            }
+        });
+        if (existingQuestion) {
+            return CONFLICT(`FAQ entry with question "${userInput?.question}" already exists.`, request);
         }
-    });
-    if (existingQuestion) {
-        return CONFLICT(`FAQ entry with question "${userInput?.question}" already exists.`, request);
     }
 
     // Create the FAQ entry and send the response
@@ -100,8 +102,7 @@ const handleUpdateFaqById = async (request, context) => {
 };
 
 const deleteFaqById = async (request, context) => {
-
-    return serviceShared.deleteJsonEntryById(request, context, model,  'FAQ');
+    return serviceShared.deleteEntryById(request, context, model, '', 'FAQ');
 };
 
 // Export the route wrapped with asyncHandler

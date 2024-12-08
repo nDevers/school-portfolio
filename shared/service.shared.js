@@ -75,7 +75,7 @@ const fetchEntryById = async (request, context, model, selectionCriteria, messag
     return OK(`${toSentenceCase(message)} retrieved successfully.`, data, request);
 };
 
-const deleteJsonEntryById = async (request, context, model, message) => {
+const deleteEntryById = async (request, context, model, fileIdField, message) => {
     // Validate admin
     const authResult = await validateToken(request);
     if (!authResult.isAuthorized) {
@@ -91,7 +91,8 @@ const deleteJsonEntryById = async (request, context, model, message) => {
             id: userInput?.id,
         },
         select: {
-            id: true // Only return the ID of the deleted document
+            id: true, // Only return the ID of the deleted document
+            ...(fileIdField && { [fileIdField]: true }) // Conditionally include fileIdField
         },
     });
     if (!data) {
@@ -104,6 +105,11 @@ const deleteJsonEntryById = async (request, context, model, message) => {
             id: userInput?.id,
         },
     });
+
+    const fileId = data[fileIdField];
+    if (fileId) {
+        await localFileOperations.deleteFile(fileId); // Delete old file
+    }
 
     // If no document is found, send a 404 response
     const deletedData = await model.findUnique({
@@ -391,7 +397,7 @@ const handleGetProfile = async (request) => {
 const serviceShared = {
     fetchEntryList,
     fetchEntryById,
-    deleteJsonEntryById,
+    deleteEntryById,
     createStatusEntry,
     createTypeEntry,
 
