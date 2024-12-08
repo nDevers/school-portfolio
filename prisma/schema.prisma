@@ -60,3 +60,13 @@ model Career {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model AboutUs {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   @unique
+  description String
+  files       Json     // JSON field to store an object with fileId and file properties
+  images      Json     // JSON field to store an object with imageId and image properties
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
