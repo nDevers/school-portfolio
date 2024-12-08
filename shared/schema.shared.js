@@ -5,7 +5,9 @@ import constants from "@/constants/constants";
 
 import {decryptData} from "@/util/crypto";
 
-const nonEmptyString = (fieldName) => z.string().nonempty(`${fieldName} is required`);
+const nonEmptyString = (fieldName, maxCharacter = 100000) => z.string()
+    .nonempty(`${fieldName} is required`)
+    .max(maxCharacter, `${fieldName} can not be more than ${maxCharacter} characters.`);
 const nonEmptyBangliString = (fieldName) => nonEmptyString(fieldName)
     .refine((value) => constants.bangliLanguageRegex.test(value), {
         message: `${fieldName} must contain only Bangla characters.`,

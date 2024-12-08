@@ -1,11 +1,13 @@
 import { z } from 'zod';
 
 import schemaShared from "@/shared/schema.shared";
+import faqConstants from "@/app/api/v1/faq/faq.constants";
 
 // Define reusable schema parts
 const { nonEmptyString, validMongooseId, validDate } = schemaShared;
+const { questionMaxCharacter } = faqConstants;
 
-const question = nonEmptyString('Faq question');
+const question = nonEmptyString('Faq question', questionMaxCharacter);
 const answer = nonEmptyString('Faq answer');
 const id = validMongooseId('Status ID');
 

@@ -144,8 +144,6 @@ const parseAndValidateFormData = async (request, context, mode, schema) => {
 
     userInput = { ...userInput, ...getQueryParams(searchParams) };
 
-    console.log(userInput)
-
     // Validate userInput with schema
     schema.parse(userInput);
 
