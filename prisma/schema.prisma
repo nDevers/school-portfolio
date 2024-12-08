@@ -32,6 +32,14 @@ model Faq {
 
 model SchoolAchievement {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       Int
+  description String
+  iconId      String   @unique
+  icon        String   @unique
+}
+
+model SchoolInfo {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String   @unique
   description String
   iconId      String   @unique

@@ -4,7 +4,7 @@ import serviceShared from "@/shared/service.shared";
 import faqSchema from "@/app/api/v1/faq/faq.schema";
 
 import asyncHandler from "@/util/asyncHandler";
-import schoolAchievementSelectionCriteria from "@/app/api/v1/school-achievement/school.achievement.selection.criteria";
+import schoolAchievementSelectionCriteria from "@/app/api/v1/school/achievement/school.achievement.selection.criteria";
 
 const prisma = new PrismaClient();
 

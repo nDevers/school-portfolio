@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 
 import serviceShared from "@/shared/service.shared";
-import schoolAchievementSchema from "@/app/api/v1/school-achievement/school.achievement.schema";
-import schoolAchievementConstants from "@/app/api/v1/school-achievement/school.achievement.constants";
+import schoolInfoSchema from "@/app/api/v1/school/info/school.info.schema";
+import schoolInfoConstants from "@/app/api/v1/school/info/school.info.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
 import localFileOperations from "@/util/localFileOperations";
 
@@ -10,16 +10,16 @@ import asyncHandler from "@/util/asyncHandler";
 import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import schoolAchievementSelectionCriteria from "@/app/api/v1/school-achievement/school.achievement.selection.criteria";
+import schoolInfoSelectionCriteria from "@/app/api/v1/school/info/school.info.selection.criteria";
 
 const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 
-const model = prisma.SchoolAchievement;
+const model = prisma.SchoolInfo;
 
-// Helper function to update and respond with the school achievement
-const updateSchoolAchievementEntry = async (userInput, request) => {
+// Helper function to update and respond with the school info
+const updateSchoolInfoEntry = async (userInput, request) => {
     // Filter `userInput` to only include fields with non-null values
     const fieldsToUpdate = Object.keys(userInput).reduce((acc, key) => {
         if (userInput[key] !== undefined && userInput[key] !== null && key !== 'id') {
@@ -37,7 +37,7 @@ const updateSchoolAchievementEntry = async (userInput, request) => {
         },
     });
 
-    const selectionCriteria = schoolAchievementSelectionCriteria();
+    const selectionCriteria = schoolInfoSelectionCriteria();
 
     const updatedDocument = await model.findUnique({
         where: {
@@ -47,16 +47,16 @@ const updateSchoolAchievementEntry = async (userInput, request) => {
     });
 
     if (!updatedDocument?.id) {
-        return INTERNAL_SERVER_ERROR(`Failed to update school achievement entry with the ID "${userInput?.id}".`, request);
+        return INTERNAL_SERVER_ERROR(`Failed to update school info entry with the ID "${userInput?.id}".`, request);
     }
 
-    return OK(`School achievement entry with the ID "${userInput?.id}" updated successfully.`, updatedDocument, request);
+    return OK(`School info entry with the ID "${userInput?.id}" updated successfully.`, updatedDocument, request);
 };
 
 // Named export for the GET request handler
-const handleUpdateSchoolAchievementById = async (request, context) => {
+const handleUpdateSchoolInfoById = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, schoolAchievementConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(request, schoolInfoConstants.allowedContentTypes);
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
@@ -68,10 +68,10 @@ const handleUpdateSchoolAchievementById = async (request, context) => {
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'update', schoolAchievementSchema.updateSchema);
+    const userInput = await parseAndValidateFormData(request, context, 'update', schoolInfoSchema.updateSchema);
 
-    // Check if school achievement entry with the same title already exists
-    const existingSchoolAchievement = await model.findUnique({
+    // Check if school info entry with the same title already exists
+    const existingSchoolInfo = await model.findUnique({
         where: {
             id: userInput?.id,
         },
@@ -80,12 +80,12 @@ const handleUpdateSchoolAchievementById = async (request, context) => {
             iconId: true
         }
     });
-    if (!existingSchoolAchievement) {
-        return NOT_FOUND(`School achievement entry with ID "${userInput?.id}" not found.`, request);
+    if (!existingSchoolInfo) {
+        return NOT_FOUND(`School info entry with ID "${userInput?.id}" not found.`, request);
     }
 
     if (userInput?.title) {
-        // Check if school achievement entry with the same title already exists
+        // Check if school info entry with the same title already exists
         const existingQuestion = await model.findUnique({
             where: {
                 title: userInput?.title,
@@ -95,31 +95,31 @@ const handleUpdateSchoolAchievementById = async (request, context) => {
             }
         });
         if (existingQuestion) {
-            return CONFLICT(`School achievement entry with title "${userInput?.title}" already exists.`, request);
+            return CONFLICT(`School info entry with title "${userInput?.title}" already exists.`, request);
         }
     }
 
     // Handle file replacement if a new file is provided
-    if (userInput[schoolAchievementConstants.fileFieldName] && userInput[schoolAchievementConstants.fileFieldName][0]) {
-        await localFileOperations.deleteFile(existingSchoolAchievement?.iconId); // Delete old file
+    if (userInput[schoolInfoConstants.fileFieldName] && userInput[schoolInfoConstants.fileFieldName][0]) {
+        await localFileOperations.deleteFile(existingSchoolInfo?.iconId); // Delete old file
 
-        const newFile = userInput[schoolAchievementConstants.fileFieldName][0];
+        const newFile = userInput[schoolInfoConstants.fileFieldName][0];
         const { fileId, fileLink } = await localFileOperations.uploadFile(request, newFile);
 
         userInput.iconId = fileId;
         userInput.icon = fileLink;
     }
 
-    // Create the school achievement entry and send the response
-    return updateSchoolAchievementEntry(userInput, request);
+    // Create the school info entry and send the response
+    return updateSchoolInfoEntry(userInput, request);
 };
 
-const deleteSchoolAchievementById = async (request, context) => {
-    return serviceShared.deleteEntryById(request, context, model, 'iconId', 'school achievement');
+const deleteSchoolInfoById = async (request, context) => {
+    return serviceShared.deleteEntryById(request, context, model, 'iconId', 'school info');
 };
 
 // Export the route wrapped with asyncHandler
-export const PATCH = asyncHandler(handleUpdateSchoolAchievementById);
+export const PATCH = asyncHandler(handleUpdateSchoolInfoById);
 
 // Export the route wrapped with asyncHandler
-export const DELETE = asyncHandler(deleteSchoolAchievementById);
+export const DELETE = asyncHandler(deleteSchoolInfoById);

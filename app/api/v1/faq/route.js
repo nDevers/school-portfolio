@@ -1,10 +1,10 @@
 import {PrismaClient} from "@prisma/client";
 
 import serviceShared from "@/shared/service.shared";
+import faqSchema from "@/app/api/v1/faq/faq.schema";
 
 import asyncHandler from "@/util/asyncHandler";
 import faqSelectionCriteria from "@/app/api/v1/faq/faq.selection.criteria";
-import faqSchema from "@/app/api/v1/faq/faq.schema";
 
 const prisma = new PrismaClient();
 
