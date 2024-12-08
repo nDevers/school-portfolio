@@ -36,6 +36,8 @@ model SchoolAchievement {
   description String
   iconId      String   @unique
   icon        String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model SchoolInfo {
@@ -44,4 +46,17 @@ model SchoolInfo {
   description String
   iconId      String   @unique
   icon        String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Career {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   @unique
+  subTitle    String
+  description String
+  files       Json     // JSON field to store an object with fileId and file properties
+  date        DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
