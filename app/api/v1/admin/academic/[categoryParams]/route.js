@@ -1,8 +1,10 @@
 import { PrismaClient } from '@prisma/client';
+import moment from "moment";
 
 import academicSchema from "@/app/api/v1/academic/academic.schema";
 import academicConstants from "@/app/api/v1/academic/academic.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
+import localFileOperations from "@/util/localFileOperations";
 
 import asyncHandler from "@/util/asyncHandler";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
@@ -12,11 +14,11 @@ import academicSelectionCriteria from "@/app/api/v1/academic/academic.selection.
 
 const prisma = new PrismaClient();
 
-const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED, NOT_FOUND } = sharedResponseTypes;
+const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
 
 const model = prisma.Academic;
 
-// Helper function to create and respond with the FAQ
+// Helper function to create and respond with the academic
 const createAcademicEntry = async (userInput, request) => {
     const newDocument = await model.create({
         data: userInput,
@@ -35,14 +37,14 @@ const createAcademicEntry = async (userInput, request) => {
     });
 
     if (!createdDocument?.id) {
-        return INTERNAL_SERVER_ERROR(`Failed to create FAQ entry with title "${userInput?.title}".`, request);
+        return INTERNAL_SERVER_ERROR(`Failed to create academic entry with title "${userInput?.title}".`, request);
     }
 
     // No need for an aggregation pipeline; Prisma returns the created document
-    return CREATED(`FAQ entry with title "${userInput?.title}" created successfully.`, createdDocument, request);
+    return CREATED(`Academic entry with title "${userInput?.title}" created successfully.`, createdDocument, request);
 };
 
-// Named export for the POST request handler (Create FAQ)
+// Named export for the POST request handler (Create academic)
 const handleCreateAcademicByCategory = async (request, context) => {
     // Validate content type
     const contentValidationResult = validateUnsupportedContent(request, academicConstants.allowedContentTypes);
@@ -57,27 +59,34 @@ const handleCreateAcademicByCategory = async (request, context) => {
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'create', academicSchema.createSchema);
+    const userInput = await parseAndValidateFormData(request, context, 'create', () => academicSchema.createSchema());
 
-    // Check if FAQ entry with the same title already exists
+    // Check if academic entry with the same title already exists
     const existingQuestion = await model.findUnique({
         where: {
             title: userInput?.title,
-            category: userInput?.category,
+            category: userInput?.categoryParams,
         },
         select: {
             id: true,
         }
     });
     if (existingQuestion) {
-        return CONFLICT(`Academic entry with title "${userInput?.title}" and CATEGORY ${userInput?.category} already exists.`, request);
+        return CONFLICT(`Academic entry with title "${userInput?.title}" and CATEGORY "${userInput?.categoryParams}" already exists.`, request);
     }
 
+    // Upload file and generate link
+    const newFile = userInput[academicConstants.fileFieldName][0];
+    const { fileId, fileLink } = await localFileOperations.uploadFile(request, newFile);
+
+    userInput.fileId = fileId;
+    userInput.file = fileLink;
     userInput.category = userInput.categoryParams;
+    userInput.publishDate = moment(userInput.publishDate, ['DD/MM/YYYY', moment.ISO_8601], true).toDate();
 
     delete userInput.categoryParams;
 
-    // Create the FAQ entry and send the response
+    // Create the academic entry and send the response
     return createAcademicEntry(userInput, request);
 };
 

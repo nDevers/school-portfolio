@@ -255,12 +255,10 @@ const deleteBlogById = async (request, context) => {
     }
 
     if (data?.bannerId) {
-        console.log(data?.bannerId);
         await localFileOperations.deleteFile(data?.bannerId); // Delete the file physically
     }
 
     if (data?.files?.length) {
-        console.log(data?.files);
         // Create an array of promises for each file deletion
         const deleteFilesPromises = data.files.map(file => {
             return localFileOperations.deleteFile(file?.fileId); // Delete the file physically
@@ -271,7 +269,6 @@ const deleteBlogById = async (request, context) => {
     }
 
     if (data.images?.length) {
-        console.log(data.images);
         // Create an array of promises for each file deletion
         const deleteImagesPromises = data.images.map(image => {
             return localFileOperations.deleteFile(image?.imageId); // Delete the file physically

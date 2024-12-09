@@ -68,11 +68,11 @@ const fetchEntryById = async (request, context, model, selectionCriteria, messag
 
     // Check if data exists
     if (!data) {
-        return NOT_FOUND(`No ${message} entry with the ID ${userInput?.id} available at this time.`, request);
+        return NOT_FOUND(`No ${message} entry with the ID: "${userInput?.id}" available at this time.`, request);
     }
 
     // Send a success response with the fetched data
-    return OK(`${toSentenceCase(message)} entry with the ID ${userInput?.id} retrieved successfully.`, data, request);
+    return OK(`${toSentenceCase(message)} entry with the ID: "${userInput?.id}" retrieved successfully.`, data, request);
 };
 
 // Common function for fetching data by id and projecting MongoDB data with custom aggregation
@@ -80,7 +80,7 @@ const fetchEntryByCategory = async (request, context, model, selectionCriteria, 
     const userInput = await parseAndValidateFormData(request, context, 'get', categorySchema);
 
     // Use findUnique instead of findById
-    const data = await model.findUnique({
+    const data = await model.findMany({
         where: {
             category: userInput?.categoryParams,
         },
@@ -89,11 +89,11 @@ const fetchEntryByCategory = async (request, context, model, selectionCriteria, 
 
     // Check if data exists
     if (!data) {
-        return NOT_FOUND(`No ${message} entry with the CATEGORY ${userInput?.categoryParams} available at this time.`, request);
+        return NOT_FOUND(`No ${message} entry with the CATEGORY: "${userInput?.categoryParams}" available at this time.`, request);
     }
 
     // Send a success response with the fetched data
-    return OK(`${toSentenceCase(message)} entry with the CATEGORY ${userInput?.categoryParams} retrieved successfully.`, data, request);
+    return OK(`${toSentenceCase(message)} entry with the CATEGORY: "${userInput?.categoryParams}" retrieved successfully.`, data, request);
 };
 
 // Common function for fetching data by id and projecting MongoDB data with custom aggregation
@@ -111,11 +111,11 @@ const fetchEntryByCategoryAndId = async (request, context, model, selectionCrite
 
     // Check if data exists
     if (!data) {
-        return NOT_FOUND(`No ${message} entry with the CATEGORY ${userInput?.categoryParams} and ID ${userInput?.id} available at this time.`, request);
+        return NOT_FOUND(`No ${message} entry with the CATEGORY: "${userInput?.categoryParams}" and ID: "${userInput?.id}" available at this time.`, request);
     }
 
     // Send a success response with the fetched data
-    return OK(`${toSentenceCase(message)} entry with the CATEGORY ${userInput?.categoryParams} and ID ${userInput?.id} retrieved successfully.`, data, request);
+    return OK(`${toSentenceCase(message)} entry with the CATEGORY: "${userInput?.categoryParams}" and ID: "${userInput?.id}" retrieved successfully.`, data, request);
 };
 
 const deleteEntryById = async (request, context, model, fileIdField, message) => {
@@ -139,7 +139,7 @@ const deleteEntryById = async (request, context, model, fileIdField, message) =>
         },
     });
     if (!data) {
-        return NOT_FOUND(`${message} entry with ID "${userInput?.id}" not found.`, request);
+        return NOT_FOUND(`${message} entry with ID: "${userInput?.id}" not found.`, request);
     }
 
     // Perform the deletion with the specified projection field for optional file handling
@@ -164,11 +164,11 @@ const deleteEntryById = async (request, context, model, fileIdField, message) =>
         },
     });
     if (deletedData) {
-        return NOT_FOUND(`Failed to delete ${message} entry with ID "${userInput?.id}".`, request);
+        return NOT_FOUND(`Failed to delete ${message} entry with ID: "${userInput?.id}".`, request);
     }
 
     // Send a success response
-    return OK(`${message} entry with ID "${userInput?.id}" deleted successfully.`, {}, request);
+    return OK(`${message} entry with ID: "${userInput?.id}" deleted successfully.`, {}, request);
 };
 
 const createStatusEntry = async (request, context, model, schema, contentTypes, statusFieldName, message) => {

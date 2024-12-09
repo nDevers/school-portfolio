@@ -4,7 +4,7 @@ import serviceShared from "@/shared/service.shared";
 import academicSchema from "@/app/api/v1/academic/academic.schema";
 
 import asyncHandler from "@/util/asyncHandler";
-import blogSelectionCriteria from "@/app/api/v1/blog/blog.selection.criteria";
+import academicSelectionCriteria from "@/app/api/v1/academic/academic.selection.criteria";
 
 const prisma = new PrismaClient();
 
@@ -12,9 +12,9 @@ const model = prisma.Academic;
 
 // Named export for the GET request handler
 export const handleGetAcademicByCategory = async (request, context) => {
-    const selectionCriteria = blogSelectionCriteria();
+    const selectionCriteria = academicSelectionCriteria();
 
-    return serviceShared.fetchEntryByCategory(request, context, model, selectionCriteria,  'Academic', academicSchema.categorySchema);
+    return serviceShared.fetchEntryByCategory(request, context, model, selectionCriteria,  'Academic', () => academicSchema.categorySchema());
 };
 
 // Export the route wrapped with asyncHandler

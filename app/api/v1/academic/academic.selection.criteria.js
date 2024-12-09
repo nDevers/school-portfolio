@@ -1,5 +1,5 @@
 // Helper function to define the selection criteria for FAQ
-const blogSelectionCriteria = () => ({
+const academicSelectionCriteria = () => ({
     id: true,
     category: true,
     title: true,
@@ -9,4 +9,4 @@ const blogSelectionCriteria = () => ({
     badge: true,
 });
 
-export default blogSelectionCriteria;
+export default academicSelectionCriteria;

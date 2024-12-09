@@ -6,6 +6,7 @@ import contentTypesConstants from "@/constants/contentTypes.constants";
 import prepareFormDataForLogging from "@/util/prepareFormDataForLogging";
 import convertToObjectId from "@/util/convertToObjectId";
 import getQueryParams from "@/util/getQueryParams";
+import toSentenceCase from "@/util/toSentenceCase";
 
 const getNestedField = (obj, path) => {
     return path.split('.').reduce((o, key) => (o ? o[key] : undefined), obj);
@@ -144,8 +145,14 @@ const parseAndValidateFormData = async (request, context, mode, schema) => {
 
     userInput = { ...userInput, ...getQueryParams(searchParams) };
 
-    // Validate userInput with schema
-    schema.parse(userInput);
+    // Pass the property to the schema function
+    if (typeof schema === 'function') {
+        // Transform categoryParams and pass to the schema
+        const transformedCategoryParams = toSentenceCase(params?.categoryParams.replace(/_/g, ' '));
+        schema(transformedCategoryParams).parse(userInput);
+    } else {
+        schema.parse(userInput);
+    }
 
     return userInput;
 };

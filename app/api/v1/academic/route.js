@@ -14,7 +14,7 @@ const model = prisma.Academic;
 const handleGetAcademicList = async (request, context) => {
     const selectionCriteria = academicSelectionCriteria();
 
-    return serviceShared.fetchEntryList(request, context, model, selectionCriteria, 'Academic', academicSchema.getDataByQuery);
+    return serviceShared.fetchEntryByCategory(request, context, model, selectionCriteria, 'Academic', () => academicSchema.getDataByQuery());
 };
 
 // Export the routes wrapped with asyncHandler

@@ -5,19 +5,19 @@ import academicConstants from "@/app/api/v1/academic/academic.constants";
 
 // Define reusable schema parts
 const { nonEmptyString, enumValidation, validMongooseId, validDate, filesValidator } = schemaShared;
-const { titleMaxCharacter, allowedCategories, allowedFilesMimeTypes, allowedFileSize } = academicConstants;
+const { titleMaxCharacter, badgeMaxCharacter, allowedCategories, allowedMimeTypes, allowedFileSize } = academicConstants;
 
 const title = (fieldName) => nonEmptyString(`${fieldName} title`, titleMaxCharacter);
 const description = (fieldName) => nonEmptyString(`${fieldName} description`);
 const id = (fieldName) => validMongooseId(`${fieldName} ID`);
-const categoryParams = (fieldName) => enumValidation(`${fieldName} parameter`, allowedCategories);
-const file = (fieldName) => filesValidator(`${fieldName} file`, allowedFilesMimeTypes, allowedFileSize, 1, 1);
+const categoryParams = (fieldName) => enumValidation(`${fieldName} category parameter`, allowedCategories);
+const file = (fieldName) => filesValidator(`${fieldName} file`, allowedMimeTypes, allowedFileSize, 1, 1);
 const publishDate = (fieldName) => validDate(`${fieldName} publish date`);
-const badge = (fieldName) => nonEmptyString(`${fieldName} badge`);
+const badge = (fieldName) => nonEmptyString(`${fieldName} badge`, badgeMaxCharacter);
 
 // Define the Zod validation schema
 const createSchema = (fieldName) => z.object({
-    categoryParams: title(fieldName),
+    categoryParams: categoryParams(fieldName),
     title: title(fieldName),
     description: description(fieldName),
     file: file(fieldName),
@@ -26,7 +26,7 @@ const createSchema = (fieldName) => z.object({
 }).strict(); // Enforce strict mode to disallow extra fields
 
 // Define the Zod validation schema
-const getDataByQuery = (fieldName) => z.object({
+const getDataByQuery = (fieldName = 'Category') => z.object({
     id: id(fieldName).optional(),
     categoryParams: categoryParams(fieldName).optional(),
     title: title(fieldName).optional(),
@@ -39,7 +39,7 @@ const getDataByQuery = (fieldName) => z.object({
 
 // Define the Zod validation schema
 const updateSchema = (fieldName) => z.object({
-    id,
+    id: id(fieldName),
     categoryParams: categoryParams(fieldName),
     category: categoryParams(fieldName).optional(),
     title: title(fieldName).optional(),
@@ -56,13 +56,13 @@ const updateSchema = (fieldName) => z.object({
         }
     );
 
-const categorySchema = z.object({
-    categoryParams: categoryParams('Category'),
+const categorySchema = (fieldName) => z.object({
+    categoryParams: categoryParams(fieldName),
 }).strict();
 
-const categoryAndIdSchema = z.object({
-    categoryParams: categoryParams('Category'),
-    id
+const categoryAndIdSchema = (fieldName) => z.object({
+    categoryParams: categoryParams(fieldName),
+    id: id(fieldName),
 }).strict();
 
 const academicSchema = {
