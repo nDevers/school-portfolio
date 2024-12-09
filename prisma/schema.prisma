@@ -50,6 +50,16 @@ model SchoolInfo {
   updatedAt   DateTime @updatedAt
 }
 
+model SchoolSpeech {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   @unique
+  description String
+  imageId      String   @unique
+  image        String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 model Career {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String   @unique

@@ -1,7 +1,7 @@
 import {PrismaClient} from "@prisma/client";
 
 import serviceShared from "@/shared/service.shared";
-import faqSchema from "@/app/api/v1/faq/faq.schema";
+import schoolInfoSchema from "@/app/api/v1/school/info/school.info.schema";
 
 import asyncHandler from "@/util/asyncHandler";
 import schoolInfoSelectionCriteria from "@/app/api/v1/school/info/school.info.selection.criteria";
@@ -14,7 +14,7 @@ const model = prisma.SchoolInfo;
 const handleGetSchoolInfoList = async (request, context) => {
     const selectionCriteria = schoolInfoSelectionCriteria();
 
-    return serviceShared.fetchEntryList(request, context, model, selectionCriteria, 'School info', faqSchema.getDataByQuery);
+    return serviceShared.fetchEntryList(request, context, model, selectionCriteria, 'School info', schoolInfoSchema.getDataByQuery);
 };
 
 // Export the routes wrapped with asyncHandler
