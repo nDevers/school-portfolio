@@ -99,6 +99,10 @@ const validMongooseId = (fieldName) => nonEmptyString(`${fieldName} is required`
         { message: `${fieldName} must be a valid ObjectId format` } // Use fieldName in the message
     );
 
+const categoryValidationSchema = (fieldName, allowedCategories) => z.object({
+    categoryParams: enumValidation(fieldName, allowedCategories),
+}).strict();
+
 // Define the Zod validation schema
 const idValidationSchema = z.object({
     id: validMongooseId('ID'),
@@ -154,6 +158,7 @@ const validBloodGroup = (fieldName = 'Blood group') => enumValidation(fieldName,
 
 const schemaShared = {
     idValidationSchema,
+    categoryValidationSchema,
 
     validMongooseId,
     validMongooseIdArray,

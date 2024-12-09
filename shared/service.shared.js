@@ -22,7 +22,7 @@ import prepareSearchQuery from "@/util/prepareSearchQuery";
 
 const configuration = await configurations();
 const { NOT_FOUND, OK, CREATED, CONFLICT, BAD_REQUEST, INTERNAL_SERVER_ERROR } = sharedResponseTypes;
-const { idValidationSchema } = schemaShared;
+const { idValidationSchema, categoryValidationSchema } = schemaShared;
 
 // Common function for fetching and projecting MongoDB data with custom aggregation
 const fetchEntryList = async (request, context, model, selectionCriteria, message, schema = null) => {
@@ -68,11 +68,54 @@ const fetchEntryById = async (request, context, model, selectionCriteria, messag
 
     // Check if data exists
     if (!data) {
-        return NOT_FOUND(`No ${message} available at this time.`, request);
+        return NOT_FOUND(`No ${message} entry with the ID ${userInput?.id} available at this time.`, request);
     }
 
     // Send a success response with the fetched data
-    return OK(`${toSentenceCase(message)} retrieved successfully.`, data, request);
+    return OK(`${toSentenceCase(message)} entry with the ID ${userInput?.id} retrieved successfully.`, data, request);
+};
+
+// Common function for fetching data by id and projecting MongoDB data with custom aggregation
+const fetchEntryByCategory = async (request, context, model, selectionCriteria, message, categorySchema) => {
+    const userInput = await parseAndValidateFormData(request, context, 'get', categorySchema);
+
+    // Use findUnique instead of findById
+    const data = await model.findUnique({
+        where: {
+            category: userInput?.categoryParams,
+        },
+        select: selectionCriteria,
+    });
+
+    // Check if data exists
+    if (!data) {
+        return NOT_FOUND(`No ${message} entry with the CATEGORY ${userInput?.categoryParams} available at this time.`, request);
+    }
+
+    // Send a success response with the fetched data
+    return OK(`${toSentenceCase(message)} entry with the CATEGORY ${userInput?.categoryParams} retrieved successfully.`, data, request);
+};
+
+// Common function for fetching data by id and projecting MongoDB data with custom aggregation
+const fetchEntryByCategoryAndId = async (request, context, model, selectionCriteria, message, categorySchemaAndId) => {
+    const userInput = await parseAndValidateFormData(request, context, 'get', categorySchemaAndId);
+
+    // Use findUnique instead of findById
+    const data = await model.findUnique({
+        where: {
+            category: userInput?.categoryParams,
+            id: userInput?.id,
+        },
+        select: selectionCriteria,
+    });
+
+    // Check if data exists
+    if (!data) {
+        return NOT_FOUND(`No ${message} entry with the CATEGORY ${userInput?.categoryParams} and ID ${userInput?.id} available at this time.`, request);
+    }
+
+    // Send a success response with the fetched data
+    return OK(`${toSentenceCase(message)} entry with the CATEGORY ${userInput?.categoryParams} and ID ${userInput?.id} retrieved successfully.`, data, request);
 };
 
 const deleteEntryById = async (request, context, model, fileIdField, message) => {
@@ -397,6 +440,8 @@ const handleGetProfile = async (request) => {
 const serviceShared = {
     fetchEntryList,
     fetchEntryById,
+    fetchEntryByCategory,
+    fetchEntryByCategoryAndId,
     deleteEntryById,
     createStatusEntry,
     createTypeEntry,
