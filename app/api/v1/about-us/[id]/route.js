@@ -10,11 +10,11 @@ const prisma = new PrismaClient();
 const model = prisma.AboutUs;
 
 // Named export for the GET request handler
-export const handleGetCareerById = async (request, context) => {
+export const handleGetAboutUsById = async (request, context) => {
     const selectionCriteria = aboutUsSelectionCriteria();
 
     return serviceShared.fetchEntryById(request, context, model, selectionCriteria,  'About us');
 };
 
 // Export the route wrapped with asyncHandler
-export const GET = asyncHandler(handleGetCareerById);
+export const GET = asyncHandler(handleGetAboutUsById);

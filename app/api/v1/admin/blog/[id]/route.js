@@ -1,7 +1,8 @@
 import { PrismaClient } from '@prisma/client';
+import moment from 'moment';
 
-import aboutUsSchema from "@/app/api/v1/about-us/about.us.schema";
-import aboutUsConstants from "@/app/api/v1/about-us/about.us.constants";
+import blogSchema from "@/app/api/v1/blog/blog.schema";
+import blogConstants from "@/app/api/v1/blog/blog.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
 import localFileOperations from "@/util/localFileOperations";
 import schemaShared from "@/shared/schema.shared";
@@ -10,17 +11,17 @@ import asyncHandler from "@/util/asyncHandler";
 import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import aboutUsSelectionCriteria from "@/app/api/v1/about-us/about.us.selection.criteria";
+import blogSelectionCriteria from "@/app/api/v1/blog/blog.selection.criteria";
 
 const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 const { idValidationSchema } = schemaShared;
 
-const model = prisma.AboutUs;
+const model = prisma.Blog;
 
 // Helper function to update and respond with the FAQ
-const updateAboutUsEntry = async (userInput, request) => {
+const updateBlogEntry = async (userInput, request) => {
     // Filter `userInput` to only include fields with non-null values
     const fieldsToUpdate = Object.keys(userInput).reduce((acc, key) => {
         if (userInput[key] !== undefined && userInput[key] !== null && key !== 'id') {
@@ -38,7 +39,7 @@ const updateAboutUsEntry = async (userInput, request) => {
         },
     });
 
-    const selectionCriteria = aboutUsSelectionCriteria();
+    const selectionCriteria = blogSelectionCriteria();
 
     const updatedDocument = await model.findUnique({
         where: {
@@ -48,16 +49,16 @@ const updateAboutUsEntry = async (userInput, request) => {
     });
 
     if (!updatedDocument?.id) {
-        return INTERNAL_SERVER_ERROR(`Failed to update aboutUs entry with the ID "${userInput?.id}".`, request);
+        return INTERNAL_SERVER_ERROR(`Failed to update blog entry with the ID "${userInput?.id}".`, request);
     }
 
-    return OK(`AboutUs entry with the ID "${userInput?.id}" updated successfully.`, updatedDocument, request);
+    return OK(`Blog entry with the ID "${userInput?.id}" updated successfully.`, updatedDocument, request);
 };
 
 // Named export for the GET request handler
-const handleUpdateAboutUsById = async (request, context) => {
+const handleUpdateBlogById = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, aboutUsConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(request, blogConstants.allowedContentTypes);
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
@@ -69,20 +70,21 @@ const handleUpdateAboutUsById = async (request, context) => {
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'update', aboutUsSchema.updateSchema);
+    const userInput = await parseAndValidateFormData(request, context, 'update', blogSchema.updateSchema);
 
     // Check if FAQ entry with the same title already exists
-    const existingCareer = await model.findUnique({
+    const existingBlog = await model.findUnique({
         where: {
             id: userInput?.id,
         },
         select: {
             id: true,
+            bannerId: true,
             files: true,
             images: true,
         }
     });
-    if (!existingCareer) {
+    if (!existingBlog) {
         return NOT_FOUND(`About us entry with ID "${userInput?.id}" not found.`, request);
     }
 
@@ -101,10 +103,21 @@ const handleUpdateAboutUsById = async (request, context) => {
         }
     }
 
+    // Handle file replacement if a new file is provided
+    if (userInput[blogConstants.bannerFieldName] && userInput[blogConstants.bannerFieldName][0]) {
+        await localFileOperations.deleteFile(existingBlog?.bannerId); // Delete old file
+
+        const newBanner = userInput[blogConstants.bannerFieldName][0];
+        const { fileId, fileLink } = await localFileOperations.uploadFile(request, newBanner);
+
+        userInput.bannerId = fileId;
+        userInput.banner = fileLink;
+    }
+
     if (userInput?.files?.length) {
         // Upload files and construct the `files` array for documents
         const files = await Promise.all(
-            (userInput[aboutUsConstants.fileFieldName] || []).map(async (fileEntry) => {
+            (userInput[blogConstants.fileFieldName] || []).map(async (fileEntry) => {
                 // Call your file upload operation
                 const { fileId, fileLink } = await localFileOperations.uploadFile(request, fileEntry);
                 return {
@@ -117,13 +130,29 @@ const handleUpdateAboutUsById = async (request, context) => {
         userInput.files = files;
     }
 
+    if (userInput?.images?.length) {
+        // Upload files and construct the `files` array for documents
+        const images = await Promise.all(
+            (userInput[blogConstants.imageFieldName] || []).map(async (imageEntry) => {
+                // Call your file upload operation
+                const { fileId, fileLink } = await localFileOperations.uploadFile(request, imageEntry);
+                return {
+                    imageId: fileId,
+                    image: fileLink
+                };
+            })
+        );
+
+        userInput.images = images;
+    }
+
     let files = {};
     let images = {};
 
     if (userInput?.deleteFiles && Array.isArray(userInput.deleteFiles)) {
         // Check if all files in deleteFiles actually exist in the current files array
         const nonExistingFiles = userInput.deleteFiles.filter(fileId =>
-            !existingCareer?.files?.some(file => file?.fileId === fileId)
+            !existingBlog?.files?.some(file => file?.fileId === fileId)
         );
 
         if (nonExistingFiles.length > 0) {
@@ -137,14 +166,14 @@ const handleUpdateAboutUsById = async (request, context) => {
         });
 
         // Filter out files that are being deleted (those in deleteFiles)
-        files = existingCareer?.files?.filter(file => !userInput.deleteFiles.includes(file?.fileId));
+        files = existingBlog?.files?.filter(file => !userInput.deleteFiles.includes(file?.fileId));
 
         // Delete the files physically using Promise.all
         await Promise.all(deletePromises);
 
         // After deletion, update the database to remove the deleted file objects
         await model.update({
-            where: { id: existingCareer.id }, // Assuming the record is identified by id
+            where: { id: existingBlog.id }, // Assuming the record is identified by id
             data: {
                 files: files, // Update the files field in the database, only keeping non-deleted files
             }
@@ -153,9 +182,9 @@ const handleUpdateAboutUsById = async (request, context) => {
 
     if (userInput?.deleteImages && Array.isArray(userInput.deleteImages)) {
         // Check if all images in deleteImages actually exist in the current images array
-        console.log(existingCareer?.images)
+        console.log(existingBlog?.images)
         const nonExistingImages = userInput.deleteImages.filter(imageId =>
-            !existingCareer?.images?.some(image => image?.imageId === imageId)
+            !existingBlog?.images?.some(image => image?.imageId === imageId)
         );
 
         if (nonExistingImages.length > 0) {
@@ -169,14 +198,14 @@ const handleUpdateAboutUsById = async (request, context) => {
         });
 
         // Filter out images that are being deleted (those in deleteImages)
-        images = existingCareer?.images?.filter(image => !userInput.deleteImages.includes(image?.imageId));
+        images = existingBlog?.images?.filter(image => !userInput.deleteImages.includes(image?.imageId));
 
         // Delete the images physically using Promise.all
         await Promise.all(deleteImagePromises);
 
         // After deletion, update the database to remove the deleted image objects
         await model.update({
-            where: { id: existingCareer.id }, // Assuming the record is identified by id
+            where: { id: existingBlog.id }, // Assuming the record is identified by id
             data: {
                 images: images, // Update the images field in the database, only keeping non-deleted images
             }
@@ -189,11 +218,17 @@ const handleUpdateAboutUsById = async (request, context) => {
     userInput.files = files; // Assign the updated files list to userInput
     userInput.images = images; // Assign the updated images list to userInput
 
+    // Use Moment.js to convert the date
+    if (userInput?.date) {
+        // Convert the date using Moment.js
+        userInput.date = moment(userInput.date, ['DD/MM/YYYY', moment.ISO_8601], true).toDate();
+    }
+
     // Create the About Us entry and send the response
-    return updateAboutUsEntry(userInput, request);
+    return updateBlogEntry(userInput, request);
 };
 
-const deleteCareerById = async (request, context) => {
+const deleteBlogById = async (request, context) => {
     // Validate admin
     const authResult = await validateToken(request);
     if (!authResult.isAuthorized) {
@@ -210,6 +245,7 @@ const deleteCareerById = async (request, context) => {
         },
         select: {
             id: true, // Only return the ID of the deleted document
+            bannerId: true,
             files: true,
             images: true,
         },
@@ -218,7 +254,13 @@ const deleteCareerById = async (request, context) => {
         return NOT_FOUND(`About us entry with ID "${userInput?.id}" not found.`, request);
     }
 
+    if (data?.bannerId) {
+        console.log(data?.bannerId);
+        await localFileOperations.deleteFile(data?.bannerId); // Delete the file physically
+    }
+
     if (data?.files?.length) {
+        console.log(data?.files);
         // Create an array of promises for each file deletion
         const deleteFilesPromises = data.files.map(file => {
             return localFileOperations.deleteFile(file?.fileId); // Delete the file physically
@@ -229,6 +271,7 @@ const deleteCareerById = async (request, context) => {
     }
 
     if (data.images?.length) {
+        console.log(data.images);
         // Create an array of promises for each file deletion
         const deleteImagesPromises = data.images.map(image => {
             return localFileOperations.deleteFile(image?.imageId); // Delete the file physically
@@ -262,7 +305,7 @@ const deleteCareerById = async (request, context) => {
 };
 
 // Export the route wrapped with asyncHandler
-export const PATCH = asyncHandler(handleUpdateAboutUsById);
+export const PATCH = asyncHandler(handleUpdateBlogById);
 
 // Export the route wrapped with asyncHandler
-export const DELETE = asyncHandler(deleteCareerById);
+export const DELETE = asyncHandler(deleteBlogById);

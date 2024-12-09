@@ -1,5 +1,6 @@
 import {z} from "zod";
 import {Types} from "mongoose";
+import moment from 'moment';
 
 import constants from "@/constants/constants";
 
@@ -132,8 +133,14 @@ const uploadedFile = (fieldName) => z.object({
 });
 
 const validDate = (fieldName) => nonEmptyString(fieldName)
-    .refine((date) => !isNaN(new Date(date).getTime()), {
-        message: `${fieldName} must be a valid date`,
+    .refine((date) => {
+        // Validate if the date is in DD/MM/YYYY or ISO 8601 format
+        const isValidDDMMYYYY = moment(date, 'DD/MM/YYYY', true).isValid();
+        const isValidISO8601 = moment(date, moment.ISO_8601, true).isValid();
+
+        return isValidDDMMYYYY || isValidISO8601;
+    }, {
+        message: `${fieldName} must be a valid date in "DD/MM/YYYY" or ISO 8601 format.`,
     });
 
 const enumValidation = (fieldName, allowedTypes) => {

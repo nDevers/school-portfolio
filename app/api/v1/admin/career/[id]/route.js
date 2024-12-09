@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import moment from 'moment';
 
 import careerSchema from "@/app/api/v1/career/career.schema";
 import careerConstants from "@/app/api/v1/career/career.constants";
@@ -114,7 +115,6 @@ const handleUpdateCareerById = async (request, context) => {
         );
 
         userInput.files = files;
-        userInput.date = new Date(userInput.date);
     }
 
     let files = {};
@@ -154,6 +154,12 @@ const handleUpdateCareerById = async (request, context) => {
 
     userInput.files = files; // Assign the updated files list to userInput
 
+    // Use Moment.js to convert the date
+    if (userInput?.date) {
+        // Convert the date using Moment.js
+        userInput.date = moment(userInput.date, ['DD/MM/YYYY', moment.ISO_8601], true).toDate();
+    }
+
     // Create the FAQ entry and send the response
     return updateCareerEntry(userInput, request);
 };
@@ -182,13 +188,15 @@ const deleteCareerById = async (request, context) => {
         return NOT_FOUND(`Career entry with ID "${userInput?.id}" not found.`, request);
     }
 
-    // Create an array of promises for each file deletion
-    const deletePromises = data.files.map(file => {
-        return localFileOperations.deleteFile(file?.fileId); // Delete the file physically
-    });
+    if (data?.files?.length) {
+        // Create an array of promises for each file deletion
+        const deleteFilesPromises = data.files.map(file => {
+            return localFileOperations.deleteFile(file?.fileId); // Delete the file physically
+        });
 
-    // Delete the files physically using Promise.all
-    await Promise.all(deletePromises);
+        // Delete the files physically using Promise.all
+        await Promise.all(deleteFilesPromises);
+    }
 
     // Perform the deletion with the specified projection field for optional file handling
     await model.delete({
