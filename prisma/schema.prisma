@@ -110,3 +110,17 @@ model Faculty {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model Announcement {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  category          String
+  title             String   @unique
+  description       String
+  files             Json     // JSON field to store an object with fileId and file properties
+  date              DateTime
+  isHeadline        Boolean  @default(false)
+  isAdvertise       Boolean  @default(false)
+  advertiseMailTime DateTime
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
