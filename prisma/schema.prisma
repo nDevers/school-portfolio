@@ -86,13 +86,27 @@ model Blog {
 
 model Academic {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  category       String
+  category    String
   title       String   @unique
   description String
   fileId      String   @unique
-  file        Json     // JSON field to store an object with fileId and file properties
+  file        String
   publishDate DateTime
   badge       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Faculty {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  category    String
+  name        String
+  designation String
+  imageId     String   @unique
+  image       String
+  email       String   @unique
+  mobile      String   @unique
+  portfolio   String   @unique
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

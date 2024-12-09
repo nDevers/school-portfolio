@@ -110,7 +110,12 @@ const idValidationSchema = z.object({
 
 const validMongooseIdArray = (fieldName) => z.array(validMongooseId(fieldName));
 
-const validUrl = (fieldName) => nonEmptyString(fieldName).url(`${fieldName} must be a valid URL and must start with "https://"`);
+const validUrl = (fieldName) => nonEmptyString(fieldName)
+    .url(`${fieldName} must be a valid URL`)
+    .refine(
+        (url) => url.startsWith('https://'),
+        { message: `${fieldName} must start with "https://"` }
+    );
 
 const validUrlArray = (fieldName) => z.array(validUrl(fieldName));
 
