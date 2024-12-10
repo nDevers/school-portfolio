@@ -175,3 +175,19 @@ model Newsletter {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model Configuration {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  logoId      String   @unique
+  logo        String
+  bannerId    String   @unique
+  banner      String
+  address     String
+  emails      String   Json     // JSON field to store an object with id and emails properties
+  contacts    String   Json     // JSON field to store an object with id and contact number properties
+  socialLinks String   Json     // JSON field to store an object with id and contact number properties
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
