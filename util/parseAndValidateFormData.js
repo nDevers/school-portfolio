@@ -131,6 +131,10 @@ const parseAndValidateFormData = async (request, context, mode, schema) => {
         userInput.id = data.id;
     }
 
+    if (data.email) {
+        userInput.email = data.email;
+    }
+
     if (data.categoryParams) {
         userInput.categoryParams = data.categoryParams;
     }

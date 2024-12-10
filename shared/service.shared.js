@@ -97,6 +97,27 @@ const fetchEntryByCategory = async (request, context, model, selectionCriteria, 
 };
 
 // Common function for fetching data by id and projecting MongoDB data with custom aggregation
+const fetchEntryByEmail = async (request, context, model, selectionCriteria, message, emailSchema) => {
+    const userInput = await parseAndValidateFormData(request, context, 'get', emailSchema);
+
+    // Use findUnique instead of findById
+    const data = await model.findMany({
+        where: {
+            email: userInput?.email,
+        },
+        select: selectionCriteria,
+    });
+
+    // Check if data exists
+    if (!data) {
+        return NOT_FOUND(`No ${message} entry with the email: "${userInput?.email}" available at this time.`, request);
+    }
+
+    // Send a success response with the fetched data
+    return OK(`${toSentenceCase(message)} entry with the email: "${userInput?.email}" retrieved successfully.`, data, request);
+};
+
+// Common function for fetching data by id and projecting MongoDB data with custom aggregation
 const fetchEntryByCategoryAndId = async (request, context, model, selectionCriteria, message, categorySchemaAndId) => {
     const userInput = await parseAndValidateFormData(request, context, 'get', categorySchemaAndId);
 
@@ -169,6 +190,54 @@ const deleteEntryById = async (request, context, model, fileIdField, message) =>
 
     // Send a success response
     return OK(`${message} entry with ID: "${userInput?.id}" deleted successfully.`, {}, request);
+};
+
+const deleteEntryByEmail = async (request, context, model, fileIdField, message, schema) => {
+    // Validate admin
+    const authResult = await validateToken(request);
+    if (!authResult.isAuthorized) {
+        return authResult.response; // Return early with the authorization failure response
+    }
+
+    // Parse and validate form data
+    const userInput = await parseAndValidateFormData(request, context, 'delete', schema);
+
+    // Ensure the email is provided
+    if (!userInput?.email) {
+        return BAD_REQUEST('Email is required to delete the entry.', {}, request);
+    }
+
+    // Check if data exists
+    const data = await model.findUnique({
+        where: {
+            email: userInput.email, // Use the email from userInput
+        },
+        select: {
+            id: true,
+            email: true,
+            ...(fileIdField && { [fileIdField]: true }), // Conditionally include fileIdField
+        },
+    });
+
+    if (!data) {
+        return NOT_FOUND(`${message} entry with email: "${userInput.email}" not found.`, request);
+    }
+
+    // Perform the deletion
+    await model.delete({
+        where: {
+            email: userInput.email, // Use the email for deletion
+        },
+    });
+
+    // Handle file deletion if applicable
+    const fileId = data[fileIdField];
+    if (fileId) {
+        await localFileOperations.deleteFile(fileId); // Delete old file if fileIdField is provided
+    }
+
+    // Send a success response
+    return OK(`${message} entry with email: "${userInput.email}" deleted successfully.`, {}, request);
 };
 
 const createStatusEntry = async (request, context, model, schema, contentTypes, statusFieldName, message) => {
@@ -441,8 +510,12 @@ const serviceShared = {
     fetchEntryList,
     fetchEntryById,
     fetchEntryByCategory,
+    fetchEntryByEmail,
     fetchEntryByCategoryAndId,
+
     deleteEntryById,
+    deleteEntryByEmail,
+
     createStatusEntry,
     createTypeEntry,
 
