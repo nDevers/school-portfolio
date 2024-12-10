@@ -44,7 +44,7 @@ const NOT_FOUND = (message, request) => sendResponse(
 
 const BAD_REQUEST = (message, request) => sendResponse(
     false,
-    httpStatusConstants.NOT_FOUND,
+    httpStatusConstants.BAD_REQUEST,
     message,
     {},
     request

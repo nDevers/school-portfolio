@@ -9,20 +9,21 @@ const prisma = new PrismaClient();
 
 const model = prisma.HomeCarousel;
 
+const selectionCriteria = homeCarouselSelectionCriteria();
+
 const { NOT_FOUND, OK } = sharedResponseTypes;
 
 // Named export for the GET request handler
-const handleGetGalleryPhotoList = async (request, context) => {
-    // Fetch the single record from the HomeCarousel table
+const handleGetGalleryPhotoList = async (request) => {
+    // Fetch the existing carousel entry
     const data = await model.findFirst({
-        select: homeCarouselSelectionCriteria,
+        select: selectionCriteria,
     });
-
-    if (!data.images.length) {
-        return NOT_FOUND('No home carousel images available at this time.', request);
+    if (!data) {
+        return NOT_FOUND("Home carousel entry not found.", request);
     }
 
-    return OK('Home carousel images retrieved successfully.', data.images, request);
+    return OK(`${data?.images?.length} Home carousel images retrieved successfully.`, data?.images, request);
 };
 
 // Export the routes wrapped with asyncHandler

@@ -6,6 +6,7 @@ const allowedMimeTypes = [mimeTypesConstants.JPEG, mimeTypesConstants.JPG, mimeT
 const imagesFieldName = 'images';
 
 const allowedImageFileSize = 5 * 1024 * 1024;
+const maxImage = 10;
 const questionMaxCharacter = 100;
 
 const homeCarouselConstants = {
@@ -13,6 +14,7 @@ const homeCarouselConstants = {
     allowedMimeTypes,
     imagesFieldName,
     allowedImageFileSize,
+    maxImage,
     questionMaxCharacter,
 };
 
