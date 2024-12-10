@@ -3,13 +3,13 @@ import { PrismaClient } from '@prisma/client';
 import galleryVideoSchema from "@/app/api/v1/gallery/video/gallery.video.schema";
 import galleryVideoConstants from "@/app/api/v1/gallery/video/gallery.video.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
+import serviceShared from "@/shared/service.shared";
 
 import asyncHandler from "@/util/asyncHandler";
 import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
 import galleryVideoSelectionCriteria from "@/app/api/v1/gallery/video/gallery.video.selection.criteria";
-import serviceShared from "@/shared/service.shared";
 
 const prisma = new PrismaClient();
 

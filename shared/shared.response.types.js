@@ -74,6 +74,14 @@ const UNSUPPORTED_MEDIA_TYPE = (message, request) => sendResponse(
     request
 );
 
+const UNPROCESSABLE_ENTITY = (message, request) => sendResponse(
+    false,
+    httpStatusConstants.UNPROCESSABLE_ENTITY,
+    message,
+    {},
+    request
+);
+
 const sharedResponseTypes = {
     CREATED,
     OK,
@@ -84,6 +92,7 @@ const sharedResponseTypes = {
     UNAUTHORIZED,
     FORBIDDEN,
     UNSUPPORTED_MEDIA_TYPE,
+    UNPROCESSABLE_ENTITY,
 };
 
 export default sharedResponseTypes;
