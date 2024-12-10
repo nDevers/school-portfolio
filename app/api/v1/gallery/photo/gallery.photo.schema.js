@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
 import schemaShared from "@/shared/schema.shared";
-import careerConstants from "@/app/api/v1/career/career.constants";
+import galleryPhotoConstants from "@/app/api/v1/gallery/photo/gallery.photo.constants";
 
 // Define reusable schema parts
 const { nonEmptyString, nonEmptyStringArray, validMongooseId, validDate, filesValidator } = schemaShared;
-const { titleMaxCharacter, allowedMimeTypes, allowedBannerFileSize } = careerConstants;
+const { titleMaxCharacter, allowedMimeTypes, allowedBannerFileSize } = galleryPhotoConstants;
 
 const title = nonEmptyString('Gallery photo title', titleMaxCharacter);
 const description = nonEmptyString('Gallery photo description');
