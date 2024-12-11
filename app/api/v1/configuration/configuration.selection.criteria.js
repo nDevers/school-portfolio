@@ -1,9 +1,14 @@
 // Helper function to define the selection criteria for FAQ
-const configurationSelectionCriteria = () => ({
+const homeCarouselSelectionCriteria = () => ({
     id: true,
-    title: true,
+    name: true,
     description: true,
-    images: true,
+    logo: true,
+    banner: true,
+    address: true,
+    emails: true,
+    contacts: true,
+    socialLinks: true,
 });
 
-export default configurationSelectionCriteria;
+export default homeCarouselSelectionCriteria;

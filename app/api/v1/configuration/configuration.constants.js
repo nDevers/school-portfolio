@@ -6,16 +6,20 @@ const allowedMimeTypes = [mimeTypesConstants.JPEG, mimeTypesConstants.JPG, mimeT
 const bannerFieldName = 'banner';
 const logoFieldName = 'logo';
 
+const allowedLogoFileSize = 5 * 1024 * 1024;
 const allowedBannerFileSize = 5 * 1024 * 1024;
-const questionMaxCharacter = 100;
+const nameMaxCharacter = 100;
+const addressMaxCharacter = 100;
 
 const configurationConstants = {
     allowedContentTypes,
     allowedMimeTypes,
     bannerFieldName,
     logoFieldName,
+    allowedLogoFileSize,
     allowedBannerFileSize,
-    questionMaxCharacter,
+    nameMaxCharacter,
+    addressMaxCharacter,
 };
 
 export default configurationConstants;

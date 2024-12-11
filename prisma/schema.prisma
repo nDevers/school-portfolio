@@ -185,9 +185,9 @@ model Configuration {
   bannerId    String   @unique
   banner      String
   address     String
-  emails      String   Json     // JSON field to store an object with id and emails properties
-  contacts    String   Json     // JSON field to store an object with id and contact number properties
-  socialLinks String   Json     // JSON field to store an object with id and contact number properties
+  emails      Json     // JSON field to store an object with id and emails properties
+  contacts    Json     // JSON field to store an object with id and contact number properties
+  socialLinks Json     // JSON field to store an object with id and social links properties
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
-import configurationSchema from "@/app/api/v1/home/carousel/home.carousel.schema";
-import configurationConstants from "@/app/api/v1/home/carousel/home.carousel.constants";
+import configurationSchema from "@/app/api/v1/configuration/configuration.schema";
+import configurationConstants from "@/app/api/v1/configuration/configuration.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
 import localFileOperations from "@/util/localFileOperations";
 
@@ -9,7 +9,7 @@ import asyncHandler from "@/util/asyncHandler";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
 import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
-import configurationSelectionCriteria from "@/app/api/v1/home/carousel/home.carousel.selection.criteria";
+import configurationSelectionCriteria from "@/app/api/v1/configuration/configuration.selection.criteria";
 
 const prisma = new PrismaClient();
 
@@ -26,7 +26,7 @@ const createOrUpdateConfiguration = async (existingEntry, userInput, request) =>
         const updatedEntry = await model.update({
             where: { id: existingEntry.id },
             data: {
-                images: userInput.images,
+                ...userInput,
                 updatedAt: new Date(),
             },
         });
@@ -64,26 +64,20 @@ const handleCreateConfiguration = async (request) => {
         select: selectionCriteria,
     });
 
-    if (userInput?.images?.length > 0) {
-        // Validate image count
-        const existingImages = existingEntry?.images || [];
-        const newImages = userInput[configurationConstants.imagesFieldName] || [];
-        if (existingImages.length + newImages.length > configurationConstants.maxImage) {
-            return BAD_REQUEST(
-                `The total number of images cannot exceed ${configurationConstants.maxImage}. Current: ${existingImages.length}, New: ${newImages.length}.`,
-                request
-            );
-        }
+    if (userInput[configurationConstants.bannerFieldName]) {
+        const newBanner = userInput[configurationConstants.bannerFieldName][0];
+        const { fileId, fileLink } = await localFileOperations.uploadFile(request, newBanner);
 
-        // Upload new images
-        const uploadedImages = await Promise.all(
-            newImages.map(async (file) => {
-                const { fileId, fileLink } = await localFileOperations.uploadFile(request, file);
-                return { imageId: fileId, image: fileLink };
-            })
-        );
+        userInput.banner = fileLink;
+        userInput.bannerId = fileId;
+    }
 
-        userInput.images = [...existingImages, ...uploadedImages];
+    if (userInput[configurationConstants.logoFieldName]) {
+        const newLogo = userInput[configurationConstants.logoFieldName][0];
+        const { fileId, fileLink } = await localFileOperations.uploadFile(request, newLogo);
+
+        userInput.logo = fileLink;
+        userInput.logoId = fileId;
     }
 
     // Create or update carousel entry
@@ -103,7 +97,7 @@ const handleUpdateConfiguration = async (request) => {
     // Parse and validate form data
     const userInput = await parseAndValidateFormData(request, {}, 'update', configurationSchema.updateSchema);
 
-    // Fetch the existing carousel entry
+    // Fetch the existing configuration entry
     const existingEntry = await model.findFirst({
         select: selectionCriteria,
     });
@@ -111,37 +105,63 @@ const handleUpdateConfiguration = async (request) => {
         return NOT_FOUND("Configuration entry not found.", request);
     }
 
-    // Handle image updates
-    let updatedImages = existingEntry.images || [];
-    if (userInput?.images?.length > 0) {
-        // Upload new images
-        const uploadedImages = await Promise.all(
-            userInput.images.map(async (file) => {
-                const { fileId, fileLink } = await localFileOperations.uploadFile(request, file);
-                return { imageId: fileId, image: fileLink };
-            })
-        );
-        updatedImages = [...updatedImages, ...uploadedImages];
+    if (userInput[configurationConstants.bannerFieldName]) {
+        const newBanner = userInput[configurationConstants.bannerFieldName][0];
+        const { fileId, fileLink } = await localFileOperations.uploadFile(request, newBanner);
+
+        userInput.banner = fileLink;
+        userInput.bannerId = fileId;
     }
 
-    if (userInput?.deleteImages?.length > 0) {
-        // Delete specified images
-        const deletePromises = userInput.deleteImages.map((imageId) =>
-            localFileOperations.deleteFile(imageId)
-        );
-        await Promise.all(deletePromises);
+    if (userInput[configurationConstants.logoFieldName]) {
+        const newLogo = userInput[configurationConstants.logoFieldName][0];
+        const { fileId, fileLink } = await localFileOperations.uploadFile(request, newLogo);
 
-        // Remove deleted images from the updatedImages array
-        updatedImages = updatedImages.filter(
-            (image) => !userInput.deleteImages.includes(image.imageId)
-        );
+        userInput.logo = fileLink;
+        userInput.logoId = fileId;
+    }
+
+    // Handle emails
+    let updatedEmails = existingEntry.emails || [];
+    if (userInput?.deleteEmails) {
+        updatedEmails = updatedEmails.filter(email => !userInput.deleteEmails.includes(email));
+
+        delete userInput.deleteEmails;
+    }
+    if (userInput?.emails) {
+        updatedEmails = [...updatedEmails, ...userInput.emails];
+    }
+
+    // Handle contacts
+    let updatedContacts = existingEntry.contacts || [];
+    if (userInput?.deleteContacts) {
+        updatedContacts = updatedContacts.filter(contact => !userInput.deleteContacts.includes(contact));
+
+        delete userInput.deleteContacts;
+    }
+    if (userInput?.contacts) {
+        updatedContacts = [...updatedContacts, ...userInput.contacts];
+    }
+
+    // Handle social links
+    let updatedSocialLinks = existingEntry.socialLinks || [];
+    if (userInput?.deleteSocialLinks) {
+        updatedSocialLinks = updatedSocialLinks.filter(link => !userInput.deleteSocialLinks.includes(link));
+
+        delete userInput.deleteSocialLinks;
+    }
+    if (userInput?.socialLinks) {
+        updatedSocialLinks = [...updatedSocialLinks, ...userInput.socialLinks];
     }
 
     // Perform the update
     const updatedEntry = await model.update({
         where: { id: existingEntry.id },
         data: {
-            images: updatedImages,
+            ...userInput,
+            emails: updatedEmails,
+            contacts: updatedContacts,
+            socialLinks: updatedSocialLinks,
             updatedAt: new Date(),
         },
         select: selectionCriteria,
@@ -158,18 +178,24 @@ const deleteConfiguration = async (request) => {
 
     // Fetch the existing carousel entry
     const existingEntry = await model.findFirst({
-        select: selectionCriteria,
+        select: {
+            ...selectionCriteria,
+            logoId: true,
+            bannerId: true,
+        },
     });
     if (!existingEntry) {
         return NOT_FOUND("Configuration entry not found.", request);
     }
 
-    // Delete images associated with the entry
-    if (existingEntry.images?.length > 0) {
-        const deletePromises = existingEntry.images.map((image) =>
-            localFileOperations.deleteFile(image.imageId)
-        );
-        await Promise.all(deletePromises);
+    // Delete logo associated with the entry
+    if (existingEntry.logoId) {
+        localFileOperations.deleteFile(existingEntry.logoId)
+    }
+
+    // Delete banner associated with the entry
+    if (existingEntry.bannerId) {
+        localFileOperations.deleteFile(existingEntry.bannerId)
     }
 
     // Delete the entry

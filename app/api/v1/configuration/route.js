@@ -23,7 +23,7 @@ const handleGetConfiguration = async (request) => {
         return NOT_FOUND('No configuration found.', request);
     }
 
-    return OK('Configuration retrieved successfully.', data?.images, request);
+    return OK('Configuration retrieved successfully.', data, request);
 };
 
 // Export the routes wrapped with asyncHandler
