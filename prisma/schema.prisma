@@ -1,0 +1,193 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id                           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name                         String
+  dateOfBirth                  String
+  email                        String   @unique
+  password                     String
+  emailVerifyToken             String?
+  resetPasswordToken           String?
+  resetPasswordTokenExpiration DateTime?
+  createdAt                    DateTime @default(now())
+  updatedAt                    DateTime @updatedAt
+
+  @@map("admins")
+}
+
+model Faq {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  question  String   @unique
+  answer    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SchoolAchievement {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       Int
+  description String
+  iconId      String   @unique
+  icon        String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SchoolInfo {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   @unique
+  description String
+  iconId      String   @unique
+  icon        String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SchoolSpeech {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   @unique
+  description String
+  imageId      String   @unique
+  image        String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Career {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   @unique
+  subTitle    String
+  description String
+  files       Json     // JSON field to store an object with fileId and file properties
+  date        DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AboutUs {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   @unique
+  description String
+  files       Json     // JSON field to store an object with fileId and file properties
+  images      Json     // JSON field to store an object with imageId and image properties
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Blog {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   @unique
+  description String
+  bannerId    String   @unique
+  banner      Json     // JSON field to store an object with bannerId and banner properties
+  files       Json     // JSON field to store an object with fileId and file properties
+  images      Json     // JSON field to store an object with imageId and image properties
+  date        DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Academic {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  category    String
+  title       String   @unique
+  description String
+  fileId      String   @unique
+  file        String
+  publishDate DateTime
+  badge       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Faculty {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  category    String
+  name        String
+  designation String
+  imageId     String   @unique
+  image       String
+  email       String   @unique
+  mobile      String   @unique
+  portfolio   String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Announcement {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  category          String
+  title             String   @unique
+  description       String
+  files             Json     // JSON field to store an object with fileId and file properties
+  date              DateTime
+  isHeadline        Boolean  @default(false)
+  isAdvertise       Boolean  @default(false)
+  advertiseMailTime DateTime
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model GalleryPhoto {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   @unique
+  description String
+  images      Json     // JSON field to store an object with imageId and image properties
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model GalleryVideo {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  title          String   @unique
+  description    String
+  youtubeLinks   Json     // JSON field to store an object with imageId and image properties
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model HomeCarousel {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  images      Json     // JSON field to store an object with imageId and image properties
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Contact {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  email       String
+  subject     String
+  message     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Newsletter {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  email       String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Configuration {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  logoId      String   @unique
+  logo        String
+  bannerId    String   @unique
+  banner      String
+  address     String
+  emails      Json     // JSON field to store an object with id and emails properties
+  contacts    Json     // JSON field to store an object with id and contact number properties
+  socialLinks Json     // JSON field to store an object with id and social links properties
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
