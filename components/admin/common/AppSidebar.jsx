@@ -30,6 +30,13 @@ const initialSidebarData = [
   {
     label: "Faculty",
     items: [
+      {
+        title: "Faculty",
+        icon: Info,
+        subItems: [
+          { title: "Teacher", url: "/admin/faculty/teacher" },
+        ],
+      },
       { title: "Career", icon: CircleUserRound, url: "/admin/career"},
     ],
   },

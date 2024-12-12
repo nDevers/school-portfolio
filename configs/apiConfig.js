@@ -41,4 +41,13 @@ export default {
     CREATE_MORE_ABOUT_US : '/admin/about-us',
     UPDATE_MORE_ABOUT_US : '/admin/about-us/',
     DELETE_MORE_ABOUT_US : '/admin/about-us/',
+    //────────────────────────────────────────────
+    //? API: ---- Faculty
+    //────────────────────────────────────────────
+    GET_FACULTY_All : '/faculty',
+    GET_FACULTY_BY_CATEGORY : '/faculty/',                  //! e.g: /faculty/{teacher}
+    GET_FACULTY_BY_CATEGORY_BY_ID : '/faculty/',            //! e.g: /faculty/{teacher}/{id}
+    CREATE_FACULTY_BY_CATEGORY : '/admin/faculty/',         //! e.g: /faculty/{teacher}
+    UPDATE_FACULTY_BY_CATEGORY : '/admin/faculty/',         //! e.g: /faculty/{teacher}/{id}
+    DELETE_FACULTY_BY_CATEGORY : '/admin/faculty/',         //! e.g: /faculty/{teacher}/{id}
 }
