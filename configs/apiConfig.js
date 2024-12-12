@@ -32,7 +32,13 @@ export default {
 
     GET_FAQ : '/faq',
     GET_FAQ_BY_ID : '/faq/',
-    CREATE_FAQ : 'admin/faq',
-    UPDATE_FAQ : 'admin/faq/',
-    DELETE_FAQ : 'admin/faq/',
+    CREATE_FAQ : '/admin/faq',
+    UPDATE_FAQ : '/admin/faq/',
+    DELETE_FAQ : '/admin/faq/',
+
+    GET_MORE_ABOUT_US : '/about-us',
+    GET_MORE_ABOUT_US_BY_ID : '/about-us/',
+    CREATE_MORE_ABOUT_US : '/admin/about-us',
+    UPDATE_MORE_ABOUT_US : '/admin/about-us/',
+    DELETE_MORE_ABOUT_US : '/admin/about-us/',
 }

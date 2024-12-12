@@ -21,6 +21,7 @@ const initialSidebarData = [
           { title: "Speech", url: "/admin/about/speech" },
           { title: "Carousel", url: "/admin/about/carousel" },
           { title: "Achievement", url: "/admin/about/achievement" },
+          { title: "More About Us", url: "/admin/about/more-about-us" },
           { title: "FAQ", url: "/admin/about/faq" },
         ],
       },

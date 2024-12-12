@@ -35,15 +35,70 @@ export const FawTableColumn = [
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-                            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?._id)}> Copy ID </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?.id || data?._id)}> Copy ID </DropdownMenuItem>
 
                             <DropdownMenuItem>
-                                <Link href={`faq/edit/${data?._id}` || '#'} className="w-full">Edit</Link>
+                                <Link href={`faq/edit/${data?.id || data?._id}` || '#'} className="w-full">Edit</Link>
                             </DropdownMenuItem>
 
                             <DropdownMenuSeparator />
 
-                            <DeleteDropdownMenuItem api={apiConfig?.DELETE_FAQ} id={`${data?._id}`} query={'GET_FAQ'} />
+                            <DeleteDropdownMenuItem api={apiConfig?.DELETE_FAQ} id={`${data?.id || data?._id}`} query={'GET_FAQ'} />
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+            )
+        },
+    },
+];
+
+export const MoreAboutUsTableColumn = [
+    {
+        accessorKey: "sn",
+        header: "SN",
+        cell: ({ row }) => <span className="w-fit">{Number(row?.id) + 1}</span>
+    },
+    {
+        accessorKey: "title",
+        header: "title",
+    },
+    {
+        accessorKey: "files",
+        header: "Files",
+        cell: ({ getValue }) => <span>{getValue()?.length}</span>
+    },
+    {
+        accessorKey: "images",
+        header: "Images",
+        cell: ({ getValue }) => <span>{getValue()?.length}</span>
+    },
+    {
+        id: "actions",
+        enableHiding: false,
+        cell: ({ row }) => {
+            const data = row.original
+
+            return (
+                <div className="flex items-center justify-end">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <DotsHorizontalIcon className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
+                            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?.id || data?._id)}> Copy ID </DropdownMenuItem>
+
+                            <DropdownMenuItem>
+                                <Link href={`more-about-us/edit/${data?.id || data?._id}` || '#'} className="w-full">Edit</Link>
+                            </DropdownMenuItem>
+
+                            <DropdownMenuSeparator />
+
+                            <DeleteDropdownMenuItem api={apiConfig?.DELETE_MORE_ABOUT_US} id={`${data?.id || data?._id}`} query={'GET_MORE_ABOUT_US'} />
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
