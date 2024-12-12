@@ -15,6 +15,8 @@ import { postData, updateData } from '@/util/axios'
 import apiConfig from '@/configs/apiConfig'
 import { GoX } from 'react-icons/go'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
+import { getChangedValues } from '@/util/getChangedValues'
 
 export default function ConfigurationForm({ data }) {
     const initialValues = {
@@ -53,20 +55,41 @@ export default function ConfigurationForm({ data }) {
     });
 
     const submit = async (values) => {
+        const changedValues = getChangedValues(initialValues, values);
+
+        if (Object.keys(changedValues).length === 0) {
+            toast.info('No changes detected.');
+            return;
+        }
+
         const formData = new FormData();
 
-        // Add simple fields
-        formData.append('name', values.name);
-        formData.append('description', values.description);
-        formData.append('address', values.address);
-        // Add logo (assumes it’s a file input; if it's a URL string, modify accordingly)
-        if (values.logo instanceof File) {
-            formData.append('logo', values.logo);
-        }
-        // Add arrays (emails, contacts, socialLinks)
-        values.emails.forEach((email) => formData.append('emails', email));
-        values.contacts.forEach((contact) => formData.append('contacts', contact));
-        values.socialLinks.forEach((link) => formData.append('socialLinks', link));
+        // Helper to append values if not null or undefined
+        const appendValue = (key, value) => {
+            if (value !== undefined && value !== null) {
+                if (Array.isArray(value)) {
+                    // For arrays, append each item
+                    value.forEach((item) => formData.append(key, item));
+                } else if (value instanceof File) {
+                    // For files, append directly
+                    formData.append(key, value);
+                } else {
+                    // For other types, append directly
+                    formData.append(key, value);
+                }
+            }
+        };
+
+        // Append changed values to formData
+        Object.entries(changedValues).forEach(([key, value]) => {
+            if (key === 'logo' && value instanceof File) {
+                formData.append('logo', value); // Special case for file input
+            } else if (Array.isArray(value)) {
+                value.forEach((item) => formData.append(key, item));
+            } else {
+                appendValue(key, value);
+            }
+        });
 
         if (data) {
             await updateData(apiConfig?.UPDATE_CONFIGURATION, formData)
@@ -106,7 +129,7 @@ export default function ConfigurationForm({ data }) {
                         type="button"
                         size='icon'
                         disabled={!formik.values.logo}
-                        onClick={() =>{
+                        onClick={() => {
                             clearField(formik, 'logo');
                             data.logo = ''
                         }}
@@ -231,7 +254,7 @@ export default function ConfigurationForm({ data }) {
 
             <div className='flex items-center space-x-2'>
                 <Reset onClick={reset} />
-                <Submit disabled={mutation.isPending || mutation.isSuccess} />
+                <Submit disabled={mutation.isPending} />
             </div>
         </form>
     )

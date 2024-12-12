@@ -1,11 +1,12 @@
 import PageTitle from "@/components/admin/common/PageTitle";
-import FaqForm from "@/components/admin/form/FaqForm";
+import FacultyForm from "@/components/admin/form/FacultyForm";
 
-export default function FacultyAddPage() {
+export default function FacultyAddPage({ params }) {
+    const { category } = params
     return(
         <div>
             <PageTitle title="Create New Faculty Member"/>
-            <FaqForm/>
+            <FacultyForm category={category}/>
         </div>
     )
 }

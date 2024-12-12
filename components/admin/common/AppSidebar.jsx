@@ -6,6 +6,28 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
+export const FacultyCategories = [
+  {
+    title: 'Teacher',
+    category: 'teacher',
+    url: '/admin/faculty/teacher'
+  },
+  {
+    title: 'Board',
+    category: 'board',
+    url: '/admin/faculty/board'
+  },
+  {
+    title: 'Ex Head Teacher',
+    category: 'ex_head_teacher',
+    url: '/admin/faculty/ex_head_teacher'
+  },
+  {
+    title: 'Merit Student',
+    category: 'merit_student',
+    url: '/admin/faculty/merit_student'
+  },
+]
 // Sidebar data structure
 const initialSidebarData = [
   {
@@ -33,9 +55,7 @@ const initialSidebarData = [
       {
         title: "Faculty",
         icon: Info,
-        subItems: [
-          { title: "Teacher", url: "/admin/faculty/teacher" },
-        ],
+        subItems: FacultyCategories,
       },
       { title: "Career", icon: CircleUserRound, url: "/admin/career"},
     ],
