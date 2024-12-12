@@ -6,7 +6,7 @@ import RowsPerPage from "./core/RowsPerPage";
 import ReactTableBody from "./core/ReactTableBody";
 import GlobalSearchBox from "./core/GlobalSearchBox";
 
-export default function DefaultTable({ list, column, items = 10, setSelectedRow }) {
+export default function DefaultTable({ list, column, isLoading, items = 10, setSelectedRow }) {
     const data = useMemo(() => list, [list]);
     const columns = useMemo(() => column, [column]);
     const [sorting, setSorting] = useState([]);
@@ -57,7 +57,7 @@ export default function DefaultTable({ list, column, items = 10, setSelectedRow 
                 <RowsPerPage table={table} pagination={pagination} />
             </div>
             
-            <ReactTableBody table={table} onRowClick={handleRowClick} selectedRowIndex={selectedRowIndex} />
+            <ReactTableBody isLoading={isLoading} table={table} onRowClick={handleRowClick} selectedRowIndex={selectedRowIndex} />
             
             {(table.getCanPreviousPage() || table.getCanNextPage()) && ( <Pagination table={table} /> )}
         </div>

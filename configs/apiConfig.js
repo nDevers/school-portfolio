@@ -15,11 +15,24 @@ export default {
     //────────────────────────────────────────────
     ADMIN_LOGIN : '/auth/admin/login',
     REFRESH_TOKEN : '/auth/refresh-token',
-
     //────────────────────────────────────────────
     //? API: ---- Setting
     //────────────────────────────────────────────
     GET_CONFIGURATION : '/configuration',
     CREATE_CONFIGURATION : '/admin/configuration',
     UPDATE_CONFIGURATION : '/admin/configuration',
+    //────────────────────────────────────────────
+    //? API: ---- About
+    //────────────────────────────────────────────
+    GET_CAROUSEL : '/home/carousel',
+    GET_CAROUSEL_BY_ID : '/home/carousel/',
+    CREATE_CAROUSEL : '/admin/home/carousel',
+    UPDATE_CAROUSEL : '/admin/home/carousel/',
+    DELETE_CAROUSEL : '/admin/home/carousel/',
+
+    GET_FAQ : '/faq',
+    GET_FAQ_BY_ID : '/faq/',
+    CREATE_FAQ : 'admin/faq',
+    UPDATE_FAQ : 'admin/faq/',
+    DELETE_FAQ : 'admin/faq/',
 }

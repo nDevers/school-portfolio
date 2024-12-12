@@ -3,8 +3,9 @@ import { cn } from '@/lib/utils';
 import { flexRender } from '@tanstack/react-table';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import NoDataFound from '@/components/admin/common/NoDataFound';
+import Spinner from '@/components/common/Spinner';
 
-export default function ReactTableBody({ table, onRowClick, selectedRowIndex }) {
+export default function ReactTableBody({ isLoading, table, onRowClick, selectedRowIndex }) {
   const handleRowClick = (row, rowIndex) => {
     if (onRowClick) {
       onRowClick(row, rowIndex);
@@ -37,7 +38,7 @@ export default function ReactTableBody({ table, onRowClick, selectedRowIndex }) 
       </TableHeader>
 
       <TableBody>
-        {rows.length > 0 ? (
+        {rows?.length > 0 ? (
           rows.map((row, rowIndex) => (
             <TableRow
               key={row.id}
@@ -58,7 +59,7 @@ export default function ReactTableBody({ table, onRowClick, selectedRowIndex }) 
         ) : (
           <TableRow>
             <TableCell colSpan={table.getHeaderGroups()[0]?.headers.length || 1} className="text-center">
-              <NoDataFound />
+              {isLoading ? <Spinner/> : <NoDataFound />}
             </TableCell>
           </TableRow>
         )}
