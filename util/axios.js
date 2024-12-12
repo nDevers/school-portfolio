@@ -1,7 +1,9 @@
 import axios from 'axios';
-import { getTokenFromCookie, logout } from './auth';
-import { toast } from 'sonner';
 import apiConfig from '@/configs/apiConfig';
+import { toast } from 'sonner';
+import { getRefreshTokenFromCookie, getTokenFromCookie, logout } from './auth';
+import { setCookie } from 'cookies-next';
+import appConfig from '@/configs/appConfig';
 
 const axiosInstance = axios.create({
     baseURL: apiConfig?.BASE_URL,
@@ -11,20 +13,29 @@ const axiosInstance = axios.create({
     },
 });
 
-export const loginAxiosInstance = axios.create({
+const refreshAxiosInstance = axios.create({
     baseURL: apiConfig?.BASE_URL,
     timeout: 15000,
     headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        // Add any other default headers here
+        // 'Content-Type': 'application/json',
     },
 });
 
 axiosInstance.interceptors.request.use(
     async (config) => {
         const token = getTokenFromCookie();
-        // Set the Authorization header with Bearer token format
-        config.headers['Authorization'] = token ? `Bearer ${token}` : '';
+        if (token) config.headers['Authorization'] = `Bearer ${token}`
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+refreshAxiosInstance.interceptors.request.use(
+    async (config) => {
+        const refreshToken = getRefreshTokenFromCookie();
+        if (refreshToken) config.headers['Authorization'] = `Bearer ${refreshToken}`
         return config;
     },
     (error) => {
@@ -42,18 +53,26 @@ const getMessageFromResponse = (response) => {
 };
 
 export const handleAxiosError = (error) => {
+    if (axios.isCancel(error)) {
+        toast.warning('Request was canceled.');
+        return;
+    }
+
+    if (error.code === 'ECONNABORTED') {
+        toast.error('Request timed out. Please try again.');
+        return; // Stop further execution
+    }
+
     if (error.response) {
         const code = error.response.status;
-        // Handle the case when the detail field is an array
         const errorMessage = error.response?.data?.data?.message || error.response?.data?.message;
-        
+
         if (code === 401) {
             logout(true);
         }
-        
+
         if (code === 404) {
-            toast.warning(`No Data: ${code} - ${errorMessage}`);
-            return null
+            return []; // Handle 404 differently, return empty array
         }
 
         toast.error(`Server error: ${code} - ${errorMessage}`);
@@ -62,17 +81,28 @@ export const handleAxiosError = (error) => {
     } else {
         toast.error('Axios error: ' + error.message);
     }
-    throw error; // Propagate the error for handling in calling code if necessary
+
+    throw error; // Propagate the error for further handling
 };
 
 export const handleAxiosErrorAsServer = (error) => {
+    if (axios.isCancel(error)) {
+        console.warn('Request was canceled.');
+        return null;
+    }
+
+    if (error.code === 'ECONNABORTED') {
+        console.error('Request timed out. Please try again later.');
+        return null; // Stop further execution
+    }
+
     if (error.response) {
         const code = error.response.status;
         const errorMessage = error.response?.data?.message;
 
         if (code === 404) {
             console.warn(`Resource not found (404): ${errorMessage || 'No additional message'}`);
-            return null;  // Return null or a default value if data is missing
+            return null; // Return null for missing data
         } else {
             console.error(`Server error: ${code} - ${errorMessage}`);
             return null;
@@ -83,8 +113,7 @@ export const handleAxiosErrorAsServer = (error) => {
         console.error('Axios error: ' + error.message);
     }
 
-    // For other errors, we can still throw to propagate if necessary
-    throw error;
+    throw error; // Propagate error if necessary
 };
 
 export async function fetchData(endpoint) {
@@ -140,9 +169,9 @@ export async function updateData(endpoint, data) {
         const headers = isFormData
             ? { 'Content-Type': 'multipart/form-data' }
             : { 'Content-Type': 'application/json' };
-        
+
         const response = await axiosInstance.patch(endpoint, requestData, { headers });
-        
+
         const message = getMessageFromResponse(response);
         toast.success(message);
         return response?.data?.data;
@@ -164,8 +193,24 @@ export async function deleteData(endpoint, id) {
     }
 }
 
-// Initial token refresh
-// refreshToken();
-// setInterval(refreshToken, 4 * 60 * 1000);
+async function axiosRefreshToken() {
+    const refreshToken = getRefreshTokenFromCookie();
+    if (!refreshToken) return;
+    
+    try {
+        const response = await refreshAxiosInstance.get(apiConfig.REFRESH_TOKEN);
+        const { accessToken, refreshToken: newRefreshToken } = response.data?.data;
+
+        if (accessToken) setCookie(appConfig.CurrentUserToken, accessToken, { path: '/' });
+        if (newRefreshToken) setCookie(appConfig.CurrentUserRefToken, newRefreshToken, { path: '/' });
+    } catch (error) {
+        console.error('Error refreshing token:', error.message);
+        handleAxiosError(error);
+        throw error;
+    }
+}
+
+// axiosRefreshToken();
+// setInterval(axiosRefreshToken, 1 * 60 * 1000)
 
 export default axiosInstance;

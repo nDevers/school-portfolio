@@ -3,18 +3,17 @@ const VERSION = process.env.NEXT_PUBLIC_VERSION
 
 const UNSPLASH_ACCESS_KEY = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY
 
-// const isServer = typeof window === 'undefined';
+const isServer = typeof window === 'undefined';
 
 export default {
-    // BASE_URL: isServer ? `${URL}/api/${VERSION}` : `/api/v1`,  // Absolute URL for server, relative for client
-    BASE_URL: `${URL}/api/${VERSION}`,
+    BASE_URL: isServer ? `${URL}/api/${VERSION}` : `/api/${VERSION}`,  // Absolute URL for server, relative for client
+    // BASE_URL: `${URL}/api/${VERSION}`,
 
     UNSPLASH_ACCESS_KEY,
 
     //────────────────────────────────────────────
     //? API: ---- Auth
     //────────────────────────────────────────────
-    MEMBER_LOGIN : '/auth/login',
     ADMIN_LOGIN : '/auth/admin/login',
     SUPER_ADMIN_LOGIN : '/auth/super-admin/login',
 
