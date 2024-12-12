@@ -15,7 +15,7 @@ export default function Layout({ children }) {
             <AppSidebar />
             <main className="p-2 min-h-screen w-full space-y-4 flex flex-col">
                 <AppHeader/>
-                <Card className="p-2 md:p-4 flex-grow">
+                <Card className="p-2 md:p-4 flex-grow w-full h-full">
                     {children}
                 </Card>
             </main>

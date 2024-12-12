@@ -10,7 +10,7 @@ export const handleImageChange = (formik, fieldName) => (event) => {
 };
 
 export const clearField = (formik, fieldName) => {
-    formik.setFieldValue(fieldName, null); // Resets the image field to null
+    formik.setFieldValue(fieldName, ''); // Resets the image field to null
 };
 
 // Common function for handling add and remove operations in Formik array fields

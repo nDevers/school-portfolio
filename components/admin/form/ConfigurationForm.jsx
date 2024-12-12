@@ -10,11 +10,13 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useMutation } from '@tanstack/react-query'
 import { useFormik } from 'formik'
-import { handleArrayFieldChange, handleImageChange } from '@/util/formikHelpers'
+import { clearField, handleArrayFieldChange, handleImageChange } from '@/util/formikHelpers'
 import { postData, updateData } from '@/util/axios'
 import apiConfig from '@/configs/apiConfig'
+import { GoX } from 'react-icons/go'
+import { Button } from '@/components/ui/button'
 
-export default function OrganizationInfoForm({ data }) {
+export default function ConfigurationForm({ data }) {
     const initialValues = {
         name: data?.name || '',
         description: data?.description || '',
@@ -31,8 +33,8 @@ export default function OrganizationInfoForm({ data }) {
         logo: Yup.mixed()
             // .required('Image is required')
             .test('fileSize', 'File size too large', value => !value || (value && value.size <= 2000000)) // 2MB limit
-            .test('fileType', 'Unsupported file format', value => 
-                !value || ['image/png', 'image/jpeg', 'image/jpg','image/gif'].includes(value.type)
+            .test('fileType', 'Unsupported file format', value =>
+                !value || ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'].includes(value.type)
             ),
         address: Yup.string().required('Address is required'),
         emails: Yup.array()
@@ -52,7 +54,7 @@ export default function OrganizationInfoForm({ data }) {
 
     const submit = async (values) => {
         const formData = new FormData();
-    
+
         // Add simple fields
         formData.append('name', values.name);
         formData.append('description', values.description);
@@ -65,11 +67,11 @@ export default function OrganizationInfoForm({ data }) {
         values.emails.forEach((email) => formData.append('emails', email));
         values.contacts.forEach((contact) => formData.append('contacts', contact));
         values.socialLinks.forEach((link) => formData.append('socialLinks', link));
-    
+
         if (data) {
-            await updateData(apiConfig?.CREATE_GENERAL_INFO, formData)
+            await updateData(apiConfig?.UPDATE_CONFIGURATION, formData)
         } else {
-            await postData(apiConfig?.CREATE_GENERAL_INFO, formData);
+            await postData(apiConfig?.CREATE_CONFIGURATION, formData);
         }
     };
 
@@ -86,13 +88,34 @@ export default function OrganizationInfoForm({ data }) {
     });
 
     const mutation = useMutation({
-        mutationKey: ['organization'],
+        mutationKey: ['configuration'],
         mutationFn: submit,
         onSuccess: () => reset(),
     })
 
     return (
         <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+            {(formik?.values?.logo || data?.logo) && (
+                <div className="flex items-center justify-end relative">
+                    <img
+                        src={formik.values.logo instanceof File ? URL.createObjectURL(formik.values.logo) : data?.logo}
+                        alt="Selected Image"
+                        className="w-24 h-24 object-cover border border-dashed rounded-md p-1"
+                    />
+                    <Button
+                        type="button"
+                        size='icon'
+                        disabled={!formik.values.logo}
+                        onClick={() =>{
+                            clearField(formik, 'logo');
+                            data.logo = ''
+                        }}
+                        className='absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full'
+                    >
+                        <GoX />
+                    </Button>
+                </div>
+            )}
             <div className='grid gap-2 w-full'>
 
                 <InputWrapper label="Name" error={formik.errors?.name} touched={formik.touched?.name}>
@@ -208,7 +231,7 @@ export default function OrganizationInfoForm({ data }) {
 
             <div className='flex items-center space-x-2'>
                 <Reset onClick={reset} />
-                <Submit disabled={mutation.isPending || mutation.isSuccess}/>
+                <Submit disabled={mutation.isPending || mutation.isSuccess} />
             </div>
         </form>
     )
