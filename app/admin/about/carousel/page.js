@@ -4,7 +4,7 @@ import AddButton from "@/components/admin/button/AddButton";
 import PageTitle from "@/components/admin/common/PageTitle";
 import Spinner from "@/components/common/Spinner";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import apiConfig from "@/configs/apiConfig";
 import { fetchData, deleteData } from "@/util/axios";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -36,12 +36,11 @@ export default function CarouselPage() {
       <div className="grid gap-4">
         {isLoading &&  <Spinner/>}
         {data && data?.map((item) => (
-          <Card key={item._id}>
+          <Card key={item.id}>
+            
             <CardHeader>
-              <div className='flex items-center justify-between'>
-                <CardTitle>{item?.title}</CardTitle>
-                <div className="flex items-center space-x-4">
-                  <Link href={`carousel/edit/${item?._id}`}>
+                <div className="flex items-end justify-end space-x-4">                  
+                  <Link href={`carousel/edit/${item?.imageId}`}>
                     <Button size='icon' variant='default'>
                       <span><HiPencil className='w-4 h-4' /></span>
                     </Button>
@@ -50,10 +49,10 @@ export default function CarouselPage() {
                     {deleteMutation.isPending ? <Spinner size="4"/> : <HiTrash className="w-4 h-4"/>}
                   </Button>
                 </div>
-              </div>
             </CardHeader>
+
             <CardContent className="flex justify-between mt-2">
-              <img src={item.image} alt={item.title} className="w-full h-48 object-cover" />
+              <img src={item.image} alt={item.imageId} className="w-full h-48 object-cover" />
             </CardContent>
           </Card>
         ))}
