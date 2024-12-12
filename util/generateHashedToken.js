@@ -1,9 +1,7 @@
-import crypto from 'crypto';
+import SHA256 from 'crypto-js/sha256';
 
 const generateHashedToken = async (token) => {
-    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-
-    return hashedToken;
+    return SHA256(token).toString();
 };
 
 export default generateHashedToken;
