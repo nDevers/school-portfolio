@@ -3,12 +3,12 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "mongodb" // "mysql" or "postgresql" or "mongodb" depending on your database
   url      = env("DATABASE_URL")
 }
 
 model Admin {
-  id                           String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                           String   @id @default(cuid()) @map("_id")
   name                         String
   dateOfBirth                  String
   email                        String   @unique
@@ -23,7 +23,7 @@ model Admin {
 }
 
 model Faq {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(cuid()) @map("_id")
   question  String   @unique
   answer    String
   createdAt DateTime @default(now())
@@ -31,7 +31,7 @@ model Faq {
 }
 
 model SchoolAchievement {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(cuid()) @map("_id")
   title       Int
   description String
   iconId      String   @unique
@@ -41,7 +41,7 @@ model SchoolAchievement {
 }
 
 model SchoolInfo {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(cuid()) @map("_id")
   title       String   @unique
   description String
   iconId      String   @unique
@@ -51,7 +51,7 @@ model SchoolInfo {
 }
 
 model SchoolSpeech {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(cuid()) @map("_id")
   title       String   @unique
   description String
   imageId      String   @unique
@@ -61,7 +61,7 @@ model SchoolSpeech {
 }
 
 model Career {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(cuid()) @map("_id")
   title       String   @unique
   subTitle    String
   description String
@@ -72,7 +72,7 @@ model Career {
 }
 
 model AboutUs {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(cuid()) @map("_id")
   title       String   @unique
   description String
   files       Json     // JSON field to store an object with fileId and file properties
@@ -82,7 +82,7 @@ model AboutUs {
 }
 
 model Blog {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(cuid()) @map("_id")
   title       String   @unique
   description String
   bannerId    String   @unique
@@ -95,7 +95,7 @@ model Blog {
 }
 
 model Academic {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(cuid()) @map("_id")
   category    String
   title       String   @unique
   description String
@@ -108,7 +108,7 @@ model Academic {
 }
 
 model Faculty {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(cuid()) @map("_id")
   category    String
   name        String
   designation String
@@ -122,7 +122,7 @@ model Faculty {
 }
 
 model Announcement {
-  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                String   @id @default(cuid()) @map("_id")
   category          String
   title             String   @unique
   description       String
@@ -136,7 +136,7 @@ model Announcement {
 }
 
 model GalleryPhoto {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(cuid()) @map("_id")
   title       String   @unique
   description String
   images      Json     // JSON field to store an object with imageId and image properties
@@ -145,7 +145,7 @@ model GalleryPhoto {
 }
 
 model GalleryVideo {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  id             String   @id @default(cuid()) @map("_id")
   title          String   @unique
   description    String
   youtubeLinks   Json     // JSON field to store an object with imageId and image properties
@@ -154,14 +154,14 @@ model GalleryVideo {
 }
 
 model HomeCarousel {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(cuid()) @map("_id")
   images      Json     // JSON field to store an object with imageId and image properties
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
 model Contact {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(cuid()) @map("_id")
   email       String
   subject     String
   message     String
@@ -170,14 +170,14 @@ model Contact {
 }
 
 model Newsletter {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(cuid()) @map("_id")
   email       String   @unique
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
 model Configuration {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(cuid()) @map("_id")
   name        String
   description String
   logoId      String   @unique
