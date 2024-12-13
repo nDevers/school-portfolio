@@ -24,6 +24,6 @@ export default async function FaqEditPage({ params }) {
 export async function generateStaticParams() {
     const data = await fetchDataAsServer(apiConfig?.GET_FAQ)
     return Array.isArray(data) ? data?.map((item) => ({
-        id: encodeURIComponent(item?.id || item?._id),
+        id: encodeURIComponent(item?.id),
     })) : [];
 }
