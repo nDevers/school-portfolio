@@ -79,7 +79,7 @@ export default function AnnouncementForm({ data, category }) {
         if (changedValues.isAdvertise) {
             appendIfPresent("advertiseMailTime", changedValues.advertiseMailTime);
         } else {
-            appendIfPresent("advertiseMailTime", '');
+            appendIfPresent("advertiseMailTime", changedValues.date);
         }
 
         if (data) {
