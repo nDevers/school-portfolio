@@ -42,6 +42,12 @@ export default {
     UPDATE_SCHOOL_INFO : '/admin/school/info/',
     DELETE_SCHOOL_INFO : '/admin/school/info/',
 
+    GET_SCHOOL_ACHIEVEMENT : '/school/achievement',
+    GET_SCHOOL_ACHIEVEMENT_BY_ID : '/school/achievement/',
+    CREATE_SCHOOL_ACHIEVEMENT : '/admin/school/achievement',
+    UPDATE_SCHOOL_ACHIEVEMENT : '/admin/school/achievement/',
+    DELETE_SCHOOL_ACHIEVEMENT : '/admin/school/achievement/',
+
     GET_MORE_ABOUT_US : '/about-us',
     GET_MORE_ABOUT_US_BY_ID : '/about-us/',
     CREATE_MORE_ABOUT_US : '/admin/about-us',

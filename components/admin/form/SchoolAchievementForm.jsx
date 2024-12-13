@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button'
 import { getChangedValues } from '@/util/getChangedValues'
 import { toast } from 'sonner'
 
-export default function SchoolInfoForm({ data }) {
+export default function SchoolAchievementForm({ data }) {
     const queryClient = useQueryClient();
     const initialValues = {
         title: data?.title || '',
@@ -25,7 +25,7 @@ export default function SchoolInfoForm({ data }) {
     }
 
     const validationSchema = Yup.object({
-        title: Yup.string().required('Required field'),
+        title: Yup.number().required('Required field'),
         description: Yup.string().required('Required field'),
         icon: Yup.mixed()
             // .required('Image is required')
@@ -51,20 +51,20 @@ export default function SchoolInfoForm({ data }) {
             }
         };
         // Append simple fields
-        appendIfPresent("title", changedValues.title);
+        appendIfPresent("title", Number(changedValues.title));
         appendIfPresent("icon", changedValues.icon);
         appendIfPresent("description", changedValues.description);
 
         if (data) {
-            await updateData(apiConfig?.UPDATE_SCHOOL_INFO + data?.id, formData);
+            await updateData(apiConfig?.UPDATE_SCHOOL_ACHIEVEMENT + data?.id, formData);
         } else {
-            await postData(apiConfig?.CREATE_SCHOOL_INFO, formData);
+            await postData(apiConfig?.CREATE_SCHOOL_ACHIEVEMENT, formData);
         }
     }
 
     const reset = () => {
         formik?.resetForm();
-        queryClient.invalidateQueries(['GET_SCHOOL_INFO'])
+        queryClient.invalidateQueries(['GET_SCHOOL_ACHIEVEMENT'])
     }
 
     const formik = useFormik({
@@ -105,17 +105,18 @@ export default function SchoolInfoForm({ data }) {
                     </div>
                 )}
                 <div className='grid gap-2 w-full'>
-                    <InputWrapper label="Title" error={formik.errors?.title} touched={formik.touched?.title}>
+                    <InputWrapper label="Number of Achievement" error={formik.errors?.title} touched={formik.touched?.title}>
                         <Input
+                            type='number'
                             name="title"
-                            placeholder="Title"
+                            placeholder="e.g: 24"
                             value={formik.values?.title}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                         />
                     </InputWrapper>
 
-                    <InputWrapper label="Description" error={formik.errors?.description} touched={formik.touched?.description}>
+                    <InputWrapper label="Achievement Description" error={formik.errors?.description} touched={formik.touched?.description}>
                         <Input
                             name="description"
                             placeholder="Description"
