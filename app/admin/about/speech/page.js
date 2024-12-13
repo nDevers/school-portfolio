@@ -5,7 +5,7 @@ import PageTitle from "@/components/admin/common/PageTitle";
 import DefaultTable from "@/components/admin/table/DefaultTable";
 import { fetchData } from "@/util/axios";
 import { useQuery } from "@tanstack/react-query";
-import { SchoolInfoTableColumn } from "@/components/admin/table/DefaultColumns";
+import { SchoolSpeechTableColumn } from "@/components/admin/table/DefaultColumns";
 
 export default function SpeechPage() {
 
@@ -20,7 +20,7 @@ export default function SpeechPage() {
                 <PageTitle title="Speech from School" />
                 <AddButton link='speech/add' />
             </div>
-            <DefaultTable isLoading={isLoading} list={data || []} column={SchoolInfoTableColumn} />
+            <DefaultTable isLoading={isLoading} list={data || []} column={SchoolSpeechTableColumn} />
         </div>
     )
 }

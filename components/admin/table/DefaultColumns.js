@@ -321,11 +321,11 @@ export const SchoolInfoTableColumn = [
     },
     {
         accessorKey: "title",
-        header: "title",
+        header: "Title",
     },
     {
         accessorKey: "description",
-        header: "description",
+        header: "Description",
     },
     {
         id: "actions",
@@ -354,6 +354,110 @@ export const SchoolInfoTableColumn = [
                             <DropdownMenuSeparator />
 
                             <DeleteDropdownMenuItem api={apiConfig?.DELETE_SCHOOL_INFO} id={`${data?.id || data?._id}`} query={'GET_SCHOOL_INFO'} />
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+            )
+        },
+    },
+];
+
+export const SchoolAchievementTableColumn = [
+    {
+        accessorKey: "sn",
+        header: "SN",
+        cell: ({ row }) => <span className="w-fit">{Number(row?.id) + 1}</span>
+    },
+    {
+        accessorKey: "icon",
+        header: "Icon",
+        cell: ({ row, getValue }) => <Image src={getValue()} alt={row?.original?.title} height={50} width={50} className="w-8 aspect-square rounded-full ring-1" />
+    },
+    {
+        accessorKey: "description",
+        header: "Achievement Description",
+    },
+    {
+        accessorKey: "title",
+        header: "Achievement Count",
+    },
+    {
+        id: "actions",
+        enableHiding: false,
+        cell: ({ row }) => {
+            const data = row.original
+
+            return (
+                <div className="flex items-center justify-end">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <DotsHorizontalIcon className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
+                            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?.id || data?._id)}> Copy ID </DropdownMenuItem>
+
+                            <DropdownMenuItem>
+                                <Link href={`achievement/edit/${data?.id || data?._id}` || '#'} className="w-full">Edit</Link>
+                            </DropdownMenuItem>
+
+                            <DropdownMenuSeparator />
+
+                            <DeleteDropdownMenuItem api={apiConfig?.DELETE_SCHOOL_ACHIEVEMENT} id={`${data?.id || data?._id}`} query={'GET_SCHOOL_ACHIEVEMENT'} />
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+            )
+        },
+    },
+];
+
+export const SchoolSpeechTableColumn = [
+    {
+        accessorKey: "sn",
+        header: "SN",
+        cell: ({ row }) => <span className="w-fit">{Number(row?.id) + 1}</span>
+    },
+    {
+        accessorKey: "image",
+        header: "Image",
+        cell: ({ row, getValue }) => <Image src={getValue()} alt={row?.original?.title} height={50} width={50} className="w-8 aspect-square rounded-full ring-1" />
+    },
+    {
+        accessorKey: "title",
+        header: "Spiker Name",
+    },
+    {
+        id: "actions",
+        enableHiding: false,
+        cell: ({ row }) => {
+            const data = row.original
+
+            return (
+                <div className="flex items-center justify-end">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <DotsHorizontalIcon className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
+                            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?.id || data?._id)}> Copy ID </DropdownMenuItem>
+
+                            <DropdownMenuItem>
+                                <Link href={`speech/edit/${data?.id || data?._id}` || '#'} className="w-full">Edit</Link>
+                            </DropdownMenuItem>
+
+                            <DropdownMenuSeparator />
+
+                            <DeleteDropdownMenuItem api={apiConfig?.DELETE_SCHOOL_SPEECH} id={`${data?.id || data?._id}`} query={'GET_SCHOOL_SPEECH'} />
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
