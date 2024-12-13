@@ -46,9 +46,9 @@ const updateSchema = z.object({
     emails: emails.optional(),
     contacts: contacts.optional(),
     socialLinks: socialLinks.optional(),
-    deleteEmails: emails.optional(),
-    deleteContacts: contacts.optional(),
-    deleteSocialLinks: socialLinks.optional(),
+    // deleteEmails: emails.optional(),
+    // deleteContacts: contacts.optional(),
+    // deleteSocialLinks: socialLinks.optional(),
 })
     .strict() // Enforce strict mode to disallow extra fields
     .refine(
