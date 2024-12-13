@@ -18,14 +18,14 @@ import { toast } from 'sonner'
 export default function SchoolAchievementForm({ data }) {
     const queryClient = useQueryClient();
     const initialValues = {
-        title: data?.title || '',
+        title: Number(data?.title)  || null,
         icon: '',
         dataIcon: data?.icon || '',
         description: data?.description || '',
     }
 
     const validationSchema = Yup.object({
-        title: Yup.number().required('Required field'),
+        title: Yup.number().required('Required field').typeError('Must be a number'),
         description: Yup.string().required('Required field'),
         icon: Yup.mixed()
             // .required('Image is required')
