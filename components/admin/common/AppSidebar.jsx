@@ -47,6 +47,29 @@ export const AcademicCategories = [
   },
 ];
 
+export const AnnouncementCategories = [
+  {
+    title: 'Notice',
+    category: 'notice',
+    url: '/admin/announcement/notice'
+  },
+  {
+    title: 'Leave Calender',
+    category: 'leave_calender',
+    url: '/admin/announcement/leave_calender'
+  },
+  {
+    title: 'Transportation',
+    category: 'transportation',
+    url: '/admin/announcement/transportation'
+  },
+  {
+    title: 'Admission Info',
+    category: 'admission_info',
+    url: '/admin/announcement/admission_info'
+  },
+];
+
 // Sidebar data structure
 const initialSidebarData = [
   {
@@ -80,6 +103,11 @@ const initialSidebarData = [
         title: "Academic",
         icon: Info,
         subItems: AcademicCategories,
+      },
+      {
+        title: "Announcement",
+        icon: Info,
+        subItems: AnnouncementCategories,
       },
       { title: "Career", icon: CircleUserRound, url: "/admin/career" },
     ],

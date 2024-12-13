@@ -76,6 +76,13 @@ export default {
     UPDATE_ACADEMIC_BY_CATEGORY : '/admin/academic/',         //! e.g: /academic/{admission_form}/{id}
     DELETE_ACADEMIC_BY_CATEGORY : '/admin/academic/',         //! e.g: /academic/{admission_form}/{id}
 
+    GET_ANNOUNCEMENT_All : '/announcement',
+    GET_ANNOUNCEMENT_BY_CATEGORY : '/announcement/',                  //! e.g: /academic/{admission_form}
+    GET_ANNOUNCEMENT_BY_CATEGORY_BY_ID : '/announcement/',            //! e.g: /academic/{admission_form}/{id}
+    CREATE_ANNOUNCEMENT_BY_CATEGORY : '/admin/announcement/',         //! e.g: /academic/{admission_form}
+    UPDATE_ANNOUNCEMENT_BY_CATEGORY : '/admin/announcement/',         //! e.g: /academic/{admission_form}/{id}
+    DELETE_ANNOUNCEMENT_BY_CATEGORY : '/admin/announcement/',         //! e.g: /academic/{admission_form}/{id}
+
     GET_CAREER : '/career',
     GET_CAREER_BY_ID : '/career/',
     CREATE_CAREER : '/admin/career',
