@@ -28,13 +28,32 @@ export const FacultyCategories = [
     url: '/admin/faculty/merit_student'
   },
 ]
+
+export const AcademicCategories = [
+  {
+    title: 'Routine',
+    category: 'routine',
+    url: '/admin/academic/routine'
+  },
+  {
+    title: 'Result',
+    category: 'result',
+    url: '/admin/academic/result'
+  },
+  {
+    title: 'Admission Form',
+    category: 'admission_form',
+    url: '/admin/academic/admission_form'
+  },
+];
+
 // Sidebar data structure
 const initialSidebarData = [
   {
     label: "School",
     items: [
       { title: "Dashboard", url: "/admin", icon: Home },
-      { title: "Configuration", url: "/admin/configuration", icon: Settings},
+      { title: "Configuration", url: "/admin/configuration", icon: Settings },
       {
         title: "About School",
         icon: Info,
@@ -57,14 +76,20 @@ const initialSidebarData = [
         icon: Info,
         subItems: FacultyCategories,
       },
-      { title: "Career", icon: CircleUserRound, url: "/admin/career"},
+      {
+        title: "Academic",
+        icon: Info,
+        subItems: AcademicCategories,
+      },
+      { title: "Career", icon: CircleUserRound, url: "/admin/career" },
     ],
   },
   {
     label: "Media Center",
     items: [
-      { title: "blog", icon: CircleUserRound, url: "/admin/blog"},
-      { title: "Gallery", icon: ImagePlay,
+      { title: "blog", icon: CircleUserRound, url: "/admin/blog" },
+      {
+        title: "Gallery", icon: ImagePlay,
         subItems: [
           { title: "Photos", url: "/admin/media/photos" },
           { title: "Videos", url: "/admin/media/videos" },
@@ -97,7 +122,7 @@ export function AppSidebar() {
                     <Collapsible key={item.title} className="group/collapsible">
                       <SidebarMenuItem>
                         <CollapsibleTrigger asChild>
-                          <SidebarMenuButton className={cn(isParentActive(item.subItems) ? 'text-primary hover:text-primary' : '' )} >
+                          <SidebarMenuButton className={cn(isParentActive(item.subItems) ? 'text-primary hover:text-primary' : '')} >
                             <item.icon className="mr-1" />
                             {item.title}
                             <Dot className="ml-auto" />
@@ -106,7 +131,7 @@ export function AppSidebar() {
                         <CollapsibleContent>
                           <SidebarMenuSub>
                             {item.subItems.map((subItem) => (
-                              <SidebarMenuSubItem key={subItem.title} className={cn(isActive(subItem.url) ? 'text-primary hover:text-primary' : 'text-muted-foreground' )} >
+                              <SidebarMenuSubItem key={subItem.title} className={cn(isActive(subItem.url) ? 'text-primary hover:text-primary' : 'text-muted-foreground')} >
                                 <SidebarMenuButton asChild>
                                   <Link href={subItem.url}>{subItem.title}</Link>
                                 </SidebarMenuButton>
@@ -118,7 +143,7 @@ export function AppSidebar() {
                     </Collapsible>
                   ) : (
                     <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton asChild className={cn(isActive(item.url) ? 'text-primary hover:text-primary' : '' )} >
+                      <SidebarMenuButton asChild className={cn(isActive(item.url) ? 'text-primary hover:text-primary' : '')} >
                         <Link href={item.url}>
                           <item.icon className="mr-1" />
                           <span>{item.title}</span>
