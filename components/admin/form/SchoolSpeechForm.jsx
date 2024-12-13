@@ -52,7 +52,7 @@ export default function SchoolSpeechForm({ data }) {
             }
         };
         // Append simple fields
-        appendIfPresent("title", Number(changedValues.title));
+        appendIfPresent("title", changedValues.title);
         appendIfPresent("image", changedValues.image);
         appendIfPresent("description", changedValues.description);
 
