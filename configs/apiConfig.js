@@ -51,6 +51,13 @@ export default {
     UPDATE_FACULTY_BY_CATEGORY : '/admin/faculty/',         //! e.g: /faculty/{teacher}/{id}
     DELETE_FACULTY_BY_CATEGORY : '/admin/faculty/',         //! e.g: /faculty/{teacher}/{id}
 
+    GET_ACADEMIC_All : '/academic',
+    GET_ACADEMIC_BY_CATEGORY : '/academic/',                  //! e.g: /academic/{admission_form}
+    GET_ACADEMIC_BY_CATEGORY_BY_ID : '/academic/',            //! e.g: /academic/{admission_form}/{id}
+    CREATE_ACADEMIC_BY_CATEGORY : '/admin/academic/',         //! e.g: /academic/{admission_form}
+    UPDATE_ACADEMIC_BY_CATEGORY : '/admin/academic/',         //! e.g: /academic/{admission_form}/{id}
+    DELETE_ACADEMIC_BY_CATEGORY : '/admin/academic/',         //! e.g: /academic/{admission_form}/{id}
+
     GET_CAREER : '/career',
     GET_CAREER_BY_ID : '/career/',
     CREATE_CAREER : '/admin/career',

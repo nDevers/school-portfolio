@@ -60,12 +60,12 @@ export const FacultyTableColumn = [
                             <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?.id || data?._id)}> Copy ID </DropdownMenuItem>
 
                             <DropdownMenuItem>
-                                <Link href={`faq/edit/${data?.id || data?._id}` || '#'} className="w-full">Edit</Link>
+                                <Link href={`${data?.category}/edit/${data?.id || data?._id}` || '#'} className="w-full">Edit</Link>
                             </DropdownMenuItem>
 
                             <DropdownMenuSeparator />
 
-                            <DeleteDropdownMenuItem api={apiConfig?.DELETE_FAQ} id={`${data?.id || data?._id}`} query={'GET_FAQ'} />
+                            <DeleteDropdownMenuItem api={apiConfig?.DELETE_FACULTY_BY_CATEGORY} id={`${data?.id || data?._id}`} query={'GET_FACULTY_BY_CATEGORY'} />
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>

@@ -12,6 +12,8 @@ import { postData, updateData } from '@/util/axios'
 import apiConfig from '@/configs/apiConfig'
 import { GoX } from 'react-icons/go'
 import { Button } from '@/components/ui/button'
+import { getChangedValues } from '@/util/getChangedValues'
+import { toast } from 'sonner'
 
 export default function FacultyForm({ data, category }) {
     const queryClient = useQueryClient();
@@ -28,7 +30,7 @@ export default function FacultyForm({ data, category }) {
     const validationSchema = Yup.object({
         name: Yup.string().required('Required field'),
         image: Yup.mixed()
-            .required('Image is required')
+            // .required('Image is required')
             .test('fileSize', 'File size too large', value => !value || (value && value.size <= 2000000)) // 2MB limit
             .test('fileType', 'Unsupported file format', value =>
                 !value || ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'].includes(value.type)
@@ -42,6 +44,12 @@ export default function FacultyForm({ data, category }) {
     });
 
     const submit = async (values) => {
+        const changedValues = getChangedValues(initialValues, values);
+
+        if (Object.keys(changedValues).length === 0) {
+            toast.info('No changes detected.');
+            return;
+        }
         const formData = new FormData();
 
         // Helper function to append only non-empty values
@@ -51,22 +59,22 @@ export default function FacultyForm({ data, category }) {
             }
         };
         // Append simple fields
-        appendIfPresent("name", values.name);
-        appendIfPresent("image", values.image);
-        appendIfPresent("email", values.email);
-        appendIfPresent("mobile", values.mobile);
-        appendIfPresent("portfolio", values.portfolio);
-        appendIfPresent("designation", values.designation);
+        appendIfPresent("name", changedValues.name);
+        appendIfPresent("image", changedValues.image);
+        appendIfPresent("email", changedValues.email);
+        appendIfPresent("mobile", changedValues.mobile);
+        appendIfPresent("portfolio", changedValues.portfolio);
+        appendIfPresent("designation", changedValues.designation);
 
         if (data) {
-            await updateData(`${apiConfig?.UPDATE_FACULTY_BY_CATEGORY}${category}/${data?._id}`, formData);
+            await updateData(`${apiConfig?.UPDATE_FACULTY_BY_CATEGORY}${category}/${data?.id}`, formData);
         } else {
             await postData(apiConfig?.CREATE_FACULTY_BY_CATEGORY + category, formData);
         }
+        formik?.resetForm();
     }
 
     const reset = () => {
-        formik?.resetForm();
         queryClient.invalidateQueries(['GET_FACULTY_BY_CATEGORY'])
     }
 
