@@ -4,10 +4,10 @@ import schemaShared from "@/shared/schema.shared";
 import schoolAchievementConstants from "@/app/api/v1/school/achievement/school.achievement.constants";
 
 // Define reusable schema parts
-const { nonEmptyString, nonNegativeNumber, validMongooseId, validDate, filesValidator } = schemaShared;
+const { nonEmptyString, validMongooseId, validDate, filesValidator } = schemaShared;
 const { allowedMimeTypes, allowedBannerFileSize } = schoolAchievementConstants;
 
-const title = nonNegativeNumber('School achievement title');
+const title = nonEmptyString('School achievement title');
 const description = nonEmptyString('School achievement description');
 const id = validMongooseId('School achievement ID');
 const icon = filesValidator('School achievement icon', allowedMimeTypes, allowedBannerFileSize, 1, 1);
