@@ -36,6 +36,12 @@ export default {
     UPDATE_FAQ : '/admin/faq/',
     DELETE_FAQ : '/admin/faq/',
 
+    GET_SCHOOL_INFO : '/school/info',
+    GET_SCHOOL_INFO_BY_ID : '/school/info/',
+    CREATE_SCHOOL_INFO : '/admin/school/info',
+    UPDATE_SCHOOL_INFO : '/admin/school/info/',
+    DELETE_SCHOOL_INFO : '/admin/school/info/',
+
     GET_MORE_ABOUT_US : '/about-us',
     GET_MORE_ABOUT_US_BY_ID : '/about-us/',
     CREATE_MORE_ABOUT_US : '/admin/about-us',
