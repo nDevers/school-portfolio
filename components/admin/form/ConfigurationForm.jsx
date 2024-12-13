@@ -23,10 +23,14 @@ export default function ConfigurationForm({ data }) {
         name: data?.name || '',
         description: data?.description || '',
         logo: '',
+        dataImage: data?.logo || '',
         address: data?.address || '',
         emails: data?.emails || [''],
+        deleteEmails: [],
         contacts: data?.contacts || [''],
+        deleteContacts: [],
         socialLinks: data?.socialLinks || [''],
+        deleteSocialLinks: [],
     }
 
     const validationSchema = Yup.object({
@@ -118,10 +122,10 @@ export default function ConfigurationForm({ data }) {
 
     return (
         <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
-            {(formik?.values?.logo || data?.logo) && (
+            {(formik?.values?.logo || formik?.values?.dataImage) && (
                 <div className="flex items-center justify-end relative">
                     <img
-                        src={formik.values.logo instanceof File ? URL.createObjectURL(formik.values.logo) : data?.logo}
+                        src={formik.values.logo instanceof File ? URL.createObjectURL(formik.values.logo) : formik?.values?.dataImage}
                         alt="Selected Image"
                         className="w-24 h-24 object-cover border border-dashed rounded-md p-1"
                     />
@@ -131,7 +135,7 @@ export default function ConfigurationForm({ data }) {
                         disabled={!formik.values.logo}
                         onClick={() => {
                             clearField(formik, 'logo');
-                            data.logo = ''
+                            formik.setFieldValue('dataImage', '')
                         }}
                         className='absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full'
                     >
@@ -197,7 +201,7 @@ export default function ConfigurationForm({ data }) {
                                 />
                                 <Remove
                                     disabled={formik.values.emails.length === 1}
-                                    onClick={() => handleArrayFieldChange(formik, 'remove', 'emails', index)}
+                                    onClick={() => handleArrayFieldChange(formik, 'remove', 'emails', index, 'deleteEmails')}
                                 />
                             </div>
                         ))}
@@ -220,7 +224,7 @@ export default function ConfigurationForm({ data }) {
                                 />
                                 <Remove
                                     disabled={formik.values.contacts.length === 1}
-                                    onClick={() => handleArrayFieldChange(formik, 'remove', 'contacts', index)}
+                                    onClick={() => handleArrayFieldChange(formik, 'remove', 'contacts', index, 'deleteContacts')}
                                 />
                             </div>
                         ))}
@@ -243,7 +247,7 @@ export default function ConfigurationForm({ data }) {
                                 />
                                 <Remove
                                     disabled={formik.values.socialLinks.length === 1}
-                                    onClick={() => handleArrayFieldChange(formik, 'remove', 'socialLinks', index)}
+                                    onClick={() => handleArrayFieldChange(formik, 'remove', 'socialLinks', index, 'deleteSocialLinks')}
                                 />
                             </div>
                         ))}

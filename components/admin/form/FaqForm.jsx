@@ -13,6 +13,8 @@ import { RiSendPlaneLine } from 'react-icons/ri'
 import apiConfig from '@/configs/apiConfig'
 import Spinner from '@/components/common/Spinner'
 import { useRouter } from 'next/navigation'
+import { getChangedValues } from '@/util/getChangedValues'
+import { toast } from 'sonner'
 
 export default function FaqForm({ data }) {
     const route = useRouter()
@@ -28,21 +30,24 @@ export default function FaqForm({ data }) {
     })
     
     const submit = async (values) => {
-        if (data) {
-            await updateData(apiConfig?.UPDATE_FAQ, values);
-        } else {
-            await postData(apiConfig?.CREATE_FAQ, values);
-        }
-    };
+        const changedValues = getChangedValues(initialValues, values);
 
-    const onSuccess = () => {
+        if (Object.keys(changedValues).length === 0) {
+            toast.info('No changes detected.');
+            return;
+        }
+        if (data) {
+            await updateData(apiConfig?.UPDATE_FAQ + data?.id, changedValues);
+        } else {
+            await postData(apiConfig?.CREATE_FAQ, changedValues);
+        }
         route.back()
         queryClient.invalidateQueries(['GET_FAQ'])
-    }
+    };
 
     const mutation = useMutation({
         mutationFn: async (data) => await submit(data),
-        onSuccess,
+        // onSuccess,
     });
 
     return (
@@ -64,7 +69,7 @@ export default function FaqForm({ data }) {
                     <div className="flex items-center space-x-2">
                         <Reset onClick={resetForm} />
                         <Submit 
-                            disabled={mutation.isPending || mutation.isSuccess}
+                            disabled={mutation.isPending}
                             label={mutation.isPending ? 'Submitting...' : 'Submit'} // Dynamic label
                             icon={mutation.isPending ? <Spinner size="4" /> : <RiSendPlaneLine />} // Dynamic icon
                         />

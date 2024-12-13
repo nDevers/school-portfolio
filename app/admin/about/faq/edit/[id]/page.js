@@ -1,6 +1,6 @@
 import NoDataFound from '@/components/admin/common/NoDataFound';
 import PageTitle from '@/components/admin/common/PageTitle'
-import CarouselForm from '@/components/admin/form/CarouselForm';
+import FaqForm from '@/components/admin/form/FaqForm';
 import apiConfig from '@/configs/apiConfig'
 import { fetchDataAsServer } from '@/util/axios';
 
@@ -10,9 +10,9 @@ export default async function FaqEditPage({ params }) {
 
     return (
         <div className='space-y-4'>
-            <PageTitle title='Edit More About Us' />
+            <PageTitle title='Edit FAQ' />
             {data ? (
-                <CarouselForm data={data} />
+                <FaqForm data={data} />
             ) : (
                 <NoDataFound />
             )}

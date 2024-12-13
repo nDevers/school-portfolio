@@ -16,6 +16,8 @@ import { useRouter } from 'next/navigation'
 import { handleArrayFieldChangeForForm, handleImageChangeForForm } from '@/util/formikHelpers'
 import Add from '@/components/button/Add'
 import Remove from '@/components/button/Remove'
+import { getChangedValues } from '@/util/getChangedValues'
+import { toast } from 'sonner'
 
 export default function MoreAboutUsForm({ data }) {
     const route = useRouter()
@@ -24,7 +26,9 @@ export default function MoreAboutUsForm({ data }) {
         title: data?.title || '',
         description: data?.description || '',
         files: data?.files || [''],
+        deleteFiles: [],
         images: data?.images || [''],
+        deleteImages: [],
     }
 
     const validationSchema = Yup.object({
@@ -33,28 +37,39 @@ export default function MoreAboutUsForm({ data }) {
     })
 
     const submit = async (values) => {
-        const formData = new FormData();
+        const changedValues = getChangedValues(initialValues, values);
 
-        // Append title and description
-        formData.append('title', values.title);
-        formData.append('description', values.description);
+        if (Object.keys(changedValues).length === 0) {
+            toast.info('No changes detected.');
+            return;
+        }
+        const formData = new FormData();
+        // Helper function to append only non-empty values
+        const appendIfPresent = (key, value) => {
+            if (value !== undefined && value !== null && value !== '') {
+                formData.append(key, value);
+            }
+        };
+        // Append simple fields
+        appendIfPresent("title", changedValues.title);
+        appendIfPresent("description", changedValues.description);
 
         // Append files to FormData
-        values.files.forEach(file => {
+        changedValues.files.forEach(file => {
             if (file instanceof File) {
-                formData.append(`files`, file); // The API expects files as an array
+                appendIfPresent(`files`, file);
             }
         });
 
         // Append images to FormData
-        values.images.forEach(image => {
+        changedValues.images.forEach(image => {
             if (image instanceof File) {
-                formData.append(`images`, image); // The API expects images as an array
+                appendIfPresent(`images`, image);
             }
         });
 
         if (data) {
-            await updateData(apiConfig?.UPDATE_MORE_ABOUT_US, formData);
+            await updateData(apiConfig?.UPDATE_MORE_ABOUT_US + data?.id, formData);
         } else {
             await postData(apiConfig?.CREATE_MORE_ABOUT_US, formData);
         }
@@ -84,7 +99,7 @@ export default function MoreAboutUsForm({ data }) {
 
                     <div className='space-y-2'>
                         <InputWrapper label="Files" error={errors?.files} touched={touched?.files}>
-                            {values.files.map((_, index) => (
+                            {values?.files?.length > 0 && values?.files?.map((_, index) => (
                                 <div key={index} className="flex gap-2 items-center">
                                     <Input
                                         type="file"
@@ -94,7 +109,7 @@ export default function MoreAboutUsForm({ data }) {
                                     />
                                     <Remove
                                         disabled={values?.files?.length === 1}
-                                        onClick={() => handleArrayFieldChangeForForm({ values, setFieldValue }, 'remove', 'files', index)}
+                                        onClick={() => handleArrayFieldChangeForForm({ values, setFieldValue }, 'remove', 'files', index, 'deleteFiles')}
                                     />
                                 </div>
                             ))}
@@ -104,7 +119,7 @@ export default function MoreAboutUsForm({ data }) {
 
                     <div className='space-y-2'>
                         <InputWrapper label="Images" error={errors?.images} touched={touched?.images}>
-                            {values.images.map((_, index) => (
+                            {values?.images?.length > 0 && values?.images?.map((_, index) => (
                                 <div key={index} className="flex gap-2 items-center">
                                     <Input
                                         type="file"
@@ -114,7 +129,7 @@ export default function MoreAboutUsForm({ data }) {
                                     />
                                     <Remove
                                         disabled={values?.images?.length === 1}
-                                        onClick={() => handleArrayFieldChangeForForm({ values, setFieldValue }, 'remove', 'images', index)}
+                                        onClick={() => handleArrayFieldChangeForForm({ values, setFieldValue }, 'remove', 'images', index, 'deleteImages')}
                                     />
                                 </div>
                             ))}
