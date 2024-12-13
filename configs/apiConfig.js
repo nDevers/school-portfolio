@@ -48,6 +48,12 @@ export default {
     UPDATE_SCHOOL_ACHIEVEMENT : '/admin/school/achievement/',
     DELETE_SCHOOL_ACHIEVEMENT : '/admin/school/achievement/',
 
+    GET_SCHOOL_SPEECH : '/school/speech',
+    GET_SCHOOL_SPEECH_BY_ID : '/school/speech/',
+    CREATE_SCHOOL_SPEECH : '/admin/school/speech',
+    UPDATE_SCHOOL_SPEECH : '/admin/school/speech/',
+    DELETE_SCHOOL_SPEECH : '/admin/school/speech/',
+
     GET_MORE_ABOUT_US : '/about-us',
     GET_MORE_ABOUT_US_BY_ID : '/about-us/',
     CREATE_MORE_ABOUT_US : '/admin/about-us',
