@@ -218,12 +218,12 @@ export const CareerTableColumn = [
                             <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?.id || data?._id)}> Copy ID </DropdownMenuItem>
 
                             <DropdownMenuItem>
-                                <Link href={`more-about-us/edit/${data?.id || data?._id}` || '#'} className="w-full">Edit</Link>
+                                <Link href={`career/edit/${data?.id || data?._id}` || '#'} className="w-full">Edit</Link>
                             </DropdownMenuItem>
 
                             <DropdownMenuSeparator />
 
-                            <DeleteDropdownMenuItem api={apiConfig?.DELETE_MORE_ABOUT_US} id={`${data?.id || data?._id}`} query={'GET_MORE_ABOUT_US'} />
+                            <DeleteDropdownMenuItem api={apiConfig?.DELETE_CAREER} id={`${data?.id || data?._id}`} query={'GET_CAREER'} />
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>

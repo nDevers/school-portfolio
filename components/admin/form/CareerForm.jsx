@@ -28,7 +28,7 @@ export default function CareerForm({ data }) {
         description: data?.description || '',
         files: data?.files || [''],
         deleteFiles: [],
-        date: data?.date || '',
+        date: data?.date.split("T")[0] || '',
     }
 
     const validationSchema = Yup.object({
@@ -38,41 +38,48 @@ export default function CareerForm({ data }) {
 
     const submit = async (values) => {
         const changedValues = getChangedValues(initialValues, values);
-
+    
         if (Object.keys(changedValues).length === 0) {
             toast.info('No changes detected.');
             return;
         }
+    
         const formData = new FormData();
-        // Helper function to append only non-empty values
+    
+        // Helper function to append non-empty values
         const appendIfPresent = (key, value) => {
             if (value !== undefined && value !== null && value !== '') {
                 formData.append(key, value);
             }
         };
+    
         // Append simple fields
         appendIfPresent("title", changedValues.title);
         appendIfPresent("subTitle", changedValues.subTitle);
         appendIfPresent("description", changedValues.description);
         appendIfPresent("date", changedValues.date);
-
-        // Append files to FormData
-        changedValues.files.forEach(file => {
-            if (file instanceof File) {
-                appendIfPresent(`files`, file);
-            }
-        });
-
+    
+        // Append files if they exist and are valid
+        if (Array.isArray(changedValues.files)) {
+            changedValues.files.forEach((file, index) => {
+                if (file instanceof File) {
+                    formData.append(`files[${index}]`, file);
+                }
+            });
+        }
+    
+        // API call
         if (data) {
             await updateData(apiConfig?.UPDATE_CAREER + data?.id, formData);
         } else {
             await postData(apiConfig?.CREATE_CAREER, formData);
         }
+    
+        route.back();
     };
 
     const onSuccess = () => {
-        route.back()
-        queryClient.invalidateQueries(['GET_FAQ'])
+        queryClient.invalidateQueries(['GET_CAREER'])
     }
 
     const mutation = useMutation({
@@ -125,7 +132,7 @@ export default function CareerForm({ data }) {
                     <div className="flex items-center space-x-2">
                         <Reset onClick={resetForm} />
                         <Submit
-                            disabled={mutation.isPending || mutation.isSuccess}
+                            disabled={mutation.isPending}
                             label={mutation.isPending ? 'Submitting...' : 'Submit'} // Dynamic label
                             icon={mutation.isPending ? <Spinner size="4" /> : <RiSendPlaneLine />} // Dynamic icon
                         />
