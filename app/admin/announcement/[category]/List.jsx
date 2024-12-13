@@ -5,7 +5,7 @@ import PageTitle from "@/components/admin/common/PageTitle";
 import DefaultTable from "@/components/admin/table/DefaultTable";
 import { fetchData } from "@/util/axios";
 import { useQuery } from "@tanstack/react-query";
-import { AcademicTableColumn } from "@/components/admin/table/DefaultColumns";
+import { AnnouncementTableColumn } from "@/components/admin/table/DefaultColumns";
 
 export default function List({ category }) {
 
@@ -26,7 +26,7 @@ export default function List({ category }) {
         <PageTitle title={capitalize(category)} />
         <AddButton link={`${category}/add`} />
       </div>
-      <DefaultTable isLoading={isLoading} list={data || []} column={AcademicTableColumn} />
+      <DefaultTable isLoading={isLoading} list={data || []} column={AnnouncementTableColumn} />
     </div>
   )
 }

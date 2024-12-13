@@ -26,12 +26,12 @@ export default function AnnouncementForm({ data, category }) {
     const initialValues = {
         title: data?.title || '',
         description: data?.description || '',
-        date: data?.date || '',
+        date: data?.date.split("T")[0] || '',
         files: data?.files || [''],
         delateFiles: [],
         isHeadline: data?.isHeadline ? data?.isHeadline : false,
         isAdvertise: data?.isAdvertise ? data?.isAdvertise : false,
-        advertiseMailTime: data?.advertiseMailTime || '',
+        advertiseMailTime: data?.advertiseMailTime.split("T")[0] || '',
     }
 
     const validationSchema = Yup.object({
@@ -71,10 +71,16 @@ export default function AnnouncementForm({ data, category }) {
                 appendIfPresent(`files`, file);
             }
         });
-        appendIfPresent("isHeadline", changedValues.isHeadline);
-        appendIfPresent("isAdvertise", changedValues.isAdvertise);
+        // appendIfPresent("isHeadline", changedValues.isHeadline);
+        // appendIfPresent("isAdvertise", changedValues.isAdvertise);
+        formData.append(`isHeadline`, values?.isHeadline)
+        formData.append(`isAdvertise`, values?.isAdvertise)
         appendIfPresent("date", changedValues.date);
-        appendIfPresent("advertiseMailTime", changedValues.advertiseMailTime);
+        if (changedValues.isAdvertise) {
+            appendIfPresent("advertiseMailTime", changedValues.advertiseMailTime);
+        } else {
+            appendIfPresent("advertiseMailTime", '');
+        }
 
         if (data) {
             await updateData(`${apiConfig?.UPDATE_ANNOUNCEMENT_BY_CATEGORY}${category}/${data?.id}`, formData);
@@ -106,11 +112,21 @@ export default function AnnouncementForm({ data, category }) {
 
                     <div className='grid md:grid-cols-2 gap-4'>
                         <InputWrapper label="Is this Headline ?" error={errors.isHeadline} touched={touched.isHeadline} className={'space-x-2'}>
-                            <Field as={Checkbox} name="isHeadline" />
+                            {/* <Field as={Checkbox} name="isHeadline" /> */}
+                            <Checkbox
+                                name="isHeadline"
+                                checked={values.isHeadline}
+                                onCheckedChange={(e) => setFieldValue('isHeadline', e)}
+                            />
                         </InputWrapper>
 
                         <InputWrapper label="Advertise It ?" error={errors.isAdvertise} touched={touched.isAdvertise} className={'space-x-2'}>
-                            <Field as={Checkbox} name="isAdvertise" />
+                            {/* <Field as={Checkbox} name="isAdvertise" /> */}
+                            <Checkbox
+                                name="isAdvertise"
+                                checked={values.isAdvertise}
+                                onCheckedChange={(e) => setFieldValue('isAdvertise', e)}
+                            />
                         </InputWrapper>
 
                         <InputWrapper label="Publish Date" error={errors.date} touched={touched.date}>
@@ -118,7 +134,7 @@ export default function AnnouncementForm({ data, category }) {
                         </InputWrapper>
 
                         <InputWrapper label="Advertise Mail Time" error={errors.advertiseMailTime} touched={touched.advertiseMailTime}>
-                            <Field as={Input} name="advertiseMailTime" type='date' />
+                            <Field as={Input} name="advertiseMailTime" type='date' disabled={!values?.isAdvertise}/>
                         </InputWrapper>
                     </div>
 
