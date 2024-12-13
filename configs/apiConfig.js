@@ -50,4 +50,10 @@ export default {
     CREATE_FACULTY_BY_CATEGORY : '/admin/faculty/',         //! e.g: /faculty/{teacher}
     UPDATE_FACULTY_BY_CATEGORY : '/admin/faculty/',         //! e.g: /faculty/{teacher}/{id}
     DELETE_FACULTY_BY_CATEGORY : '/admin/faculty/',         //! e.g: /faculty/{teacher}/{id}
+
+    GET_CAREER : '/career',
+    GET_CAREER_BY_ID : '/career/',
+    CREATE_CAREER : '/admin/career',
+    UPDATE_CAREER : '/admin/career/',
+    DELETE_CAREER : '/admin/career/',
 }
