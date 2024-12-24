@@ -32,7 +32,7 @@ const uploadFile = async (request, file) => {
     // Write the file to the specified directory with the new filename
     await fs.writeFile(path.join(process.cwd(), filePath), buffer);
 
-    const fileLink = generateFileLink(request, `/assets/${fileName}`);
+    const fileLink = generateFileLink(request, `assets/${fileName}`);
 
     return { fileLink, fileId: fileName };
 };
