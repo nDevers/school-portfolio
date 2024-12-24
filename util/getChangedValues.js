@@ -1,3 +1,15 @@
+/**
+ * Compares two objects and identifies the changed values between them.
+ *
+ * This method recursively checks the properties of `initialValues` and `currentValues`
+ * and returns an object containing only the properties that have changed. It supports
+ * deep comparisons for nested objects and arrays.
+ *
+ * @param {Object} initialValues - The initial reference object to compare against.
+ * @param {Object} currentValues - The object containing potentially updated values.
+ * @returns {Object} An object representing the properties that have changed, including
+ *                   nested changes. If there are no differences, an empty object is returned.
+ */
 export const getChangedValues = (initialValues, currentValues) => {
     const changedValues = {};
 

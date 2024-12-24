@@ -1,3 +1,11 @@
+/**
+ * Retrieves the name of the function that called the current function.
+ *
+ * This function analyzes the error stack trace to determine the caller's function name.
+ * If the caller's name cannot be determined, it returns "UNKNOWN".
+ *
+ * @returns {string} The name of the caller function, or "UNKNOWN" if the name cannot be determined.
+ */
 const getCallerFunctionName = () => {
   const stack = new Error().stack || "";
   const stackArray = stack.split("\n");

@@ -8,8 +8,30 @@ import enviornmentsConstants from "@/constants/enviornments.constants";
 import configurations from '@/configs/configurations';
 import sendResponse from "@/util/sendResponse";
 
+/**
+ * Represents a configuration object retrieved asynchronously.
+ *
+ * The `configuration` variable holds the configuration settings obtained
+ * from a call to the `configurations()` asynchronous function. This may
+ * include various system-specific, environment-specific, or application-specific
+ * settings that are required for proper execution or customization.
+ *
+ * The exact structure of the returned configuration object depends on the
+ * implementation of the `configurations()` function.
+ *
+ * Note:
+ * - Ensure the configuration is fetched successfully before proceeding with
+ *   dependent operations.
+ * - Handle any potential errors that may arise during the asynchronous call.
+ * - The returned configuration object may contain sensitive information, be cautious
+ *   with logging or sharing its contents.
+ */
 const configuration = await configurations();
 
+/**
+ * Represents an error for bad requests, typically caused by invalid client inputs.
+ * Extends the built-in Error object.
+ */
 export class BadRequestError extends Error {
     constructor(message) {
         super(message);
@@ -18,6 +40,30 @@ export class BadRequestError extends Error {
     }
 }
 
+/**
+ * Represents an error specific to cryptographic operations.
+ *
+ * This class extends the built-in Error class and is used to standardize
+ * cryptographic error handling. It provides a default name and HTTP status
+ * code for errors that occur during cryptographic operations.
+ *
+ * Usage of this class allows consistent error reporting and simplifies
+ * debugging of cryptographic-related issues.
+ *
+ * Extends:
+ * - Error
+ *
+ * Properties:
+ * - name: A string that specifies the type of error, set to "CryptoError".
+ * - status: A numeric HTTP status code, defaulting to 500 (Internal Server Error).
+ *
+ * Constructor:
+ * - Accepts a custom error message as a parameter and sets it on the error object.
+ *
+ * Note:
+ * This error class is commonly used in scenarios where cryptographic
+ * computations, encryption, or decryption processes fail unexpectedly.
+ */
 export class CryptoError extends Error {
     constructor(message) {
         super(message);
@@ -26,6 +72,30 @@ export class CryptoError extends Error {
     }
 }
 
+/**
+ * Handles general errors by standardizing the error response format and providing appropriate error messages
+ * based on the type of error received.
+ *
+ * This function is designed to handle a variety of potential error conditions, such as invalid ID formats,
+ * network connection issues, or other general server errors. It processes the error object to extract useful
+ * metadata and creates a structured error response.
+ *
+ * @param {Error} error - The error object to be handled. It may include details such as `name`, `message`, `stack`,
+ *                        `code`, `cause`, `isOperational`, and other meta information.
+ * @returns {Object} An object representing the standardized response, which includes:
+ *                   - `success`: Indicates the operation failed (always `false`).
+ *                   - `message`: A human-readable error message.
+ *                   - `errors`: An object containing detailed error information such as:
+ *                       - `message`: The original error message or a default one if unavailable.
+ *                       - `name`: The name/type of the error.
+ *                       - `stack`: The stack trace of the error, if available.
+ *                       - `code`: Error code, like `ECONNRESET`, if available.
+ *                       - `status`: The corresponding HTTP status code.
+ *                       - `cause`: The underlying cause of the error, if any.
+ *                       - `isOperational`: A flag indicating if the error was operational (expected).
+ *                       - `fileName`, `lineNumber`, `columnNumber`: Relevant code location details, if available.
+ *                   - `status`: The HTTP status code representing the specific error (e.g., `400`, `500`).
+ */
 const handleGeneralError = (error) => {
     let message = "An error occurred while processing the request.";
     let status = httpStatusConstants.INTERNAL_SERVER_ERROR;
@@ -58,7 +128,23 @@ const handleGeneralError = (error) => {
     };
 };
 
-// Utility to handle Zod errors
+/**
+ * Handles errors related to unsupported content types.
+ *
+ * This function takes in an error object, extracts relevant information, and returns
+ * a structured response object indicating failure, the error message, the problematic
+ * content type, and the corresponding HTTP status code for a bad request.
+ *
+ * @param {Object} error - The error object containing details about the unsupported content type issue.
+ * @param {string} error.message - The error message describing the issue.
+ * @param {string} error.contentType - The unsupported content type that triggered the error.
+ * @returns {Object} A structured response object.
+ * @returns {boolean} return.success - Indicates the success status of the operation (always `false`).
+ * @returns {string} return.message - The error message extracted from the input error object.
+ * @returns {Object} return.errors - Object detailing specific errors encountered.
+ * @returns {string} return.errors.contentType - The specific content type causing the error.
+ * @returns {number} return.status - The HTTP status code representing a bad request.
+ */
 const handleUnsupportedContentTypeError = (error) => ({
     success: false,
     message: error.message,
@@ -66,14 +152,35 @@ const handleUnsupportedContentTypeError = (error) => ({
     status: httpStatusConstants.BAD_REQUEST,
 });
 
-// Utility to handle BadRequest errors
+/**
+ * Function to handle bad request errors by returning a structured error response.
+ *
+ * @function handleBadRequestError
+ * @param {Object} error - The error object containing information about the bad request.
+ * @param {string} error.message - The message describing the details of the bad request error.
+ * @returns {Object} A structured response object indicating the error details.
+ * @returns {boolean} returns.success - Indicates operation failure, value is always false.
+ * @returns {string} returns.message - The error message describing the bad request.
+ * @returns {number} returns.status - The HTTP status code for Bad Request from httpStatusConstants.
+ */
 const handleBadRequestError = (error) => ({
     success: false,
     message: error.message,
     status: httpStatusConstants.BAD_REQUEST,
 });
 
-// Utility to handle Zod errors
+/**
+ * Handles Zod validation errors and transforms them into a standardized error response object.
+ *
+ * @param {Object} error - Zod error object containing validation details.
+ * @returns {Object} An object containing the error response.
+ * @property {boolean} success - Indicates the failure of the operation (always false).
+ * @property {string} message - A general error message indicating a validation error occurred.
+ * @property {Array} errors - An array of objects detailing individual validation errors, each containing:
+ *   - {string} path - The specific path to the property that failed validation.
+ *   - {string} message - The validation error message.
+ * @property {number} status - HTTP status code corresponding to a bad request.
+ */
 const handleZodError = (error) => ({
     success: false,
     message: "Validation error occurred.",
@@ -84,7 +191,26 @@ const handleZodError = (error) => ({
     status: httpStatusConstants.BAD_REQUEST,
 });
 
-// Utility to handle Mongoose errors
+/**
+ * Handles errors encountered during Mongoose operations and formats them into
+ * a structured error response object.
+ *
+ * @param {Error} error - The error object thrown during a Mongoose operation.
+ * @returns {{success: boolean, message: string, errors: string[], status: number}}
+ *          Returns an object containing success status, error message, error details, and HTTP status code.
+ *
+ * Error conditions handled:
+ * - ValidationError (e.g., schema validation issues, missing required fields).
+ * - CastError (e.g., invalid data types or values for a particular field).
+ * - Duplicate key errors (e.g., unique constraint violations).
+ * - MongoNetworkError (e.g., network issues, SSL/TLS connection problems).
+ * - DNS resolution or connection errors.
+ * - Generic connection errors (e.g., database unavailability).
+ *
+ * Additional Info:
+ * - Generic database errors are logged for further inspection.
+ * - Provides specific HTTP status codes (e.g., 400, 500, etc.) depending on the error nature.
+ */
 const handleMongooseError = (error) => {
     console.log(error)
     let message = "Database error occurred.";
@@ -127,13 +253,36 @@ const handleMongooseError = (error) => {
     };
 };
 
-// Utility to handle Crypto errors
+/**
+ * Handles errors related to cryptographic operations and returns a standardized response object.
+ *
+ * @param {Error} error - The error object caught during cryptographic operations.
+ * @returns {Object} A response object indicating failure, containing:
+ *   - `success` (boolean): Indicates the operation was unsuccessful (always `false`).
+ *   - `message` (string): The error message extracted from the caught error.
+ *   - `status` (number): HTTP status code representing unauthorized access.
+ */
 const handleCryptoError = (error) => ({
     success: false,
     message: error.message,
     status: httpStatusConstants.UNAUTHORIZED,
 });
 
+/**
+ * Represents an error thrown when an unsupported Content-Type is encountered.
+ * This error is typically used in scenarios where the server does not support the
+ * Content-Type provided in the request.
+ *
+ * @class
+ * @extends Error
+ *
+ * @param {string} contentType - The unsupported Content-Type that triggered the error.
+ *
+ * @property {string} name - The name of the error, set to "UnsupportedContentTypeError".
+ * @property {string} contentType - The unsupported Content-Type value.
+ * @property {number} status - The HTTP status code associated with the error,
+ * representing "415 Unsupported Media Type".
+ */
 export class UnsupportedContentTypeError extends Error {
     constructor(contentType) {
         super(`Unsupported Content-Type: ${contentType}`);
@@ -143,7 +292,18 @@ export class UnsupportedContentTypeError extends Error {
     }
 }
 
-// Async handler with switch and instanceOf
+/**
+ * An asynchronous function wrapper that handles and processes errors for a given function, while logging the execution lifecycle and errors.
+ *
+ * @param {Function} fn - The asynchronous function to be wrapped and executed.
+ * @returns {Function} A new asynchronous function that, when invoked, logs the start and completion of the given function, manages specific error types, and sends an appropriate response.
+ *
+ * This handler:
+ * - Logs function execution start, errors, and completion using a `logger`.
+ * - Catches and processes errors into pre-defined responses based on their type (e.g., `UnsupportedContentTypeError`, `BadRequestError`, `CryptoError`, `ZodError`, and `mongoose.Error`).
+ * - Sends responses based on the error type or a general response for unrecognized errors.
+ * - Provides environment-specific response content based on the configuration (e.g., hides error details in production).
+ */
 const asyncHandler =
     (fn) => async (...args) => {
         logger.info(`STARTED: ${fn.name}`);

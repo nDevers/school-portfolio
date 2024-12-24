@@ -5,6 +5,21 @@ import logger from "@/lib/logger";
 import getCallerFunctionName from "@/util/getCallerFunctionName";
 import getDeviceType from "@/util/getDeviceType";
 
+/**
+ * Sends a standardized HTTP response to the client with additional metadata.
+ *
+ * @param {boolean} success - Indicates whether the response represents a successful operation.
+ * @param {number} [status=httpStatusConstants.OK] - HTTP status code for the response.
+ * @param {string} message - A descriptive message to provide additional context for the response.
+ * @param {Object} [data={}] - The response payload containing data relevant to the request.
+ * @param {Request} request - The original HTTP request object, used for extracting metadata.
+ * @param {Object} [headers={"Content-Type": contentTypesConstants.JSON}] - Key-value pairs representing the response headers.
+ * @param {string} [functionName=getCallerFunctionName()] - Name of the calling function, used for logging purposes.
+ *
+ * @returns {Response} A Response object with JSON-formatted data, incorporating metadata like timestamp, method, route, and more.
+ *
+ * @throws {Error} Logs and handles different response conditions based on the status code, specifically for successes, client errors, and server errors.
+ */
 const sendResponse = (
     success,
     status = httpStatusConstants.OK,

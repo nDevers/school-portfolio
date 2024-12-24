@@ -8,10 +8,31 @@ import convertToObjectId from "@/util/convertToObjectId";
 import getQueryParams from "@/util/getQueryParams";
 import toSentenceCase from "@/util/toSentenceCase";
 
+/**
+ * Retrieves the value of a deeply nested field within an object using a dot-separated path.
+ *
+ * This function takes an object and a string representing the path to a nested field.
+ * The path is a dot-separated string indicating the hierarchy of keys to traverse.
+ * If the field exists, its value is returned. If any of the keys in the path are
+ * not found or the object is not defined at any level, the function returns `undefined`.
+ *
+ * @param {Object} obj - The object to traverse for the nested field.
+ * @param {string} path - A dot-separated string indicating the path to the desired field.
+ * @returns {*} The value of the nested field if found; otherwise, `undefined`.
+ */
 const getNestedField = (obj, path) => {
     return path.split('.').reduce((o, key) => (o ? o[key] : undefined), obj);
 };
 
+/**
+ * Sets a nested field in an object at a specified dot-separated path.
+ * If the field at the final key already exists, values are merged into an array.
+ * Intermediate keys in the path are created if they do not exist.
+ *
+ * @param {Object} obj - The target object where the nested field will be set.
+ * @param {string} path - The string representing the nested key path, with keys separated by dots.
+ * @param {*} value - The value to set at the specified nested field.
+ */
 const setNestedField = (obj, path, value) => {
     path.split('.').reduce((o, key, idx, arr) => {
         if (idx === arr.length - 1) {
@@ -32,6 +53,19 @@ const setNestedField = (obj, path, value) => {
     }, obj);
 };
 
+/**
+ * Asynchronously parses and validates form data or JSON payload from an incoming request,
+ * ensuring that the data is properly structured and matches a defined schema.
+ * Supports both JSON and multi-part FormData content types.
+ * Handles various modes of operation such as 'create', 'update', and general validation.
+ *
+ * @param {Request} request - The HTTP request object containing the data to be parsed and validated.
+ * @param {Object} context - The context for the request, containing any route-specific parameters.
+ * @param {string} mode - The mode of operation, typically 'create', 'update', or other modes.
+ * @param {Function|Object} schema - A validation schema function or object used to validate the parsed data.
+ * @returns {Promise<Object>} A Promise resolving to a structured and validated data object.
+ * @throws {BadRequestError} Throws if the request body is invalid, empty, or contains unsupported content types.
+ */
 const parseAndValidateFormData = async (request, context, mode, schema) => {
     const { params } = context;
 

@@ -1,3 +1,14 @@
+/**
+ * Converts the given text to sentence case.
+ *
+ * The function trims any leading or trailing whitespace, converts the entire
+ * text to lowercase, and then capitalizes the first letter of the resulting
+ * sentence.
+ *
+ * @param {string} text - The input text to be converted to sentence case.
+ * @returns {string} The sentence-cased version of the input text. If the input
+ * text is falsy, an empty string is returned.
+ */
 const toSentenceCase = (text) => {
     if (!text) return '';
 
