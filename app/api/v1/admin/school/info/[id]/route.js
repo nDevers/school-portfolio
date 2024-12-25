@@ -12,13 +12,46 @@ import validateToken from "@/util/validateToken";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
 import schoolInfoSelectionCriteria from "@/app/api/v1/school/info/school.info.selection.criteria";
 
+/**
+ * An instance of the PrismaClient, which serves as the primary way to interact with the database
+ * in a Prisma-based application. It provides a set of auto-generated methods and types to perform
+ * queries and mutations against the database in a type-safe manner.
+ *
+ * This instance establishes a connection to the database and allows performing operations such
+ * as reading, writing, updating, and deleting records. It supports schema-defined models and
+ * relations as configured in the Prisma schema.
+ *
+ * Note: Ensure to properly manage the lifecycle of the PrismaClient instance, particularly
+ * when working in serverless environments or long-running processes to avoid resource leaks.
+ */
 const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 
+/**
+ * Represents the SchoolInfo model retrieved from the Prisma client.
+ *
+ * This model is used to interact with the `SchoolInfo` table or entity in the database.
+ * Methods and properties associated with this model allow for creating, reading, updating,
+ * and deleting records related to school information in the database.
+ */
 const model = prisma.SchoolInfo;
 
-// Helper function to update and respond with the school info
+/**
+ * Asynchronously updates a school information entry based on the provided user input.
+ *
+ * This function filters the user input to exclude null or undefined fields, and then updates
+ * the corresponding database entry identified by the `id` field in the user input. After the
+ * update, it retrieves the updated document based on defined selection criteria.
+ *
+ * In case the update operation fails or the updated document cannot be retrieved, an internal
+ * server error response is returned. Otherwise, it returns a success response containing the
+ * updated document data.
+ *
+ * @param {Object} userInput - The input data for updating the school information entry. Must include an `id` field to identify the entry to update.
+ * @param {Object} request - The request object, used for error handling and constructing responses.
+ * @returns {Promise<Object>} A response object indicating the success or failure of the update operation, including the updated document data on success.
+ */
 const updateSchoolInfoEntry = async (userInput, request) => {
     // Filter `userInput` to only include fields with non-null values
     const fieldsToUpdate = Object.keys(userInput).reduce((acc, key) => {
@@ -53,7 +86,23 @@ const updateSchoolInfoEntry = async (userInput, request) => {
     return OK(`School info entry with the ID "${userInput?.id}" updated successfully.`, updatedDocument, request);
 };
 
-// Named export for the GET request handler
+/**
+ * Handles updating school information by the provided school ID.
+ *
+ * This function performs the following operations:
+ * - Validates the content type of the incoming request to ensure it matches the allowed content types.
+ * - Validates the user's authorization, ensuring the requester has appropriate admin permissions.
+ * - Parses and validates the request's form data based on defined schemas for updating school information.
+ * - Verifies if the school info entry with the given ID exists. If not, a "Not Found" response is returned.
+ * - Checks for conflicts by ensuring no existing school info entry has the same title as the new input (if a title is provided).
+ * - Handles file replacements by deleting the old file (if applicable) and uploading the new file.
+ * - Updates the given school information entry in the database and returns the appropriate response.
+ *
+ * @async
+ * @param {Object} request - The request object containing the details of the operation to be performed.
+ * @param {Object} context - The context object containing additional metadata or operational details.
+ * @returns {Object} The response object detailing the outcome of the operation, including error or success messages.
+ */
 const handleUpdateSchoolInfoById = async (request, context) => {
     // Validate content type
     const contentValidationResult = validateUnsupportedContent(request, schoolInfoConstants.allowedContentTypes);
@@ -114,12 +163,41 @@ const handleUpdateSchoolInfoById = async (request, context) => {
     return updateSchoolInfoEntry(userInput, request);
 };
 
+/**
+ * Asynchronously deletes school information by its identifier.
+ *
+ * @function deleteSchoolInfoById
+ * @async
+ * @param {Object} request - The request object containing the necessary parameters to perform the deletion.
+ * @param {Object} context - The context object providing environmental or user-related information.
+ * @returns {Promise<any>} A promise that resolves to the result of the deletion operation.
+ */
 const deleteSchoolInfoById = async (request, context) => {
     return serviceShared.deleteEntryById(request, context, model, 'iconId', 'school info');
 };
 
-// Export the route wrapped with asyncHandler
+/**
+ * PATCH is a function wrapped with an asynchronous handler to manage the process
+ * of updating school information by its ID. It utilizes the `handleUpdateSchoolInfoById`
+ * function to execute the logic for the update operation.
+ *
+ * The purpose of this function is to ensure that the school information is updated
+ * securely and efficiently, handling any potential asynchronous errors effectively.
+ *
+ * Note: This function is expected to be used as part of a routing or middleware system.
+ *
+ * @type {Function}
+ */
 export const PATCH = asyncHandler(handleUpdateSchoolInfoById);
 
-// Export the route wrapped with asyncHandler
+/**
+ * DELETE is an asynchronous handler function for deleting school information by its unique identifier.
+ * It utilizes the deleteSchoolInfoById function to perform the deletion operation.
+ *
+ * This variable is intended to streamline the process of handling deletion requests
+ * by encapsulating the asynchronous logic within an error-handling middleware.
+ *
+ * The deleteSchoolInfoById function should be defined elsewhere in the application
+ * and is expected to handle the specifics of locating and deleting the school information from the appropriate data source.
+ */
 export const DELETE = asyncHandler(deleteSchoolInfoById);

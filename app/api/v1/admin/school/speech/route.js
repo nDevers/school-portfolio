@@ -11,13 +11,59 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import schoolSpeechSelectionCriteria from "@/app/api/v1/school/speech/school.speech.selection.criteria";
 
+/**
+ * An instance of the PrismaClient used for database interactions.
+ *
+ * PrismaClient is a database toolkit that enables type-safe and efficient operations with a database.
+ * This instance is used to perform queries, mutations, and other database access tasks.
+ *
+ * The PrismaClient connects to the database defined in the Prisma schema file
+ * and provides generated methods to manipulate data on the respective models.
+ *
+ * By default, the instance should be used within an application to interact with the database
+ * while following best practices, such as proper connection management and handling exceptions.
+ */
 const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED, NOT_FOUND } = sharedResponseTypes;
 
+/**
+ * Represents the `SchoolSpeech` model from Prisma.
+ * This model corresponds to the database table or entity managed by Prisma.
+ *
+ * The `SchoolSpeech` model may represent various attributes and relationships
+ * pertaining to school speech records or similar entities within the database.
+ *
+ * Use this model to perform actions such as querying, creating, updating, or
+ * deleting `SchoolSpeech` records in the database through Prisma's ORM methods.
+ */
 const model = prisma.SchoolSpeech;
 
-// Helper function to create and respond with the FAQ
+/**
+ * Asynchronously creates a new school speech entry in the database and returns the created document.
+ *
+ * @param {Object} userInput - The data to create the school speech entry with.
+ * Contains all attributes required to construct the new speech entry.
+ * @param {Object} request - The HTTP request object associated with the operation.
+ *
+ * @returns {Promise<Object>} A promise resolving to the newly created school speech entry
+ * if successful. On success, the returned object will contain the created speech entry data
+ * as selected by the `schoolSpeechSelectionCriteria` logic.
+ *
+ * If the entry creation fails, this method returns an internal server error response.
+ *
+ * This method uses the following main operations:
+ * 1. Creates a new speech entry in the database with the user-provided input.
+ * 2. Retrieves the created entry and only the fields selected by
+ * `schoolSpeechSelectionCriteria()` logic.
+ *
+ * @throws {Error} Throws an internal server error if the database operations or validation fail.
+ *
+ * Note: Relies on Prisma for database interaction and assumes the presence of
+ * `model.create`, `model.findUnique`, and `schoolSpeechSelectionCriteria` in the surrounding context.
+ * Also assumes helpers like `INTERNAL_SERVER_ERROR` and `CREATED` are defined for error handling
+ * and response generation.
+ */
 const createSchoolSpeechEntry = async (userInput, request) => {
     const newDocument = await model.create({
         data: userInput,
@@ -43,7 +89,20 @@ const createSchoolSpeechEntry = async (userInput, request) => {
     return CREATED(`School speech entry with title "${userInput?.title}" created successfully.`, createdDocument, request);
 };
 
-// Named export for the POST request handler (Create FAQ)
+/**
+ * Handles the creation of a new school speech entry. This function performs several steps:
+ * - Validates the content type of the incoming request against allowed content types.
+ * - Verifies if the user is authorized to perform the action.
+ * - Parses and validates the form data using a predefined schema.
+ * - Checks if a school speech entry with the same title already exists in the database.
+ * - Uploads an associated file and generates the corresponding file link.
+ * - Creates a new school speech entry in the database and generates an appropriate response.
+ *
+ * @param {Object} request - The incoming HTTP request object containing the necessary data for the school speech entry.
+ * @param {Object} context - The context object containing environment-specific information or dependencies.
+ * @returns {Object} The HTTP response object derived from the outcome of the operation. This includes error responses for invalid input, unauthorized access, or conflicting titles, and success response for successful creation.
+ * @async
+ */
 const handleCreateSchoolSpeech = async (request, context) => {
     // Validate content type
     const contentValidationResult = validateUnsupportedContent(request, schoolSpeechConstants.allowedContentTypes);
@@ -84,5 +143,14 @@ const handleCreateSchoolSpeech = async (request, context) => {
     return createSchoolSpeechEntry(userInput, request);
 };
 
-// Export the route wrapped with asyncHandler
+/**
+ * POST is an asynchronous function wrapped with the `asyncHandler` to handle HTTP POST requests
+ * for creating a school speech resource. Allows for streamlined error handling during the request lifecycle.
+ *
+ * This function delegates the logic to the `handleCreateSchoolSpeech` function,
+ * which contains the implementation for creating a new school speech resource.
+ *
+ * The `asyncHandler` ensures that any errors occurring in `handleCreateSchoolSpeech` are caught and passed
+ * to the global error handler without the need for explicit try-catch blocks.
+ */
 export const POST = asyncHandler(handleCreateSchoolSpeech);

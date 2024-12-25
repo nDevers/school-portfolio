@@ -11,13 +11,58 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import schoolInfoSelectionCriteria from "@/app/api/v1/school/info/school.info.selection.criteria";
 
+/**
+ * An instance of the PrismaClient, used to interact with the database.
+ * PrismaClient provides a type-safe and auto-completed interface to perform
+ * CRUD (Create, Read, Update, Delete) operations on the database.
+ *
+ * This instance is used as the main entry point for database interactions
+ * within the application. It connects to the database specified in the
+ * Prisma schema configuration file and can execute queries using the
+ * generated client API.
+ *
+ * Note: It is recommended to manage the lifecycle of the PrismaClient instance
+ * properly to avoid issues related to connection pooling or resource leaks.
+ *
+ * Key features include:
+ * - Performing operations on specific models defined in the Prisma schema
+ * - Supporting transactions for multiple database actions
+ * - Handling dynamic queries with full TypeScript support
+ *
+ * Ensure the Prisma schema is properly configured before using the PrismaClient instance.
+ * Commonly used in applications to abstract database access logic.
+ */
 const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED, NOT_FOUND } = sharedResponseTypes;
 
+/**
+ * Represents the `SchoolInfo` model from Prisma.
+ *
+ * This model is typically used to handle and manage information
+ * related to a specific school in the database. It is mapped to
+ * a corresponding table in the database and may include fields
+ * that store details such as the school's name, location, contact
+ * details, and other relevant information.
+ *
+ * Note: Refer to the Prisma schema for the exact structure and
+ * fields of the `SchoolInfo` model.
+ */
 const model = prisma.SchoolInfo;
 
-// Helper function to create and respond with the FAQ
+/**
+ * Creates a new school information entry in the database and retrieves the created document with specified selection criteria.
+ *
+ * The function first creates a new document in the database using the provided user input, returning only the newly created document's ID.
+ * It then retrieves the full details of the created document based on defined selection criteria.
+ * If the document cannot be created or retrieved, an error response is returned.
+ *
+ * @async
+ * @function createSchoolInfoEntry
+ * @param {Object} userInput - The input data for creating a new school info entry.
+ * @param {Object} request - The HTTP request object, generally used for providing contextual request information in error or success responses.
+ * @returns {Object} - A response indicating the success or failure of the create operation. Returns HTTP "CREATED" status on success or "INTERNAL_SERVER_ERROR" on failure.
+ */
 const createSchoolInfoEntry = async (userInput, request) => {
     const newDocument = await model.create({
         data: userInput,
@@ -43,7 +88,24 @@ const createSchoolInfoEntry = async (userInput, request) => {
     return CREATED(`School info entry with title "${userInput?.title}" created successfully.`, createdDocument, request);
 };
 
-// Named export for the POST request handler (Create FAQ)
+/**
+ * Handles the creation of school information data by validating the request,
+ * processing the input, verifying authorization, and storing the information.
+ *
+ * This function performs the following actions:
+ * - Validates the content type of the request.
+ * - Checks the user's authorization (admin privileges).
+ * - Parses and validates form data against the specified schema.
+ * - Ensures no duplicate school information entry exists with the same title.
+ * - Uploads any associated files and generates a file link.
+ * - Calls a service to create the school info entry and returns the response.
+ *
+ * @async
+ * @function
+ * @param {Object} request - The HTTP request object containing necessary data for processing.
+ * @param {Object} context - The execution context containing environment and configuration details.
+ * @returns {Promise<Object>} The HTTP response object with the result of the operation.
+ */
 const handleCreateSchoolInfo = async (request, context) => {
     // Validate content type
     const contentValidationResult = validateUnsupportedContent(request, schoolInfoConstants.allowedContentTypes);
@@ -84,5 +146,13 @@ const handleCreateSchoolInfo = async (request, context) => {
     return createSchoolInfoEntry(userInput, request);
 };
 
-// Export the route wrapped with asyncHandler
+/**
+ * POST is an asynchronous middleware function used to create school information.
+ * It leverages the asyncHandler utility to handle any possible errors during the execution of the handleCreateSchoolInfo function.
+ *
+ * The primary purpose of POST is to facilitate the creation of school-related data
+ * in a way that ensures error handling is managed cleanly and efficiently.
+ *
+ * @type {Function}
+ */
 export const POST = asyncHandler(handleCreateSchoolInfo);

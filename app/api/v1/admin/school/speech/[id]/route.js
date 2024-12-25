@@ -12,13 +12,57 @@ import validateToken from "@/util/validateToken";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
 import schoolSpeechSelectionCriteria from "@/app/api/v1/school/speech/school.speech.selection.criteria";
 
+/**
+ * An instance of PrismaClient which is used to interact with a database
+ * through the Prisma ORM. It provides a programmatic interface to perform
+ * queries, mutations, and transactions on the database.
+ *
+ * This variable allows the application to connect to and manage the
+ * database defined in the Prisma schema. It supports CRUD operations
+ * as well as advanced query capabilities.
+ *
+ * Make sure to properly handle connection lifecycle for the PrismaClient instance.
+ * This includes opening and closing the connection to avoid resource leaks.
+ *
+ * Note: Initializing multiple instances of PrismaClient can cause issues
+ * such as exceeding database connection limits. Use a single instance
+ * throughout the application if possible.
+ *
+ * @const {PrismaClient} prisma - The PrismaClient instance for database operations.
+ */
 const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 
+/**
+ * Represents the SchoolSpeech model provided by Prisma.
+ * This model is used to interact with the corresponding
+ * database table for storing and managing data related to school speeches.
+ *
+ * The `SchoolSpeech` model typically includes properties
+ * and relationships defined in the Prisma schema.
+ *
+ * It is part of Prisma's ORM capabilities that allow querying,
+ * creating, updating, and deleting records associated with
+ * school speech entities in the database.
+ */
 const model = prisma.SchoolSpeech;
 
-// Helper function to update and respond with the school speech
+/**
+ * Updates an existing school speech entry based on the provided user input.
+ *
+ * This asynchronous function takes user input to update specific fields in the database and
+ * filters out null or undefined values from the input object before performing the update.
+ * It ensures that only valid, non-null fields are updated and excludes the `id` field from updates.
+ * After the operation, it retrieves the updated document using a predefined selection criteria.
+ *
+ * @async
+ * @function updateSchoolSpeechEntry
+ * @param {Object} userInput - The user-provided data for updating the school speech entry.
+ * @param {Object} request - The request object providing context for the operation.
+ * @returns {Promise<Object>} Resolves with an object containing a success message and updated data.
+ * Rejects with an error message if the update operation fails.
+ */
 const updateSchoolSpeechEntry = async (userInput, request) => {
     // Filter `userInput` to only include fields with non-null values
     const fieldsToUpdate = Object.keys(userInput).reduce((acc, key) => {
@@ -53,7 +97,29 @@ const updateSchoolSpeechEntry = async (userInput, request) => {
     return OK(`School speech entry with the ID "${userInput?.id}" updated successfully.`, updatedDocument, request);
 };
 
-// Named export for the GET request handler
+/**
+ * Asynchronously handles updating a school speech entry by its unique identifier.
+ *
+ * This function performs multiple operations such as validating the input request,
+ * checking user authorization, ensuring the uniqueness of the speech title, managing file
+ * replacements, and updating the speech entry in the database.
+ *
+ * Steps performed:
+ * 1. Validates the request's content type against allowed content types.
+ * 2. Validates the user's token to ensure administrative authorization.
+ * 3. Parses and validates the form data using a predefined schema.
+ * 4. Checks if a school speech entry exists with the given ID.
+ * 5. Ensures that the speech title does not already exist if a new title is provided.
+ * 6. Handles file operations, replacing the old file if a new file is provided.
+ * 7. Updates the school speech entry in the database and returns the appropriate response.
+ *
+ * Returns appropriate HTTP responses in case of validation failure, unauthorized access,
+ * conflict, or success.
+ *
+ * @param {Object} request - The HTTP request object containing data to update the school speech entry.
+ * @param {Object} context - Additional context for validations and processing.
+ * @returns {Object} The resulting response object indicating the update operation's outcome.
+ */
 const handleUpdateSchoolSpeechById = async (request, context) => {
     // Validate content type
     const contentValidationResult = validateUnsupportedContent(request, schoolSpeechConstants.allowedContentTypes);
@@ -115,12 +181,42 @@ const handleUpdateSchoolSpeechById = async (request, context) => {
     return updateSchoolSpeechEntry(userInput, request);
 };
 
+/**
+ * Asynchronously deletes a school speech entry by its identifier.
+ *
+ * @function deleteSchoolSpeechById
+ * @async
+ * @param {Object} request - The request object containing details for deleting the school speech.
+ * @param {Object} context - The context in which the deletion operation is executed.
+ * @returns {Promise<*>} A promise resolving with the result of the deletion operation.
+ */
 const deleteSchoolSpeechById = async (request, context) => {
     return serviceShared.deleteEntryById(request, context, model, 'imageId', 'school speech');
 };
 
-// Export the route wrapped with asyncHandler
+/**
+ * The PATCH variable is an asynchronous handler function designed to process
+ * updates for a specific school speech identified by its ID. It leverages
+ * an async operation for efficient handling of requests.
+ *
+ * This function is wrapped with an `asyncHandler` to handle any asynchronous
+ * errors that might occur during the update operation. The actual logic of
+ * updating the school speech is implemented in the `handleUpdateSchoolSpeechById` function,
+ * which processes the necessary updates to the resource.
+ *
+ * Use this function within an Express route to handle HTTP PATCH requests for
+ * modifying existing school speech data by its unique identifier.
+ */
 export const PATCH = asyncHandler(handleUpdateSchoolSpeechById);
 
-// Export the route wrapped with asyncHandler
+/**
+ * DELETE is an asynchronous handler function assigned to deleteSchoolSpeechById,
+ * which processes the deletion of a school speech by its unique identifier.
+ *
+ * It utilizes the asyncHandler wrapper to handle any asynchronous
+ * operations and streamline error management during the execution
+ * of the deleteSchoolSpeechById function.
+ *
+ * Ensures proper deletion logic while maintaining robust error handling.
+ */
 export const DELETE = asyncHandler(deleteSchoolSpeechById);
