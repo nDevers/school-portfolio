@@ -1,6 +1,10 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import React from 'react';
-import { PiCertificateDuotone, PiChalkboardTeacherDuotone, PiStudentDuotone } from 'react-icons/pi';
+import {
+    PiCertificateDuotone,
+    PiChalkboardTeacherDuotone,
+    PiStudentDuotone,
+} from 'react-icons/pi';
 
 const InfoCard = ({ title, icon: Icon, items }) => (
     <Card>
@@ -8,7 +12,10 @@ const InfoCard = ({ title, icon: Icon, items }) => (
             {title}
         </CardHeader>
         <CardContent className="flex space-x-3">
-            <Icon className="text-primary text-9xl" aria-label={`${title} আইকন`} />
+            <Icon
+                className="text-primary text-9xl"
+                aria-label={`${title} আইকন`}
+            />
             <ul className="space-y-2 pt-5">
                 {items.map((item, index) => (
                     <li key={index}>{item}</li>

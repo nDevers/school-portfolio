@@ -1,7 +1,5 @@
-import React from 'react'
+import React from 'react';
 
 export default function AdmissionInfoPage() {
-  return (
-    <div>AdmissionInfoPage</div>
-  )
+    return <div>AdmissionInfoPage</div>;
 }

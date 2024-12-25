@@ -29,7 +29,7 @@ export default function PhotoGalleryPage() {
         <div className="w-full h-full max-w-7xl mx-auto sp my-6 space-y-6">
             <PageTitle title="ছবিতে আমাদের গল্প" />
 
-            {isLoading && <Spinner/>}
+            {isLoading && <Spinner />}
             {imageUrls && <PhotoGallery imageUrls={imageUrls} />}
         </div>
     );

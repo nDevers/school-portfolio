@@ -1,21 +1,21 @@
-'use client'
-import React from 'react'
-import InputWrapper from '@/components/ui/input-wrapper'
-import Reset from '@/components/button/Reset'
-import Submit from '@/components/button/Submit'
-import * as Yup from 'yup'
-import { Input } from '@/components/ui/input'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useFormik } from 'formik'
-import { postData, updateData } from '@/util/axios'
-import apiConfig from '@/configs/apiConfig'
+'use client';
+import React from 'react';
+import InputWrapper from '@/components/ui/input-wrapper';
+import Reset from '@/components/button/Reset';
+import Submit from '@/components/button/Submit';
+import * as Yup from 'yup';
+import { Input } from '@/components/ui/input';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useFormik } from 'formik';
+import { postData, updateData } from '@/util/axios';
+import apiConfig from '@/configs/apiConfig';
 
 export default function EligibleSchoolForm({ data }) {
     const queryClient = useQueryClient();
     const initialValues = {
         name: data?.name || '',
         address: data?.address || '',
-    }
+    };
 
     const validationSchema = Yup.object({
         name: Yup.string().required('Required field'),
@@ -28,9 +28,12 @@ export default function EligibleSchoolForm({ data }) {
             ...values,
             name: values.name.toUpperCase(),
         };
-    
+
         if (data) {
-            await updateData(apiConfig?.UPDATE_ELIGIBLE_SCHOOL + data?._id, formattedValues);
+            await updateData(
+                apiConfig?.UPDATE_ELIGIBLE_SCHOOL + data?._id,
+                formattedValues
+            );
         } else {
             await postData(apiConfig?.CREATE_ELIGIBLE_SCHOOL, formattedValues);
         }
@@ -39,7 +42,7 @@ export default function EligibleSchoolForm({ data }) {
 
     const reset = () => {
         formik?.resetForm();
-    }
+    };
 
     const formik = useFormik({
         initialValues,
@@ -53,12 +56,16 @@ export default function EligibleSchoolForm({ data }) {
         mutationKey: ['createEligibleSchool'],
         mutationFn: submit,
         onSuccess: () => reset(),
-    })
+    });
 
     return (
-        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
-            <div className='grid gap-2 w-full'>
-                <InputWrapper label="School Name" error={formik.errors?.name} touched={formik.touched?.name}>
+        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
+            <div className="grid gap-2 w-full">
+                <InputWrapper
+                    label="School Name"
+                    error={formik.errors?.name}
+                    touched={formik.touched?.name}
+                >
                     <Input
                         name="name"
                         placeholder="School Name"
@@ -68,7 +75,11 @@ export default function EligibleSchoolForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="School Address" error={formik.errors?.address} touched={formik.touched?.address}>
+                <InputWrapper
+                    label="School Address"
+                    error={formik.errors?.address}
+                    touched={formik.touched?.address}
+                >
                     <Input
                         name="address"
                         placeholder="School Address"
@@ -79,10 +90,10 @@ export default function EligibleSchoolForm({ data }) {
                 </InputWrapper>
             </div>
 
-            <div className='flex items-center space-x-2'>
+            <div className="flex items-center space-x-2">
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending} />
             </div>
         </form>
-    )
+    );
 }

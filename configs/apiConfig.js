@@ -1,183 +1,91 @@
-const URL = process.env.NEXT_PUBLIC_BASE_URL
-const VERSION = process.env.NEXT_PUBLIC_VERSION
+const URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+const VERSION = process.env.NEXT_PUBLIC_VERSION || 'v1';
 
-const UNSPLASH_ACCESS_KEY = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY
+const UNSPLASH_ACCESS_KEY = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
 
-// const isServer = typeof window === 'undefined';
+const isServer = typeof window === 'undefined';
 
 export default {
-    // BASE_URL: isServer ? `${URL}/api/${VERSION}` : `/api/v1`,  // Absolute URL for server, relative for client
-    BASE_URL: `${URL}/api/${VERSION}`,
+    BASE_URL: isServer ? `${URL}/api/${VERSION}` : `/api/${VERSION}`, // Absolute URL for server, relative for client
 
     UNSPLASH_ACCESS_KEY,
 
     //────────────────────────────────────────────
     //? API: ---- Auth
     //────────────────────────────────────────────
-    MEMBER_LOGIN : '/auth/login',
-    ADMIN_LOGIN : '/auth/admin/login',
-    SUPER_ADMIN_LOGIN : '/auth/super-admin/login',
-
+    ADMIN_LOGIN: '/auth/admin/login',
+    REFRESH_TOKEN: '/auth/refresh-token',
     //────────────────────────────────────────────
     //? API: ---- Setting
     //────────────────────────────────────────────
-    GET_GENERAL_INFO : '/settings/general',
-    CREATE_GENERAL_INFO : '/admin/settings/general',
-
+    GET_CONFIGURATION: '/configuration',
+    CREATE_CONFIGURATION: '/admin/configuration',
+    UPDATE_CONFIGURATION: '/admin/configuration',
     //────────────────────────────────────────────
     //? API: ---- About
     //────────────────────────────────────────────
-    GET_ABOUT_MISSION : '/about/mission',
-    ABOUT_MISSION : '/admin/about/mission',
+    GET_CAROUSEL: '/home/carousel',
+    GET_CAROUSEL_BY_ID: '/home/carousel/',
+    CREATE_CAROUSEL: '/admin/home/carousel',
+    UPDATE_CAROUSEL: '/admin/home/carousel/',
+    DELETE_CAROUSEL: '/admin/home/carousel/',
 
-    GET_ABOUT_VISION : '/about/vision',
-    ABOUT_VISION : '/admin/about/vision',
+    GET_FAQ: '/faq',
+    GET_FAQ_BY_ID: '/faq/',
+    CREATE_FAQ: '/admin/faq',
+    UPDATE_FAQ: '/admin/faq/',
+    DELETE_FAQ: '/admin/faq/',
 
-    GET_ABOUT_AIM_OBJECTIVE : '/about/aim-objective',
-    ABOUT_AIM_OBJECTIVE : '/admin/about/aim-objective',
+    GET_SCHOOL_INFO: '/school/info',
+    GET_SCHOOL_INFO_BY_ID: '/school/info/',
+    CREATE_SCHOOL_INFO: '/admin/school/info',
+    UPDATE_SCHOOL_INFO: '/admin/school/info/',
+    DELETE_SCHOOL_INFO: '/admin/school/info/',
 
-    //────────────────────────────────────────────
-    //? API: ---- Membership
-    //────────────────────────────────────────────
-    GET_ABOUT_MEMBERSHIP : '/membership/about-membership',
-    ABOUT_MEMBERSHIP : '/admin/membership/about-membership',
+    GET_SCHOOL_ACHIEVEMENT: '/school/achievement',
+    GET_SCHOOL_ACHIEVEMENT_BY_ID: '/school/achievement/',
+    CREATE_SCHOOL_ACHIEVEMENT: '/admin/school/achievement',
+    UPDATE_SCHOOL_ACHIEVEMENT: '/admin/school/achievement/',
+    DELETE_SCHOOL_ACHIEVEMENT: '/admin/school/achievement/',
 
-    GET_MEMBERSHIP_CRITERIA : '/membership/membership-criteria',
-    MEMBERSHIP_CRITERIA : '/admin/membership/membership-criteria',
+    GET_SCHOOL_SPEECH: '/school/speech',
+    GET_SCHOOL_SPEECH_BY_ID: '/school/speech/',
+    CREATE_SCHOOL_SPEECH: '/admin/school/speech',
+    UPDATE_SCHOOL_SPEECH: '/admin/school/speech/',
+    DELETE_SCHOOL_SPEECH: '/admin/school/speech/',
 
-    GET_MEMBERSHIP_FEE : '/membership/membership-fee',
-    MEMBERSHIP_FEE : '/admin/membership/membership-fee',
+    GET_MORE_ABOUT_US: '/about-us',
+    GET_MORE_ABOUT_US_BY_ID: '/about-us/',
+    CREATE_MORE_ABOUT_US: '/admin/about-us',
+    UPDATE_MORE_ABOUT_US: '/admin/about-us/',
+    DELETE_MORE_ABOUT_US: '/admin/about-us/',
     //────────────────────────────────────────────
-    //? API: ---- Member
+    //? API: ---- Faculty
     //────────────────────────────────────────────
-    GET_MEMBER_LIST : '/member',
-    GET_MEMBER_BY_ID : '/member/',
-    CREATE_MEMBER : '/admin/member',
-    UPDATE_MEMBER : '/admin/member/',
-    DELETE_MEMBER : '/admin/member/',
+    GET_FACULTY_All: '/faculty',
+    GET_FACULTY_BY_CATEGORY: '/faculty/', //! e.g: /faculty/{teacher}
+    GET_FACULTY_BY_CATEGORY_BY_ID: '/faculty/', //! e.g: /faculty/{teacher}/{id}
+    CREATE_FACULTY_BY_CATEGORY: '/admin/faculty/', //! e.g: /faculty/{teacher}
+    UPDATE_FACULTY_BY_CATEGORY: '/admin/faculty/', //! e.g: /faculty/{teacher}/{id}
+    DELETE_FACULTY_BY_CATEGORY: '/admin/faculty/', //! e.g: /faculty/{teacher}/{id}
 
-    GET_MEMBER_TYPE : '/member/type',
-    GET_MEMBER_STATUS : '/member/status',
-    
-    GET_MEMBER_COUNT : '/member/count',         // ! have to implement in home ui
+    GET_ACADEMIC_All: '/academic',
+    GET_ACADEMIC_BY_CATEGORY: '/academic/', //! e.g: /academic/{admission_form}
+    GET_ACADEMIC_BY_CATEGORY_BY_ID: '/academic/', //! e.g: /academic/{admission_form}/{id}
+    CREATE_ACADEMIC_BY_CATEGORY: '/admin/academic/', //! e.g: /academic/{admission_form}
+    UPDATE_ACADEMIC_BY_CATEGORY: '/admin/academic/', //! e.g: /academic/{admission_form}/{id}
+    DELETE_ACADEMIC_BY_CATEGORY: '/admin/academic/', //! e.g: /academic/{admission_form}/{id}
 
-    //────────────────────────────────────────────
-    //? API: ---- Team
-    //────────────────────────────────────────────
-    GET_TEAM_LIST : '/team/executive',
-    GET_TEAM_BY_ID : '/team/executive/',
-    CREATE_TEAM_COMMITTEE : '/admin/team/executive',
-    UPDATE_TEAM_COMMITTEE : '/admin/team/executive/',
-    DELETE_TEAM_COMMITTEE : '/admin/team/executive/',
+    GET_ANNOUNCEMENT_All: '/announcement',
+    GET_ANNOUNCEMENT_BY_CATEGORY: '/announcement/', //! e.g: /academic/{admission_form}
+    GET_ANNOUNCEMENT_BY_CATEGORY_BY_ID: '/announcement/', //! e.g: /academic/{admission_form}/{id}
+    CREATE_ANNOUNCEMENT_BY_CATEGORY: '/admin/announcement/', //! e.g: /academic/{admission_form}
+    UPDATE_ANNOUNCEMENT_BY_CATEGORY: '/admin/announcement/', //! e.g: /academic/{admission_form}/{id}
+    DELETE_ANNOUNCEMENT_BY_CATEGORY: '/admin/announcement/', //! e.g: /academic/{admission_form}/{id}
 
-    GET_TEAM_TYPE : '/team/type',
-    GET_TEAM_STATUS : '/team/status',
-    //────────────────────────────────────────────
-    //? API: ---- Event
-    //────────────────────────────────────────────
-    GET_EVENT_CATEGORY : '/event/category',
-    CREATE_EVENT_CATEGORY : '/admin/event/category',
-    UPDATE_EVENT_CATEGORY : '/admin/event/category/',
-    DELETE_EVENT_CATEGORY : '/admin/event/category/',
-    GET_EVENT_CATEGORY_BY_ID : '/event/category/',
-
-    GET_EVENT_SUBCATEGORY : '/event/sub-category',
-    CREATE_EVENT_SUBCATEGORY : '/admin/event/sub-category',
-    UPDATE_EVENT_SUBCATEGORY : '/admin/event/sub-category/',
-    DELETE_EVENT_SUBCATEGORY : '/admin/event/sub-category/',
-    GET_EVENT_SUBCATEGORY_BY_ID : '/event/sub-category/',
-
-    GET_EVENT_STATUS : '/event/status',
-    CREATE_EVENT_STATUS : '/admin/event/status',
-    UPDATE_EVENT_STATUS : '/admin/event/status/',
-    DELETE_EVENT_STATUS : '/admin/event/status/',
-    GET_EVENT_STATUS_BY_ID : '/event/status/',
-
-    GET_EVENT : '/event',
-    CREATE_EVENT : '/admin/event',
-    UPDATE_EVENT : '/admin/event/',
-    DELETE_EVENT : '/admin/event/',
-    GET_EVENT_BY_ID : '/event/',
-    //────────────────────────────────────────────
-    //? API: ---- Event Special Forms
-    //────────────────────────────────────────────
-    GET_SCHOLARSHIP_FORM : '/event/form/special/scholarship',
-    GET_SCHOLARSHIP_FORM_BY_ID : '/event/form/special/scholarship/',
-    CREATE_SCHOLARSHIP_FORM : '/admin/event/form/special/scholarship',
-    UPDATE_SCHOLARSHIP_FORM : '/admin/event/form/special/scholarship/',
-    DELETE_SCHOLARSHIP_FORM : '/admin/event/form/special/scholarship/',
-    //────────────────────────────────────────────
-    //? API: ---- Eligible School
-    //────────────────────────────────────────────
-    GET_ELIGIBLE_SCHOOL : '/event/form/special/scholarship/eligible/school',
-    GET_ELIGIBLE_SCHOOL_BY_ID : '/event/form/special/scholarship/eligible/school/',
-    CREATE_ELIGIBLE_SCHOOL : '/admin/event/form/special/scholarship/eligible/school',
-    UPDATE_ELIGIBLE_SCHOOL : '/admin/event/form/special/scholarship/eligible/school/',
-    DELETE_ELIGIBLE_SCHOOL : '/admin/event/form/special/scholarship/eligible/school/',
-    //────────────────────────────────────────────
-    //? API: ---- Home
-    //────────────────────────────────────────────
-    GET_BENEFITS_OF_MEMBERS : '/home/benefits-of-member',
-    GET_BENEFITS_OF_MEMBERS_BY_ID : '/home/benefits-of-member/',
-    CREATE_BENEFITS_OF_MEMBERS : '/admin/home/benefits-of-member',
-    UPDATE_BENEFITS_OF_MEMBERS : '/admin/home/benefits-of-member/',
-    DELETE_BENEFITS_OF_MEMBERS : '/admin/home/benefits-of-member/',
-
-    GET_CAROUSEL : '/home/carousel',
-    GET_CAROUSEL_BY_ID : '/home/carousel/',
-    CREATE_CAROUSEL : '/admin/home/carousel',
-    UPDATE_CAROUSEL : '/admin/home/carousel/',
-    DELETE_CAROUSEL : '/admin/home/carousel/',
-    
-    GET_MESSAGE : '/home/message',
-    GET_MESSAGE_BY_ID : '/home/message/',
-    CREATE_MESSAGE : '/admin/home/message',
-    UPDATE_MESSAGE : '/admin/home/message/',
-    DELETE_MESSAGE : '/admin/home/message/',
-    //────────────────────────────────────────────
-    //? API: ---- Media
-    //────────────────────────────────────────────
-    GET_NEWS : '/media/news',
-    GET_NEWS_BY_ID : '/media/news/',
-    CREATE_NEWS : '/admin/media/news',
-    UPDATE_NEWS : '/admin/media/news/',
-    DELETE_NEWS : '/admin/media/news/',
-
-    GET_PHOTO : '/media/photo',
-    GET_PHOTO_BY_ID : '/media/photo/',
-    CREATE_PHOTO : '/admin/media/photo',
-    UPDATE_PHOTO : '/admin/media/photo/',
-    DELETE_PHOTO : '/admin/media/photo/',
-
-    GET_VIDEO : '/media/video',
-    GET_VIDEO_BY_ID : '/media/video/',
-    CREATE_VIDEO : '/admin/media/video',
-    UPDATE_VIDEO : '/admin/media/video/',
-    DELETE_VIDEO : '/admin/media/video/',
-    
-    GET_NOTICE : '/notice',
-    GET_NOTICE_BY_ID : '/notice/',
-    CREATE_NOTICE : '/admin/notice',
-    UPDATE_NOTICE : '/admin/notice/',
-    DELETE_NOTICE : '/admin/notice/',
-    //────────────────────────────────────────────
-    //? API: ---- Finance
-    //────────────────────────────────────────────
-    GET_PAYMENT_METHOD : '/finance/payment-method',
-    GET_PAYMENT_METHOD_BY_ID : '/finance/payment-method/',
-    CREATE_PAYMENT_METHOD : '/admin/finance/payment-method',
-    UPDATE_PAYMENT_METHOD : '/admin/finance/payment-method/',
-    DELETE_PAYMENT_METHOD : '/admin/finance/payment-method/',
-
-    GET_DONATION : '/finance/donation',
-    GET_DONATION_BY_ID : '/finance/donation/',
-    CREATE_DONATION : '/admin/finance/donation',
-    UPDATE_DONATION : '/admin/finance/donation/',
-    DELETE_DONATION : '/admin/finance/donation/',
-
-    GET_BUDGET : '/finance/budget',
-    GET_BUDGET_BY_ID : '/finance/budget/',
-    CREATE_BUDGET : '/admin/finance/budget',
-    UPDATE_BUDGET : '/admin/finance/budget/',
-    DELETE_BUDGET : '/admin/finance/budget/',
-}
+    GET_CAREER: '/career',
+    GET_CAREER_BY_ID: '/career/',
+    CREATE_CAREER: '/admin/career',
+    UPDATE_CAREER: '/admin/career/',
+    DELETE_CAREER: '/admin/career/',
+};

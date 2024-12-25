@@ -48,10 +48,19 @@ export default function AchievementShowcase() {
                 <div className="w-full h-full grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 p-2 gap-2">
                     {data?.map((item) => (
                         <div key={item.id} className="flex items-start gap-2">
-                            <div className="text-xl md:text-2xl lg:text-4xl w-10 md:w-16 aspect-square bg-yellow-500 text-white grid place-items-center">{item.icon}</div>
+                            <div className="text-xl md:text-2xl lg:text-4xl w-10 md:w-16 aspect-square bg-yellow-500 text-white grid place-items-center">
+                                {item.icon}
+                            </div>
                             <div className="md:space-y-2 px-2">
-                                <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold"><AnimatedCounter from={0} to={item?.number} /></h1>
-                                <p className="text-xs opacity-80 md:text-sm">{item?.type}</p>
+                                <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold">
+                                    <AnimatedCounter
+                                        from={0}
+                                        to={item?.number}
+                                    />
+                                </h1>
+                                <p className="text-xs opacity-80 md:text-sm">
+                                    {item?.type}
+                                </p>
                             </div>
                         </div>
                     ))}

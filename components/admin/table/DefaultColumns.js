@@ -1,340 +1,64 @@
 'use client';
 
-import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
-import DeleteDropdownMenuItem from "@/components/admin/common/DeleteDropdownMenuItem";
-import apiConfig from "@/configs/apiConfig";
-import { usePathname } from "next/navigation";
-import getYoutubeVideo from "@/util/getYoutubeVideo";
+import { Button } from '@/components/ui/button';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import Link from 'next/link';
+import DeleteDropdownMenuItem from '@/components/admin/common/DeleteDropdownMenuItem';
+import apiConfig from '@/configs/apiConfig';
+import Image from 'next/image';
 
-export const DonationTableColumn = [
+export const FacultyTableColumn = [
     {
-        accessorKey: "id",
-        header: "SN",
-        cell: ({ getValue }) => <span>{getValue()}</span>
+        accessorKey: 'sn',
+        header: 'SN',
+        cell: ({ row }) => <span className="w-fit">{Number(row?.id) + 1}</span>,
     },
     {
-        accessorKey: "memberDetails",
-        header: "Donor Name",
-        cell: ({ row }) => row.original.memberDetails?.name || "N/A",
+        accessorKey: 'image',
+        header: 'Image',
+        cell: ({ row, getValue }) => (
+            <Image
+                src={getValue()}
+                alt={row?.original?.name}
+                height={50}
+                width={50}
+                className="w-8 aspect-square rounded-full ring-1"
+            />
+        ),
     },
     {
-        accessorKey: "memberDetails",
-        header: "Donor Email",
-        cell: ({ row }) => row.original.memberDetails?.email || "N/A",
+        accessorKey: 'name',
+        header: 'Name',
     },
     {
-        accessorKey: "type",
-        header: "Type",
+        accessorKey: 'category',
+        header: 'Category',
     },
     {
-        accessorKey: "amount",
-        header: "Amount",
+        accessorKey: 'email',
+        header: 'Email',
     },
     {
-        accessorKey: "date",
-        header: "Date",
+        accessorKey: 'mobile',
+        header: 'Mobile',
     },
     {
-        accessorKey: "description",
-        header: "Description",
+        accessorKey: 'portfolio',
+        header: 'Portfolio',
     },
     {
-        accessorKey: "bankDetails",
-        header: "Bank Name",
-        cell: ({ row }) => row.original.bankDetails?.bankName || "N/A",
-    },
-    {
-        id: "actions",
+        id: 'actions',
         enableHiding: false,
         cell: ({ row }) => {
-            const data = row.original
-
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <DotsHorizontalIcon className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger><DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
-                        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?._id)}> Copy ID </DropdownMenuItem>
-
-                        <DropdownMenuItem>
-                            <Link href={`donations/edit/${data?._id}` || '#'} className="w-full">Edit</Link>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuSeparator />
-
-                        <DeleteDropdownMenuItem api={apiConfig?.DELETE_DONATION} id={data?._id} query={'donation'} />
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        },
-    },
-];
-
-export const TeamTableColumn = [
-    {
-        accessorKey: "image",
-        header: "Image",
-        cell: ({ row, getValue }) => <img src={getValue()} alt={`Team image ${row?.original?.id}`} width={20} height={20} className="rounded-full" />
-    },
-    {
-        accessorKey: "name",
-        header: "Name",
-    },
-    {
-        accessorKey: "email",
-        header: "Email",
-    },
-    {
-        accessorKey: "typeId",
-        header: "Type",
-    },
-    {
-        accessorKey: "statusId",
-        header: "Status",
-    },
-    {
-        accessorKey: "joinDate",
-        header: "Join date",
-    },
-    {
-        accessorKey: "designation",
-        header: "Designation",
-    },
-    {
-        accessorKey: "organization",
-        header: "Organization",
-    },
-    {
-        id: "actions",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const data = row.original
-
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <DotsHorizontalIcon className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?._id)}> Copy ID </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                            <Link href={`team/edit/${data?._id}`} className="w-full">Edit</Link>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuSeparator />
-
-                        <DeleteDropdownMenuItem api={apiConfig?.DELETE_TEAM_COMMITTEE} id={data?._id} query={'team'} />
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        },
-    },
-];
-
-export const EventBudgetTableColumn = [
-    {
-        accessorKey: "id",
-        header: "SN",
-        cell: ({ getValue }) => <span>{getValue()}</span>,
-    },
-    {
-        accessorKey: "eventName",
-        header: "Event Name",
-    },
-    {
-        accessorKey: "startTime",
-        header: "Start Time",
-        cell: ({ getValue }) => <span>{new Date(getValue())?.toLocaleString()}</span>,
-    },
-    {
-        accessorKey: "endTime",
-        header: "End Time",
-        cell: ({ getValue }) => <span>{new Date(getValue())?.toLocaleString()}</span>,
-    },
-    {
-        accessorKey: "totalBudget",
-        header: "Budget",
-        cell: ({ getValue }) => <span>${getValue()?.toLocaleString()}</span>,
-    },
-    {
-        accessorKey: "description",
-        header: "Description",
-        cell: ({ getValue }) => <span>{getValue()?.slice(0, 50)}...</span>, // Show only first 50 characters
-    },
-    {
-        accessorKey: "location",
-        header: "Location",
-    },
-    {
-        accessorKey: "lastModified",
-        header: "Last Modified",
-        cell: ({ getValue }) => <span>{new Date(getValue())?.toLocaleString()}</span>,
-    },
-    {
-        id: "actions",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const data = row.original
-
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <DotsHorizontalIcon className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
-                        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?._id)}> Copy ID </DropdownMenuItem>
-
-                        <DropdownMenuItem>
-                            <Link href={`event-budgets/edit/${data?._id}` || '#'} className="w-full">Edit</Link>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuSeparator />
-
-                        <DeleteDropdownMenuItem api={apiConfig?.DELETE_BUDGET} id={data?._id} query={'event-budget'} />
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        },
-    },
-];
-
-export const MemberTableColumn = [
-    {
-        accessorKey: "memberId",
-        header: "Member ID",
-        cell: ({ getValue }) => <span>{getValue()}</span>
-    },
-    {
-        accessorKey: "name",
-        header: "Name",
-    },
-    {
-        accessorKey: "email",
-        header: "Email",
-    },
-    {
-        accessorKey: "phone",
-        header: "Phone",
-    },
-    {
-        accessorKey: "nid",
-        header: "NID",
-    },
-    {
-        accessorKey: "educationalBackground",
-        header: "Education",
-    },
-    {
-        accessorKey: "occupation",
-        header: "Occupation",
-    },
-    {
-        accessorKey: "workplace",
-        header: "Workplace",
-    },
-    {
-        accessorKey: "designation",
-        header: "Designation",
-    },
-    {
-        accessorKey: "bloodGroup",
-        header: "Blood Group",
-    },
-    {
-        accessorKey: "dob",
-        header: "Date of Birth",
-        cell: ({ getValue }) => <span>{new Date(getValue()).toLocaleDateString()}</span>
-    },
-    {
-        accessorKey: "permanentAddress.district",
-        header: "Permanent District",
-    },
-    {
-        accessorKey: "currentAddress.district",
-        header: "Current District",
-        cell: ({ row }) => {
-            const permanentDistrict = row.original.permanentAddress?.district;
-            const currentDistrict = row.original.currentAddress?.district;
-            return (
-                <span>
-                    {currentDistrict && currentDistrict !== permanentDistrict
-                        ? currentDistrict
-                        : permanentDistrict}
-                </span>
-            );
-        }
-    },
-    {
-        id: "actions",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const data = row.original
-
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <DotsHorizontalIcon className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
-                        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?._id)}> Copy ID </DropdownMenuItem>
-
-                        <DropdownMenuItem>
-                            <Link href={`edit/${data?._id}` || '#'} className="w-full">Edit</Link>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuSeparator />
-
-                        <DeleteDropdownMenuItem api={apiConfig?.DELETE_MEMBER} id={data?._id} query={'member'} />
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        },
-    },
-];
-
-export const EventCategoryTableColumn = [
-    {
-        accessorKey: "sn",
-        header: "SN",
-        cell: ({ row }) => <span>{Number(row?.id) + 1}</span>
-    },
-    {
-        accessorKey: "category",
-        header: "Category Name",
-    },
-    {
-        accessorKey: "isSpecial",
-        header: "Event Type",
-        cell: ({ getValue }) => <span>{getValue() ? 'Special' : 'Common'}</span>
-    },
-    {
-        id: "actions",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const data = row.original
+            const data = row.original;
 
             return (
                 <div className="flex items-center justify-end">
@@ -348,384 +72,95 @@ export const EventCategoryTableColumn = [
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-                            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?._id)}> Copy ID </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() =>
+                                    navigator.clipboard.writeText(
+                                        data?.id || data?._id
+                                    )
+                                }
+                            >
+                                {' '}
+                                Copy ID{' '}
+                            </DropdownMenuItem>
 
                             <DropdownMenuItem>
-                                <Link href={`categories/edit/${data?._id}` || '#'} className="w-full">Edit</Link>
+                                <Link
+                                    href={
+                                        `${data?.category}/edit/${data?.id || data?._id}` ||
+                                        '#'
+                                    }
+                                    className="w-full"
+                                >
+                                    Edit
+                                </Link>
                             </DropdownMenuItem>
 
                             <DropdownMenuSeparator />
 
-                            <DeleteDropdownMenuItem api={apiConfig?.DELETE_EVENT_CATEGORY} id={data?._id} query={'category'} />
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
-            )
-        },
-    },
-];
-
-export const EventSubcategoryTableColumn = [
-    {
-        accessorKey: "sn",
-        header: "SN",
-        cell: ({ row }) => <span>{Number(row?.id) + 1}</span>
-    },
-    {
-        accessorKey: "subCategory",
-        header: "Subcategory Name",
-    },
-    {
-        accessorKey: "category",
-        header: "Category Name",
-    },
-    {
-        id: "actions",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const data = row.original
-
-            return (
-                <div className="flex items-center justify-end">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <DotsHorizontalIcon className="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
-                            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?._id)}> Copy ID </DropdownMenuItem>
-
-                            <DropdownMenuItem>
-                                <Link href={`sub-categories/edit/${data?._id}` || '#'} className="w-full">Edit</Link>
-                            </DropdownMenuItem>
-
-                            <DropdownMenuSeparator />
-
-                            <DeleteDropdownMenuItem api={apiConfig?.DELETE_EVENT_SUBCATEGORY} id={data?._id} query={'sub-category'} />
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
-            )
-        },
-    },
-];
-
-export const EventTableColumn = [
-    {
-        accessorKey: "sn",
-        header: "SN",
-        cell: ({ row }) => <span>{Number(row?.id) + 1}</span>
-    },
-    {
-        accessorKey: "title",
-        header: "Title",
-    },
-    {
-        accessorKey: "eventDate",
-        header: "Event Date",
-    },
-    {
-        accessorKey: "statusId",
-        header: "Status",
-    },
-    {
-        accessorKey: "files",
-        header: "Files",
-        cell: ({ getValue }) => <span>{getValue().length}</span>
-    },
-    {
-        accessorKey: "links",
-        header: "Links",
-        cell: ({ getValue }) => <span>{getValue().length}</span>
-    },
-    {
-        id: "actions",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const data = row.original
-            const pathname = usePathname()
-
-            return (
-                <div className="flex items-center justify-end">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <DotsHorizontalIcon className="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
-                            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?._id)}> Copy ID </DropdownMenuItem>
-
-                            <DropdownMenuItem>
-                                <Link href={`${pathname}/edit/${data?._id}` || '#'} className="w-full">Edit</Link>
-                            </DropdownMenuItem>
-
-                            <DropdownMenuSeparator />
-
-                            <DeleteDropdownMenuItem api={apiConfig?.DELETE_EVENT} id={data?._id} query={'events'} />
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
-            )
-        },
-    },
-];
-
-export const NewsAlbumTableColumn = [
-    {
-        accessorKey: "banner",
-        header: "banner",
-        cell: ({ row, getValue }) => <img src={getValue()} alt={`Banner image ${row?.original?.id}`} width={20} height={20} className="w-24 h-14 object-cover rounded" />
-    },
-    {
-        accessorKey: "title",
-        header: "Title",
-    },
-    {
-        accessorKey: "date",
-        header: "Date",
-    },
-    {
-        accessorKey: "files",
-        header: "Files",
-        cell: ({ getValue }) => <span>{getValue()?.length}</span>
-    },
-    {
-        accessorKey: "links",
-        header: "Links",
-        cell: ({ getValue }) => <span>{getValue()?.length}</span>
-    },
-    {
-        id: "actions",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const data = row.original
-
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <DotsHorizontalIcon className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?._id)}> Copy ID </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                            <Link href={`current-news/edit/${data?._id}`} className="w-full">Edit</Link>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuSeparator />
-
-                        <DeleteDropdownMenuItem api={apiConfig?.DELETE_NEWS} id={data?._id} query={'current-news'} />
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        },
-    },
-];
-
-export const NoticeAlbumTableColumn = [
-    {
-        accessorKey: "sn",
-        header: "SN",
-        cell: ({ row }) => <span>{Number(row?.id) + 1}</span>
-    },
-    {
-        accessorKey: "title",
-        header: "Title",
-    },
-    {
-        accessorKey: "publishDate",
-        header: "Publish Date",
-    },
-    {
-        accessorKey: "file",
-        header: "File Name",
-        cell: ({ getValue }) => <span>{getValue()?.name}</span>
-    },
-    {
-        accessorKey: "link",
-        header: "Link Name",
-        cell: ({ getValue }) => <span>{getValue()?.name}</span>
-    },
-    {
-        id: "actions",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const data = row.original
-
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <DotsHorizontalIcon className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?._id)}> Copy ID </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                            <Link href={`notice/edit/${data?._id}`} className="w-full">Edit</Link>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuSeparator />
-
-                        <DeleteDropdownMenuItem api={apiConfig?.DELETE_NOTICE} id={data?._id} query={'notice'} />
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        },
-    },
-];
-
-export const PhotoAlbumTableColumn = [
-    {
-        accessorKey: "image",
-        header: "Image",
-        cell: ({ row, getValue }) => <img src={getValue()} alt={`Team image ${row?.original?.id}`} width={20} height={20} className="w-24 h-14 object-cover rounded-full" />
-    },
-    {
-        accessorKey: "title",
-        header: "Title",
-    },
-    {
-        accessorKey: "description",
-        header: "Description",
-    },
-    {
-        accessorKey: "date",
-        header: "Date",
-    },
-    {
-        id: "actions",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const data = row.original
-
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <DotsHorizontalIcon className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?._id)}> Copy ID </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                            <Link href={`photo-albums/edit/${data?._id}`} className="w-full">Edit</Link>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuSeparator />
-
-                        <DeleteDropdownMenuItem api={apiConfig?.DELETE_PHOTO} id={data?._id} query={'photo'} />
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        },
-    },
-];
-
-export const VideoAlbumTableColumn = [
-    {
-        accessorKey: "link",
-        header: "Video",
-        cell: ({ row, getValue }) => {
-
-            // Extracted YouTube video ID from the provided URL
-            const videoId = getYoutubeVideo.id(getValue());
-            const videoThumbnail = getYoutubeVideo.thumbnail(videoId)
-            
-            return (
-                <div>
-                    {videoId ? (
-                        <Link href={getValue()} target="_blank">
-                            <img
-                                src={videoThumbnail}
-                                alt={`YouTube Thumbnail ${row?.original?.id}`}
-                                className="w-24 h-14 object-cover cursor-pointer rounded-md shadow-md hover:opacity-80"
+                            <DeleteDropdownMenuItem
+                                api={apiConfig?.DELETE_FACULTY_BY_CATEGORY}
+                                id={`${data?.category}/${data?.id || data?._id}`}
+                                query={'GET_FACULTY_BY_CATEGORY'}
                             />
-                        </Link>
-                    ) : (
-                        <p>Invalid YouTube link</p>
-                    )}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
-            )
-        }
-    },
-    {
-        accessorKey: "title",
-        header: "Title",
-    },
-    {
-        accessorKey: "description",
-        header: "Description",
-    },
-    {
-        accessorKey: "date",
-        header: "Date",
-    },
-    {
-        id: "actions",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const data = row.original
-
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <DotsHorizontalIcon className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?._id)}> Copy ID </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                            <Link href={`video-albums/edit/${data?._id}`} className="w-full">Edit</Link>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuSeparator />
-
-                        <DeleteDropdownMenuItem api={apiConfig?.DELETE_VIDEO} id={data?._id} query={'video'} />
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
+            );
         },
     },
 ];
 
-export const BenefitsOfMembersTableColumn = [
+export const AcademicTableColumn = [
     {
-        accessorKey: "sn",
-        header: "SN",
-        cell: ({ row }) => <span>{Number(row?.id) + 1}</span>
+        accessorKey: 'sn',
+        header: 'SN',
+        cell: ({ row }) => <span className="w-fit">{Number(row?.id) + 1}</span>,
     },
     {
-        accessorKey: "text",
-        header: "Benefit",
+        accessorKey: 'title',
+        header: 'Title',
+    },
+    // {
+    //     accessorKey: "description",
+    //     header: "Description",
+    // },
+    {
+        accessorKey: 'badge',
+        header: 'Badge',
     },
     {
-        id: "actions",
+        accessorKey: 'category',
+        header: 'Category',
+    },
+    {
+        accessorKey: 'publishDate',
+        header: 'Publish Date',
+        cell: ({ getValue }) => <span>{getValue().split('T')[0]}</span>,
+    },
+    {
+        accessorKey: 'file',
+        header: 'File',
+        cell: ({ getValue }) => {
+            const fileUrl = getValue();
+            return fileUrl ? (
+                <Link
+                    href={fileUrl}
+                    download
+                    target="_blank"
+                    className="text-blue-500"
+                >
+                    Download
+                </Link>
+            ) : (
+                <span>No File</span>
+            );
+        },
+    },
+    {
+        id: 'actions',
         enableHiding: false,
         cell: ({ row }) => {
-            const data = row.original
+            const data = row.original;
 
             return (
                 <div className="flex items-center justify-end">
@@ -739,52 +174,106 @@ export const BenefitsOfMembersTableColumn = [
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-                            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?._id)}> Copy ID </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() =>
+                                    navigator.clipboard.writeText(
+                                        data?.id || data?._id
+                                    )
+                                }
+                            >
+                                {' '}
+                                Copy ID{' '}
+                            </DropdownMenuItem>
 
                             <DropdownMenuItem>
-                                <Link href={`benefits-of-members/edit/${data?._id}` || '#'} className="w-full">Edit</Link>
+                                <Link
+                                    href={
+                                        `${data?.category}/edit/${data?.id || data?._id}` ||
+                                        '#'
+                                    }
+                                    className="w-full"
+                                >
+                                    Edit
+                                </Link>
                             </DropdownMenuItem>
 
                             <DropdownMenuSeparator />
 
-                            <DeleteDropdownMenuItem api={apiConfig?.DELETE_BENEFITS_OF_MEMBERS} id={data?._id} query={'benefitsOfMembers'} />
+                            <DeleteDropdownMenuItem
+                                api={apiConfig?.DELETE_ACADEMIC_BY_CATEGORY}
+                                id={`${data?.category}/${data?.id || data?._id}`}
+                                query={'GET_ACADEMIC_BY_CATEGORY'}
+                            />
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-            )
+            );
         },
     },
 ];
 
-export const MessageTableColumn = [
+export const AnnouncementTableColumn = [
     {
-        accessorKey: "sn",
-        header: "SN",
-        cell: ({ row }) => <span>{Number(row?.id) + 1}</span>
+        accessorKey: 'sn',
+        header: 'SN',
+        cell: ({ row }) => <span className="w-fit">{Number(row?.id) + 1}</span>,
     },
     {
-        accessorKey: "image",
-        header: "Image",
-        cell: ({ row, getValue }) => <img src={getValue()} alt={`Message image ${row?.original?._id}`} width={20} height={20} className="rounded-full" />
+        accessorKey: 'title',
+        header: 'Title',
     },
     {
-        accessorKey: "title",
-        header: "Title",
+        accessorKey: 'category',
+        header: 'Category',
     },
     {
-        accessorKey: "name",
-        header: "Name",
+        accessorKey: 'date',
+        header: 'Publish Date',
+        cell: ({ getValue }) => <span>{getValue().split('T')[0]}</span>,
     },
     {
-        accessorKey: "message",
-        header: "Message",
-        cell: ({ getValue }) => <span>{getValue().slice(0, 50)}...</span>
+        accessorKey: 'isHeadline',
+        header: 'Headline Status',
+        cell: ({ getValue }) => (
+            <span>{getValue() ? 'Headline' : 'Not Headline'}</span>
+        ),
     },
     {
-        id: "actions",
+        accessorKey: 'isAdvertise',
+        header: 'Advertise Status',
+        cell: ({ getValue }) => (
+            <span>{getValue() ? 'Advertised' : 'Not Advertised'}</span>
+        ),
+    },
+    {
+        accessorKey: 'advertiseMailTime',
+        header: 'Advertise Mail Date',
+        cell: ({ getValue }) => <span>{getValue().split('T')[0]}</span>,
+    },
+    {
+        accessorKey: 'file',
+        header: 'File',
+        cell: ({ getValue }) => {
+            const fileUrl = getValue();
+            return fileUrl ? (
+                <Link
+                    href={fileUrl}
+                    download
+                    target="_blank"
+                    className="text-blue-500"
+                >
+                    Download
+                </Link>
+            ) : (
+                <span>No File</span>
+            );
+        },
+    },
+    {
+        id: 'actions',
         enableHiding: false,
         cell: ({ row }) => {
-            const data = row.original
+            const data = row.original;
 
             return (
                 <div className="flex items-center justify-end">
@@ -798,56 +287,59 @@ export const MessageTableColumn = [
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-                            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?._id)}> Copy ID </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() =>
+                                    navigator.clipboard.writeText(
+                                        data?.id || data?._id
+                                    )
+                                }
+                            >
+                                {' '}
+                                Copy ID{' '}
+                            </DropdownMenuItem>
 
                             <DropdownMenuItem>
-                                <Link href={`message/edit/${data?._id}` || '#'} className="w-full">Edit</Link>
+                                <Link
+                                    href={
+                                        `${data?.category}/edit/${data?.id || data?._id}` ||
+                                        '#'
+                                    }
+                                    className="w-full"
+                                >
+                                    Edit
+                                </Link>
                             </DropdownMenuItem>
 
                             <DropdownMenuSeparator />
 
-                            <DeleteDropdownMenuItem api={apiConfig?.DELETE_MESSAGE} id={data?._id} query={'message'} />
+                            <DeleteDropdownMenuItem
+                                api={apiConfig?.DELETE_ACADEMIC_BY_CATEGORY}
+                                id={`${data?.category}/${data?.id || data?._id}`}
+                                query={'GET_ACADEMIC_BY_CATEGORY'}
+                            />
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-            )
+            );
         },
     },
 ];
 
-export const ScholarshipFormTableColumn = [
+export const FawTableColumn = [
     {
-        accessorKey: "sn",
-        header: "SN",
-        cell: ({ row }) => <span>{Number(row?.id) + 1}</span>
+        accessorKey: 'sn',
+        header: 'SN',
+        cell: ({ row }) => <span className="w-fit">{Number(row?.id) + 1}</span>,
     },
     {
-        accessorKey: "formTitle",
-        header: "Title",
+        accessorKey: 'question',
+        header: 'Question',
     },
     {
-        accessorKey: "venue",
-        header: "Venue",
-    },
-    {
-        accessorKey: "eligibleSchools",
-        header: "Eligible Schools",
-        cell: ({ getValue }) => <span>{getValue().length}</span>
-    },
-    {
-        accessorKey: "exam",
-        header: "Exam subject",
-        cell: ({ getValue }) => <span>{getValue().length}</span>
-    },
-    {
-        accessorKey: "application",
-        header: "Applications",
-    },
-    {
-        id: "actions",
+        id: 'actions',
         enableHiding: false,
         cell: ({ row }) => {
-            const data = row.original
+            const data = row.original;
 
             return (
                 <div className="flex items-center justify-end">
@@ -861,46 +353,69 @@ export const ScholarshipFormTableColumn = [
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-                            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?._id)}> Copy ID </DropdownMenuItem>
-
-                            <DropdownMenuItem>
-                                <Link href={`scholarship/edit/${data?._id}` || '#'} className="w-full">Edit</Link>
+                            <DropdownMenuItem
+                                onClick={() =>
+                                    navigator.clipboard.writeText(
+                                        data?.id || data?._id
+                                    )
+                                }
+                            >
+                                {' '}
+                                Copy ID{' '}
                             </DropdownMenuItem>
 
                             <DropdownMenuItem>
-                                <Link href={`scholarship/data/${data?._id}` || '#'} className="w-full">Show Applications</Link>
+                                <Link
+                                    href={
+                                        `faq/edit/${data?.id || data?._id}` ||
+                                        '#'
+                                    }
+                                    className="w-full"
+                                >
+                                    Edit
+                                </Link>
                             </DropdownMenuItem>
 
                             <DropdownMenuSeparator />
 
-                            <DeleteDropdownMenuItem api={apiConfig?.DELETE_SCHOLARSHIP_FORM} id={data?._id} query={'scholarship'} />
+                            <DeleteDropdownMenuItem
+                                api={apiConfig?.DELETE_FAQ}
+                                id={`${data?.id || data?._id}`}
+                                query={'GET_FAQ'}
+                            />
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-            )
+            );
         },
     },
 ];
 
-export const EligibleSchoolTableColumn = [
+export const MoreAboutUsTableColumn = [
     {
-        accessorKey: "sn",
-        header: "SN",
-        cell: ({ row }) => <span>{Number(row?.id) + 1}</span>
+        accessorKey: 'sn',
+        header: 'SN',
+        cell: ({ row }) => <span className="w-fit">{Number(row?.id) + 1}</span>,
     },
     {
-        accessorKey: "name",
-        header: "Name",
+        accessorKey: 'title',
+        header: 'title',
     },
     {
-        accessorKey: "address",
-        header: "Address",
+        accessorKey: 'files',
+        header: 'Files',
+        cell: ({ getValue }) => <span>{getValue()?.length}</span>,
     },
     {
-        id: "actions",
+        accessorKey: 'images',
+        header: 'Images',
+        cell: ({ getValue }) => <span>{getValue()?.length}</span>,
+    },
+    {
+        id: 'actions',
         enableHiding: false,
         cell: ({ row }) => {
-            const data = row.original
+            const data = row.original;
 
             return (
                 <div className="flex items-center justify-end">
@@ -914,38 +429,72 @@ export const EligibleSchoolTableColumn = [
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-                            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?._id)}> Copy ID </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() =>
+                                    navigator.clipboard.writeText(
+                                        data?.id || data?._id
+                                    )
+                                }
+                            >
+                                {' '}
+                                Copy ID{' '}
+                            </DropdownMenuItem>
 
                             <DropdownMenuItem>
-                                <Link href={`school/edit/${data?._id}` || '#'} className="w-full">Edit</Link>
+                                <Link
+                                    href={
+                                        `more-about-us/edit/${data?.id || data?._id}` ||
+                                        '#'
+                                    }
+                                    className="w-full"
+                                >
+                                    Edit
+                                </Link>
                             </DropdownMenuItem>
 
                             <DropdownMenuSeparator />
 
-                            <DeleteDropdownMenuItem api={apiConfig?.DELETE_ELIGIBLE_SCHOOL} id={data?._id} query={'eligibleSchool'} />
+                            <DeleteDropdownMenuItem
+                                api={apiConfig?.DELETE_MORE_ABOUT_US}
+                                id={`${data?.id || data?._id}`}
+                                query={'GET_MORE_ABOUT_US'}
+                            />
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-            )
+            );
         },
     },
 ];
 
-export const EventStatusTableColumn = [
+export const CareerTableColumn = [
     {
-        accessorKey: "sn",
-        header: "SN",
-        cell: ({ row }) => <span className="w-fit">{Number(row?.id) + 1}</span>
+        accessorKey: 'sn',
+        header: 'SN',
+        cell: ({ row }) => <span className="w-fit">{Number(row?.id) + 1}</span>,
     },
     {
-        accessorKey: "status",
-        header: "Status",
+        accessorKey: 'title',
+        header: 'Title',
     },
     {
-        id: "actions",
+        accessorKey: 'subTitle',
+        header: 'Sub Title',
+    },
+    {
+        accessorKey: 'date',
+        header: 'Date',
+    },
+    {
+        accessorKey: 'files',
+        header: 'Files',
+        cell: ({ getValue }) => <span>{getValue()?.length}</span>,
+    },
+    {
+        id: 'actions',
         enableHiding: false,
         cell: ({ row }) => {
-            const data = row.original
+            const data = row.original;
 
             return (
                 <div className="flex items-center justify-end">
@@ -959,38 +508,76 @@ export const EventStatusTableColumn = [
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-                            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?._id)}> Copy ID </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() =>
+                                    navigator.clipboard.writeText(
+                                        data?.id || data?._id
+                                    )
+                                }
+                            >
+                                {' '}
+                                Copy ID{' '}
+                            </DropdownMenuItem>
 
                             <DropdownMenuItem>
-                                <Link href={`status/edit/${data?._id}` || '#'} className="w-full">Edit</Link>
+                                <Link
+                                    href={
+                                        `career/edit/${data?.id || data?._id}` ||
+                                        '#'
+                                    }
+                                    className="w-full"
+                                >
+                                    Edit
+                                </Link>
                             </DropdownMenuItem>
 
                             <DropdownMenuSeparator />
 
-                            <DeleteDropdownMenuItem api={apiConfig?.DELETE_EVENT_STATUS} id={data?._id} query={'eventStatus'} />
+                            <DeleteDropdownMenuItem
+                                api={apiConfig?.DELETE_CAREER}
+                                id={`${data?.id || data?._id}`}
+                                query={'GET_CAREER'}
+                            />
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-            )
+            );
         },
     },
 ];
 
-export const PaymentMethodTableColumn = [
+export const SchoolInfoTableColumn = [
     {
-        accessorKey: "sn",
-        header: "SN",
-        cell: ({ row }) => <span>{Number(row?.id) + 1}</span>
+        accessorKey: 'sn',
+        header: 'SN',
+        cell: ({ row }) => <span className="w-fit">{Number(row?.id) + 1}</span>,
     },
     {
-        accessorKey: "type",
-        header: "Method",
+        accessorKey: 'icon',
+        header: 'Icon',
+        cell: ({ row, getValue }) => (
+            <Image
+                src={getValue()}
+                alt={row?.original?.title}
+                height={50}
+                width={50}
+                className="w-8 aspect-square rounded-full ring-1"
+            />
+        ),
     },
     {
-        id: "actions",
+        accessorKey: 'title',
+        header: 'Title',
+    },
+    {
+        accessorKey: 'description',
+        header: 'Description',
+    },
+    {
+        id: 'actions',
         enableHiding: false,
         cell: ({ row }) => {
-            const data = row.original
+            const data = row.original;
 
             return (
                 <div className="flex items-center justify-end">
@@ -1004,19 +591,202 @@ export const PaymentMethodTableColumn = [
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-                            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(data?._id)}> Copy ID </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() =>
+                                    navigator.clipboard.writeText(
+                                        data?.id || data?._id
+                                    )
+                                }
+                            >
+                                {' '}
+                                Copy ID{' '}
+                            </DropdownMenuItem>
 
                             <DropdownMenuItem>
-                                <Link href={`payment-method/edit/${data?._id}` || '#'} className="w-full">Edit</Link>
+                                <Link
+                                    href={
+                                        `info/edit/${data?.id || data?._id}` ||
+                                        '#'
+                                    }
+                                    className="w-full"
+                                >
+                                    Edit
+                                </Link>
                             </DropdownMenuItem>
 
                             <DropdownMenuSeparator />
 
-                            <DeleteDropdownMenuItem api={apiConfig?.DELETE_PAYMENT_METHOD} id={data?._id} query={'payment-method'} />
+                            <DeleteDropdownMenuItem
+                                api={apiConfig?.DELETE_SCHOOL_INFO}
+                                id={`${data?.id || data?._id}`}
+                                query={'GET_SCHOOL_INFO'}
+                            />
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-            )
+            );
+        },
+    },
+];
+
+export const SchoolAchievementTableColumn = [
+    {
+        accessorKey: 'sn',
+        header: 'SN',
+        cell: ({ row }) => <span className="w-fit">{Number(row?.id) + 1}</span>,
+    },
+    {
+        accessorKey: 'icon',
+        header: 'Icon',
+        cell: ({ row, getValue }) => (
+            <Image
+                src={getValue()}
+                alt={row?.original?.title}
+                height={50}
+                width={50}
+                className="w-8 aspect-square rounded-full ring-1"
+            />
+        ),
+    },
+    {
+        accessorKey: 'description',
+        header: 'Achievement Description',
+    },
+    {
+        accessorKey: 'title',
+        header: 'Achievement Count',
+    },
+    {
+        id: 'actions',
+        enableHiding: false,
+        cell: ({ row }) => {
+            const data = row.original;
+
+            return (
+                <div className="flex items-center justify-end">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <DotsHorizontalIcon className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
+                            <DropdownMenuItem
+                                onClick={() =>
+                                    navigator.clipboard.writeText(
+                                        data?.id || data?._id
+                                    )
+                                }
+                            >
+                                {' '}
+                                Copy ID{' '}
+                            </DropdownMenuItem>
+
+                            <DropdownMenuItem>
+                                <Link
+                                    href={
+                                        `achievement/edit/${data?.id || data?._id}` ||
+                                        '#'
+                                    }
+                                    className="w-full"
+                                >
+                                    Edit
+                                </Link>
+                            </DropdownMenuItem>
+
+                            <DropdownMenuSeparator />
+
+                            <DeleteDropdownMenuItem
+                                api={apiConfig?.DELETE_SCHOOL_ACHIEVEMENT}
+                                id={`${data?.id || data?._id}`}
+                                query={'GET_SCHOOL_ACHIEVEMENT'}
+                            />
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+            );
+        },
+    },
+];
+
+export const SchoolSpeechTableColumn = [
+    {
+        accessorKey: 'sn',
+        header: 'SN',
+        cell: ({ row }) => <span className="w-fit">{Number(row?.id) + 1}</span>,
+    },
+    {
+        accessorKey: 'image',
+        header: 'Image',
+        cell: ({ row, getValue }) => (
+            <Image
+                src={getValue()}
+                alt={row?.original?.title}
+                height={50}
+                width={50}
+                className="w-8 aspect-square rounded-full ring-1"
+            />
+        ),
+    },
+    {
+        accessorKey: 'title',
+        header: 'Spiker Name',
+    },
+    {
+        id: 'actions',
+        enableHiding: false,
+        cell: ({ row }) => {
+            const data = row.original;
+
+            return (
+                <div className="flex items-center justify-end">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <DotsHorizontalIcon className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
+                            <DropdownMenuItem
+                                onClick={() =>
+                                    navigator.clipboard.writeText(
+                                        data?.id || data?._id
+                                    )
+                                }
+                            >
+                                {' '}
+                                Copy ID{' '}
+                            </DropdownMenuItem>
+
+                            <DropdownMenuItem>
+                                <Link
+                                    href={
+                                        `speech/edit/${data?.id || data?._id}` ||
+                                        '#'
+                                    }
+                                    className="w-full"
+                                >
+                                    Edit
+                                </Link>
+                            </DropdownMenuItem>
+
+                            <DropdownMenuSeparator />
+
+                            <DeleteDropdownMenuItem
+                                api={apiConfig?.DELETE_SCHOOL_SPEECH}
+                                id={`${data?.id || data?._id}`}
+                                query={'GET_SCHOOL_SPEECH'}
+                            />
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+            );
         },
     },
 ];

@@ -45,8 +45,8 @@ export default function ResultPage() {
         <div className="w-full h-full max-w-7xl mx-auto sp my-6 space-y-6">
             <PageTitle title="ফলাফল" />
 
-            <div className='grid gap-2 md:gap-4 mb-4'>
-                {data?.map(item => (
+            <div className="grid gap-2 md:gap-4 mb-4">
+                {data?.map((item) => (
                     <FileCard key={item?.id} item={item} />
                 ))}
             </div>

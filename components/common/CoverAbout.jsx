@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export default function CoverAbout({ data }) {
     return (
@@ -15,8 +15,10 @@ export default function CoverAbout({ data }) {
 
             {/* Text Content */}
             <div className="absolute inset-0 flex items-center justify-center z-20">
-                <h1 className="text-4xl md:text-6xl text-white font-bold shadow-lg">{data?.title}</h1>
+                <h1 className="text-4xl md:text-6xl text-white font-bold shadow-lg">
+                    {data?.title}
+                </h1>
             </div>
         </div>
-    )
+    );
 }

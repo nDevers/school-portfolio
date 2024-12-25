@@ -1,7 +1,5 @@
-import React from 'react'
+import React from 'react';
 
 export default function HolidayPage() {
-  return (
-    <div>HolidayPage</div>
-  )
+    return <div>HolidayPage</div>;
 }

@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React from 'react';
 import Reset from '@/components/button/Reset';
 import Submit from '@/components/button/Submit';
@@ -9,7 +9,12 @@ import { useMutation } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import { toast } from 'sonner';
 import * as Yup from 'yup';
-import { clearField, handleArrayFieldChange, handleCheckboxChange, handleImageChange } from '@/util/formikHelpers';
+import {
+    clearField,
+    handleArrayFieldChange,
+    handleCheckboxChange,
+    handleImageChange,
+} from '@/util/formikHelpers';
 import { Button } from '@/components/ui/button';
 import { GoX } from 'react-icons/go';
 import ComboboxFormik from '@/components/ui/ComboboxFormik';
@@ -19,7 +24,6 @@ import { Error } from '@/components/ui/error';
 import PageTitle from '@/components/admin/common/PageTitle';
 
 export default function TalentPoolScholarshipForm() {
-
     const formInfo = {
         slNo: '100001',
         organizer: {
@@ -33,15 +37,11 @@ export default function TalentPoolScholarshipForm() {
         scholarshipAmount: '500',
         note: [
             'Must bring admit card to exam hall',
-            'Bring a pen, pencil, etc for your examination'
+            'Bring a pen, pencil, etc for your examination',
         ],
-        contact: [
-            '01987654321',
-            '01123456789',
-            '01876543219',
-        ],
-        email: 'example@mail.com'
-    }
+        contact: ['01987654321', '01123456789', '01876543219'],
+        email: 'example@mail.com',
+    };
 
     const currentDate = new Date().toISOString().split('T')[0];
 
@@ -107,9 +107,9 @@ export default function TalentPoolScholarshipForm() {
             {
                 name: '',
                 age: '',
-                class: '',  // For students, specify their class/grade
-                occupation: '' // For non-students, specify their occupation
-            }
+                class: '', // For students, specify their class/grade
+                occupation: '', // For non-students, specify their occupation
+            },
         ],
         extracurricularSkills: '',
         futureThoughtsAboutOurOrganization: '',
@@ -118,17 +118,24 @@ export default function TalentPoolScholarshipForm() {
     const validationSchema = Yup.object().shape({
         applicantNameBn: Yup.string()
             .required('Applicant name (Bangla) is required')
-            .matches(/^[\u0980-\u09FF\s]+$/, 'Applicant name must be in Bangla'),
+            .matches(
+                /^[\u0980-\u09FF\s]+$/,
+                'Applicant name must be in Bangla'
+            ),
 
-        applicantNameEn: Yup.string()
-            .required('Applicant name (English) is required'),
+        applicantNameEn: Yup.string().required(
+            'Applicant name (English) is required'
+        ),
 
         dob: Yup.date()
             .required('Date of birth is required')
             .max(new Date(), 'Date of birth cannot be in the future'),
 
         bloodGroup: Yup.string()
-            .oneOf(['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'], 'Invalid blood group')
+            .oneOf(
+                ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'],
+                'Invalid blood group'
+            )
             .required('Blood group is required'),
 
         fatherName: Yup.string().required("Father's name is required"),
@@ -139,15 +146,25 @@ export default function TalentPoolScholarshipForm() {
 
         contact: Yup.string()
             .required('Contact number is required')
-            .matches(/^(?:\+88|88)?01[3-9]\d{8}$/, 'Invalid Bangladeshi phone number'),
+            .matches(
+                /^(?:\+88|88)?01[3-9]\d{8}$/,
+                'Invalid Bangladeshi phone number'
+            ),
 
         image: Yup.mixed()
             .required('Image is required')
             .test('fileType', 'Only image files are allowed', (value) => {
-                return value && ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
+                return (
+                    value &&
+                    ['image/jpeg', 'image/png', 'image/jpg'].includes(
+                        value.type
+                    )
+                );
             }),
 
-        fatherOrGuardianOccupation: Yup.string().required("Occupation is required"),
+        fatherOrGuardianOccupation: Yup.string().required(
+            'Occupation is required'
+        ),
         fatherOrGuardianMonthlyIncome: Yup.number()
             .typeError('Monthly income must be a number')
             .required('Monthly income is required'),
@@ -172,8 +189,12 @@ export default function TalentPoolScholarshipForm() {
             } else {
                 return Yup.object().shape({
                     village: Yup.string().required('Village is required'),
-                    postOffice: Yup.string().required('Post office is required'),
-                    subdistrict: Yup.string().required('Subdistrict is required'),
+                    postOffice: Yup.string().required(
+                        'Post office is required'
+                    ),
+                    subdistrict: Yup.string().required(
+                        'Subdistrict is required'
+                    ),
                     district: Yup.string().required('District is required'),
                 });
             }
@@ -184,10 +205,11 @@ export default function TalentPoolScholarshipForm() {
             if (parent.hasPreviousScholarship) {
                 return Yup.number()
                     .typeError('Previous scholarship amount must be a number')
-                    .required('Scholarship amount is required')
+                    .required('Scholarship amount is required');
             } else {
-                return Yup.number()
-                    .typeError('Previous scholarship amount must be a number')
+                return Yup.number().typeError(
+                    'Previous scholarship amount must be a number'
+                );
             }
         }),
 
@@ -212,17 +234,18 @@ export default function TalentPoolScholarshipForm() {
                 .required('Total marks are required'),
         }),
 
-
-        lastFinalExaminationResults: Yup.array().of(
-            Yup.object({
-                subject: Yup.string().required('Subject name is required'),
-                marks: Yup.number()
-                    .typeError('Marks must be a number')
-                    .required('Marks are required')
-                    .min(0, 'Marks cannot be negative')
-                    .max(100, 'Marks cannot exceed 100')
-            })
-        ).min(1, 'At least one subject is required'),
+        lastFinalExaminationResults: Yup.array()
+            .of(
+                Yup.object({
+                    subject: Yup.string().required('Subject name is required'),
+                    marks: Yup.number()
+                        .typeError('Marks must be a number')
+                        .required('Marks are required')
+                        .min(0, 'Marks cannot be negative')
+                        .max(100, 'Marks cannot exceed 100'),
+                })
+            )
+            .min(1, 'At least one subject is required'),
 
         applicantBackDetails: Yup.object().shape({
             bankName: Yup.string().nullable(),
@@ -257,7 +280,7 @@ export default function TalentPoolScholarshipForm() {
 
         futureThoughtsAboutOurOrganization: Yup.string()
             .required('Please share your thoughts about our organization')
-            .max(300, 'Thoughts should not exceed 300 characters')
+            .max(300, 'Thoughts should not exceed 300 characters'),
     });
 
     const submit = (data) => {
@@ -282,16 +305,23 @@ export default function TalentPoolScholarshipForm() {
 
     return (
         <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
-
-            <div className='flex flex-col items-center justify-center text-base'>
-                <p className='text-xl md:text-2xl text-primary uppercase font-bold'>{formInfo?.organizer?.name}</p>
-                <p className='font-bold'>{formInfo?.organizer?.address}</p>
-                <p className='font-bold'>Since - {formInfo?.organizer?.founded}</p>
-                <p className='text-lg md:text-xl font-bold'>{formInfo?.formTitle}</p>
-                <p className='text-lg md:text-xl border-4 mt-2 border-double p-2 w-fit'>{formInfo?.formName}</p>
+            <div className="flex flex-col items-center justify-center text-base">
+                <p className="text-xl md:text-2xl text-primary uppercase font-bold">
+                    {formInfo?.organizer?.name}
+                </p>
+                <p className="font-bold">{formInfo?.organizer?.address}</p>
+                <p className="font-bold">
+                    Since - {formInfo?.organizer?.founded}
+                </p>
+                <p className="text-lg md:text-xl font-bold">
+                    {formInfo?.formTitle}
+                </p>
+                <p className="text-lg md:text-xl border-4 mt-2 border-double p-2 w-fit">
+                    {formInfo?.formName}
+                </p>
             </div>
 
-            <div className='flex items-center justify-between'>
+            <div className="flex items-center justify-between">
                 <div>
                     <p>Date: {currentDate}</p>
                     <p>SL No: {formik?.values?.slNo && formik?.values?.slNo}</p>
@@ -306,9 +336,9 @@ export default function TalentPoolScholarshipForm() {
                             />
                             <Button
                                 type="button"
-                                size='icon'
+                                size="icon"
                                 onClick={() => clearField(formik, 'image')}
-                                className='absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full'
+                                className="absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full"
                             >
                                 <GoX />
                             </Button>
@@ -318,8 +348,11 @@ export default function TalentPoolScholarshipForm() {
             </div>
 
             <div className="grid gap-2 md:grid-cols-2 w-full">
-
-                <InputWrapper label="Applicant Name Bangla" error={formik.errors.applicantNameBn} touched={formik.touched.applicantNameBn}>
+                <InputWrapper
+                    label="Applicant Name Bangla"
+                    error={formik.errors.applicantNameBn}
+                    touched={formik.touched.applicantNameBn}
+                >
                     <Input
                         name="applicantNameBn"
                         placeholder="Applicant Name Bangla"
@@ -329,17 +362,25 @@ export default function TalentPoolScholarshipForm() {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Image" error={formik.errors.image} touched={formik.touched.image}>
+                <InputWrapper
+                    label="Image"
+                    error={formik.errors.image}
+                    touched={formik.touched.image}
+                >
                     <Input
                         name="image"
                         type="file"
                         accept="image/*"
-                        onChange={handleImageChange(formik, "image")}
+                        onChange={handleImageChange(formik, 'image')}
                         onBlur={formik.handleBlur}
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Applicant Name English" error={formik.errors.applicantNameEn} touched={formik.touched.applicantNameEn}>
+                <InputWrapper
+                    label="Applicant Name English"
+                    error={formik.errors.applicantNameEn}
+                    touched={formik.touched.applicantNameEn}
+                >
                     <Input
                         name="applicantNameEn"
                         placeholder="Applicant Name English"
@@ -349,7 +390,11 @@ export default function TalentPoolScholarshipForm() {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Date of Birth" error={formik.errors.dob} touched={formik.touched.dob}>
+                <InputWrapper
+                    label="Date of Birth"
+                    error={formik.errors.dob}
+                    touched={formik.touched.dob}
+                >
                     <Input
                         name="dob"
                         type="date"
@@ -359,7 +404,11 @@ export default function TalentPoolScholarshipForm() {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Blood Group" error={formik.errors.bloodGroup} touched={formik.touched.bloodGroup}>
+                <InputWrapper
+                    label="Blood Group"
+                    error={formik.errors.bloodGroup}
+                    touched={formik.touched.bloodGroup}
+                >
                     <Input
                         name="bloodGroup"
                         placeholder="Blood Group"
@@ -369,7 +418,11 @@ export default function TalentPoolScholarshipForm() {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Father's Name" error={formik.errors.fatherName} touched={formik.touched.fatherName}>
+                <InputWrapper
+                    label="Father's Name"
+                    error={formik.errors.fatherName}
+                    touched={formik.touched.fatherName}
+                >
                     <Input
                         name="fatherName"
                         placeholder="Father's Name"
@@ -379,7 +432,11 @@ export default function TalentPoolScholarshipForm() {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Mother's Name" error={formik.errors.motherName} touched={formik.touched.motherName}>
+                <InputWrapper
+                    label="Mother's Name"
+                    error={formik.errors.motherName}
+                    touched={formik.touched.motherName}
+                >
                     <Input
                         name="motherName"
                         placeholder="Mother's Name"
@@ -389,7 +446,11 @@ export default function TalentPoolScholarshipForm() {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Alternative Guardian Name" error={formik.errors.alternativeGuardianName} touched={formik.touched.alternativeGuardianName}>
+                <InputWrapper
+                    label="Alternative Guardian Name"
+                    error={formik.errors.alternativeGuardianName}
+                    touched={formik.touched.alternativeGuardianName}
+                >
                     <Input
                         name="alternativeGuardianName"
                         placeholder="Alternative Guardian Name"
@@ -399,7 +460,11 @@ export default function TalentPoolScholarshipForm() {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Alternative Guardian Address" error={formik.errors.alternativeGuardianAddress} touched={formik.touched.alternativeGuardianAddress}>
+                <InputWrapper
+                    label="Alternative Guardian Address"
+                    error={formik.errors.alternativeGuardianAddress}
+                    touched={formik.touched.alternativeGuardianAddress}
+                >
                     <Input
                         name="alternativeGuardianAddress"
                         placeholder="Alternative Guardian Address"
@@ -409,7 +474,11 @@ export default function TalentPoolScholarshipForm() {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Contact Number" error={formik.errors.contact} touched={formik.touched.contact}>
+                <InputWrapper
+                    label="Contact Number"
+                    error={formik.errors.contact}
+                    touched={formik.touched.contact}
+                >
                     <Input
                         name="contact"
                         placeholder="Phone"
@@ -419,7 +488,11 @@ export default function TalentPoolScholarshipForm() {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Father / Guardian's Occupation" error={formik.errors.fatherOrGuardianOccupation} touched={formik.touched.fatherOrGuardianOccupation}>
+                <InputWrapper
+                    label="Father / Guardian's Occupation"
+                    error={formik.errors.fatherOrGuardianOccupation}
+                    touched={formik.touched.fatherOrGuardianOccupation}
+                >
                     <Input
                         name="fatherOrGuardianOccupation"
                         placeholder="Occupation"
@@ -429,7 +502,11 @@ export default function TalentPoolScholarshipForm() {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Father / Guardian's Monthly Income" error={formik.errors.fatherOrGuardianMonthlyIncome} touched={formik.touched.fatherOrGuardianMonthlyIncome}>
+                <InputWrapper
+                    label="Father / Guardian's Monthly Income"
+                    error={formik.errors.fatherOrGuardianMonthlyIncome}
+                    touched={formik.touched.fatherOrGuardianMonthlyIncome}
+                >
                     <Input
                         name="fatherOrGuardianMonthlyIncome"
                         placeholder="Monthly Income"
@@ -441,33 +518,45 @@ export default function TalentPoolScholarshipForm() {
             </div>
 
             {/* Permanent Address */}
-            <PageTitle title='Permanent Address' back={false}/>
+            <PageTitle title="Permanent Address" back={false} />
             <div className="grid gap-2 md:grid-cols-2">
-                {['village', 'postOffice', 'subdistrict', 'district'].map((field) => (
-                    <InputWrapper
-                        key={field}
-                        label={field.charAt(0).toUpperCase() + field.slice(1)}
-                        error={formik.errors?.permanentAddress?.[field]}
-                        touched={formik.touched?.permanentAddress?.[field]}
-                    >
-                        <Input
-                            name={`permanentAddress.${field}`}
-                            placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                            value={formik.values.permanentAddress[field]}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                        />
-                    </InputWrapper>
-                ))}
+                {['village', 'postOffice', 'subdistrict', 'district'].map(
+                    (field) => (
+                        <InputWrapper
+                            key={field}
+                            label={
+                                field.charAt(0).toUpperCase() + field.slice(1)
+                            }
+                            error={formik.errors?.permanentAddress?.[field]}
+                            touched={formik.touched?.permanentAddress?.[field]}
+                        >
+                            <Input
+                                name={`permanentAddress.${field}`}
+                                placeholder={
+                                    field.charAt(0).toUpperCase() +
+                                    field.slice(1)
+                                }
+                                value={formik.values.permanentAddress[field]}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                        </InputWrapper>
+                    )
+                )}
             </div>
 
             {/* Checkbox for current address */}
-            <div className='flex items-center space-x-10'>
-                <PageTitle title='Current Address' back={false}/>
-                <label className='flex items-center space-x-2'>
+            <div className="flex items-center space-x-10">
+                <PageTitle title="Current Address" back={false} />
+                <label className="flex items-center space-x-2">
                     <Checkbox
-                        checked={formik.values.isCurrentAddressSameAsPermanentAddress}
-                        onCheckedChange={handleCheckboxChange(formik, "isCurrentAddressSameAsPermanentAddress")}
+                        checked={
+                            formik.values.isCurrentAddressSameAsPermanentAddress
+                        }
+                        onCheckedChange={handleCheckboxChange(
+                            formik,
+                            'isCurrentAddressSameAsPermanentAddress'
+                        )}
                     />
                     <span>Same as Permanent Address</span>
                 </label>
@@ -477,16 +566,29 @@ export default function TalentPoolScholarshipForm() {
             {!formik.values.isCurrentAddressSameAsPermanentAddress && (
                 <>
                     <div className="grid gap-2 md:grid-cols-2">
-                        {['village', 'postOffice', 'subdistrict', 'district'].map((field) => (
+                        {[
+                            'village',
+                            'postOffice',
+                            'subdistrict',
+                            'district',
+                        ].map((field) => (
                             <InputWrapper
                                 key={field}
-                                label={field.charAt(0).toUpperCase() + field.slice(1)}
+                                label={
+                                    field.charAt(0).toUpperCase() +
+                                    field.slice(1)
+                                }
                                 error={formik.errors?.currentAddress?.[field]}
-                                touched={formik.touched?.currentAddress?.[field]}
+                                touched={
+                                    formik.touched?.currentAddress?.[field]
+                                }
                             >
                                 <Input
                                     name={`currentAddress.${field}`}
-                                    placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                                    placeholder={
+                                        field.charAt(0).toUpperCase() +
+                                        field.slice(1)
+                                    }
                                     value={formik.values.currentAddress[field]}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
@@ -496,19 +598,26 @@ export default function TalentPoolScholarshipForm() {
                     </div>
                 </>
             )}
-            
+
             <div className="grid gap-2 md:grid-cols-2 w-full">
                 <InputWrapper label="Previous Scholarship ?">
                     <label className="flex items-center space-x-2 border border-border p-2 rounded-md text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                         <span>Do you have any Previous Scholarship ?</span>
                         <Checkbox
                             checked={formik.values?.hasPreviousScholarship}
-                            onCheckedChange={handleCheckboxChange(formik, "hasPreviousScholarship")}
+                            onCheckedChange={handleCheckboxChange(
+                                formik,
+                                'hasPreviousScholarship'
+                            )}
                         />
                     </label>
                 </InputWrapper>
 
-                <InputWrapper label="Previous Scholarship Amount" error={formik.errors.previousScholarshipAmount} touched={formik.touched.previousScholarshipAmount}>
+                <InputWrapper
+                    label="Previous Scholarship Amount"
+                    error={formik.errors.previousScholarshipAmount}
+                    touched={formik.touched.previousScholarshipAmount}
+                >
                     <Input
                         name="previousScholarshipAmount"
                         placeholder="Previous Scholarship Amount"
@@ -518,7 +627,11 @@ export default function TalentPoolScholarshipForm() {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="School Name" error={formik.errors?.schoolName} touched={formik.touched?.schoolName}>
+                <InputWrapper
+                    label="School Name"
+                    error={formik.errors?.schoolName}
+                    touched={formik.touched?.schoolName}
+                >
                     <ComboboxFormik
                         select="id"
                         display="name"
@@ -528,7 +641,11 @@ export default function TalentPoolScholarshipForm() {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Aim in Life" error={formik.errors.aimInLife} touched={formik.touched.aimInLife}>
+                <InputWrapper
+                    label="Aim in Life"
+                    error={formik.errors.aimInLife}
+                    touched={formik.touched.aimInLife}
+                >
                     <Input
                         name="aimInLife"
                         placeholder="Aim in Life"
@@ -540,61 +657,142 @@ export default function TalentPoolScholarshipForm() {
             </div>
 
             {/* lastFinalExaminationDetails */}
-            <div className='grid md:grid-cols-2 gap-2'>
-                {['examName', 'examYear', 'instituteName', 'boardName', 'totalMarks'].map((field) => (
-                        <InputWrapper
-                            key={field}
-                            label={field.charAt(0).toUpperCase() + field.slice(1)}
-                            error={formik.errors?.lastFinalExaminationDetails?.[field] ? String(formik.errors.lastFinalExaminationDetails[field]) : null}
-                            touched={formik.touched?.lastFinalExaminationDetails?.[field]}
-                        >
-                            <Input
-                                name={`lastFinalExaminationDetails.${field}`}
-                                placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                                value={formik.values.lastFinalExaminationDetails[field]}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                            />
-                        </InputWrapper>
-                    ))}
+            <div className="grid md:grid-cols-2 gap-2">
+                {[
+                    'examName',
+                    'examYear',
+                    'instituteName',
+                    'boardName',
+                    'totalMarks',
+                ].map((field) => (
+                    <InputWrapper
+                        key={field}
+                        label={field.charAt(0).toUpperCase() + field.slice(1)}
+                        error={
+                            formik.errors?.lastFinalExaminationDetails?.[field]
+                                ? String(
+                                      formik.errors.lastFinalExaminationDetails[
+                                          field
+                                      ]
+                                  )
+                                : null
+                        }
+                        touched={
+                            formik.touched?.lastFinalExaminationDetails?.[field]
+                        }
+                    >
+                        <Input
+                            name={`lastFinalExaminationDetails.${field}`}
+                            placeholder={
+                                field.charAt(0).toUpperCase() + field.slice(1)
+                            }
+                            value={
+                                formik.values.lastFinalExaminationDetails[field]
+                            }
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                        />
+                    </InputWrapper>
+                ))}
             </div>
 
             {/* lastFinalExaminationResult */}
             <div className="space-y-2">
                 <InputWrapper label="Subjects and Marks">
-                    {formik.values.lastFinalExaminationResults.map((result, index) => (
-                        <div key={index} className="flex gap-2 items-start justify-between">
-                            <div className='w-full'>
-                                <Input
-                                    name={`lastFinalExaminationResults[${index}].subject`}
-                                    placeholder={`Subject ${index + 1}`}
-                                    value={result.subject}
-                                    onChange={(e) => formik.setFieldValue(`lastFinalExaminationResults[${index}].subject`, e.target.value)}
-                                />
-                                <Error error={formik?.errors?.lastFinalExaminationResults?.[index]?.subject} touched={formik?.touched?.lastFinalExaminationResults?.[index]?.subject} />
+                    {formik.values.lastFinalExaminationResults.map(
+                        (result, index) => (
+                            <div
+                                key={index}
+                                className="flex gap-2 items-start justify-between"
+                            >
+                                <div className="w-full">
+                                    <Input
+                                        name={`lastFinalExaminationResults[${index}].subject`}
+                                        placeholder={`Subject ${index + 1}`}
+                                        value={result.subject}
+                                        onChange={(e) =>
+                                            formik.setFieldValue(
+                                                `lastFinalExaminationResults[${index}].subject`,
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                    <Error
+                                        error={
+                                            formik?.errors
+                                                ?.lastFinalExaminationResults?.[
+                                                index
+                                            ]?.subject
+                                        }
+                                        touched={
+                                            formik?.touched
+                                                ?.lastFinalExaminationResults?.[
+                                                index
+                                            ]?.subject
+                                        }
+                                    />
+                                </div>
+                                <div className="w-full">
+                                    <Input
+                                        name={`lastFinalExaminationResults[${index}].marks`}
+                                        placeholder="Marks"
+                                        type="number"
+                                        value={result.marks}
+                                        onChange={(e) =>
+                                            formik.setFieldValue(
+                                                `lastFinalExaminationResults[${index}].marks`,
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                    <Error
+                                        error={
+                                            formik?.errors
+                                                ?.lastFinalExaminationResults?.[
+                                                index
+                                            ]?.marks
+                                        }
+                                        touched={
+                                            formik.touched
+                                                .lastFinalExaminationResults?.[
+                                                index
+                                            ]?.marks
+                                        }
+                                    />
+                                </div>
+                                <div className="max-w-12 flex items-center">
+                                    <Remove
+                                        disabled={
+                                            formik.values
+                                                .lastFinalExaminationResults
+                                                .length === 1
+                                        }
+                                        onClick={() =>
+                                            handleArrayFieldChange(
+                                                formik,
+                                                'remove',
+                                                'lastFinalExaminationResults',
+                                                index
+                                            )
+                                        }
+                                    />
+                                </div>
                             </div>
-                            <div className='w-full'>
-                                <Input
-                                    name={`lastFinalExaminationResults[${index}].marks`}
-                                    placeholder="Marks"
-                                    type="number"
-                                    value={result.marks}
-                                    onChange={(e) => formik.setFieldValue(`lastFinalExaminationResults[${index}].marks`, e.target.value)}
-                                />
-                                <Error error={formik?.errors?.lastFinalExaminationResults?.[index]?.marks} touched={formik.touched.lastFinalExaminationResults?.[index]?.marks} />
-                            </div>
-                            <div className='max-w-12 flex items-center'>
-                                <Remove
-                                    disabled={formik.values.lastFinalExaminationResults.length === 1}
-                                    onClick={() => handleArrayFieldChange(formik, 'remove', 'lastFinalExaminationResults', index)}
-                                />
-                            </div>
-                        </div>
-                    ))}
+                        )
+                    )}
                 </InputWrapper>
-                <Add label="Add Subject" onClick={() => handleArrayFieldChange(formik, 'add', 'lastFinalExaminationResults')} />
+                <Add
+                    label="Add Subject"
+                    onClick={() =>
+                        handleArrayFieldChange(
+                            formik,
+                            'add',
+                            'lastFinalExaminationResults'
+                        )
+                    }
+                />
             </div>
-            
+
             <div className="grid gap-2 md:grid-cols-3">
                 {['bankName', 'bankBranchName', 'bKashNumber'].map((field) => (
                     <InputWrapper
@@ -605,7 +803,9 @@ export default function TalentPoolScholarshipForm() {
                     >
                         <Input
                             name={`applicantBackDetails.${field}`}
-                            placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                            placeholder={
+                                field.charAt(0).toUpperCase() + field.slice(1)
+                            }
                             value={formik.values.applicantBackDetails[field]}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -613,9 +813,13 @@ export default function TalentPoolScholarshipForm() {
                     </InputWrapper>
                 ))}
             </div>
-            
+
             <div className="grid gap-2 md:grid-cols-2 w-full">
-                <InputWrapper label="Monthly Educational Cost" error={formik.errors.monthlyEducationalCost} touched={formik.touched.monthlyEducationalCost}>
+                <InputWrapper
+                    label="Monthly Educational Cost"
+                    error={formik.errors.monthlyEducationalCost}
+                    touched={formik.touched.monthlyEducationalCost}
+                >
                     <Input
                         name="monthlyEducationalCost"
                         placeholder="Monthly Educational Cost"
@@ -625,7 +829,11 @@ export default function TalentPoolScholarshipForm() {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Total Family Member" error={formik.errors.familyMemberCount} touched={formik.touched.familyMemberCount}>
+                <InputWrapper
+                    label="Total Family Member"
+                    error={formik.errors.familyMemberCount}
+                    touched={formik.touched.familyMemberCount}
+                >
                     <Input
                         name="familyMemberCount"
                         placeholder="Total Family Member"
@@ -639,57 +847,129 @@ export default function TalentPoolScholarshipForm() {
             <div className="space-y-2">
                 <InputWrapper label="Brother and Sister Details">
                     {formik.values.siblings.map((sibling, index) => (
-                        <div key={index} className="flex gap-2 items-start justify-between">
-                            <div className='w-full'>
+                        <div
+                            key={index}
+                            className="flex gap-2 items-start justify-between"
+                        >
+                            <div className="w-full">
                                 <Input
                                     name={`siblings[${index}].name`}
                                     placeholder={`Sibling name`}
                                     value={sibling.name}
-                                    onChange={(e) => formik.setFieldValue(`siblings[${index}].name`, e.target.value)}
+                                    onChange={(e) =>
+                                        formik.setFieldValue(
+                                            `siblings[${index}].name`,
+                                            e.target.value
+                                        )
+                                    }
                                 />
-                                <Error error={formik?.errors?.siblings?.[index]?.name} touched={formik?.touched?.siblings?.[index]?.name} />
+                                <Error
+                                    error={
+                                        formik?.errors?.siblings?.[index]?.name
+                                    }
+                                    touched={
+                                        formik?.touched?.siblings?.[index]?.name
+                                    }
+                                />
                             </div>
-                            <div className='w-full'>
+                            <div className="w-full">
                                 <Input
                                     name={`siblings[${index}].age`}
                                     placeholder={`Sibling age`}
                                     value={sibling.age}
-                                    onChange={(e) => formik.setFieldValue(`siblings[${index}].age`, e.target.value)}
+                                    onChange={(e) =>
+                                        formik.setFieldValue(
+                                            `siblings[${index}].age`,
+                                            e.target.value
+                                        )
+                                    }
                                 />
-                                <Error error={formik?.errors?.siblings?.[index]?.age} touched={formik?.touched?.siblings?.[index]?.age} />
+                                <Error
+                                    error={
+                                        formik?.errors?.siblings?.[index]?.age
+                                    }
+                                    touched={
+                                        formik?.touched?.siblings?.[index]?.age
+                                    }
+                                />
                             </div>
-                            <div className='w-full'>
+                            <div className="w-full">
                                 <Input
                                     name={`siblings[${index}].class`}
                                     placeholder={`Sibling class`}
                                     value={sibling.class}
-                                    onChange={(e) => formik.setFieldValue(`siblings[${index}].class`, e.target.value)}
+                                    onChange={(e) =>
+                                        formik.setFieldValue(
+                                            `siblings[${index}].class`,
+                                            e.target.value
+                                        )
+                                    }
                                 />
-                                <Error error={formik?.errors?.siblings?.[index]?.class} touched={formik?.touched?.siblings?.[index]?.class} />
+                                <Error
+                                    error={
+                                        formik?.errors?.siblings?.[index]?.class
+                                    }
+                                    touched={
+                                        formik?.touched?.siblings?.[index]
+                                            ?.class
+                                    }
+                                />
                             </div>
-                            <div className='w-full'>
+                            <div className="w-full">
                                 <Input
                                     name={`siblings[${index}].occupation`}
                                     placeholder={`Sibling occupation`}
                                     value={sibling.occupation}
-                                    onChange={(e) => formik.setFieldValue(`siblings[${index}].occupation`, e.target.value)}
+                                    onChange={(e) =>
+                                        formik.setFieldValue(
+                                            `siblings[${index}].occupation`,
+                                            e.target.value
+                                        )
+                                    }
                                 />
-                                <Error error={formik?.errors?.siblings?.[index]?.occupation} touched={formik?.touched?.siblings?.[index]?.occupation} />
+                                <Error
+                                    error={
+                                        formik?.errors?.siblings?.[index]
+                                            ?.occupation
+                                    }
+                                    touched={
+                                        formik?.touched?.siblings?.[index]
+                                            ?.occupation
+                                    }
+                                />
                             </div>
-                            <div className='max-w-12 flex items-center'>
+                            <div className="max-w-12 flex items-center">
                                 <Remove
-                                    disabled={formik.values.siblings.length === 1}
-                                    onClick={() => handleArrayFieldChange(formik, 'remove', 'siblings', index)}
+                                    disabled={
+                                        formik.values.siblings.length === 1
+                                    }
+                                    onClick={() =>
+                                        handleArrayFieldChange(
+                                            formik,
+                                            'remove',
+                                            'siblings',
+                                            index
+                                        )
+                                    }
                                 />
                             </div>
                         </div>
                     ))}
                 </InputWrapper>
-                <Add label="Add Sibling" onClick={() => handleArrayFieldChange(formik, 'add', 'siblings')} />
+                <Add
+                    label="Add Sibling"
+                    onClick={() =>
+                        handleArrayFieldChange(formik, 'add', 'siblings')
+                    }
+                />
             </div>
 
             <div className="grid gap-2 md:grid-cols-2 w-full">
-                <InputWrapper label="Extracurricular Skills" error={formik.errors.extracurricularSkills} touched={formik.touched.extracurricularSkills}>
+                <InputWrapper
+                    label="Extracurricular Skills"
+                    error={formik.errors.extracurricularSkills}
+                    touched={formik.touched.extracurricularSkills}
+                >
                     <Input
                         name="extracurricularSkills"
                         placeholder="Monthly Educational Cost"
@@ -699,7 +979,11 @@ export default function TalentPoolScholarshipForm() {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Future Thoughts About Our Organization" error={formik.errors.futureThoughtsAboutOurOrganization} touched={formik.touched.futureThoughtsAboutOurOrganization}>
+                <InputWrapper
+                    label="Future Thoughts About Our Organization"
+                    error={formik.errors.futureThoughtsAboutOurOrganization}
+                    touched={formik.touched.futureThoughtsAboutOurOrganization}
+                >
                     <Input
                         name="futureThoughtsAboutOurOrganization"
                         placeholder="Future Thoughts About Our Organization"

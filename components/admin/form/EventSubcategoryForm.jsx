@@ -1,24 +1,24 @@
-'use client'
-import React from 'react'
-import InputWrapper from '@/components/ui/input-wrapper'
-import Reset from '@/components/button/Reset'
-import Submit from '@/components/button/Submit'
-import * as Yup from 'yup'
-import { Input } from '@/components/ui/input'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useFormik } from 'formik'
-import { fetchData, postData, updateData } from '@/util/axios'
-import apiConfig from '@/configs/apiConfig'
-import { Checkbox } from '@/components/ui/checkbox'
-import { handleCheckboxChange } from '@/util/formikHelpers'
-import ComboboxFormik from '@/components/ui/ComboboxFormik'
+'use client';
+import React from 'react';
+import InputWrapper from '@/components/ui/input-wrapper';
+import Reset from '@/components/button/Reset';
+import Submit from '@/components/button/Submit';
+import * as Yup from 'yup';
+import { Input } from '@/components/ui/input';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useFormik } from 'formik';
+import { fetchData, postData, updateData } from '@/util/axios';
+import apiConfig from '@/configs/apiConfig';
+import { Checkbox } from '@/components/ui/checkbox';
+import { handleCheckboxChange } from '@/util/formikHelpers';
+import ComboboxFormik from '@/components/ui/ComboboxFormik';
 
 export default function EventSubcategoryForm({ data }) {
     const queryClient = useQueryClient();
     const initialValues = {
         subCategory: data?.subCategory || '',
         category: data?.category || '',
-    }
+    };
 
     const validationSchema = Yup.object({
         subCategory: Yup.string().required('Required field'),
@@ -27,16 +27,19 @@ export default function EventSubcategoryForm({ data }) {
 
     const submit = async (values) => {
         if (data) {
-            await updateData(apiConfig?.UPDATE_EVENT_SUBCATEGORY + data?._id, values);
+            await updateData(
+                apiConfig?.UPDATE_EVENT_SUBCATEGORY + data?._id,
+                values
+            );
         } else {
             await postData(apiConfig?.CREATE_EVENT_SUBCATEGORY, values);
         }
-    }
+    };
 
     const reset = () => {
         formik?.resetForm();
-        queryClient.invalidateQueries(['sub-category'])
-    }
+        queryClient.invalidateQueries(['sub-category']);
+    };
 
     const formik = useFormik({
         initialValues,
@@ -50,7 +53,7 @@ export default function EventSubcategoryForm({ data }) {
         mutationKey: ['event-category'],
         mutationFn: submit,
         onSuccess: () => reset(),
-    })
+    });
 
     const { isLoading: categoryLoading, data: category } = useQuery({
         queryKey: ['category'],
@@ -58,9 +61,13 @@ export default function EventSubcategoryForm({ data }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
-            <div className='grid md:grid-cols-2 gap-2 w-full'>
-                <InputWrapper label="Subcategory" error={formik.errors?.subCategory} touched={formik.touched?.subCategory}>
+        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
+            <div className="grid md:grid-cols-2 gap-2 w-full">
+                <InputWrapper
+                    label="Subcategory"
+                    error={formik.errors?.subCategory}
+                    touched={formik.touched?.subCategory}
+                >
                     <Input
                         name="subCategory"
                         placeholder="Subcategory"
@@ -70,7 +77,11 @@ export default function EventSubcategoryForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Category" error={formik.errors?.category} touched={formik.touched?.category}>
+                <InputWrapper
+                    label="Category"
+                    error={formik.errors?.category}
+                    touched={formik.touched?.category}
+                >
                     <ComboboxFormik
                         select="_id"
                         display="category"
@@ -81,9 +92,9 @@ export default function EventSubcategoryForm({ data }) {
                 </InputWrapper>
             </div>
 
-            <div className='flex items-center space-x-2'>
+            <div className="flex items-center space-x-2">
                 <Submit disabled={mutation.isPending} />
             </div>
         </form>
-    )
+    );
 }

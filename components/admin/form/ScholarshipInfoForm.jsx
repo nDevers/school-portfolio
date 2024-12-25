@@ -1,37 +1,37 @@
-'use client'
-import React from 'react'
-import InputWrapper from '@/components/ui/input-wrapper'
-import Reset from '@/components/button/Reset'
-import Submit from '@/components/button/Submit'
-import * as Yup from 'yup'
-import { Input } from '@/components/ui/input'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { useFormik } from 'formik'
-import { fetchData, postData, updateData } from '@/util/axios'
-import apiConfig from '@/configs/apiConfig'
-import ComboboxFormikMultiSelect from '@/components/ui/ComboboxFormikMultiSelect'
-import { toast } from 'sonner'
-import { handleArrayFieldChange } from '@/util/formikHelpers'
-import { Error } from '@/components/ui/error'
-import Remove from '@/components/button/Remove'
-import Add from '@/components/button/Add'
+'use client';
+import React from 'react';
+import InputWrapper from '@/components/ui/input-wrapper';
+import Reset from '@/components/button/Reset';
+import Submit from '@/components/button/Submit';
+import * as Yup from 'yup';
+import { Input } from '@/components/ui/input';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useFormik } from 'formik';
+import { fetchData, postData, updateData } from '@/util/axios';
+import apiConfig from '@/configs/apiConfig';
+import ComboboxFormikMultiSelect from '@/components/ui/ComboboxFormikMultiSelect';
+import { toast } from 'sonner';
+import { handleArrayFieldChange } from '@/util/formikHelpers';
+import { Error } from '@/components/ui/error';
+import Remove from '@/components/button/Remove';
+import Add from '@/components/button/Add';
 
 export default function ScholarshipInfoForm({ data }) {
     const initialValues = {
         formTitle: data?.formTitle || '',
         formName: data?.formName || '',
         venue: data?.venue || '',
-        lastDate: data?.lastDate.split("T")[0] || '',
+        lastDate: data?.lastDate.split('T')[0] || '',
         eligibleSchools: data?.eligibleSchools || [],
         exam: data?.exam || [
             {
                 subject: '',
                 date: '',
-                time: ''
-            }
+                time: '',
+            },
         ],
         note: data?.note || [],
-    }
+    };
 
     const validationSchema = Yup.object({
         formTitle: Yup.string().required('Required field'),
@@ -44,13 +44,14 @@ export default function ScholarshipInfoForm({ data }) {
             .of(Yup.string().required('Each school must be a valid string'))
             .min(1, 'At least one eligible school is required')
             .required('Required field'),
-        exam: Yup.array().of(
+        exam: Yup.array()
+            .of(
                 Yup.object({
                     subject: Yup.string().required('Subject is required'),
                     date: Yup.date()
                         .required('Date is required')
                         .min(new Date(), 'Date cannot be in the past'),
-                    time: Yup.string().required('Time is required')
+                    time: Yup.string().required('Time is required'),
                 })
             )
             .min(1, 'At least one exam entry is required')
@@ -60,15 +61,18 @@ export default function ScholarshipInfoForm({ data }) {
 
     const submit = async (values) => {
         if (data) {
-            await updateData(apiConfig?.UPDATE_SCHOLARSHIP_FORM + data?._id, values);
+            await updateData(
+                apiConfig?.UPDATE_SCHOLARSHIP_FORM + data?._id,
+                values
+            );
         } else {
             await postData(apiConfig?.CREATE_SCHOLARSHIP_FORM, values);
         }
-    }
+    };
 
     const reset = () => {
         formik?.resetForm();
-    }
+    };
 
     const formik = useFormik({
         initialValues,
@@ -82,18 +86,24 @@ export default function ScholarshipInfoForm({ data }) {
         mutationKey: ['scholarshipInfo'],
         mutationFn: submit,
         onSuccess: () => reset(),
-    })
-
-    const { isLoading: eligibleSchoolLoading, data: eligibleSchool } = useQuery({
-        queryKey: ['eligibleSchool'],
-        queryFn: async () => await fetchData(apiConfig?.GET_ELIGIBLE_SCHOOL),
     });
 
-    return (
-        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
-            <div className='grid md:grid-cols-2 gap-2 w-full'>
+    const { isLoading: eligibleSchoolLoading, data: eligibleSchool } = useQuery(
+        {
+            queryKey: ['eligibleSchool'],
+            queryFn: async () =>
+                await fetchData(apiConfig?.GET_ELIGIBLE_SCHOOL),
+        }
+    );
 
-                <InputWrapper label="Form Title" error={formik.errors?.formTitle} touched={formik.touched?.formTitle}>
+    return (
+        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
+            <div className="grid md:grid-cols-2 gap-2 w-full">
+                <InputWrapper
+                    label="Form Title"
+                    error={formik.errors?.formTitle}
+                    touched={formik.touched?.formTitle}
+                >
                     <Input
                         name="formTitle"
                         placeholder="Form Title"
@@ -103,7 +113,11 @@ export default function ScholarshipInfoForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Form Name" error={formik.errors?.formName} touched={formik.touched?.formName}>
+                <InputWrapper
+                    label="Form Name"
+                    error={formik.errors?.formName}
+                    touched={formik.touched?.formName}
+                >
                     <Input
                         name="formName"
                         placeholder="Form Name"
@@ -113,7 +127,11 @@ export default function ScholarshipInfoForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Venue" error={formik.errors?.venue} touched={formik.touched?.venue}>
+                <InputWrapper
+                    label="Venue"
+                    error={formik.errors?.venue}
+                    touched={formik.touched?.venue}
+                >
                     <Input
                         name="venue"
                         placeholder="Venue"
@@ -123,7 +141,11 @@ export default function ScholarshipInfoForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Last Date" error={formik.errors?.lastDate} touched={formik.touched?.lastDate}>
+                <InputWrapper
+                    label="Last Date"
+                    error={formik.errors?.lastDate}
+                    touched={formik.touched?.lastDate}
+                >
                     <Input
                         type="date"
                         name="lastDate"
@@ -133,7 +155,12 @@ export default function ScholarshipInfoForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Eligible Schools" error={formik.errors?.eligibleSchools} touched={formik.touched?.eligibleSchools} className={'md:col-span-2'}>
+                <InputWrapper
+                    label="Eligible Schools"
+                    error={formik.errors?.eligibleSchools}
+                    touched={formik.touched?.eligibleSchools}
+                    className={'md:col-span-2'}
+                >
                     <ComboboxFormikMultiSelect
                         select="_id"
                         display="name"
@@ -146,76 +173,156 @@ export default function ScholarshipInfoForm({ data }) {
                 <div className="space-y-2 md:col-span-2">
                     <InputWrapper label="Exam Details">
                         {formik?.values?.exam.map((exam, index) => (
-                            <div key={index} className="flex gap-2 items-start justify-between">
-                                <div className='w-full'>
+                            <div
+                                key={index}
+                                className="flex gap-2 items-start justify-between"
+                            >
+                                <div className="w-full">
                                     <Input
                                         name={`exam[${index}].subject`}
                                         placeholder={`Subject Name ${index + 1}`}
                                         value={exam.subject}
-                                        onChange={(e) => formik?.setFieldValue(`exam[${index}].subject`, e.target.value)}
+                                        onChange={(e) =>
+                                            formik?.setFieldValue(
+                                                `exam[${index}].subject`,
+                                                e.target.value
+                                            )
+                                        }
                                     />
-                                    <Error error={formik?.errors.exam?.[index]?.subject} touched={formik?.touched.exam?.[index]?.subject} />
+                                    <Error
+                                        error={
+                                            formik?.errors.exam?.[index]
+                                                ?.subject
+                                        }
+                                        touched={
+                                            formik?.touched.exam?.[index]
+                                                ?.subject
+                                        }
+                                    />
                                 </div>
-                                <div className='w-full'>
+                                <div className="w-full">
                                     <Input
-                                        type='date'
+                                        type="date"
                                         name={`exam[${index}].date`}
                                         value={exam.date}
-                                        onChange={(e) => formik?.setFieldValue(`exam[${index}].date`, e.target.value)}
+                                        onChange={(e) =>
+                                            formik?.setFieldValue(
+                                                `exam[${index}].date`,
+                                                e.target.value
+                                            )
+                                        }
                                     />
-                                    <Error error={formik?.errors.exam?.[index]?.date} touched={formik?.touched.exam?.[index]?.date} />
+                                    <Error
+                                        error={
+                                            formik?.errors.exam?.[index]?.date
+                                        }
+                                        touched={
+                                            formik?.touched.exam?.[index]?.date
+                                        }
+                                    />
                                 </div>
-                                <div className='w-full'>
+                                <div className="w-full">
                                     <Input
-                                        type='time'
+                                        type="time"
                                         name={`exam[${index}].time`}
                                         value={exam.time}
-                                        onChange={(e) => formik?.setFieldValue(`exam[${index}].time`, e.target.value)}
+                                        onChange={(e) =>
+                                            formik?.setFieldValue(
+                                                `exam[${index}].time`,
+                                                e.target.value
+                                            )
+                                        }
                                     />
-                                    <Error error={formik?.errors.exam?.[index]?.time} touched={formik?.touched.exam?.[index]?.time} />
+                                    <Error
+                                        error={
+                                            formik?.errors.exam?.[index]?.time
+                                        }
+                                        touched={
+                                            formik?.touched.exam?.[index]?.time
+                                        }
+                                    />
                                 </div>
-                                <div className='max-w-12 flex items-center'>
+                                <div className="max-w-12 flex items-center">
                                     <Remove
-                                        disabled={formik?.values.exam.length === 1}
-                                        onClick={() => handleArrayFieldChange(formik, 'remove', 'exam', index)}
+                                        disabled={
+                                            formik?.values.exam.length === 1
+                                        }
+                                        onClick={() =>
+                                            handleArrayFieldChange(
+                                                formik,
+                                                'remove',
+                                                'exam',
+                                                index
+                                            )
+                                        }
                                     />
                                 </div>
                             </div>
                         ))}
                     </InputWrapper>
-                    <Add label="Add Exam" onClick={() => handleArrayFieldChange(formik, 'add', 'exam')} />
+                    <Add
+                        label="Add Exam"
+                        onClick={() =>
+                            handleArrayFieldChange(formik, 'add', 'exam')
+                        }
+                    />
                 </div>
 
                 <div className="space-y-2 md:col-span-2">
                     <InputWrapper label="Exam Details">
                         {formik?.values?.note.map((note, index) => (
-                            <div key={index} className="flex gap-2 items-start justify-between">
-                                <div className='w-full'>
+                            <div
+                                key={index}
+                                className="flex gap-2 items-start justify-between"
+                            >
+                                <div className="w-full">
                                     <Input
                                         name={`note[${index}]`}
                                         placeholder={`Note ${index + 1}`}
                                         value={note}
-                                        onChange={(e) => formik?.setFieldValue(`note[${index}]`, e.target.value)}
+                                        onChange={(e) =>
+                                            formik?.setFieldValue(
+                                                `note[${index}]`,
+                                                e.target.value
+                                            )
+                                        }
                                     />
-                                    <Error error={formik?.errors.note?.[index]} touched={formik?.touched.note?.[index]} />
+                                    <Error
+                                        error={formik?.errors.note?.[index]}
+                                        touched={formik?.touched.note?.[index]}
+                                    />
                                 </div>
-                                <div className='max-w-12 flex items-center'>
+                                <div className="max-w-12 flex items-center">
                                     <Remove
-                                        disabled={formik?.values.note.length === 1}
-                                        onClick={() => handleArrayFieldChange(formik, 'remove', 'note', index)}
+                                        disabled={
+                                            formik?.values.note.length === 1
+                                        }
+                                        onClick={() =>
+                                            handleArrayFieldChange(
+                                                formik,
+                                                'remove',
+                                                'note',
+                                                index
+                                            )
+                                        }
                                     />
                                 </div>
                             </div>
                         ))}
                     </InputWrapper>
-                    <Add label="Add Exam" onClick={() => handleArrayFieldChange(formik, 'add', 'note')} />
+                    <Add
+                        label="Add Exam"
+                        onClick={() =>
+                            handleArrayFieldChange(formik, 'add', 'note')
+                        }
+                    />
                 </div>
             </div>
 
-            <div className='flex items-center space-x-2'>
+            <div className="flex items-center space-x-2">
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending} />
             </div>
         </form>
-    )
+    );
 }

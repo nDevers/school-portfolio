@@ -1,6 +1,6 @@
-import PageTitle from '@/components/admin/common/PageTitle'
+import PageTitle from '@/components/admin/common/PageTitle';
 import FileCard from '@/components/card/FileCard';
-import React from 'react'
+import React from 'react';
 
 export default function NoticePage() {
     const data = [
@@ -39,11 +39,11 @@ export default function NoticePage() {
         <div className="w-full h-full max-w-7xl mx-auto sp my-6 space-y-6">
             <PageTitle title="নোটিশ" />
 
-            <div className='grid gap-2 md:gap-4 mb-4'>
-                {data?.map(item => (
+            <div className="grid gap-2 md:gap-4 mb-4">
+                {data?.map((item) => (
                     <FileCard key={item?.id} item={item} />
                 ))}
             </div>
         </div>
-    )
+    );
 }

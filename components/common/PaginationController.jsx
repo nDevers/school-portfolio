@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import {
     Pagination,
     PaginationContent,
@@ -7,19 +7,26 @@ import {
     PaginationLink,
     PaginationNext,
     PaginationPrevious,
-} from "@/components/ui/pagination";
-import { useCallback, useMemo } from "react";
-import { usePathname, useRouter } from "next/navigation";
+} from '@/components/ui/pagination';
+import { useCallback, useMemo } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 
-export default function PaginationController({ currentPage, totalPages, itemsPerPage }) {
+export default function PaginationController({
+    currentPage,
+    totalPages,
+    itemsPerPage,
+}) {
     const router = useRouter();
     const pathname = usePathname();
 
     // Function to navigate to a specific page
-    const goToPage = useCallback((page) => {
-        if (page < 1 || page > totalPages) return;
-        router.push(`${pathname}?page=${page}&items=${itemsPerPage}`);
-    }, [router, pathname, totalPages, itemsPerPage]);
+    const goToPage = useCallback(
+        (page) => {
+            if (page < 1 || page > totalPages) return;
+            router.push(`${pathname}?page=${page}&items=${itemsPerPage}`);
+        },
+        [router, pathname, totalPages, itemsPerPage]
+    );
 
     // Function to generate page numbers with ellipsis
     const generatePageNumbers = () => {
@@ -29,17 +36,39 @@ export default function PaginationController({ currentPage, totalPages, itemsPer
         if (totalPages <= visiblePages + 2) {
             for (let i = 1; i <= totalPages; i++) pages.push(i);
         } else if (currentPage <= visiblePages) {
-            pages.push(...Array.from({ length: visiblePages }, (_, i) => i + 1), '...', totalPages);
+            pages.push(
+                ...Array.from({ length: visiblePages }, (_, i) => i + 1),
+                '...',
+                totalPages
+            );
         } else if (currentPage >= totalPages - visiblePages + 1) {
-            pages.push(1, '...', ...Array.from({ length: visiblePages }, (_, i) => totalPages - visiblePages + i + 1));
+            pages.push(
+                1,
+                '...',
+                ...Array.from(
+                    { length: visiblePages },
+                    (_, i) => totalPages - visiblePages + i + 1
+                )
+            );
         } else {
-            pages.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages);
+            pages.push(
+                1,
+                '...',
+                currentPage - 1,
+                currentPage,
+                currentPage + 1,
+                '...',
+                totalPages
+            );
         }
 
         return pages;
     };
 
-    const pages = useMemo(() => generatePageNumbers(), [currentPage, totalPages]);
+    const pages = useMemo(
+        () => generatePageNumbers(),
+        [currentPage, totalPages]
+    );
 
     return (
         <Pagination className={'mt-20'}>
@@ -49,7 +78,11 @@ export default function PaginationController({ currentPage, totalPages, itemsPer
                         href="#"
                         onClick={() => goToPage(currentPage - 1)}
                         aria-label="Previous page"
-                        className={currentPage <= 1 ? 'pointer-events-none cursor-not-allowed' : 'cursor-pointer'}
+                        className={
+                            currentPage <= 1
+                                ? 'pointer-events-none cursor-not-allowed'
+                                : 'cursor-pointer'
+                        }
                     />
                 </PaginationItem>
 
@@ -61,8 +94,14 @@ export default function PaginationController({ currentPage, totalPages, itemsPer
                             <PaginationLink
                                 href="#"
                                 onClick={() => goToPage(page)}
-                                aria-current={currentPage === page ? 'page' : undefined}
-                                className={currentPage === page ? 'bg-primary hover:bg-primary' : ''}
+                                aria-current={
+                                    currentPage === page ? 'page' : undefined
+                                }
+                                className={
+                                    currentPage === page
+                                        ? 'bg-primary hover:bg-primary'
+                                        : ''
+                                }
                             >
                                 {page}
                             </PaginationLink>
@@ -72,10 +111,14 @@ export default function PaginationController({ currentPage, totalPages, itemsPer
 
                 <PaginationItem>
                     <PaginationNext
-                        href='#'
+                        href="#"
                         onClick={() => goToPage(currentPage + 1)}
                         aria-label="Previous page"
-                        className={currentPage === totalPages ? 'pointer-events-none cursor-not-allowed' : 'cursor-pointer'}
+                        className={
+                            currentPage === totalPages
+                                ? 'pointer-events-none cursor-not-allowed'
+                                : 'cursor-pointer'
+                        }
                     />
                 </PaginationItem>
             </PaginationContent>

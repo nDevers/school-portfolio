@@ -1,18 +1,18 @@
-'use client'
-import React from 'react'
-import InputWrapper from '@/components/ui/input-wrapper'
-import ComboboxFormik from '@/components/ui/ComboboxFormik'
-import Reset from '@/components/button/Reset'
-import Submit from '@/components/button/Submit'
-import * as Yup from 'yup'
-import { toast } from 'sonner'
-import { Input } from '@/components/ui/input'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { useFormik } from 'formik'
-import { Checkbox } from '@/components/ui/checkbox'
-import { handleCheckboxChange } from '@/util/formikHelpers'
-import { fetchData, postData, updateData } from '@/util/axios'
-import apiConfig from '@/configs/apiConfig'
+'use client';
+import React from 'react';
+import InputWrapper from '@/components/ui/input-wrapper';
+import ComboboxFormik from '@/components/ui/ComboboxFormik';
+import Reset from '@/components/button/Reset';
+import Submit from '@/components/button/Submit';
+import * as Yup from 'yup';
+import { toast } from 'sonner';
+import { Input } from '@/components/ui/input';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useFormik } from 'formik';
+import { Checkbox } from '@/components/ui/checkbox';
+import { handleCheckboxChange } from '@/util/formikHelpers';
+import { fetchData, postData, updateData } from '@/util/axios';
+import apiConfig from '@/configs/apiConfig';
 
 export default function DonationForm({ data }) {
     const initialValues = {
@@ -23,8 +23,8 @@ export default function DonationForm({ data }) {
         bankDetails: data?.bankDetails || {
             bankName: '',
             branchName: '',
-        }
-    }
+        },
+    };
 
     const validationSchema = Yup.object({
         memberId: Yup.string().required('Required field'),
@@ -36,7 +36,9 @@ export default function DonationForm({ data }) {
             if (parent.hasBackDetails) {
                 return Yup.object().shape({
                     bankName: Yup.string().required('Bank name is required'),
-                    branchName: Yup.string().required('Branch name is required'),
+                    branchName: Yup.string().required(
+                        'Branch name is required'
+                    ),
                 });
             } else {
                 return Yup.object().shape({
@@ -53,11 +55,11 @@ export default function DonationForm({ data }) {
         } else {
             await postData(apiConfig?.CREATE_DONATION, values);
         }
-    }
+    };
 
     const reset = () => {
-        formik?.resetForm()
-    }
+        formik?.resetForm();
+    };
 
     const formik = useFormik({
         initialValues,
@@ -71,7 +73,7 @@ export default function DonationForm({ data }) {
         mutationKey: ['donation'],
         mutationFn: submit,
         onSuccess: () => reset(),
-    })
+    });
 
     const { isLoading: memberLoading, data: member } = useQuery({
         queryKey: ['member'],
@@ -84,10 +86,13 @@ export default function DonationForm({ data }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
-            <div className='grid md:grid-cols-3 gap-2 w-full'>
-
-                <InputWrapper label="Donor Name" error={formik.errors?.memberId} touched={formik.touched?.memberId}>
+        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
+            <div className="grid md:grid-cols-3 gap-2 w-full">
+                <InputWrapper
+                    label="Donor Name"
+                    error={formik.errors?.memberId}
+                    touched={formik.touched?.memberId}
+                >
                     <ComboboxFormik
                         select="_id"
                         display="name"
@@ -97,10 +102,14 @@ export default function DonationForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Amount" error={formik.errors?.amount} touched={formik.touched?.amount}>
+                <InputWrapper
+                    label="Amount"
+                    error={formik.errors?.amount}
+                    touched={formik.touched?.amount}
+                >
                     <Input
                         name="amount"
-                        type='number'
+                        type="number"
                         placeholder="Amount"
                         value={formik.values?.amount}
                         onChange={formik.handleChange}
@@ -108,7 +117,11 @@ export default function DonationForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Payment Method" error={formik.errors?.paymentMethodId} touched={formik.touched?.paymentMethodId}>
+                <InputWrapper
+                    label="Payment Method"
+                    error={formik.errors?.paymentMethodId}
+                    touched={formik.touched?.paymentMethodId}
+                >
                     <ComboboxFormik
                         select="_id"
                         display="type"
@@ -117,14 +130,16 @@ export default function DonationForm({ data }) {
                         data={method}
                     />
                 </InputWrapper>
-
             </div>
 
-            <label className='w-fit flex items-center space-x-2'>
+            <label className="w-fit flex items-center space-x-2">
                 <span>Has bank details</span>
                 <Checkbox
                     checked={formik.values.hasBankDetails}
-                    onCheckedChange={handleCheckboxChange(formik, "hasBankDetails")}
+                    onCheckedChange={handleCheckboxChange(
+                        formik,
+                        'hasBankDetails'
+                    )}
                 />
             </label>
 
@@ -134,13 +149,19 @@ export default function DonationForm({ data }) {
                         {['bankName', 'branchName'].map((field) => (
                             <InputWrapper
                                 key={field}
-                                label={field.charAt(0).toUpperCase() + field.slice(1)}
+                                label={
+                                    field.charAt(0).toUpperCase() +
+                                    field.slice(1)
+                                }
                                 error={formik.errors?.bankDetails?.[field]}
                                 touched={formik.touched?.bankDetails?.[field]}
                             >
                                 <Input
                                     name={`bankDetails.${field}`}
-                                    placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                                    placeholder={
+                                        field.charAt(0).toUpperCase() +
+                                        field.slice(1)
+                                    }
                                     value={formik.values.bankDetails[field]}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
@@ -151,10 +172,10 @@ export default function DonationForm({ data }) {
                 </>
             )}
 
-            <div className='flex items-center space-x-2'>
+            <div className="flex items-center space-x-2">
                 <Reset onClick={reset} />
-                <Submit disabled={mutation.isPending || mutation.isSuccess}/>
+                <Submit disabled={mutation.isPending || mutation.isSuccess} />
             </div>
         </form>
-    )
+    );
 }

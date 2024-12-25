@@ -1,76 +1,63 @@
 import appConfig from '@/configs/appConfig';
-import apiConfig from '@/configs/apiConfig';
 import { postData } from './axios';
 import { deleteCookie, getCookie, hasCookie, setCookie } from 'cookies-next';
-import { toast } from "sonner";
+import { toast } from 'sonner';
+import { decryptData } from './crypto.client';
+import { jwtVerify } from 'jose';
 
-// Function to Login
-export const login = async data => {
+const isProduction = process.env.NODE_ENV === 'production';
+
+async function login(data, api) {
     try {
-        const response = await postData(apiConfig?.ADMIN_LOGIN, data);
-        const { token } = response;
-        if (token) setCookie(appConfig?.CurrentUserToken, token, { path: '/' })
+        const response = await postData(api, data);
+        const { accessToken, refreshToken } = response;
+        if (accessToken)
+            setCookie(appConfig?.CurrentUserToken, accessToken, {
+                path: '/',
+                secure: isProduction,
+                sameSite: isProduction ? 'Strict' : 'Lax',
+            });
+        if (refreshToken)
+            setCookie(appConfig?.CurrentUserRefToken, refreshToken, {
+                path: '/',
+                secure: isProduction,
+                sameSite: isProduction ? 'Strict' : 'Lax',
+            });
 
         return response;
     } catch (error) {
         if (error.response && error.response.data) {
             return error.response.data;
         } else {
-            throw new Error('An server error occurred during login.');
+            throw new Error('A server error occurred during login.');
         }
     }
-};
+}
 
-export const saLogin = async data => {
-    try {
-        const response = await postData(apiConfig?.SUPER_ADMIN_LOGIN, data);
-        const { token } = response;
-        if (token) setCookie(appConfig?.CurrentUserToken, token, { path: '/' })
-
-        return response;
-    } catch (error) {
-        if (error.response && error.response.data) {
-            return error.response.data;
-        } else {
-            throw new Error('An server error occurred during login.');
-        }
-    }
-};
-
-// Function to logout user
-export const logout = (direct = false) => {
-    if (direct) {
+function logout(direct = false, callback) {
+    const performLogout = () => {
         try {
             deleteCookie(appConfig?.CurrentUserToken, { path: '/' });
             deleteCookie(appConfig?.CurrentUserRefToken, { path: '/' });
-            window.location.replace("/auth/login");
+            if (callback) callback(); // Trigger the callback after successful logout
         } catch (error) {
             console.error('Error during logout:', error);
-            throw new Error('Error during logout:', error)
         }
-    }
-    else {
-        toast.warning('Do you want to Sign out ?', {
+    };
+
+    if (direct) {
+        performLogout();
+    } else {
+        toast.warning('Do you want to Sign out?', {
             action: {
                 label: 'Yes',
-                onClick: () => {
-                    try {
-                        deleteCookie(appConfig?.CurrentUserToken, { path: '/' });
-                        deleteCookie(appConfig?.CurrentUserRefToken, { path: '/' });
-                        deleteCookie(appConfig?.CUP, { path: '/' });
-                        window.location.replace("/auth/login");
-                    } catch (error) {
-                        console.error('Error during logout:', error);
-                        throw new Error('Error during logout:', error)
-                    }
-                }
+                onClick: performLogout,
             },
-        })
+        });
     }
-};
+}
 
-// Function to get JWT token from cookies
-export const getTokenFromCookie = () => {
+function getTokenFromCookie() {
     try {
         const token = getCookie(appConfig?.CurrentUserToken);
         return token || null;
@@ -78,10 +65,9 @@ export const getTokenFromCookie = () => {
         console.error('Error getting token from cookie:', error);
         return null;
     }
-};
+}
 
-// Function to get JWT SecretKey from cookies
-export const getRefreshTokenFromCookie = () => {
+function getRefreshTokenFromCookie() {
     try {
         const token = getCookie(appConfig?.CurrentUserRefToken);
         return token ? token : null;
@@ -89,17 +75,49 @@ export const getRefreshTokenFromCookie = () => {
         console.error('Error getting token from cookie:', error);
         return null;
     }
-};
+}
 
-// Function to set JWT Refresh Token to cookies
-export const setNewTokenToCookie = (newToken) => {
+function setNewTokenToCookie(newToken) {
     if (newToken) {
-        setCookie(appConfig?.CurrentUserToken, newToken, { path: '/' });
+        setCookie(appConfig?.CurrentUserToken, newToken, {
+            path: '/',
+            secure: isProduction,
+            sameSite: isProduction ? 'Strict' : 'Lax',
+        });
     }
-};
+}
 
-// Function to check if user is logged in
-export const isLoggedIn = () => {
+function isLoggedIn() {
     const token = hasCookie(App.CurrentUserToken);
     return token;
+}
+
+async function getTokenPayload(token, type = 'access') {
+    // Decode encrypted token first
+    const decryptedToken = decryptData(token);
+
+    // Select the correct secret based on the token type
+    const secret = new TextEncoder().encode(
+        type === 'access'
+            ? process?.env?.JWT_ACCESS_TOKEN_SECRET
+            : process?.env?.JWT_REFRESH_TOKEN_SECRET
+    );
+
+    try {
+        const { payload } = await jwtVerify(decryptedToken, secret);
+        return payload;
+    } catch (error) {
+        console.error(`Invalid ${type} token:`, error.message);
+        return null; // Return null if the token is invalid
+    }
+}
+
+export {
+    login,
+    logout,
+    getTokenFromCookie,
+    getRefreshTokenFromCookie,
+    setNewTokenToCookie,
+    isLoggedIn,
+    getTokenPayload,
 };

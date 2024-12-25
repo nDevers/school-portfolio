@@ -1,0 +1,65 @@
+name: Automated Release Workflow for PR Merges
+
+on:
+    pull_request:
+        branches:
+            - main
+        types: [closed]
+
+jobs:
+    run-ci:
+        uses: ./.github/workflows/ci.yml # Reference the reusable CI workflow
+        with:
+            branch: 'main' # Optional input to specify the branch
+
+    release:
+        needs: run-ci # Ensures release depends on CI completion
+        runs-on: ubuntu-latest
+        if: github.event.pull_request.merged == true
+        permissions:
+            contents: write # This line ensures the token has write permissions
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+              with:
+                  ref: ${{ github.event.pull_request.head.ref }}
+                  fetch-depth: 0 # Ensures tags are also fetched
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '23'
+
+            - name: Configure Git
+              run: |
+                  git config --global user.email "actions@github.com"
+                  git config --global user.name "GitHub Actions"
+
+            - name: Install dependencies
+              run: yarn install
+
+            - name: Bump version and generate changelog
+              run: yarn release
+
+            - name: Extract version from package.json
+              run: echo "VERSION=$(cat package.json | jq -r .version)" >> $GITHUB_ENV
+
+            - name: Create Release
+              id: create_release
+              uses: actions/create-release@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  tag_name: v${{ env.VERSION }}
+                  release_name: Release v${{ env.VERSION }}
+                  body_path: CHANGELOG.md
+                  draft: false
+                  prerelease: false
+
+            - name: Push changes and tags
+              run: |
+                  git fetch --all
+                  git checkout main
+                  git pull origin main
+                  git push origin main --follow-tags
