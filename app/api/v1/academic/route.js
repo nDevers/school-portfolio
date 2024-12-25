@@ -1,41 +1,12 @@
-import {PrismaClient} from "@prisma/client";
-
+import prismaModelsConstants from "@/constants/prisma.models.constants";
 import serviceShared from "@/shared/service.shared";
 import academicSchema from "@/app/api/v1/academic/academic.schema";
 
 import asyncHandler from "@/util/asyncHandler";
 import academicSelectionCriteria from "@/app/api/v1/academic/academic.selection.criteria";
 
-/**
- * An instance of PrismaClient used to interact with a Prisma-managed database.
- *
- * PrismaClient provides a set of methods to perform database operations
- * such as querying, creating, updating, and deleting records in a type-safe
- * and efficient manner. Generated automatically based on the database schema,
- * it serves as the main entry point for database communication in a Prisma application.
- *
- * Ensure proper setup of your Prisma schema and database connection configuration
- * before initializing PrismaClient to avoid runtime errors.
- *
- * Note:
- * - Only create a single instance of PrismaClient for the application lifecycle to optimize resource usage.
- * - Remember to disconnect the client when the application terminates to prevent connection leaks.
- * - Environment variables such as database connection strings are required for initialization.
- */
-const prisma = new PrismaClient();
 
-/**
- * Represents the Academic model in the Prisma schema.
- * This model is used to interact with the `Academic` table in the database.
- *
- * The `Academic` model typically contains properties and methods to
- * perform operations related to academic records in the application,
- * such as querying, creating, updating, or deleting entries.
- *
- * Usage of this model should comply with the business logic and constraints
- * defined for academic-related functionality within the database.
- */
-const model = prisma.Academic;
+const model = prismaModelsConstants.Academic;
 
 /**
  * Asynchronous function to handle fetching the academic list based on specified criteria.

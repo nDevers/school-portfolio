@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import moment from "moment";
 
+import prismaModelsConstants from "@/constants/prisma.models.constants";
 import academicSchema from "@/app/api/v1/academic/academic.schema";
 import academicConstants from "@/app/api/v1/academic/academic.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -12,35 +12,9 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import academicSelectionCriteria from "@/app/api/v1/academic/academic.selection.criteria";
 
-/**
- * An instance of the PrismaClient class.
- *
- * Use this instance to perform database operations with Prisma.
- * It provides methods to interact with the database, such as querying, creating, updating, or deleting records.
- *
- * The PrismaClient connects to the database defined in the Prisma schema file and generates queries
- * based on the defined models and fields.
- *
- * This instance should be initialized once and reused throughout the application to ensure
- * efficient use of resources and proper connection management.
- *
- * Caution: Always ensure proper error handling and consider closing the connection when the
- * application terminates to avoid potential memory leaks or connection issues.
- */
-const prisma = new PrismaClient();
 
+const model = prismaModelsConstants.Academic;
 const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
-
-/**
- * Represents the Academic model from Prisma.
- *
- * This model is typically used to interact with the database table
- * labeled as "Academic". It encapsulates all properties, relationships,
- * and methods relevant to academic records or entities.
- *
- * @typedef {Object} Academic
- */
-const model = prisma.Academic;
 
 /**
  * Asynchronously creates a new academic entry in the database and retrieves the created entry with a specific set of fields.

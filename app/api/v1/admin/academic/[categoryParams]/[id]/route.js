@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import moment from "moment";
 
+import prismaModelsConstants from "@/constants/prisma.models.constants";
 import academicSchema from "@/app/api/v1/academic/academic.schema";
 import academicConstants from "@/app/api/v1/academic/academic.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -12,35 +12,9 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import academicSelectionCriteria from "@/app/api/v1/academic/academic.selection.criteria";
 
-/**
- * An instance of PrismaClient, which serves as an entry point to interact with the database
- * using the Prisma ORM (Object-Relational Mapping). This client enables operations such as
- * querying, creating, updating, and deleting records in the database.
- *
- * PrismaClient manages the database connection and provides methods corresponding to
- * the defined Prisma schema, offering a strongly-typed API for seamless database interactions.
- *
- * Note: Ensure proper management of the client instance, such as opening and closing database
- * connections when necessary, to avoid resource leaks.
- *
- * Typical usage includes:
- *  - Accessing model-specific methods to work with database tables/entities.
- *  - Executing raw SQL queries if needed.
- *  - Performing complex database operations in an organized and efficient manner.
- */
-const prisma = new PrismaClient();
 
+const model = prismaModelsConstants.Academic;
 const { INTERNAL_SERVER_ERROR, CONFLICT, OK, NOT_FOUND } = sharedResponseTypes;
-
-/**
- * Represents the Academic model in the Prisma schema.
- * This model is used to interact with the 'Academic' entity in the database.
- * Includes all the fields and relationships defined in the Prisma schema for the Academic model.
- *
- * This model supports operations such as create, read, update, and delete (CRUD).
- * Utilize this model for managing and querying data related to academics.
- */
-const model = prisma.Academic;
 
 /**
  * Updates an academic entry in the database based on provided input values.

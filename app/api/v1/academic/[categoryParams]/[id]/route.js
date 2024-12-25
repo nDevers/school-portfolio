@@ -1,34 +1,12 @@
-import {PrismaClient} from "@prisma/client";
-
+import prismaModelsConstants from "@/constants/prisma.models.constants";
 import serviceShared from "@/shared/service.shared";
 import academicSchema from "@/app/api/v1/academic/academic.schema";
 
 import asyncHandler from "@/util/asyncHandler";
 import academicSelectionCriteria from "@/app/api/v1/academic/academic.selection.criteria";
 
-/**
- * An instance of the PrismaClient used to interact with a database.
- * This enables performing database operations such as queries and mutations
- * using the Prisma query engine. It provides methods for accessing and
- * manipulating data in various connected models/tables of the database.
- *
- * Ensure to properly handle the connection lifecycle by connecting,
- * disconnecting, or utilizing it within the scope of your application
- * context.
- *
- * For advanced configurations, PrismaClient can accept options such
- * as logging, error formatting, or custom middlewares.
- */
-const prisma = new PrismaClient();
 
-/**
- * Represents the Academic model associated with the Prisma ORM.
- * This model is typically used to interact with and manipulate data
- * in the academic domain within the application's database.
- * The structure and properties of this model are predefined within
- * the Prisma schema and correspond to database fields.
- */
-const model = prisma.Academic;
+const model = prismaModelsConstants.Academic;
 
 /**
  * Asynchronous handler to retrieve academic entries by category and ID.
