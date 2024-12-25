@@ -7,11 +7,18 @@ on:
         types: [closed]
 
 jobs:
+    run-ci:
+        uses: ./.github/workflows/ci.yml # Reference the reusable CI workflow
+        with:
+            branch: 'main' # Optional input to specify the branch
+
     release:
+        needs: run-ci # Ensures release depends on CI completion
         runs-on: ubuntu-latest
+        if: github.event.pull_request.merged == true
         permissions:
             contents: write # This line ensures the token has write permissions
-        if: github.event.pull_request.merged == true
+
         steps:
             - name: Checkout code
               uses: actions/checkout@v2

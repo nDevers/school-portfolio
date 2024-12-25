@@ -1,12 +1,12 @@
 name: Continuous Integration
 
 on:
-    push:
-        branches:
-            - '**'
-    pull_request:
-        branches:
-            - '**'
+    workflow_call: # Makes this workflow reusable by other workflows
+        inputs:
+            branch:
+                required: false
+                type: string
+                default: '**'
 
 jobs:
     build:
