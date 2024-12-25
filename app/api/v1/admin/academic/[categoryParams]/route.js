@@ -1,6 +1,6 @@
 import moment from "moment";
 
-import prismaModelsConstants from "@/constants/prisma.models.constants";
+import { AcademicModel } from "@/shared/prisma.model.shared";
 import academicSchema from "@/app/api/v1/academic/academic.schema";
 import academicConstants from "@/app/api/v1/academic/academic.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -13,7 +13,6 @@ import validateToken from "@/util/validateToken";
 import academicSelectionCriteria from "@/app/api/v1/academic/academic.selection.criteria";
 
 
-const model = prismaModelsConstants.Academic;
 const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
 
 /**
@@ -33,7 +32,7 @@ const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
  * contains either the data of the created academic entry or an error message.
  */
 const createAcademicEntry = async (userInput, request) => {
-    const newDocument = await model.create({
+    const newDocument = await AcademicModel.create({
         data: userInput,
         select: {
             id: true, // Only return the ID of the updated document
@@ -42,7 +41,7 @@ const createAcademicEntry = async (userInput, request) => {
 
     const selectionCriteria = academicSelectionCriteria();
 
-    const createdDocument = await model.findUnique({
+    const createdDocument = await AcademicModel.findUnique({
         where: {
             id: newDocument?.id,
         },
@@ -91,7 +90,7 @@ const handleCreateAcademicByCategory = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'create', () => academicSchema.createSchema());
 
     // Check if academic entry with the same title already exists
-    const existingQuestion = await model.findUnique({
+    const existingQuestion = await AcademicModel.findUnique({
         where: {
             title: userInput?.title,
             category: userInput?.categoryParams,

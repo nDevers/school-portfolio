@@ -1,31 +1,9 @@
-import {PrismaClient} from "@prisma/client";
-
+import { AnnouncementModel } from "@/shared/prisma.model.shared";
 import serviceShared from "@/shared/service.shared";
 import announcementSchema from "@/app/api/v1/announcement/announcement.schema";
 
 import asyncHandler from "@/util/asyncHandler";
 import announcementSelectionCriteria from "@/app/api/v1/announcement/announcement.selection.criteria";
-
-/**
- * An instance of the PrismaClient, which provides the ability to interact with the database
- * through Prisma's query engine. It enables CRUD operations and complex queries using the Prisma schema.
- *
- * The `prisma` variable is used to access the Prisma Client, allowing interaction with
- * database models and ensuring type safety and ease of use in database operations.
- *
- * Caution: Properly manage database connections by closing the PrismaClient instance when
- * it's no longer needed to avoid potential memory leaks or connection issues.
- */
-const prisma = new PrismaClient();
-
-/**
- * Represents the Announcement model from Prisma schema.
- * This model is used to interact with the Announcement table/entity in the database.
- * It typically contains properties and methods for managing announcements data.
- *
- * @typedef {Object} Announcement
- */
-const model = prisma.Announcement;
 
 /**
  * Handles the retrieval of the announcement list based on the provided request and context.
@@ -41,7 +19,7 @@ const model = prisma.Announcement;
 const handleGetAnnouncementList = async (request, context) => {
     const selectionCriteria = announcementSelectionCriteria();
 
-    return serviceShared.fetchEntryByCategory(request, context, model, selectionCriteria, 'Announcement', () => announcementSchema.getDataByQuery());
+    return serviceShared.fetchEntryByCategory(request, context, AnnouncementModel, selectionCriteria, 'Announcement', () => announcementSchema.getDataByQuery());
 };
 
 /**

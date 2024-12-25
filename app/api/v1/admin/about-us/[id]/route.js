@@ -1,4 +1,4 @@
-import prismaModelsConstants from "@/constants/prisma.models.constants";
+import { AboutUsModel } from "@/shared/prisma.model.shared";
 import aboutUsSchema from "@/app/api/v1/about-us/about.us.schema";
 import aboutUsConstants from "@/app/api/v1/about-us/about.us.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -12,7 +12,6 @@ import validateUnsupportedContent from "@/util/validateUnsupportedContent";
 import aboutUsSelectionCriteria from "@/app/api/v1/about-us/about.us.selection.criteria";
 
 
-const model = prismaModelsConstants.AboutUs;
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 const { idValidationSchema } = schemaShared;
 
@@ -38,7 +37,7 @@ const updateAboutUsEntry = async (userInput, request) => {
     }, {});
 
     // Update the document with the filtered data
-    const updateDocument = await model.update({
+    const updateDocument = await AboutUsModel.update({
         where: { id: userInput?.id },
         data: fieldsToUpdate,
         select: {
@@ -48,7 +47,7 @@ const updateAboutUsEntry = async (userInput, request) => {
 
     const selectionCriteria = aboutUsSelectionCriteria();
 
-    const updatedDocument = await model.findUnique({
+    const updatedDocument = await AboutUsModel.findUnique({
         where: {
             id: updateDocument?.id,
         },
@@ -98,7 +97,7 @@ const handleUpdateAboutUsById = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'update', aboutUsSchema.updateSchema);
 
     // Check if FAQ entry with the same title already exists
-    const existingCareer = await model.findUnique({
+    const existingCareer = await AboutUsModel.findUnique({
         where: {
             id: userInput?.id,
         },
@@ -114,7 +113,7 @@ const handleUpdateAboutUsById = async (request, context) => {
 
     if (userInput?.title) {
         // Check if FAQ entry with the same title already exists
-        const existingQuestion = await model.findUnique({
+        const existingQuestion = await AboutUsModel.findUnique({
             where: {
                 title: userInput?.title,
             },
@@ -169,7 +168,7 @@ const handleUpdateAboutUsById = async (request, context) => {
         await Promise.all(deletePromises);
 
         // After deletion, update the database to remove the deleted file objects
-        await model.update({
+        await AboutUsModel.update({
             where: { id: existingCareer.id }, // Assuming the record is identified by id
             data: {
                 files: files, // Update the files field in the database, only keeping non-deleted files
@@ -201,7 +200,7 @@ const handleUpdateAboutUsById = async (request, context) => {
         await Promise.all(deleteImagePromises);
 
         // After deletion, update the database to remove the deleted image objects
-        await model.update({
+        await AboutUsModel.update({
             where: { id: existingCareer.id }, // Assuming the record is identified by id
             data: {
                 images: images, // Update the images field in the database, only keeping non-deleted images
@@ -249,7 +248,7 @@ const deleteCareerById = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'delete', idValidationSchema);
 
     // Check if data exists
-    const data = await model.findUnique({
+    const data = await AboutUsModel.findUnique({
         where: {
             id: userInput?.id,
         },
@@ -283,14 +282,14 @@ const deleteCareerById = async (request, context) => {
     }
 
     // Perform the deletion with the specified projection field for optional file handling
-    await model.delete({
+    await AboutUsModel.delete({
         where: {
             id: userInput?.id,
         },
     });
 
     // If no document is found, send a 404 response
-    const deletedData = await model.findUnique({
+    const deletedData = await AboutUsModel.findUnique({
         where: {
             id: userInput?.id,
         },

@@ -1,6 +1,6 @@
 import moment from "moment";
 
-import prismaModelsConstants from "@/constants/prisma.models.constants";
+import { AcademicModel } from "@/shared/prisma.model.shared";
 import academicSchema from "@/app/api/v1/academic/academic.schema";
 import academicConstants from "@/app/api/v1/academic/academic.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -13,7 +13,6 @@ import validateToken from "@/util/validateToken";
 import academicSelectionCriteria from "@/app/api/v1/academic/academic.selection.criteria";
 
 
-const model = prismaModelsConstants.Academic;
 const { INTERNAL_SERVER_ERROR, CONFLICT, OK, NOT_FOUND } = sharedResponseTypes;
 
 /**
@@ -39,7 +38,7 @@ const updateAcademicEntry = async (userInput, request) => {
         return acc;
     }, {});
 
-    const updateDocument = await model.update({
+    const updateDocument = await AcademicModel.update({
         where: { id: userInput?.id, category: userInput?.categoryParams },
         data: fieldsToUpdate,
         select: {
@@ -49,7 +48,7 @@ const updateAcademicEntry = async (userInput, request) => {
 
     const selectionCriteria = academicSelectionCriteria();
 
-    const updatedDocument = await model.findUnique({
+    const updatedDocument = await AcademicModel.findUnique({
         where: {
             id: updateDocument?.id,
         },
@@ -103,7 +102,7 @@ const handleUpdateAcademicByCategoryAndId = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'update', () => academicSchema.updateSchema());
 
     // Check if academic entry with the same title already exists
-    const existingQuestion = await model.findUnique({
+    const existingQuestion = await AcademicModel.findUnique({
         where: {
             id: userInput?.id,
             category: userInput?.categoryParams,
@@ -119,7 +118,7 @@ const handleUpdateAcademicByCategoryAndId = async (request, context) => {
 
     if (userInput?.title) {
         // Check if FAQ entry with the same title already exists
-        const existingTitle = await model.findUnique({
+        const existingTitle = await AcademicModel.findUnique({
             where: {
                 title: userInput?.title,
                 category: userInput?.categoryParams,
@@ -189,7 +188,7 @@ const deleteAcademicByCategoryAndId = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'delete', () => academicSchema.categoryAndIdSchema());
 
     // Check if data exists
-    const data = await model.findUnique({
+    const data = await AcademicModel.findUnique({
         where: {
             id: userInput?.id,
             category: userInput?.categoryParams,
@@ -208,7 +207,7 @@ const deleteAcademicByCategoryAndId = async (request, context) => {
     }
 
     // Perform the deletion with the specified projection field for optional file handling
-    await model.delete({
+    await AcademicModel.delete({
         where: {
             id: userInput?.id,
             category: userInput?.categoryParams
@@ -216,7 +215,7 @@ const deleteAcademicByCategoryAndId = async (request, context) => {
     });
 
     // If no document is found, send a 404 response
-    const deletedData = await model.findUnique({
+    const deletedData = await AcademicModel.findUnique({
         where: {
             id: userInput?.id,
             category: userInput?.categoryParams

@@ -1,12 +1,9 @@
-import prismaModelsConstants from "@/constants/prisma.models.constants";
+import { AboutUsModel } from "@/shared/prisma.model.shared";
 import serviceShared from "@/shared/service.shared";
 import aboutUsSchema from "@/app/api/v1/about-us/about.us.schema";
 
 import asyncHandler from "@/util/asyncHandler";
 import aboutUsSelectionCriteria from "@/app/api/v1/about-us/about.us.selection.criteria";
-
-
-const model = prismaModelsConstants.AboutUs;
 
 /**
  * Asynchronous function to handle the retrieval of the career list.
@@ -24,7 +21,7 @@ const model = prismaModelsConstants.AboutUs;
 const handleGetCareerList = async (request, context) => {
     const selectionCriteria = aboutUsSelectionCriteria();
 
-    return serviceShared.fetchEntryList(request, context, model, selectionCriteria, 'About us', aboutUsSchema.getDataByQuery);
+    return serviceShared.fetchEntryList(request, context, AboutUsModel, selectionCriteria, 'About us', aboutUsSchema.getDataByQuery);
 };
 
 /**

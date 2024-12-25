@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import moment from "moment";
 
+import { AnnouncementModel } from "@/shared/prisma.model.shared";
 import announcementSchema from "@/app/api/v1/announcement/announcement.schema";
 import announcementConstants from "@/app/api/v1/announcement/announcement.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -12,36 +12,8 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import announcementSelectionCriteria from "@/app/api/v1/announcement/announcement.selection.criteria";
 
-/**
- * Represents an instance of the PrismaClient, which is the primary way to interact with the database.
- * It provides methods for querying, creating, updating, and deleting data in the connected database.
- *
- * Use this variable to perform database operations based on the Prisma schema configuration.
- * Ensure proper management of the PrismaClient instance to avoid potential connection leaks,
- * such as closing the connection when the application terminates.
- *
- * PrismaClient should typically be instantiated once and reused throughout your application.
- */
-const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
-
-/**
- * Represents the `Announcement` model in the Prisma schema.
- *
- * This model corresponds to the `Announcement` table in the database and includes fields and relationships
- * that define the structure and behavior of announcements within the application.
- *
- * The `Announcement` model can be used to interact with announcement records in the database, enabling
- * functionality such as creation, retrieval, updating, and deletion of announcement data.
- *
- * Note that the specific fields and their types for the `Announcement` model are defined in the Prisma
- * schema and may include properties representing the announcement details, such as title, description,
- * timestamps, and associated user information.
- *
- * Use the `prisma.Announcement` instance to perform operations on this model through Prisma ORM.
- */
-const model = prisma.Announcement;
 
 /**
  * Asynchronously creates a new announcement entry in the database based on the provided user input
@@ -56,7 +28,7 @@ const model = prisma.Announcement;
  * @throws {Error} Throws an internal server error if the creation process fails due to database or other issues.
  */
 const createAnnouncementEntry = async (userInput, request) => {
-    const newDocument = await model.create({
+    const newDocument = await AnnouncementModel.create({
         data: userInput,
         select: {
             id: true, // Only return the ID of the updated document
@@ -65,7 +37,7 @@ const createAnnouncementEntry = async (userInput, request) => {
 
     const selectionCriteria = announcementSelectionCriteria();
 
-    const createdDocument = await model.findUnique({
+    const createdDocument = await AnnouncementModel.findUnique({
         where: {
             id: newDocument?.id,
         },
@@ -113,7 +85,7 @@ const handleCreateAnnouncementByCategory = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'create', () => announcementSchema.createSchema());
 
     // Check if announcement entry with the same email, mobile, or portfolio already exists
-    const existingEntry = await model.findUnique({
+    const existingEntry = await AnnouncementModel.findUnique({
         where: {
             title: userInput?.title,
             category: userInput?.categoryParams,

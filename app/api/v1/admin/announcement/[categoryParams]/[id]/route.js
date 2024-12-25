@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import moment from "moment/moment";
 
+import { AnnouncementModel } from "@/shared/prisma.model.shared";
 import announcementSchema from "@/app/api/v1/announcement/announcement.schema";
 import announcementConstants from "@/app/api/v1/announcement/announcement.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -13,39 +13,8 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import announcementSelectionCriteria from "@/app/api/v1/announcement/announcement.selection.criteria";
 
-/**
- * Represents an instance of the Prisma Client used to interact with the database.
- * The Prisma Client provides a type-safe and efficient way to query and manipulate data
- * within the underlying database, supporting operations such as reading, writing, updating,
- * and deleting records.
- *
- * This variable is typically used as the gateway to all database interactions within the application.
- * It is instantiated from the PrismaClient class, which is auto-generated based on the database schema.
- *
- * Note:
- * - Ensure that the Prisma Client is properly generated using the `prisma generate` command before usage.
- * - Close the client connection explicitly when your application terminates to avoid resource leaks.
- *
- * @type {PrismaClient}
- */
-const prisma = new PrismaClient();
 
-const { INTERNAL_SERVER_ERROR, CONFLICT, OK, NOT_FOUND } = sharedResponseTypes;
-
-/**
- * Represents the Announcement model from Prisma schema.
- *
- * This model corresponds to the `Announcement` table in the database and is used to define its structure,
- * relationships, and interactions within the application. It serves as a data layer abstraction.
- *
- * Use this model to manage announcement-related operations, such as creating, reading, updating, and deleting announcements.
- *
- * This model includes various fields and properties defined in the Prisma schema that represent the data structure
- * for announcements stored in the database. It may also contain relationships to other models.
- *
- * Note: The structure, fields, and relationships of this model depend on the specific design in the Prisma schema.
- */
-const model = prisma.Announcement;
+const { INTERNAL_SERVER_ERROR, OK, NOT_FOUND } = sharedResponseTypes;
 
 /**
  * Updates an announcement entry in the database based on the provided user input.
@@ -76,7 +45,7 @@ const updateAnnouncementEntry = async (userInput, request) => {
         return acc;
     }, {});
 
-    const updateDocument = await model.update({
+    const updateDocument = await AnnouncementModel.update({
         where: { id: userInput?.id, category: userInput?.categoryParams },
         data: fieldsToUpdate,
         select: {
@@ -86,7 +55,7 @@ const updateAnnouncementEntry = async (userInput, request) => {
 
     const selectionCriteria = announcementSelectionCriteria();
 
-    const updatedDocument = await model.findUnique({
+    const updatedDocument = await AnnouncementModel.findUnique({
         where: {
             id: updateDocument?.id,
         },
@@ -131,7 +100,7 @@ const handleUpdateAnnouncementByCategoryAndId = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'update', () => announcementSchema.updateSchema());
 
     // Check if announcement entry with the same title already exists
-    const existingEntry = await model.findUnique({
+    const existingEntry = await AnnouncementModel.findUnique({
         where: {
             id: userInput?.id,
             category: userInput?.categoryParams,
@@ -146,7 +115,7 @@ const handleUpdateAnnouncementByCategoryAndId = async (request, context) => {
     }
 
     // Check if announcement entry with the same title already exists
-    const existingTitle = await model.findUnique({
+    const existingTitle = await AnnouncementModel.findUnique({
         where: {
             category: userInput?.categoryParams,
             title: userInput?.title,
@@ -200,7 +169,7 @@ const handleUpdateAnnouncementByCategoryAndId = async (request, context) => {
         await Promise.all(deletePromises);
 
         // After deletion, update the database to remove the deleted file objects
-        await model.update({
+        await AnnouncementModel.update({
             where: { id: existingEntry.id }, // Assuming the record is identified by id
             data: {
                 files: files // Update the files field in the database, only keeping non-deleted files
@@ -258,7 +227,7 @@ const deleteAnnouncementByCategoryAndId = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'delete', () => announcementSchema.categoryAndIdSchema());
 
     // Check if data exists
-    const data = await model.findUnique({
+    const data = await AnnouncementModel.findUnique({
         where: {
             id: userInput?.id,
             category: userInput?.categoryParams,
@@ -283,7 +252,7 @@ const deleteAnnouncementByCategoryAndId = async (request, context) => {
     }
 
     // Perform the deletion with the specified projection field for optional file handling
-    await model.delete({
+    await AnnouncementModel.delete({
         where: {
             id: userInput?.id,
             category: userInput?.categoryParams
@@ -291,7 +260,7 @@ const deleteAnnouncementByCategoryAndId = async (request, context) => {
     });
 
     // If no document is found, send a 404 response
-    const deletedData = await model.findUnique({
+    const deletedData = await AnnouncementModel.findUnique({
         where: {
             id: userInput?.id,
             category: userInput?.categoryParams

@@ -1,4 +1,4 @@
-import prismaModelsConstants from "@/constants/prisma.models.constants";
+import { AboutUsModel } from "@/shared/prisma.model.shared";
 import aboutUsSchema from "@/app/api/v1/about-us/about.us.schema";
 import aboutUsConstants from "@/app/api/v1/about-us/about.us.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -11,7 +11,6 @@ import validateToken from "@/util/validateToken";
 import aboutUsSelectionCriteria from "@/app/api/v1/about-us/about.us.selection.criteria";
 
 
-const model = prismaModelsConstants.AboutUs;
 const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
 
 /**
@@ -28,7 +27,7 @@ const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
  * @throws {Error} Throws an error if there is an issue during the creation or retrieval of the document.
  */
 const createAboutUsEntry = async (userInput, request) => {
-    const newDocument = await model.create({
+    const newDocument = await AboutUsModel.create({
         data: userInput,
         select: {
             id: true, // Only return the ID of the updated document
@@ -37,7 +36,7 @@ const createAboutUsEntry = async (userInput, request) => {
 
     const selectionCriteria = aboutUsSelectionCriteria();
 
-    const createdDocument = await model.findUnique({
+    const createdDocument = await AboutUsModel.findUnique({
         where: {
             id: newDocument?.id,
         },
@@ -102,7 +101,7 @@ const handleCreateAboutUs = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'create', aboutUsSchema.createSchema);
 
     // Check if FAQ entry with the same title already exists
-    const existingQuestion = await model.findUnique({
+    const existingQuestion = await AboutUsModel.findUnique({
         where: {
             title: userInput?.title,
         },

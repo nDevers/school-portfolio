@@ -1,38 +1,9 @@
-import {PrismaClient} from "@prisma/client";
-
+import { AnnouncementModel } from "@/shared/prisma.model.shared";
 import serviceShared from "@/shared/service.shared";
 import announcementSchema from "@/app/api/v1/announcement/announcement.schema";
 
 import asyncHandler from "@/util/asyncHandler";
 import announcementSelectionCriteria from "@/app/api/v1/announcement/announcement.selection.criteria";
-
-/**
- * An instance of the PrismaClient, used for interacting with a database
- * through Prisma ORM. Provides methods for querying, mutating, and
- * managing data stored in the database.
- *
- * The instance is typically used to execute operations like finding records,
- * creating records, updating records, and deleting records. It also supports
- * transactions and raw SQL queries.
- *
- * This instance allows seamless integration with the Prisma schema, enabling
- * type-safe and optimized database interactions.
- *
- * Ensure that `.connect()` is called to establish a connection and
- * `.disconnect()` is invoked to properly close the connection when
- * the application shuts down or the client is no longer needed.
- */
-const prisma = new PrismaClient();
-
-/**
- * Represents the Announcement model from Prisma schema.
- * This model is used to define the structure of announcement entities
- * and their interaction with the database.
- *
- * The Announcement model typically holds details related to announcements
- * made within a system, such as title, description, date, and other metadata.
- */
-const model = prisma.Announcement;
 
 /**
  * Handles the retrieval of announcements filtered by category.
@@ -52,7 +23,7 @@ const model = prisma.Announcement;
 export const handleGetAnnouncementByCategory = async (request, context) => {
     const selectionCriteria = announcementSelectionCriteria();
 
-    return serviceShared.fetchEntryByCategory(request, context, model, selectionCriteria,  'Announcement', () => announcementSchema.categorySchema());
+    return serviceShared.fetchEntryByCategory(request, context, AnnouncementModel, selectionCriteria,  'Announcement', () => announcementSchema.categorySchema());
 };
 
 /**

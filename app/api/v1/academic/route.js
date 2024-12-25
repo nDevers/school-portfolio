@@ -1,12 +1,9 @@
-import prismaModelsConstants from "@/constants/prisma.models.constants";
+import { AcademicModel } from "@/shared/prisma.model.shared";
 import serviceShared from "@/shared/service.shared";
 import academicSchema from "@/app/api/v1/academic/academic.schema";
 
 import asyncHandler from "@/util/asyncHandler";
 import academicSelectionCriteria from "@/app/api/v1/academic/academic.selection.criteria";
-
-
-const model = prismaModelsConstants.Academic;
 
 /**
  * Asynchronous function to handle fetching the academic list based on specified criteria.
@@ -23,7 +20,7 @@ const model = prismaModelsConstants.Academic;
 const handleGetAcademicList = async (request, context) => {
     const selectionCriteria = academicSelectionCriteria();
 
-    return serviceShared.fetchEntryByCategory(request, context, model, selectionCriteria, 'Academic', () => academicSchema.getDataByQuery());
+    return serviceShared.fetchEntryByCategory(request, context, AcademicModel, selectionCriteria, 'Academic', () => academicSchema.getDataByQuery());
 };
 
 /**
