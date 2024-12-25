@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
+import { FacultyModel } from "@/shared/prisma.model.shared";
 import facultySchema from "@/app/api/v1/faculty/faculty.schema";
 import facultyConstants from "@/app/api/v1/faculty/faculty.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -11,33 +10,8 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import facultySelectionCriteria from "@/app/api/v1/faculty/faculty.selection.criteria";
 
-/**
- * The `prisma` variable represents an instance of the PrismaClient,
- * which is responsible for connecting to the database and providing
- * an interface for interacting with it. This includes querying,
- * creating, updating, and deleting data in a type-safe manner.
- *
- * The PrismaClient is generated based on the schema defined in your
- * Prisma project, allowing you to interact with your database
- * through the auto-generated methods and models specific to your schema.
- *
- * Ensure proper initialization and handling of the `prisma` instance
- * to prevent connection or resource management issues.
- */
-const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, OK, NOT_FOUND } = sharedResponseTypes;
-
-/**
- * Represents the Faculty model in the Prisma schema.
- *
- * This model is used to interact with the Faculty table in the database.
- * It defines the structure of the Faculty entity, including its fields and relationships.
- *
- * Usage of the Faculty model allows for querying, creating, updating,
- * and deleting Faculty records in the database.
- */
-const model = prisma.Faculty;
 
 /**
  * Updates an existing faculty entry in the database with the provided user input.
@@ -61,7 +35,7 @@ const updateFacultyEntry = async (userInput, request) => {
         return acc;
     }, {});
 
-    const updateDocument = await model.update({
+    const updateDocument = await FacultyModel.update({
         where: { id: userInput?.id, category: userInput?.categoryParams },
         data: fieldsToUpdate,
         select: {
@@ -71,7 +45,7 @@ const updateFacultyEntry = async (userInput, request) => {
 
     const selectionCriteria = facultySelectionCriteria();
 
-    const updatedDocument = await model.findUnique({
+    const updatedDocument = await FacultyModel.findUnique({
         where: {
             id: updateDocument?.id,
         },
@@ -121,7 +95,7 @@ const handleUpdateFacultyByCategoryAndId = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'update', () => facultySchema.updateSchema());
 
     // Check if faculty entry with the same title already exists
-    const existingEntry = await model.findUnique({
+    const existingEntry = await FacultyModel.findUnique({
         where: {
             id: userInput?.id,
             category: userInput?.categoryParams,
@@ -149,7 +123,7 @@ const handleUpdateFacultyByCategoryAndId = async (request, context) => {
 
     // Only perform the query if at least one condition is provided
     if (conditions.length > 0) {
-        const existingEntry = await model.findFirst({
+        const existingEntry = await FacultyModel.findFirst({
             where: {
                 OR: conditions
             },
@@ -212,7 +186,7 @@ const deleteFacultyByCategoryAndId = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'delete', () => facultySchema.categoryAndIdSchema());
 
     // Check if data exists
-    const data = await model.findUnique({
+    const data = await FacultyModel.findUnique({
         where: {
             id: userInput?.id,
             category: userInput?.categoryParams,
@@ -231,7 +205,7 @@ const deleteFacultyByCategoryAndId = async (request, context) => {
     }
 
     // Perform the deletion with the specified projection field for optional file handling
-    await model.delete({
+    await FacultyModel.delete({
         where: {
             id: userInput?.id,
             category: userInput?.categoryParams
@@ -239,7 +213,7 @@ const deleteFacultyByCategoryAndId = async (request, context) => {
     });
 
     // If no document is found, send a 404 response
-    const deletedData = await model.findUnique({
+    const deletedData = await FacultyModel.findUnique({
         where: {
             id: userInput?.id,
             category: userInput?.categoryParams

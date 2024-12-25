@@ -1,32 +1,9 @@
-import {PrismaClient} from "@prisma/client";
-
+import { FacultyModel } from "@/shared/prisma.model.shared";
 import serviceShared from "@/shared/service.shared";
 import facultySchema from "@/app/api/v1/faculty/faculty.schema";
 
 import asyncHandler from "@/util/asyncHandler";
 import facultySelectionCriteria from "@/app/api/v1/faculty/faculty.selection.criteria";
-
-/**
- * An instance of the PrismaClient, which is used to interact with a database
- * through the Prisma ORM. This client provides a type-safe and performant API
- * to perform operations such as querying, creating, updating, and deleting
- * data in the database.
- *
- * Use the PrismaClient instance to access database models and execute
- * operations using Prisma's query engine. Make sure to properly handle
- * connection management, such as opening and closing the connection to avoid
- * potential database connection issues.
- */
-const prisma = new PrismaClient();
-
-/**
- * Represents the `Faculty` model in the Prisma schema.
- * This model defines the structure and relationships for faculty entities in the database.
- * It is used to perform various database operations related to the faculty data.
- *
- * The `Faculty` model may include properties such as identifiers, names, email addresses, departments, or any other faculty-specific attributes as defined in the Prisma schema.
- */
-const model = prisma.Faculty;
 
 /**
  * Asynchronous handler function to fetch faculty information based on category and ID.
@@ -44,7 +21,7 @@ const model = prisma.Faculty;
 export const handleGetFacultyByCategoryAndId = async (request, context) => {
     const selectionCriteria = facultySelectionCriteria();
 
-    return serviceShared.fetchEntryByCategoryAndId(request, context, model, selectionCriteria,  'Faculty', () => facultySchema.categoryAndIdSchema());
+    return serviceShared.fetchEntryByCategoryAndId(request, context, FacultyModel, selectionCriteria,  'Faculty', () => facultySchema.categoryAndIdSchema());
 };
 
 /**

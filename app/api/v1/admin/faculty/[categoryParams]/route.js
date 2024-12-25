@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
+import { FacultyModel } from "@/shared/prisma.model.shared";
 import facultySchema from "@/app/api/v1/faculty/faculty.schema";
 import facultyConstants from "@/app/api/v1/faculty/faculty.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -11,36 +10,8 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import facultySelectionCriteria from "@/app/api/v1/faculty/faculty.selection.criteria";
 
-/**
- * Represents an instance of the Prisma Client used for database operations.
- *
- * The `PrismaClient` provides methods to interact with the database, enabling
- * data querying, creation, updating, and deletion. It serves as the primary
- * interface between the application and the underlying database.
- *
- * This instance should be properly managed to establish and close the database
- * connections where necessary. Use caution to avoid creating multiple instances
- * unnecessarily, as this may lead to resource exhaustion or connection conflicts.
- *
- * Typically, this object is used to control and execute all database
- * interactions in the application, such as retrieving records, running
- * transactions, or filtering query results.
- */
-const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
-
-/**
- * Represents the Faculty model from Prisma schema.
- *
- * The Faculty model typically refers to the teaching and administrative staff
- * associated with an educational institution. It may include various attributes
- * to identify and describe faculty members.
- *
- * Note: The structure and fields of the Faculty model are defined within the Prisma schema.
- * Ensure that the Prisma schema is properly configured to match application requirements.
- */
-const model = prisma.Faculty;
 
 /**
  * Creates a new faculty entry in the database and retrieves the created document.
@@ -56,7 +27,7 @@ const model = prisma.Faculty;
  * the created faculty entry data or an error message in case of failure.
  */
 const createFacultyEntry = async (userInput, request) => {
-    const newDocument = await model.create({
+    const newDocument = await FacultyModel.create({
         data: userInput,
         select: {
             id: true, // Only return the ID of the updated document
@@ -65,7 +36,7 @@ const createFacultyEntry = async (userInput, request) => {
 
     const selectionCriteria = facultySelectionCriteria();
 
-    const createdDocument = await model.findUnique({
+    const createdDocument = await FacultyModel.findUnique({
         where: {
             id: newDocument?.id,
         },
@@ -113,7 +84,7 @@ const handleCreateFacultyByCategory = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'create', () => facultySchema.createSchema());
 
     // Check if faculty entry with the same email, mobile, or portfolio already exists
-    const existingEntry = await model.findFirst({
+    const existingEntry = await FacultyModel.findFirst({
         where: {
             OR: [
                 { email: userInput?.email },

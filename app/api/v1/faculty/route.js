@@ -1,45 +1,9 @@
-import {PrismaClient} from "@prisma/client";
-
+import { FacultyModel } from "@/shared/prisma.model.shared";
 import serviceShared from "@/shared/service.shared";
 import facultySchema from "@/app/api/v1/faculty/faculty.schema";
 
 import asyncHandler from "@/util/asyncHandler";
 import facultySelectionCriteria from "@/app/api/v1/faculty/faculty.selection.criteria";
-
-/**
- * Instance of PrismaClient for interacting with a Prisma database.
- *
- * PrismaClient provides a type-safe database client to connect to and
- * query a database. It acts as an ORM to handle database operations
- * such as creating, reading, updating, and deleting records.
- *
- * This variable represents the main connection interface to perform
- * database operations. The Prisma schema is used to define the data
- * models, relationships, and database queries that can be executed
- * through this client.
- *
- * Ensure to properly manage the lifecycle of the PrismaClient instance,
- * especially in long-running applications, to avoid resource leaks like
- * unclosed database connections.
- *
- * Note: Always call the `disconnect` or `$disconnect` method when
- * shutting down the application to close active database connections.
- */
-const prisma = new PrismaClient();
-
-/**
- * Represents the Faculty model from the Prisma schema.
- *
- * The Faculty model typically corresponds to a table in the database that contains
- * details and attributes specific to faculty members or organizational faculties,
- * as defined in the Prisma client.
- *
- * This model is used to interact with the Faculty data within the database, allowing
- * for operations such as creating, reading, updating, and deleting faculty-related records.
- *
- * Note: The structure and fields of this model are defined in the Prisma schema file.
- */
-const model = prisma.Faculty;
 
 /**
  * Asynchronous function to handle the retrieval of the faculty list.
@@ -53,7 +17,7 @@ const model = prisma.Faculty;
 const handleGetFacultyList = async (request, context) => {
     const selectionCriteria = facultySelectionCriteria();
 
-    return serviceShared.fetchEntryByCategory(request, context, model, selectionCriteria, 'Faculty', () => facultySchema.getDataByQuery());
+    return serviceShared.fetchEntryByCategory(request, context, FacultyModel, selectionCriteria, 'Faculty', () => facultySchema.getDataByQuery());
 };
 
 /**

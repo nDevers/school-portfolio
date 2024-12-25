@@ -8,3 +8,4 @@ export const AnnouncementModel = prisma.Announcement;
 export const BlogModel = prisma.Blog;
 export const CareerModel = prisma.Career;
 export const ConfigurationModel = prisma.Configuration;
+export const FacultyModel = prisma.Faculty;
