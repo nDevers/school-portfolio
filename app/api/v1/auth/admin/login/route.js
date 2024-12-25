@@ -13,12 +13,48 @@ import {decryptData, encryptData} from "@/util/crypto";
 import createAuthenticationToken from "@/util/createAuthenticationToken";
 import authEmailTemplate from "@/app/api/v1/auth/auth.email.template";
 
-// Import the PrismaClient from Prisma client library
 import { PrismaClient } from '@prisma/client';
 
-// Instantiate Prisma Client
+/**
+ * Initializes a new instance of the PrismaClient, which provides
+ * a database connection and methods for interacting with the database.
+ *
+ * The PrismaClient instance is used to perform CRUD operations and other
+ * database queries in applications. It acts as the database client,
+ * bridging the application with the database through Prisma's ORM.
+ *
+ * Note: Ensure to properly manage the lifecycle of the PrismaClient instance,
+ * such as connecting and disconnecting, to avoid excessive connection pooling
+ * or memory issues.
+ *
+ * Variable: prisma
+ * Type: PrismaClient
+ */
 const prisma = new PrismaClient();
 
+/**
+ * Handles the login process for administrators.
+ *
+ * This asynchronous function authenticates admin users by validating their request content,
+ * verifying credentials, and generating access tokens upon successful login. It performs
+ * several operations including form data validation, user existence verification, password
+ * validation, and notification email dispatch.
+ *
+ * Steps performed:
+ * - Validates that the request content type is allowed.
+ * - Parses and validates the request form data against a predefined schema.
+ * - Checks for the existence of the admin user in the database (using Prisma).
+ * - Validates the submitted password after decryption.
+ * - Identifies the device type based on the User-Agent header.
+ * - If authentication is successful, generates access and refresh tokens for the admin user.
+ * - Encrypts the tokens before including them in the response.
+ * - Sends a login notification email to the admin user.
+ * - Returns an authorized response with tokens upon success or an appropriate error response on failure.
+ *
+ * @param {Object} request - The incoming request object containing the admin login data.
+ * @param {Object} context - The context object, typically containing environmental details.
+ * @returns {Promise<Object>} An HTTP response object indicating the result of the login operation.
+ */
 const handleAdminLogin = async (request, context) => {
     // Validate content type
     const contentValidationResult = validateUnsupportedContent(request, authConstants.allowedContentTypes);
@@ -78,5 +114,10 @@ const handleAdminLogin = async (request, context) => {
     );
 };
 
-// Export the route wrapped with asyncHandler
+/**
+ * The `POST` variable is an asynchronous function that handles the login logic for administrators.
+ * It uses the `asyncHandler` middleware to efficiently manage asynchronous operations and error handling.
+ *
+ * @constant {Function} POST
+ */
 export const POST = asyncHandler(handleAdminLogin);

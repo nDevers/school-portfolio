@@ -1,5 +1,21 @@
 import {Schema, models, model} from 'mongoose';
 
+/**
+ * Schema definition for SuperAdmin data.
+ *
+ * Defines the structure and constraints for SuperAdmin data, including fields such as name, email,
+ * password, and tokens for account verification or password reset. It is designed to ensure data
+ * integrity and validation for the SuperAdmin entity.
+ *
+ * @property {String} name - The name of the super admin; required, trimmed string.
+ * @property {String} dateOfBirth - Date of birth of the super admin; required field as a string.
+ * @property {String} email - Unique email address; required with specific format validation.
+ * @property {String} password - Password for the account; required with minimum length and pattern validation.
+ * @property {String} [emailVerifyToken] - Token used for email verification; optional, trimmed string.
+ * @property {String} [resetPasswordToken] - Token used for resetting the password; optional, trimmed string.
+ * @property {Date} [resetPasswordTokenExpiration] - Expiration date and time for the reset password token; optional.
+ * @property {Object} timestamps - Automatically includes `createdAt` and `updatedAt` timestamps for the schema.
+ */
 const superAdminSchema = new Schema({
     name: {
         type: String,
@@ -66,6 +82,13 @@ superAdminSchema.pre('save', function (next) {
     }
 });
 
+/**
+ * AdminModel serves as the Mongoose model for managing and interacting with the "SuperAdmins" collection in the database.
+ * It is initialized either by referencing an existing "SuperAdmins" model from the models registry
+ * or by creating a new model using the specified superAdminSchema.
+ *
+ * The model is used to perform CRUD operations and schema validations for the "SuperAdmins" collection.
+ */
 const AdminModel = models?.SuperAdmins || model('SuperAdmins', superAdminSchema);
 
 export default AdminModel;
