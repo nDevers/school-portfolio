@@ -33,14 +33,14 @@ jobs:
                   yarn install
                   echo "Dependencies installed."
 
-            - name: Run lint checks
+            - name: Run ESLint checks
               run: |
                   echo "Running lint checks..."
-                  yarn eslint:check
+                  yarn eslint:check || exit 1
                   echo "Lint checks completed."
 
             - name: Run Prettier checks
               run: |
                   echo "Running Prettier checks..."
-                  yarn prettier:check
+                  yarn prettier:check || exit 1
                   echo "Prettier checks completed."
