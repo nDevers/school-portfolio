@@ -2,10 +2,22 @@ import { z } from 'zod';
 
 import schemaShared from "@/shared/schema.shared";
 
-// Define reusable schema parts
 const { nonEmptyString, validEmail } = schemaShared;
 
-// Define the Zod validation schema based on the Mongoose model
+/**
+ * Represents the schema for validating a contact form's data using Zod.
+ *
+ * The `contactSchema` enforces a strict structure for the contact information, ensuring
+ * that all required fields are present and adhere to the expected validation rules.
+ *
+ * - `name`: Requires a non-empty string representing the contact's name.
+ * - `email`: Validates a properly formatted email address.
+ * - `subject`: Requires a non-empty string for the contact subject.
+ * - `message`: Requires a non-empty string for the contact message.
+ *
+ * The schema is configured to be strict, meaning no additional fields beyond
+ * the defined ones are allowed.
+ */
 const contactSchema = z
     .object({
         name: nonEmptyString('Contact name'),
