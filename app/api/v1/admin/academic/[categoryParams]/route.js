@@ -12,13 +12,52 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import academicSelectionCriteria from "@/app/api/v1/academic/academic.selection.criteria";
 
+/**
+ * An instance of the PrismaClient class.
+ *
+ * Use this instance to perform database operations with Prisma.
+ * It provides methods to interact with the database, such as querying, creating, updating, or deleting records.
+ *
+ * The PrismaClient connects to the database defined in the Prisma schema file and generates queries
+ * based on the defined models and fields.
+ *
+ * This instance should be initialized once and reused throughout the application to ensure
+ * efficient use of resources and proper connection management.
+ *
+ * Caution: Always ensure proper error handling and consider closing the connection when the
+ * application terminates to avoid potential memory leaks or connection issues.
+ */
 const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
 
+/**
+ * Represents the Academic model from Prisma.
+ *
+ * This model is typically used to interact with the database table
+ * labeled as "Academic". It encapsulates all properties, relationships,
+ * and methods relevant to academic records or entities.
+ *
+ * @typedef {Object} Academic
+ */
 const model = prisma.Academic;
 
-// Helper function to create and respond with the academic
+/**
+ * Asynchronously creates a new academic entry in the database and retrieves the created entry with a specific set of fields.
+ *
+ * This function first creates a new document in the database using the provided user input
+ * and retrieves the ID of the newly created entry. It then fetches the complete entry data
+ * based on predefined selection criteria. If the creation or retrieval process fails,
+ * an error response is returned. Otherwise, the created entry details are returned with a
+ * success response.
+ *
+ * @async
+ * @function createAcademicEntry
+ * @param {Object} userInput - The data provided by the user to create the academic entry.
+ * @param {Object} request - The request object associated with the current operation, used for logging or contextual purposes.
+ * @returns {Promise<Object>} - Returns a response object indicating the result of the operation. The response
+ * contains either the data of the created academic entry or an error message.
+ */
 const createAcademicEntry = async (userInput, request) => {
     const newDocument = await model.create({
         data: userInput,
@@ -44,7 +83,23 @@ const createAcademicEntry = async (userInput, request) => {
     return CREATED(`Academic entry with title "${userInput?.title}" created successfully.`, createdDocument, request);
 };
 
-// Named export for the POST request handler (Create academic)
+/**
+ * Asynchronous function for handling the creation of an academic entry by category.
+ *
+ * This function performs the following actions:
+ * - Validates unsupported content types in the request.
+ * - Verifies if the user is authorized to perform the operation (admin access).
+ * - Parses and validates the input form data using a predefined schema.
+ * - Checks for the existence of an academic entry with the same title and category to prevent duplicates.
+ * - Handles file uploads and generates a link for the uploaded file.
+ * - Formats, transforms, and cleans the user input data to be stored in the database.
+ * - Creates a new academic entry and returns the appropriate response.
+ *
+ * @async
+ * @param {Object} request - The incoming HTTP request containing user-submitted data.
+ * @param {Object} context - Context object providing additional operational information.
+ * @returns {Object} The HTTP response, including success or error messages based on the operation outcome.
+ */
 const handleCreateAcademicByCategory = async (request, context) => {
     // Validate content type
     const contentValidationResult = validateUnsupportedContent(request, academicConstants.allowedContentTypes);
@@ -90,5 +145,16 @@ const handleCreateAcademicByCategory = async (request, context) => {
     return createAcademicEntry(userInput, request);
 };
 
-// Export the route wrapped with asyncHandler
+/**
+ * POST variable utilizing an asynchronous handler to manage the creation
+ * of academic entries by category. This variable wraps the `handleCreateAcademicByCategory`
+ * function, which is used for handling HTTP POST requests related to this functionality.
+ *
+ * @constant
+ * @type {Function}
+ * @function
+ * @description Handles the HTTP POST request and delegates the creation of
+ *              academic entries to the `handleCreateAcademicByCategory` function
+ *              while ensuring proper error handling through the `asyncHandler`.
+ */
 export const POST = asyncHandler(handleCreateAcademicByCategory);
