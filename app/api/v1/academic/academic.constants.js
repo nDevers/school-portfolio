@@ -1,5 +1,5 @@
-import contentTypesConstants from "@/constants/contentTypes.constants";
-import mimeTypesConstants from "@/constants/mimeTypes.constants";
+import contentTypesConstants from '@/constants/contentTypes.constants';
+import mimeTypesConstants from '@/constants/mimeTypes.constants';
 
 /**
  * An array that specifies the allowed content types for a particular operation or request.
@@ -32,7 +32,12 @@ const allowedContentTypes = [contentTypesConstants.FORM_DATA];
  *
  * The constants are defined in `mimeTypesConstants`.
  */
-const allowedMimeTypes = [mimeTypesConstants.JPEG, mimeTypesConstants.JPG, mimeTypesConstants.PNG, mimeTypesConstants.GIF];
+const allowedMimeTypes = [
+    mimeTypesConstants.JPEG,
+    mimeTypesConstants.JPG,
+    mimeTypesConstants.PNG,
+    mimeTypesConstants.GIF,
+];
 
 /**
  * Represents the name of the file field used in form data submissions or file-related operations.
@@ -76,9 +81,9 @@ const badgeMaxCharacter = 50;
  * @property {string} admissionForm - Represents an admission form category.
  */
 const categories = {
-    routine: "routine",
-    result: "result",
-    admissionForm: "admission_form",
+    routine: 'routine',
+    result: 'result',
+    admissionForm: 'admission_form',
 };
 
 /**

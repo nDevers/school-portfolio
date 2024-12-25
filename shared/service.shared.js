@@ -1,24 +1,24 @@
-import localFileOperations from "@/util/localFileOperations";
-import authConstants from "@/app/api/v1/auth/auth.constants";
-import authSchema from "@/app/api/v1/auth/auth.schema";
-import authUtilities from "@/app/api/v1/auth/auth.utilities";
-import authEmailTemplate from "@/app/api/v1/auth/auth.email.template";
-import environments from "@/constants/enviornments.constants";
-import sharedResponseTypes from "@/shared/shared.response.types";
-import schemaShared from "@/shared/schema.shared";
+import localFileOperations from '@/util/localFileOperations';
+import authConstants from '@/app/api/v1/auth/auth.constants';
+import authSchema from '@/app/api/v1/auth/auth.schema';
+import authUtilities from '@/app/api/v1/auth/auth.utilities';
+import authEmailTemplate from '@/app/api/v1/auth/auth.email.template';
+import environments from '@/constants/enviornments.constants';
+import sharedResponseTypes from '@/shared/shared.response.types';
+import schemaShared from '@/shared/schema.shared';
 
-import toSentenceCase from "@/util/toSentenceCase";
-import validateToken from "@/util/validateToken";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import comparePassword from "@/util/comparePassword";
-import {decryptData, encryptData} from "@/util/crypto";
-import getDeviceType from "@/util/getDeviceType";
-import createAuthenticationToken from "@/util/createAuthenticationToken";
-import generateVerificationToken from "@/util/generateVerificationToken";
-import configurations from "@/configs/configurations";
-import createHashedPassword from "@/util/createHashedPassword";
-import prepareSearchQuery from "@/util/prepareSearchQuery";
+import toSentenceCase from '@/util/toSentenceCase';
+import validateToken from '@/util/validateToken';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import comparePassword from '@/util/comparePassword';
+import { decryptData, encryptData } from '@/util/crypto';
+import getDeviceType from '@/util/getDeviceType';
+import createAuthenticationToken from '@/util/createAuthenticationToken';
+import generateVerificationToken from '@/util/generateVerificationToken';
+import configurations from '@/configs/configurations';
+import createHashedPassword from '@/util/createHashedPassword';
+import prepareSearchQuery from '@/util/prepareSearchQuery';
 
 /**
  * Represents the configuration settings loaded asynchronously.
@@ -36,7 +36,8 @@ import prepareSearchQuery from "@/util/prepareSearchQuery";
  * before accessing `configuration`.
  */
 const configuration = await configurations();
-const { NOT_FOUND, OK, CREATED, CONFLICT, BAD_REQUEST, INTERNAL_SERVER_ERROR } = sharedResponseTypes;
+const { NOT_FOUND, OK, CREATED, CONFLICT, BAD_REQUEST, INTERNAL_SERVER_ERROR } =
+    sharedResponseTypes;
 const { idValidationSchema, categoryValidationSchema } = schemaShared;
 
 // Common function for fetching and projecting MongoDB data with custom aggregation
@@ -59,12 +60,24 @@ const { idValidationSchema, categoryValidationSchema } = schemaShared;
  *
  * @throws {Error} Throws an error if schema validation fails or if there is an issue with database operations.
  */
-const fetchEntryList = async (request, context, model, selectionCriteria, message, schema = null) => {
+const fetchEntryList = async (
+    request,
+    context,
+    model,
+    selectionCriteria,
+    message,
+    schema = null
+) => {
     let userInput = {};
 
     // Parse and validate form data for GET request if schema is provided
     if (schema) {
-        userInput = await parseAndValidateFormData(request, context, 'get', schema);
+        userInput = await parseAndValidateFormData(
+            request,
+            context,
+            'get',
+            schema
+        );
     }
 
     // Build the where condition dynamically based on userInput
@@ -106,8 +119,19 @@ const fetchEntryList = async (request, context, model, selectionCriteria, messag
  *
  * @throws {Error} If the input validation fails or the query encounters an issue.
  */
-const fetchEntryById = async (request, context, model, selectionCriteria, message) => {
-    const userInput = await parseAndValidateFormData(request, context, 'get', idValidationSchema);
+const fetchEntryById = async (
+    request,
+    context,
+    model,
+    selectionCriteria,
+    message
+) => {
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'get',
+        idValidationSchema
+    );
 
     // Use findUnique instead of findById
     const data = await model.findUnique({
@@ -119,11 +143,18 @@ const fetchEntryById = async (request, context, model, selectionCriteria, messag
 
     // Check if data exists
     if (!data) {
-        return NOT_FOUND(`No ${message} entry with the ID: "${userInput?.id}" available at this time.`, request);
+        return NOT_FOUND(
+            `No ${message} entry with the ID: "${userInput?.id}" available at this time.`,
+            request
+        );
     }
 
     // Send a success response with the fetched data
-    return OK(`${toSentenceCase(message)} entry with the ID: "${userInput?.id}" retrieved successfully.`, data, request);
+    return OK(
+        `${toSentenceCase(message)} entry with the ID: "${userInput?.id}" retrieved successfully.`,
+        data,
+        request
+    );
 };
 
 // Common function for fetching data by id and projecting MongoDB data with custom aggregation
@@ -140,8 +171,20 @@ const fetchEntryById = async (request, context, model, selectionCriteria, messag
  * @param {Object} categorySchema - The schema used to validate the category input.
  * @returns {Promise<Object>} Returns a success response with the fetched data and a message if entries are found; otherwise, returns a "not found" response with an appropriate message.
  */
-const fetchEntryByCategory = async (request, context, model, selectionCriteria, message, categorySchema) => {
-    const userInput = await parseAndValidateFormData(request, context, 'get', categorySchema);
+const fetchEntryByCategory = async (
+    request,
+    context,
+    model,
+    selectionCriteria,
+    message,
+    categorySchema
+) => {
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'get',
+        categorySchema
+    );
 
     // Use findUnique instead of findById
     const data = await model.findMany({
@@ -153,11 +196,18 @@ const fetchEntryByCategory = async (request, context, model, selectionCriteria, 
 
     // Check if data exists
     if (!data) {
-        return NOT_FOUND(`No ${message} entry with the CATEGORY: "${userInput?.categoryParams}" available at this time.`, request);
+        return NOT_FOUND(
+            `No ${message} entry with the CATEGORY: "${userInput?.categoryParams}" available at this time.`,
+            request
+        );
     }
 
     // Send a success response with the fetched data
-    return OK(`${toSentenceCase(message)} entry with the CATEGORY: "${userInput?.categoryParams}" retrieved successfully.`, data, request);
+    return OK(
+        `${toSentenceCase(message)} entry with the CATEGORY: "${userInput?.categoryParams}" retrieved successfully.`,
+        data,
+        request
+    );
 };
 
 // Common function for fetching data by id and projecting MongoDB data with custom aggregation
@@ -176,8 +226,20 @@ const fetchEntryByCategory = async (request, context, model, selectionCriteria, 
  *
  * @throws {Error} If validation of the input email fails or an error occurs during the database query.
  */
-const fetchEntryByEmail = async (request, context, model, selectionCriteria, message, emailSchema) => {
-    const userInput = await parseAndValidateFormData(request, context, 'get', emailSchema);
+const fetchEntryByEmail = async (
+    request,
+    context,
+    model,
+    selectionCriteria,
+    message,
+    emailSchema
+) => {
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'get',
+        emailSchema
+    );
 
     // Use findUnique instead of findById
     const data = await model.findMany({
@@ -189,11 +251,18 @@ const fetchEntryByEmail = async (request, context, model, selectionCriteria, mes
 
     // Check if data exists
     if (!data) {
-        return NOT_FOUND(`No ${message} entry with the email: "${userInput?.email}" available at this time.`, request);
+        return NOT_FOUND(
+            `No ${message} entry with the email: "${userInput?.email}" available at this time.`,
+            request
+        );
     }
 
     // Send a success response with the fetched data
-    return OK(`${toSentenceCase(message)} entry with the email: "${userInput?.email}" retrieved successfully.`, data, request);
+    return OK(
+        `${toSentenceCase(message)} entry with the email: "${userInput?.email}" retrieved successfully.`,
+        data,
+        request
+    );
 };
 
 // Common function for fetching data by id and projecting MongoDB data with custom aggregation
@@ -214,8 +283,20 @@ const fetchEntryByEmail = async (request, context, model, selectionCriteria, mes
  * @returns {Promise<object>} A promise that resolves to the success response with data or an error response if the
  *                            entry is not found.
  */
-const fetchEntryByCategoryAndId = async (request, context, model, selectionCriteria, message, categorySchemaAndId) => {
-    const userInput = await parseAndValidateFormData(request, context, 'get', categorySchemaAndId);
+const fetchEntryByCategoryAndId = async (
+    request,
+    context,
+    model,
+    selectionCriteria,
+    message,
+    categorySchemaAndId
+) => {
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'get',
+        categorySchemaAndId
+    );
 
     // Use findUnique instead of findById
     const data = await model.findUnique({
@@ -228,11 +309,18 @@ const fetchEntryByCategoryAndId = async (request, context, model, selectionCrite
 
     // Check if data exists
     if (!data) {
-        return NOT_FOUND(`No ${message} entry with the CATEGORY: "${userInput?.categoryParams}" and ID: "${userInput?.id}" available at this time.`, request);
+        return NOT_FOUND(
+            `No ${message} entry with the CATEGORY: "${userInput?.categoryParams}" and ID: "${userInput?.id}" available at this time.`,
+            request
+        );
     }
 
     // Send a success response with the fetched data
-    return OK(`${toSentenceCase(message)} entry with the CATEGORY: "${userInput?.categoryParams}" and ID: "${userInput?.id}" retrieved successfully.`, data, request);
+    return OK(
+        `${toSentenceCase(message)} entry with the CATEGORY: "${userInput?.categoryParams}" and ID: "${userInput?.id}" retrieved successfully.`,
+        data,
+        request
+    );
 };
 
 /**
@@ -260,7 +348,13 @@ const fetchEntryByCategoryAndId = async (request, context, model, selectionCrite
  * If the entry is not found or if the deletion fails, a 404 Not Found response is returned.
  * If the operation is successful, a success response is returned with a message confirming the deletion.
  */
-const deleteEntryById = async (request, context, model, fileIdField, message) => {
+const deleteEntryById = async (
+    request,
+    context,
+    model,
+    fileIdField,
+    message
+) => {
     // Validate admin
     const authResult = await validateToken(request);
     if (!authResult.isAuthorized) {
@@ -268,7 +362,12 @@ const deleteEntryById = async (request, context, model, fileIdField, message) =>
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'delete', idValidationSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'delete',
+        idValidationSchema
+    );
 
     // Check if data exists
     const data = await model.findUnique({
@@ -277,11 +376,14 @@ const deleteEntryById = async (request, context, model, fileIdField, message) =>
         },
         select: {
             id: true, // Only return the ID of the deleted document
-            ...(fileIdField && { [fileIdField]: true }) // Conditionally include fileIdField
+            ...(fileIdField && { [fileIdField]: true }), // Conditionally include fileIdField
         },
     });
     if (!data) {
-        return NOT_FOUND(`${message} entry with ID: "${userInput?.id}" not found.`, request);
+        return NOT_FOUND(
+            `${message} entry with ID: "${userInput?.id}" not found.`,
+            request
+        );
     }
 
     // Perform the deletion with the specified projection field for optional file handling
@@ -302,15 +404,22 @@ const deleteEntryById = async (request, context, model, fileIdField, message) =>
             id: userInput?.id,
         },
         select: {
-            id: true // Only return the ID of the deleted document
+            id: true, // Only return the ID of the deleted document
         },
     });
     if (deletedData) {
-        return NOT_FOUND(`Failed to delete ${message} entry with ID: "${userInput?.id}".`, request);
+        return NOT_FOUND(
+            `Failed to delete ${message} entry with ID: "${userInput?.id}".`,
+            request
+        );
     }
 
     // Send a success response
-    return OK(`${message} entry with ID: "${userInput?.id}" deleted successfully.`, {}, request);
+    return OK(
+        `${message} entry with ID: "${userInput?.id}" deleted successfully.`,
+        {},
+        request
+    );
 };
 
 /**
@@ -326,7 +435,14 @@ const deleteEntryById = async (request, context, model, fileIdField, message) =>
  * @param {Object} schema - The schema object for validating and parsing the form data.
  * @returns {Object} Returns an HTTP-formatted response object indicating success or failure of the operation.
  */
-const deleteEntryByEmail = async (request, context, model, fileIdField, message, schema) => {
+const deleteEntryByEmail = async (
+    request,
+    context,
+    model,
+    fileIdField,
+    message,
+    schema
+) => {
     // Validate admin
     const authResult = await validateToken(request);
     if (!authResult.isAuthorized) {
@@ -334,11 +450,20 @@ const deleteEntryByEmail = async (request, context, model, fileIdField, message,
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'delete', schema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'delete',
+        schema
+    );
 
     // Ensure the email is provided
     if (!userInput?.email) {
-        return BAD_REQUEST('Email is required to delete the entry.', {}, request);
+        return BAD_REQUEST(
+            'Email is required to delete the entry.',
+            {},
+            request
+        );
     }
 
     // Check if data exists
@@ -354,7 +479,10 @@ const deleteEntryByEmail = async (request, context, model, fileIdField, message,
     });
 
     if (!data) {
-        return NOT_FOUND(`${message} entry with email: "${userInput.email}" not found.`, request);
+        return NOT_FOUND(
+            `${message} entry with email: "${userInput.email}" not found.`,
+            request
+        );
     }
 
     // Perform the deletion
@@ -371,7 +499,11 @@ const deleteEntryByEmail = async (request, context, model, fileIdField, message,
     }
 
     // Send a success response
-    return OK(`${message} entry with email: "${userInput.email}" deleted successfully.`, {}, request);
+    return OK(
+        `${message} entry with email: "${userInput.email}" deleted successfully.`,
+        {},
+        request
+    );
 };
 
 /**
@@ -395,9 +527,20 @@ const deleteEntryByEmail = async (request, context, model, fileIdField, message,
  * - Attempts to create a new document with the parsed and validated payload.
  * - Returns an appropriate success or error response based on the operation results, including details of the created entry if successful.
  */
-const createStatusEntry = async (request, context, model, schema, contentTypes, statusFieldName, message) => {
+const createStatusEntry = async (
+    request,
+    context,
+    model,
+    schema,
+    contentTypes,
+    statusFieldName,
+    message
+) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, contentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        contentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
@@ -409,12 +552,22 @@ const createStatusEntry = async (request, context, model, schema, contentTypes, 
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'create', schema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'create',
+        schema
+    );
 
     // Check if a document with the specified status already exists
-    const existingStatus = await model.exists({ [statusFieldName]: userInput?.[statusFieldName] });
+    const existingStatus = await model.exists({
+        [statusFieldName]: userInput?.[statusFieldName],
+    });
     if (existingStatus) {
-        return CONFLICT(`${statusFieldName.charAt(0).toUpperCase() + statusFieldName.slice(1)} entry with status "${userInput?.[statusFieldName]}" already exists.`, request);
+        return CONFLICT(
+            `${statusFieldName.charAt(0).toUpperCase() + statusFieldName.slice(1)} entry with status "${userInput?.[statusFieldName]}" already exists.`,
+            request
+        );
     }
 
     // Attempt to create a new document with the provided details
@@ -422,17 +575,22 @@ const createStatusEntry = async (request, context, model, schema, contentTypes, 
 
     // Validate if the document was successfully created
     if (!createdDocument) {
-        return INTERNAL_SERVER_ERROR(`Failed to create ${message} entry.`, request);
+        return INTERNAL_SERVER_ERROR(
+            `Failed to create ${message} entry.`,
+            request
+        );
     }
 
     // Retrieve the created document
-    const statusData = await model.findOne(
-        { _id: createdDocument._id },
-        {
-            _id: 1,
-            [statusFieldName]: 1,
-        }
-    ).lean();
+    const statusData = await model
+        .findOne(
+            { _id: createdDocument._id },
+            {
+                _id: 1,
+                [statusFieldName]: 1,
+            }
+        )
+        .lean();
 
     // Send a success response with the created document data
     return CREATED(
@@ -456,9 +614,20 @@ const createStatusEntry = async (request, context, model, schema, contentTypes, 
  *
  * @throws {Error} Throws an error if there is an issue with token validation, form data parsing, or database operations.
  */
-const createTypeEntry = async (request, context, model, schema, contentTypes, typeFieldName, message) => {
+const createTypeEntry = async (
+    request,
+    context,
+    model,
+    schema,
+    contentTypes,
+    typeFieldName,
+    message
+) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, contentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        contentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
@@ -470,12 +639,22 @@ const createTypeEntry = async (request, context, model, schema, contentTypes, ty
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'create', schema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'create',
+        schema
+    );
 
     // Check if a document with the specified type already exists
-    const existingEntry = await model.exists({ [typeFieldName]: userInput?.[typeFieldName] });
+    const existingEntry = await model.exists({
+        [typeFieldName]: userInput?.[typeFieldName],
+    });
     if (existingEntry) {
-        return CONFLICT(`${message} entry with ${typeFieldName} "${userInput?.[typeFieldName]}" already exists.`, request);
+        return CONFLICT(
+            `${message} entry with ${typeFieldName} "${userInput?.[typeFieldName]}" already exists.`,
+            request
+        );
     }
 
     // Create a new document with the provided details
@@ -483,17 +662,22 @@ const createTypeEntry = async (request, context, model, schema, contentTypes, ty
 
     // Validate if the document was successfully created
     if (!createdDocument) {
-        return INTERNAL_SERVER_ERROR(`Failed to create ${typeFieldName.charAt(0).toUpperCase() + typeFieldName.slice(1)} entry.`, request);
+        return INTERNAL_SERVER_ERROR(
+            `Failed to create ${typeFieldName.charAt(0).toUpperCase() + typeFieldName.slice(1)} entry.`,
+            request
+        );
     }
 
     // Retrieve the created document
-    const typeData = await model.findOne(
-        { _id: createdDocument._id },
-        {
-            _id: 1,
-            [typeFieldName]: 1,
-        }
-    ).lean();
+    const typeData = await model
+        .findOne(
+            { _id: createdDocument._id },
+            {
+                _id: 1,
+                [typeFieldName]: 1,
+            }
+        )
+        .lean();
 
     // Send a success response with the created document data
     return CREATED(
@@ -527,16 +711,26 @@ const createTypeEntry = async (request, context, model, schema, contentTypes, ty
  */
 const handleUserLogin = async (request, context, userType, userModel) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, authConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        authConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'create', authSchema.loginSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'create',
+        authSchema.loginSchema
+    );
 
     // Check if the user exists
-    const existingUser = await userModel.findOne({ email: userInput.email }).lean();
+    const existingUser = await userModel
+        .findOne({ email: userInput.email })
+        .lean();
     if (!existingUser) {
         return authUtilities.unauthorizedResponse(
             'Unauthorized access. Please check your email and password and try again.',
@@ -566,20 +760,24 @@ const handleUserLogin = async (request, context, userType, userModel) => {
         deviceType,
         userType,
     };
-    const { accessToken, refreshToken } = await createAuthenticationToken(userTokenData);
+    const { accessToken, refreshToken } =
+        await createAuthenticationToken(userTokenData);
 
     // Encrypt the token for response
-    const returnData = { accessToken: encryptData(accessToken), refreshToken: encryptData(refreshToken) };
+    const returnData = {
+        accessToken: encryptData(accessToken),
+        refreshToken: encryptData(refreshToken),
+    };
 
     // Send login notification email
-    await authEmailTemplate.successfulLoginNotification(existingUser.email, existingUser.name, deviceType);
+    await authEmailTemplate.successfulLoginNotification(
+        existingUser.email,
+        existingUser.name,
+        deviceType
+    );
 
     // Return success response
-    return authUtilities.authorizedResponse(
-        'Authorized.',
-        returnData,
-        request
-    );
+    return authUtilities.authorizedResponse('Authorized.', returnData, request);
 };
 
 /**
@@ -597,16 +795,26 @@ const handleUserLogin = async (request, context, userType, userModel) => {
  */
 const handlePasswordResetRequest = async (request, context, userModel) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, authConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        authConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'create', authSchema.requestNewPassword);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'create',
+        authSchema.requestNewPassword
+    );
 
     // Check if the user exists
-    const existingUser = await userModel.findOne({ email: userInput.email }).lean();
+    const existingUser = await userModel
+        .findOne({ email: userInput.email })
+        .lean();
     if (!existingUser) {
         return NOT_FOUND('User not found. Please sign up first.', request);
     }
@@ -638,14 +846,14 @@ const handlePasswordResetRequest = async (request, context, userModel) => {
             : `http://${hostname}:3000/auth/reset-password/${token}`;
 
     // Send reset password email
-    await authEmailTemplate.resetPasswordRequestNotification(existingUser.email, existingUser.name, emailVerificationLink);
+    await authEmailTemplate.resetPasswordRequestNotification(
+        existingUser.email,
+        existingUser.name,
+        emailVerificationLink
+    );
 
     // Return success response
-    return OK(
-        'Password reset email sent successfully.',
-        {},
-        request
-    );
+    return OK('Password reset email sent successfully.', {}, request);
 };
 
 /**
@@ -669,21 +877,31 @@ const handlePasswordResetRequest = async (request, context, userModel) => {
  */
 const handlePasswordReset = async (request, context, userModel) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, authConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        authConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'update', authSchema.resetPassword);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'update',
+        authSchema.resetPassword
+    );
 
     // Decrypt token
     const decryptedToken = userInput.token;
 
     // Check if the user with the token exists
-    const existingUser = await userModel.findOne({
-        resetPasswordToken: decryptedToken,
-    }).lean();
+    const existingUser = await userModel
+        .findOne({
+            resetPasswordToken: decryptedToken,
+        })
+        .lean();
     if (!existingUser) {
         return BAD_REQUEST('Invalid reset password token.', request);
     }
@@ -707,14 +925,13 @@ const handlePasswordReset = async (request, context, userModel) => {
     }
 
     // Send notification email about the successful password reset
-    await authEmailTemplate.resetPasswordSuccessfulNotification(existingUser.email, existingUser.name);
+    await authEmailTemplate.resetPasswordSuccessfulNotification(
+        existingUser.email,
+        existingUser.name
+    );
 
     // Return success response
-    return OK(
-        'Password reset successful.',
-        {},
-        request
-    );
+    return OK('Password reset successful.', {}, request);
 };
 
 /**

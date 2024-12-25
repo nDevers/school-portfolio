@@ -6,6 +6,6 @@
  * @param {Request} request - The request object containing the headers.
  * @returns {string} The value of the "content-type" header, or an empty string if not present.
  */
-const getContentType = (request) => request.headers.get("content-type") || "";
+const getContentType = (request) => request.headers.get('content-type') || '';
 
 export default getContentType;

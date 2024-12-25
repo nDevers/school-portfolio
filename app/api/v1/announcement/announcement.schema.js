@@ -1,10 +1,24 @@
 import { z } from 'zod';
 
-import schemaShared from "@/shared/schema.shared";
-import announcementConstants from "@/app/api/v1/announcement/announcement.constants";
+import schemaShared from '@/shared/schema.shared';
+import announcementConstants from '@/app/api/v1/announcement/announcement.constants';
 
-const { nonEmptyString, nonEmptyStringArray, enumValidation, validMongooseId, validDate, filesValidator, booleanString } = schemaShared;
-const { titleMaxCharacter, descriptionMaxCharacter, allowedCategories, allowedMimeTypes, allowedFileSize } = announcementConstants;
+const {
+    nonEmptyString,
+    nonEmptyStringArray,
+    enumValidation,
+    validMongooseId,
+    validDate,
+    filesValidator,
+    booleanString,
+} = schemaShared;
+const {
+    titleMaxCharacter,
+    descriptionMaxCharacter,
+    allowedCategories,
+    allowedMimeTypes,
+    allowedFileSize,
+} = announcementConstants;
 
 /**
  * Generates and validates a title string based on the provided field name.
@@ -16,7 +30,8 @@ const { titleMaxCharacter, descriptionMaxCharacter, allowedCategories, allowedMi
  * @returns {string} - A validated, non-empty title string that respects the maximum character limit.
  * @throws {Error} - Throws an error if the generated title exceeds the maximum allowed characters or is empty.
  */
-const title = (fieldName) => nonEmptyString(`${fieldName} title`, titleMaxCharacter);
+const title = (fieldName) =>
+    nonEmptyString(`${fieldName} title`, titleMaxCharacter);
 
 /**
  * Generates a non-empty string using the provided field name and a maximum character limit for the description.
@@ -24,7 +39,8 @@ const title = (fieldName) => nonEmptyString(`${fieldName} title`, titleMaxCharac
  * @param {string} fieldName - The name of the field for which the description is being generated.
  * @returns {string} A non-empty string representing the description of the specified field, constrained by the maximum character limit.
  */
-const description = (fieldName) => nonEmptyString(`${fieldName} description`, descriptionMaxCharacter);
+const description = (fieldName) =>
+    nonEmptyString(`${fieldName} description`, descriptionMaxCharacter);
 
 /**
  * Generates a valid Mongoose ID based on the provided field name.
@@ -41,7 +57,8 @@ const id = (fieldName) => validMongooseId(`${fieldName} ID`);
  * @param {string} fieldName - The name of the field being validated.
  * @returns {Function} A validation function configured to enforce category parameter rules for the specified field name.
  */
-const categoryParams = (fieldName) => enumValidation(`${fieldName} category parameter`, allowedCategories);
+const categoryParams = (fieldName) =>
+    enumValidation(`${fieldName} category parameter`, allowedCategories);
 
 /**
  * A function to validate file inputs based on predefined constraints such as allowed MIME types, file size, and quantity.
@@ -56,7 +73,14 @@ const categoryParams = (fieldName) => enumValidation(`${fieldName} category para
  * - Requires at least one file to be uploaded.
  * - Allows up to a maximum of 10 files.
  */
-const files = (fieldName) => filesValidator(`${fieldName} files`, allowedMimeTypes, allowedFileSize, 1, 10);
+const files = (fieldName) =>
+    filesValidator(
+        `${fieldName} files`,
+        allowedMimeTypes,
+        allowedFileSize,
+        1,
+        10
+    );
 
 /**
  * Deletes files based on the provided field name.
@@ -65,7 +89,11 @@ const files = (fieldName) => filesValidator(`${fieldName} files`, allowedMimeTyp
  * @returns {string[]} A non-empty array of strings representing the IDs of the files that will be deleted,
  *                     constrained by a maximum title character limit.
  */
-const deleteFiles = (fieldName) => nonEmptyStringArray(`${fieldName} IDs of the file that will be deleted`, titleMaxCharacter)
+const deleteFiles = (fieldName) =>
+    nonEmptyStringArray(
+        `${fieldName} IDs of the file that will be deleted`,
+        titleMaxCharacter
+    );
 
 /**
  * A function that validates a date based on the provided field name.
@@ -109,16 +137,19 @@ const isAdvertise = (fieldName) => booleanString(`${fieldName} is advertise`);
  * @param {string} fieldName - The name of the field being validated, used to dynamically configure the individual schema properties.
  * @returns {object} - A Zod schema object with strict validation rules for the specified field.
  */
-const createSchema = (fieldName) => z.object({
-    categoryParams: categoryParams(fieldName),
-    title: title(fieldName),
-    description: description(fieldName),
-    files: files(fieldName),
-    date: date(fieldName),
-    isHeadline: isHeadline(fieldName),
-    isAdvertise: isAdvertise(fieldName),
-    advertiseMailTime: advertiseMailTime(fieldName),
-}).strict(); // Enforce strict mode to disallow extra fields
+const createSchema = (fieldName) =>
+    z
+        .object({
+            categoryParams: categoryParams(fieldName),
+            title: title(fieldName),
+            description: description(fieldName),
+            files: files(fieldName),
+            date: date(fieldName),
+            isHeadline: isHeadline(fieldName),
+            isAdvertise: isAdvertise(fieldName),
+            advertiseMailTime: advertiseMailTime(fieldName),
+        })
+        .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * Generates a strict zod schema for validating data based on the provided field name.
@@ -132,18 +163,21 @@ const createSchema = (fieldName) => z.object({
  *                             Used to generate dynamic validation error messages and contexts.
  * @returns {z.ZodObject} A zod schema object with validation specifications for the given field name.
  */
-const getDataByQuery = (fieldName) => z.object({
-    id: id(fieldName).optional(),
-    categoryParams: categoryParams(fieldName).optional(),
-    title: title(fieldName).optional(),
-    description: description(fieldName).optional(),
-    createdAt: validDate(`${fieldName} creation time`).optional(),
-    updatedAt: validDate(`${fieldName} last update time`).optional(),
-    date: date(fieldName),
-    isHeadline: isHeadline(fieldName).optional(),
-    isAdvertise: isAdvertise(fieldName).optional(),
-    advertiseMailTime: advertiseMailTime(fieldName).optional(),
-}).strict(); // Enforce strict mode to disallow extra fields
+const getDataByQuery = (fieldName) =>
+    z
+        .object({
+            id: id(fieldName).optional(),
+            categoryParams: categoryParams(fieldName).optional(),
+            title: title(fieldName).optional(),
+            description: description(fieldName).optional(),
+            createdAt: validDate(`${fieldName} creation time`).optional(),
+            updatedAt: validDate(`${fieldName} last update time`).optional(),
+            date: date(fieldName),
+            isHeadline: isHeadline(fieldName).optional(),
+            isAdvertise: isAdvertise(fieldName).optional(),
+            advertiseMailTime: advertiseMailTime(fieldName).optional(),
+        })
+        .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * `updateSchema` is a function that generates a Zod schema for validating update operations.
@@ -169,26 +203,29 @@ const getDataByQuery = (fieldName) => z.object({
  * - `isAdvertise` (optional): Boolean field indicating advertisement status.
  * - `advertiseMailTime` (optional): Time field indicating scheduled advertisement mail time.
  */
-const updateSchema = (fieldName) => z.object({
-    id: id(fieldName),
-    categoryParams: categoryParams(fieldName),
-    category: categoryParams(fieldName).optional(),
-    title: title(fieldName).optional(),
-    description: description(fieldName).optional(),
-    files: files(fieldName).optional(),
-    deleteFiles: deleteFiles(fieldName).optional(),
-    date: date(fieldName).optional(),
-    isHeadline: isHeadline(fieldName).optional(),
-    isAdvertise: isAdvertise(fieldName).optional(),
-    advertiseMailTime: advertiseMailTime(fieldName).optional(),
-})
-    .strict() // Enforce strict mode to disallow extra fields
-    .refine(
-        (data) => Object.keys(data).length > 1, // Must include `id` and at least one other field
-        {
-            message: 'At least one of "category", "title", "description", "files", "date" or "isHeadline" is required along with "id" and "categoryParams".',
-        }
-    );
+const updateSchema = (fieldName) =>
+    z
+        .object({
+            id: id(fieldName),
+            categoryParams: categoryParams(fieldName),
+            category: categoryParams(fieldName).optional(),
+            title: title(fieldName).optional(),
+            description: description(fieldName).optional(),
+            files: files(fieldName).optional(),
+            deleteFiles: deleteFiles(fieldName).optional(),
+            date: date(fieldName).optional(),
+            isHeadline: isHeadline(fieldName).optional(),
+            isAdvertise: isAdvertise(fieldName).optional(),
+            advertiseMailTime: advertiseMailTime(fieldName).optional(),
+        })
+        .strict() // Enforce strict mode to disallow extra fields
+        .refine(
+            (data) => Object.keys(data).length > 1, // Must include `id` and at least one other field
+            {
+                message:
+                    'At least one of "category", "title", "description", "files", "date" or "isHeadline" is required along with "id" and "categoryParams".',
+            }
+        );
 
 /**
  * Defines a schema for category-related data validation, ensuring that the structure adheres strictly to the expected format.
@@ -196,9 +233,12 @@ const updateSchema = (fieldName) => z.object({
  * @param {string} fieldName - The name of the field being validated, used to construct the schema's parameters.
  * @returns {z.ZodObject} A strict schema object that validates the specified category parameters.
  */
-const categorySchema = (fieldName) => z.object({
-    categoryParams: categoryParams(fieldName),
-}).strict();
+const categorySchema = (fieldName) =>
+    z
+        .object({
+            categoryParams: categoryParams(fieldName),
+        })
+        .strict();
 
 /**
  * Schema definition for validating an object containing category parameters and an ID.
@@ -208,10 +248,13 @@ const categorySchema = (fieldName) => z.object({
  * @param {string} fieldName - The name of the field being validated; used to provide context for errors.
  * @returns {ZodObject} A strict schema object with `categoryParams` and `id` validation.
  */
-const categoryAndIdSchema = (fieldName) => z.object({
-    categoryParams: categoryParams(fieldName),
-    id: id(fieldName),
-}).strict();
+const categoryAndIdSchema = (fieldName) =>
+    z
+        .object({
+            categoryParams: categoryParams(fieldName),
+            id: id(fieldName),
+        })
+        .strict();
 
 /**
  * Represents the schema containing various methods and attributes related to announcements.

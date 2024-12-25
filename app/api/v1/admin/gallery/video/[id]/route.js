@@ -1,14 +1,14 @@
-import { GalleryVideoModel } from "@/shared/prisma.model.shared";
-import galleryVideoSchema from "@/app/api/v1/gallery/video/gallery.video.schema";
-import galleryVideoConstants from "@/app/api/v1/gallery/video/gallery.video.constants";
-import sharedResponseTypes from "@/shared/shared.response.types";
-import serviceShared from "@/shared/service.shared";
+import { GalleryVideoModel } from '@/shared/prisma.model.shared';
+import galleryVideoSchema from '@/app/api/v1/gallery/video/gallery.video.schema';
+import galleryVideoConstants from '@/app/api/v1/gallery/video/gallery.video.constants';
+import sharedResponseTypes from '@/shared/shared.response.types';
+import serviceShared from '@/shared/service.shared';
 
-import asyncHandler from "@/util/asyncHandler";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import validateToken from "@/util/validateToken";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import galleryVideoSelectionCriteria from "@/app/api/v1/gallery/video/gallery.video.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import validateToken from '@/util/validateToken';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import galleryVideoSelectionCriteria from '@/app/api/v1/gallery/video/gallery.video.selection.criteria';
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 
@@ -43,7 +43,11 @@ const selectionCriteria = galleryVideoSelectionCriteria();
 const updateGalleryVideoEntry = async (userInput, request) => {
     // Filter `userInput` to only include fields with non-null values
     const fieldsToUpdate = Object.keys(userInput).reduce((acc, key) => {
-        if (userInput[key] !== undefined && userInput[key] !== null && key !== 'id') {
+        if (
+            userInput[key] !== undefined &&
+            userInput[key] !== null &&
+            key !== 'id'
+        ) {
             acc[key] = userInput[key];
         }
         return acc;
@@ -66,10 +70,17 @@ const updateGalleryVideoEntry = async (userInput, request) => {
     });
 
     if (!updatedDocument?.id) {
-        return INTERNAL_SERVER_ERROR(`Failed to update gallery video entry with the ID "${userInput?.id}".`, request);
+        return INTERNAL_SERVER_ERROR(
+            `Failed to update gallery video entry with the ID "${userInput?.id}".`,
+            request
+        );
     }
 
-    return OK(`Gallery video entry with the ID "${userInput?.id}" updated successfully.`, updatedDocument, request);
+    return OK(
+        `Gallery video entry with the ID "${userInput?.id}" updated successfully.`,
+        updatedDocument,
+        request
+    );
 };
 
 /**
@@ -94,7 +105,10 @@ const updateGalleryVideoEntry = async (userInput, request) => {
  */
 const handleUpdateGalleryVideoById = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, galleryVideoConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        galleryVideoConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
@@ -106,7 +120,12 @@ const handleUpdateGalleryVideoById = async (request, context) => {
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'update', galleryVideoSchema.updateSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'update',
+        galleryVideoSchema.updateSchema
+    );
 
     // Check if FAQ entry with the same title already exists
     const existingGalleryVideo = await GalleryVideoModel.findUnique({
@@ -116,10 +135,13 @@ const handleUpdateGalleryVideoById = async (request, context) => {
         select: {
             id: true,
             youtubeLinks: true,
-        }
+        },
     });
     if (!existingGalleryVideo) {
-        return NOT_FOUND(`Gallery video entry with ID "${userInput?.id}" not found.`, request);
+        return NOT_FOUND(
+            `Gallery video entry with ID "${userInput?.id}" not found.`,
+            request
+        );
     }
 
     if (userInput?.title) {
@@ -130,10 +152,13 @@ const handleUpdateGalleryVideoById = async (request, context) => {
             },
             select: {
                 id: true,
-            }
+            },
         });
         if (existingQuestion) {
-            return CONFLICT(`Gallery video entry with title "${userInput?.title}" already exists.`, request);
+            return CONFLICT(
+                `Gallery video entry with title "${userInput?.title}" already exists.`,
+                request
+            );
         }
     }
 
@@ -160,7 +185,9 @@ const handleUpdateGalleryVideoById = async (request, context) => {
 
     // Add new YouTube links (if provided)
     if (userInput?.youtubeLinks?.length > 0) {
-        updatedYoutubeLinks = [...new Set([...updatedYoutubeLinks, ...userInput.youtubeLinks])]; // Ensure no duplicates
+        updatedYoutubeLinks = [
+            ...new Set([...updatedYoutubeLinks, ...userInput.youtubeLinks]),
+        ]; // Ensure no duplicates
     }
 
     userInput.youtubeLinks = updatedYoutubeLinks;
@@ -186,7 +213,13 @@ const handleUpdateGalleryVideoById = async (request, context) => {
  * @returns {Promise<Object>} Resolves with a result object that confirms deletion or contains relevant data.
  */
 const deleteGalleryVideoById = async (request, context) => {
-    return serviceShared.deleteEntryById(request, context, GalleryVideoModel, '', 'Gallery video');
+    return serviceShared.deleteEntryById(
+        request,
+        context,
+        GalleryVideoModel,
+        '',
+        'Gallery video'
+    );
 };
 
 /**

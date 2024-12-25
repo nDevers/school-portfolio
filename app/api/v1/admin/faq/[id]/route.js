@@ -1,15 +1,14 @@
-import { FaqModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
-import faqSchema from "@/app/api/v1/faq/faq.schema";
-import faqConstants from "@/app/api/v1/faq/faq.constants";
-import sharedResponseTypes from "@/shared/shared.response.types";
+import { FaqModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
+import faqSchema from '@/app/api/v1/faq/faq.schema';
+import faqConstants from '@/app/api/v1/faq/faq.constants';
+import sharedResponseTypes from '@/shared/shared.response.types';
 
-import asyncHandler from "@/util/asyncHandler";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import validateToken from "@/util/validateToken";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import faqSelectionCriteria from "@/app/api/v1/faq/faq.selection.criteria";
-
+import asyncHandler from '@/util/asyncHandler';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import validateToken from '@/util/validateToken';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import faqSelectionCriteria from '@/app/api/v1/faq/faq.selection.criteria';
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 
@@ -28,7 +27,11 @@ const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 const updateFaqEntry = async (userInput, request) => {
     // Filter `userInput` to only include fields with non-null values
     const fieldsToUpdate = Object.keys(userInput).reduce((acc, key) => {
-        if (userInput[key] !== undefined && userInput[key] !== null && key !== 'id') {
+        if (
+            userInput[key] !== undefined &&
+            userInput[key] !== null &&
+            key !== 'id'
+        ) {
             acc[key] = userInput[key];
         }
         return acc;
@@ -53,10 +56,17 @@ const updateFaqEntry = async (userInput, request) => {
     });
 
     if (!updatedDocument?.id) {
-        return INTERNAL_SERVER_ERROR(`Failed to update FAQ entry with the ID "${userInput?.id}".`, request);
+        return INTERNAL_SERVER_ERROR(
+            `Failed to update FAQ entry with the ID "${userInput?.id}".`,
+            request
+        );
     }
 
-    return OK(`FAQ entry with the ID "${userInput?.id}" updated successfully.`, updatedDocument, request);
+    return OK(
+        `FAQ entry with the ID "${userInput?.id}" updated successfully.`,
+        updatedDocument,
+        request
+    );
 };
 
 /**
@@ -73,7 +83,10 @@ const updateFaqEntry = async (userInput, request) => {
  */
 const handleUpdateFaqById = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, faqConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        faqConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
@@ -85,7 +98,12 @@ const handleUpdateFaqById = async (request, context) => {
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'update', faqSchema.updateSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'update',
+        faqSchema.updateSchema
+    );
 
     // Check if FAQ entry with the same question already exists
     const existingFaq = await FaqModel.findUnique({
@@ -94,10 +112,13 @@ const handleUpdateFaqById = async (request, context) => {
         },
         select: {
             id: true,
-        }
+        },
     });
     if (!existingFaq) {
-        return NOT_FOUND(`FAQ entry with ID "${userInput?.id}" not found.`, request);
+        return NOT_FOUND(
+            `FAQ entry with ID "${userInput?.id}" not found.`,
+            request
+        );
     }
 
     if (userInput?.question) {
@@ -108,10 +129,13 @@ const handleUpdateFaqById = async (request, context) => {
             },
             select: {
                 id: true,
-            }
+            },
         });
         if (existingQuestion) {
-            return CONFLICT(`FAQ entry with question "${userInput?.question}" already exists.`, request);
+            return CONFLICT(
+                `FAQ entry with question "${userInput?.question}" already exists.`,
+                request
+            );
         }
     }
 

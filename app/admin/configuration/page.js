@@ -1,6 +1,6 @@
-'use client'
-import PageTitle from '@/components/admin/common/PageTitle'
-import ConfigurationForm from '@/components/admin/form/ConfigurationForm'
+'use client';
+import PageTitle from '@/components/admin/common/PageTitle';
+import ConfigurationForm from '@/components/admin/form/ConfigurationForm';
 import Spinner from '@/components/common/Spinner';
 import apiConfig from '@/configs/apiConfig';
 import { fetchData } from '@/util/axios';
@@ -13,10 +13,10 @@ export default function ConfigurationPage() {
     });
 
     return (
-        <div className='w-full h-full'>
-            <PageTitle title='Configuration' />
-            {isLoading && <Spinner/>}
+        <div className="w-full h-full">
+            <PageTitle title="Configuration" />
+            {isLoading && <Spinner />}
             {data && <ConfigurationForm data={data} />}
         </div>
-    )
+    );
 }

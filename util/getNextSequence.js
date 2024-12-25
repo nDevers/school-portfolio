@@ -1,4 +1,4 @@
-import CounterModel from "@/app/api/v1/(counter)/counter.model";
+import CounterModel from '@/app/api/v1/(counter)/counter.model';
 
 // Function to get the next sequence number
 /**

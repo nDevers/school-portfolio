@@ -1,14 +1,13 @@
-import { FaqModel } from "@/shared/prisma.model.shared";
-import faqSchema from "@/app/api/v1/faq/faq.schema";
-import faqConstants from "@/app/api/v1/faq/faq.constants";
-import sharedResponseTypes from "@/shared/shared.response.types";
+import { FaqModel } from '@/shared/prisma.model.shared';
+import faqSchema from '@/app/api/v1/faq/faq.schema';
+import faqConstants from '@/app/api/v1/faq/faq.constants';
+import sharedResponseTypes from '@/shared/shared.response.types';
 
-import asyncHandler from "@/util/asyncHandler";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import validateToken from "@/util/validateToken";
-import faqSelectionCriteria from "@/app/api/v1/faq/faq.selection.criteria";
-
+import asyncHandler from '@/util/asyncHandler';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import validateToken from '@/util/validateToken';
+import faqSelectionCriteria from '@/app/api/v1/faq/faq.selection.criteria';
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
 
@@ -52,11 +51,18 @@ const createFaqEntry = async (userInput, request) => {
     });
 
     if (!createdDocument?.id) {
-        return INTERNAL_SERVER_ERROR(`Failed to create FAQ entry with question "${userInput?.question}".`, request);
+        return INTERNAL_SERVER_ERROR(
+            `Failed to create FAQ entry with question "${userInput?.question}".`,
+            request
+        );
     }
 
     // No need for an aggregation pipeline; Prisma returns the created document
-    return CREATED(`FAQ entry with question "${userInput?.question}" created successfully.`, createdDocument, request);
+    return CREATED(
+        `FAQ entry with question "${userInput?.question}" created successfully.`,
+        createdDocument,
+        request
+    );
 };
 
 /**
@@ -76,7 +82,10 @@ const createFaqEntry = async (userInput, request) => {
  */
 const handleCreateFaq = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, faqConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        faqConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
@@ -88,7 +97,12 @@ const handleCreateFaq = async (request, context) => {
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'create', faqSchema.createSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'create',
+        faqSchema.createSchema
+    );
 
     // Check if FAQ entry with the same question already exists
     const existingQuestion = await FaqModel.findUnique({
@@ -97,10 +111,13 @@ const handleCreateFaq = async (request, context) => {
         },
         select: {
             id: true,
-        }
+        },
     });
     if (existingQuestion) {
-        return CONFLICT(`FAQ entry with question "${userInput?.question}" already exists.`, request);
+        return CONFLICT(
+            `FAQ entry with question "${userInput?.question}" already exists.`,
+            request
+        );
     }
 
     // Create the FAQ entry and send the response

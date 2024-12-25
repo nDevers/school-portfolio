@@ -1,14 +1,13 @@
-import { NewsletterModel } from "@/shared/prisma.model.shared";
-import newsletterSchema from "@/app/api/v1/newsletter/newsletter.schema";
-import newsletterConstants from "@/app/api/v1/newsletter/newsletter.constants";
-import sharedResponseTypes from "@/shared/shared.response.types";
+import { NewsletterModel } from '@/shared/prisma.model.shared';
+import newsletterSchema from '@/app/api/v1/newsletter/newsletter.schema';
+import newsletterConstants from '@/app/api/v1/newsletter/newsletter.constants';
+import sharedResponseTypes from '@/shared/shared.response.types';
 
-import asyncHandler from "@/util/asyncHandler";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import sendEmail from "@/lib/email";
-import newsletterSelectionCriteria from "@/app/api/v1/newsletter/newsletter.selection.criteria";
-
+import asyncHandler from '@/util/asyncHandler';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import sendEmail from '@/lib/email';
+import newsletterSelectionCriteria from '@/app/api/v1/newsletter/newsletter.selection.criteria';
 
 const { OK, UNPROCESSABLE_ENTITY } = sharedResponseTypes;
 
@@ -47,13 +46,21 @@ const selectionCriteria = newsletterSelectionCriteria();
  */
 const handleSubscribeToNewsletter = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, newsletterConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        newsletterConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'create', newsletterSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'create',
+        newsletterSchema
+    );
 
     // Check if the email is already subscribed
     const existingSubscription = await NewsletterModel.findUnique({
@@ -65,14 +72,18 @@ const handleSubscribeToNewsletter = async (request, context) => {
 
     if (existingSubscription) {
         // Send "Already Subscribed" email
-        const alreadySubscribedSubject = `You're already subscribed!`;
+        const alreadySubscribedSubject = "You're already subscribed!";
         const alreadySubscribedHtml = `
             <h3>Dear ${userInput.email},</h3>
             <p>You are already subscribed to our newsletter. Thank you for staying connected!</p>
             <p>If you have any questions, feel free to contact us.</p>
         `;
 
-        const sendEmailToSubscriberResponse = await sendEmail(userInput.email, alreadySubscribedSubject, alreadySubscribedHtml);
+        const sendEmailToSubscriberResponse = await sendEmail(
+            userInput.email,
+            alreadySubscribedSubject,
+            alreadySubscribedHtml
+        );
         if (!sendEmailToSubscriberResponse?.messageId) {
             return UNPROCESSABLE_ENTITY(
                 `Failed to send "Already Subscribed" email to ${userInput.email}.`,
@@ -92,11 +103,15 @@ const handleSubscribeToNewsletter = async (request, context) => {
     });
 
     if (!createdNewsletter) {
-        return UNPROCESSABLE_ENTITY('Failed to save newsletter email data.', {}, request);
+        return UNPROCESSABLE_ENTITY(
+            'Failed to save newsletter email data.',
+            {},
+            request
+        );
     }
 
     // Prepare "Subscription Successful" email details
-    const subscriptionSuccessSubject = `Welcome to our Newsletter!`;
+    const subscriptionSuccessSubject = 'Welcome to our Newsletter!';
     const subscriptionSuccessHtml = `
         <h3>Dear ${userInput.email},</h3>
         <p>Thank you for subscribing to our newsletter!</p>
@@ -105,7 +120,11 @@ const handleSubscribeToNewsletter = async (request, context) => {
     `;
 
     // Send "Subscription Successful" email
-    const sendEmailToSubscriberResponse = await sendEmail(userInput.email, subscriptionSuccessSubject, subscriptionSuccessHtml);
+    const sendEmailToSubscriberResponse = await sendEmail(
+        userInput.email,
+        subscriptionSuccessSubject,
+        subscriptionSuccessHtml
+    );
     if (!sendEmailToSubscriberResponse?.messageId) {
         return UNPROCESSABLE_ENTITY(
             `Failed to send "Subscription Successful" email to ${userInput.email}.`,
@@ -114,11 +133,7 @@ const handleSubscribeToNewsletter = async (request, context) => {
     }
 
     // Send a success response
-    return OK(
-        'Newsletter subscription successful.',
-        {},
-        request
-    );
+    return OK('Newsletter subscription successful.', {}, request);
 };
 
 /**

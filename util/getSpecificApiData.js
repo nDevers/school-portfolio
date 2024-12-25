@@ -1,4 +1,4 @@
-import { fetchDataAsServer } from "./axios";
+import { fetchDataAsServer } from './axios';
 
 /**
  * Fetches data from a specified API endpoint and extracts specific fields if provided.
@@ -27,7 +27,7 @@ export default async function getSpecificApiData(api, fields) {
 
         return extractedData;
     } catch (error) {
-        console.error("Error fetching data from API:", error);
+        console.error('Error fetching data from API:', error);
         return null; // or handle error appropriately
     }
 }

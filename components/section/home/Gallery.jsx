@@ -30,8 +30,13 @@ export default function Gallery() {
                     এক নজরে আমাদের স্কুল
                 </h1>
 
-                {isLoading && <Spinner/>}
-                {imageUrls && <PhotoGallery imageUrls={imageUrls} className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1'/>}
+                {isLoading && <Spinner />}
+                {imageUrls && (
+                    <PhotoGallery
+                        imageUrls={imageUrls}
+                        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1"
+                    />
+                )}
             </div>
         </div>
     );

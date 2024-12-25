@@ -1,9 +1,10 @@
 import { z } from 'zod';
 
-import schemaShared from "@/shared/schema.shared";
-import schoolAchievementConstants from "@/app/api/v1/school/achievement/school.achievement.constants";
+import schemaShared from '@/shared/schema.shared';
+import schoolAchievementConstants from '@/app/api/v1/school/achievement/school.achievement.constants';
 
-const { nonEmptyString, validMongooseId, validDate, filesValidator } = schemaShared;
+const { nonEmptyString, validMongooseId, validDate, filesValidator } =
+    schemaShared;
 const { allowedMimeTypes, allowedBannerFileSize } = schoolAchievementConstants;
 
 /**
@@ -43,7 +44,13 @@ const id = validMongooseId('School achievement ID');
  * Used to ensure uploaded icons meet predetermined file type and size requirements
  * within the constraints of the allowed file limits.
  */
-const icon = filesValidator('School achievement icon', allowedMimeTypes, allowedBannerFileSize, 1, 1);
+const icon = filesValidator(
+    'School achievement icon',
+    allowedMimeTypes,
+    allowedBannerFileSize,
+    1,
+    1
+);
 
 // Define the Zod validation schema
 /**
@@ -52,11 +59,13 @@ const icon = filesValidator('School achievement icon', allowedMimeTypes, allowed
  * `title`, `description`, and `icon`.
  * Any additional properties outside of these will result in a validation error.
  */
-const createSchema = z.object({
-    title,
-    description,
-    icon,
-}).strict(); // Enforce strict mode to disallow extra fields
+const createSchema = z
+    .object({
+        title,
+        description,
+        icon,
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * An object schema for validating and structuring data used to query school achievements.
@@ -70,13 +79,15 @@ const createSchema = z.object({
  *
  * The object is strictly validated to ensure only these defined properties are allowed.
  */
-const getDataByQuery = z.object({
-    id: id.optional(),
-    title: title.optional(),
-    description: description.optional(),
-    createdAt: validDate('School achievement creation time').optional(),
-    updatedAt: validDate('School achievement last update time').optional(),
-}).strict(); // Enforce strict mode to disallow extra fields
+const getDataByQuery = z
+    .object({
+        id: id.optional(),
+        title: title.optional(),
+        description: description.optional(),
+        createdAt: validDate('School achievement creation time').optional(),
+        updatedAt: validDate('School achievement last update time').optional(),
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * Represents a schema validation for updating an object, ensuring specific rules and structure.
@@ -88,17 +99,19 @@ const getDataByQuery = z.object({
  * - Validates that the object must contain the `id` field and at least one additional field (`title`, `description`, or `icon`).
  * - Provides an error message if the validation fails, requiring at least one of `title` or `description` to accompany `id`.
  */
-const updateSchema = z.object({
-    id,
-    title: title.optional(),
-    description: description.optional(),
-    icon: icon.optional(),
-})
+const updateSchema = z
+    .object({
+        id,
+        title: title.optional(),
+        description: description.optional(),
+        icon: icon.optional(),
+    })
     .strict() // Enforce strict mode to disallow extra fields
     .refine(
         (data) => Object.keys(data).length > 1, // Must include `id` and at least one other field
         {
-            message: 'At least one of "title" or "description" is required along with "id".',
+            message:
+                'At least one of "title" or "description" is required along with "id".',
         }
     );
 

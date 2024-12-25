@@ -14,7 +14,13 @@ export const clearField = (formik, fieldName) => {
 };
 
 // Common function for handling add and remove operations in Formik array fields
-export const handleArrayFieldChange = (formik, actionType, fieldName, index = null, deleteFieldName = null) => {
+export const handleArrayFieldChange = (
+    formik,
+    actionType,
+    fieldName,
+    index = null,
+    deleteFieldName = null
+) => {
     const fieldArray = formik.values[fieldName];
     const deleteArray = deleteFieldName ? formik.values[deleteFieldName] : [];
 
@@ -23,7 +29,10 @@ export const handleArrayFieldChange = (formik, actionType, fieldName, index = nu
     } else if (actionType === 'remove' && index !== null) {
         // Track the item in the delete array if deleteFieldName is provided
         if (deleteFieldName && fieldArray[index]) {
-            formik.setFieldValue(deleteFieldName, [...deleteArray, fieldArray[index]]);
+            formik.setFieldValue(deleteFieldName, [
+                ...deleteArray,
+                fieldArray[index],
+            ]);
         }
         // Remove the item from the main array
         const updatedArray = fieldArray.filter((_, i) => i !== index);
@@ -46,18 +55,26 @@ export const handleArrayFieldChange = (formik, actionType, fieldName, index = nu
 // #######################################################################
 // #######################################################################
 
-export const handleCheckboxChangeForForm = (setFieldValue, fieldName) => (checked) => {
-    setFieldValue(fieldName, checked);
-};
+export const handleCheckboxChangeForForm =
+    (setFieldValue, fieldName) => (checked) => {
+        setFieldValue(fieldName, checked);
+    };
 
-export const handleImageChangeForForm = (setFieldValue, fieldName) => (event) => {
-    const file = event.currentTarget.files[0];
-    if (file) {
-        setFieldValue(fieldName, file); // Sets the file in Formik state
-    }
-};
+export const handleImageChangeForForm =
+    (setFieldValue, fieldName) => (event) => {
+        const file = event.currentTarget.files[0];
+        if (file) {
+            setFieldValue(fieldName, file); // Sets the file in Formik state
+        }
+    };
 
-export const handleArrayFieldChangeForForm = ({ values, setFieldValue }, actionType, fieldName, index = null, deleteFieldName = null) => {
+export const handleArrayFieldChangeForForm = (
+    { values, setFieldValue },
+    actionType,
+    fieldName,
+    index = null,
+    deleteFieldName = null
+) => {
     const fieldArray = values[fieldName];
     const deleteArray = deleteFieldName ? values[deleteFieldName] || [] : [];
 

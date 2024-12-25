@@ -1,16 +1,16 @@
-import { AdminModel } from "@/shared/prisma.model.shared";
-import authSchema from "@/app/api/v1/auth/auth.schema";
-import authConstants from "@/app/api/v1/auth/auth.constants";
-import authUtilities from "@/app/api/v1/auth/auth.utilities";
-import authEmailTemplate from "@/app/api/v1/auth/auth.email.template";
+import { AdminModel } from '@/shared/prisma.model.shared';
+import authSchema from '@/app/api/v1/auth/auth.schema';
+import authConstants from '@/app/api/v1/auth/auth.constants';
+import authUtilities from '@/app/api/v1/auth/auth.utilities';
+import authEmailTemplate from '@/app/api/v1/auth/auth.email.template';
 
-import asyncHandler from "@/util/asyncHandler";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import getDeviceType from "@/util/getDeviceType";
-import comparePassword from "@/util/comparePassword";
-import {decryptData, encryptData} from "@/util/crypto";
-import createAuthenticationToken from "@/util/createAuthenticationToken";
+import asyncHandler from '@/util/asyncHandler';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import getDeviceType from '@/util/getDeviceType';
+import comparePassword from '@/util/comparePassword';
+import { decryptData, encryptData } from '@/util/crypto';
+import createAuthenticationToken from '@/util/createAuthenticationToken';
 
 /**
  * Handles the login process for administrators.
@@ -37,17 +37,25 @@ import createAuthenticationToken from "@/util/createAuthenticationToken";
  */
 const handleAdminLogin = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, authConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        authConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'create', authSchema.loginSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'create',
+        authSchema.loginSchema
+    );
 
     // Check if the user exists using Prisma
     const existingUser = await AdminModel.findUnique({
-        where: { email: userInput.email }
+        where: { email: userInput.email },
     });
     if (!existingUser) {
         return authUtilities.unauthorizedResponse(
@@ -78,20 +86,24 @@ const handleAdminLogin = async (request, context) => {
         deviceType,
         userType: 'admin',
     };
-    const { accessToken, refreshToken } = await createAuthenticationToken(userTokenData);
+    const { accessToken, refreshToken } =
+        await createAuthenticationToken(userTokenData);
 
     // Encrypt the token for response
-    const returnData = { accessToken: encryptData(accessToken), refreshToken: encryptData(refreshToken) };
+    const returnData = {
+        accessToken: encryptData(accessToken),
+        refreshToken: encryptData(refreshToken),
+    };
 
     // Send login notification email
-    await authEmailTemplate.successfulLoginNotification(existingUser.email, existingUser.name, deviceType);
+    await authEmailTemplate.successfulLoginNotification(
+        existingUser.email,
+        existingUser.name,
+        deviceType
+    );
 
     // Return success response
-    return authUtilities.authorizedResponse(
-        'Authorized.',
-        returnData,
-        request
-    );
+    return authUtilities.authorizedResponse('Authorized.', returnData, request);
 };
 
 /**

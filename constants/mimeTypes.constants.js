@@ -43,11 +43,11 @@ const PDF = 'application/pdf';
  * for easier and consistent reference throughout the application.
  */
 const mimeTypesConstants = {
-  JPEG,
-  JPG,
-  PNG,
-  GIF,
-  PDF,
+    JPEG,
+    JPG,
+    PNG,
+    GIF,
+    PDF,
 };
 
 export default mimeTypesConstants;

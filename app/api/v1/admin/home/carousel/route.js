@@ -1,15 +1,14 @@
-import { HomeCarouselModel } from "@/shared/prisma.model.shared";
-import homeCarouselSchema from "@/app/api/v1/home/carousel/home.carousel.schema";
-import homeCarouselConstants from "@/app/api/v1/home/carousel/home.carousel.constants";
-import sharedResponseTypes from "@/shared/shared.response.types";
-import localFileOperations from "@/util/localFileOperations";
+import { HomeCarouselModel } from '@/shared/prisma.model.shared';
+import homeCarouselSchema from '@/app/api/v1/home/carousel/home.carousel.schema';
+import homeCarouselConstants from '@/app/api/v1/home/carousel/home.carousel.constants';
+import sharedResponseTypes from '@/shared/shared.response.types';
+import localFileOperations from '@/util/localFileOperations';
 
-import asyncHandler from "@/util/asyncHandler";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import validateToken from "@/util/validateToken";
-import homeCarouselSelectionCriteria from "@/app/api/v1/home/carousel/home.carousel.selection.criteria";
-
+import asyncHandler from '@/util/asyncHandler';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import validateToken from '@/util/validateToken';
+import homeCarouselSelectionCriteria from '@/app/api/v1/home/carousel/home.carousel.selection.criteria';
 
 const { OK, CREATED, BAD_REQUEST, NOT_FOUND } = sharedResponseTypes;
 
@@ -38,7 +37,11 @@ const selectionCriteria = homeCarouselSelectionCriteria();
  * @returns {Object} A response object indicating the success of the operation with appropriate status and data.
  * @throws {Error} Throws an error if the creation of a new home carousel entry fails.
  */
-const createOrUpdateHomeCarousel = async (existingEntry, userInput, request) => {
+const createOrUpdateHomeCarousel = async (
+    existingEntry,
+    userInput,
+    request
+) => {
     if (existingEntry) {
         // Update the existing entry
         const updatedEntry = await HomeCarouselModel.update({
@@ -61,7 +64,11 @@ const createOrUpdateHomeCarousel = async (existingEntry, userInput, request) => 
         throw new Error('Failed to create home carousel entry.');
     }
 
-    return CREATED('Home carousel entry created successfully.', newDocument, request);
+    return CREATED(
+        'Home carousel entry created successfully.',
+        newDocument,
+        request
+    );
 };
 
 /**
@@ -81,7 +88,10 @@ const createOrUpdateHomeCarousel = async (existingEntry, userInput, request) => 
  */
 const handleCreateHomeCarousel = async (request) => {
     // Validate content type
-    const contentValidation = validateUnsupportedContent(request, homeCarouselConstants.allowedContentTypes);
+    const contentValidation = validateUnsupportedContent(
+        request,
+        homeCarouselConstants.allowedContentTypes
+    );
     if (!contentValidation.isValid) return contentValidation.response;
 
     // Validate user authorization
@@ -89,7 +99,12 @@ const handleCreateHomeCarousel = async (request) => {
     if (!authResult.isAuthorized) return authResult.response;
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, {}, 'create', homeCarouselSchema.createSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        {},
+        'create',
+        homeCarouselSchema.createSchema
+    );
 
     // Fetch the existing carousel entry
     const existingEntry = await HomeCarouselModel.findFirst({
@@ -99,8 +114,12 @@ const handleCreateHomeCarousel = async (request) => {
     if (userInput?.images?.length > 0) {
         // Validate image count
         const existingImages = existingEntry?.images || [];
-        const newImages = userInput[homeCarouselConstants.imagesFieldName] || [];
-        if (existingImages.length + newImages.length > homeCarouselConstants.maxImage) {
+        const newImages =
+            userInput[homeCarouselConstants.imagesFieldName] || [];
+        if (
+            existingImages.length + newImages.length >
+            homeCarouselConstants.maxImage
+        ) {
             return BAD_REQUEST(
                 `The total number of images cannot exceed ${homeCarouselConstants.maxImage}. Current: ${existingImages.length}, New: ${newImages.length}.`,
                 request
@@ -110,7 +129,8 @@ const handleCreateHomeCarousel = async (request) => {
         // Upload new images
         const uploadedImages = await Promise.all(
             newImages.map(async (file) => {
-                const { fileId, fileLink } = await localFileOperations.uploadFile(request, file);
+                const { fileId, fileLink } =
+                    await localFileOperations.uploadFile(request, file);
                 return { imageId: fileId, image: fileLink };
             })
         );
@@ -146,7 +166,10 @@ const handleCreateHomeCarousel = async (request) => {
  */
 const handleUpdateHomeCarousel = async (request) => {
     // Validate content type
-    const contentValidation = validateUnsupportedContent(request, homeCarouselConstants.allowedContentTypes);
+    const contentValidation = validateUnsupportedContent(
+        request,
+        homeCarouselConstants.allowedContentTypes
+    );
     if (!contentValidation.isValid) return contentValidation.response;
 
     // Validate user authorization
@@ -154,14 +177,19 @@ const handleUpdateHomeCarousel = async (request) => {
     if (!authResult.isAuthorized) return authResult.response;
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, {}, 'update', homeCarouselSchema.updateSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        {},
+        'update',
+        homeCarouselSchema.updateSchema
+    );
 
     // Fetch the existing carousel entry
     const existingEntry = await HomeCarouselModel.findFirst({
         select: selectionCriteria,
     });
     if (!existingEntry) {
-        return NOT_FOUND("Home carousel entry not found.", request);
+        return NOT_FOUND('Home carousel entry not found.', request);
     }
 
     // Handle image updates
@@ -170,7 +198,8 @@ const handleUpdateHomeCarousel = async (request) => {
         // Upload new images
         const uploadedImages = await Promise.all(
             userInput.images.map(async (file) => {
-                const { fileId, fileLink } = await localFileOperations.uploadFile(request, file);
+                const { fileId, fileLink } =
+                    await localFileOperations.uploadFile(request, file);
                 return { imageId: fileId, image: fileLink };
             })
         );
@@ -200,7 +229,11 @@ const handleUpdateHomeCarousel = async (request) => {
         select: selectionCriteria,
     });
 
-    return OK("Home carousel entry updated successfully.", updatedEntry, request);
+    return OK(
+        'Home carousel entry updated successfully.',
+        updatedEntry,
+        request
+    );
 };
 
 /**
@@ -227,7 +260,7 @@ const deleteHomeCarousel = async (request) => {
         select: selectionCriteria,
     });
     if (!existingEntry) {
-        return NOT_FOUND("Home carousel entry not found.", request);
+        return NOT_FOUND('Home carousel entry not found.', request);
     }
 
     // Delete images associated with the entry
@@ -243,7 +276,7 @@ const deleteHomeCarousel = async (request) => {
         where: { id: existingEntry.id },
     });
 
-    return OK("Home carousel entry deleted successfully.", {}, request);
+    return OK('Home carousel entry deleted successfully.', {}, request);
 };
 
 /**

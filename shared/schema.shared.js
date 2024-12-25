@@ -1,10 +1,10 @@
-import {z} from "zod";
-import {Types} from "mongoose";
+import { z } from 'zod';
+import { Types } from 'mongoose';
 import moment from 'moment';
 
-import constants from "@/constants/constants";
+import constants from '@/constants/constants';
 
-import {decryptData} from "@/util/crypto";
+import { decryptData } from '@/util/crypto';
 
 /**
  * A function that validates a string to ensure it is non-empty and does not exceed a specified maximum character length.
@@ -13,9 +13,14 @@ import {decryptData} from "@/util/crypto";
  * @param {number} [maxCharacter=100000] - The maximum allowed character length for the string.
  * @returns {ZodString} A Zod schema object that enforces the string to be non-empty and within the character limit.
  */
-const nonEmptyString = (fieldName, maxCharacter = 100000) => z.string()
-    .nonempty(`${fieldName} is required`)
-    .max(maxCharacter, `${fieldName} can not be more than ${maxCharacter} characters.`);
+const nonEmptyString = (fieldName, maxCharacter = 100000) =>
+    z
+        .string()
+        .nonempty(`${fieldName} is required`)
+        .max(
+            maxCharacter,
+            `${fieldName} can not be more than ${maxCharacter} characters.`
+        );
 /**
  * A function that validates a non-empty Bangla string.
  *
@@ -27,10 +32,13 @@ const nonEmptyString = (fieldName, maxCharacter = 100000) => z.string()
  * @returns {Refinement} A refinement object that validates the input value as a Bangla string.
  * The refinement ensures the value is a non-empty string and contains only Bangla characters.
  */
-const nonEmptyBangliString = (fieldName) => nonEmptyString(fieldName)
-    .refine((value) => constants.bangliLanguageRegex.test(value), {
-        message: `${fieldName} must contain only Bangla characters.`,
-    });
+const nonEmptyBangliString = (fieldName) =>
+    nonEmptyString(fieldName).refine(
+        (value) => constants.bangliLanguageRegex.test(value),
+        {
+            message: `${fieldName} must contain only Bangla characters.`,
+        }
+    );
 /**
  * A function that validates a non-empty string containing only English characters.
  *
@@ -43,10 +51,13 @@ const nonEmptyBangliString = (fieldName) => nonEmptyString(fieldName)
  *
  * @throws {Error} If the string is empty or contains non-English characters, an error with the specified message will be thrown.
  */
-const nonEmptyEnglishString = (fieldName) => nonEmptyString(fieldName)
-    .refine((value) => constants.englishLanguageRegex.test(value), {
-        message: `${fieldName} must contain only English characters.`,
-    });
+const nonEmptyEnglishString = (fieldName) =>
+    nonEmptyString(fieldName).refine(
+        (value) => constants.englishLanguageRegex.test(value),
+        {
+            message: `${fieldName} must contain only English characters.`,
+        }
+    );
 
 /**
  * A function that returns a Zod schema for validating an array of non-empty strings.
@@ -62,7 +73,8 @@ const nonEmptyStringArray = (fieldName) => z.array(nonEmptyString(fieldName));
  * @param {string} fieldName - The name of the field for validation purposes.
  * @returns {ZodArray} - A Zod array schema that validates an array of non-empty Bangli strings.
  */
-const nonEmptyBangliStringArray = (fieldName) => z.array(nonEmptyBangliString(fieldName));
+const nonEmptyBangliStringArray = (fieldName) =>
+    z.array(nonEmptyBangliString(fieldName));
 /**
  * A function that returns a Zod array schema where each element is a non-empty English string.
  *
@@ -70,7 +82,8 @@ const nonEmptyBangliStringArray = (fieldName) => z.array(nonEmptyBangliString(fi
  * @param {string} fieldName - The name of the field being validated, used for descriptive error messages.
  * @returns {ZodArray} A Zod schema that validates an array of non-empty English strings.
  */
-const nonEmptyEnglishStringArray = (fieldName) => z.array(nonEmptyEnglishString(fieldName));
+const nonEmptyEnglishStringArray = (fieldName) =>
+    z.array(nonEmptyEnglishString(fieldName));
 
 /**
  * A function that returns a validator ensuring an optional non-empty string.
@@ -82,7 +95,8 @@ const nonEmptyEnglishStringArray = (fieldName) => z.array(nonEmptyEnglishString(
  * @returns {Validator} A validator that ensures the field is either not present
  * or a non-empty string.
  */
-const optionalNonEmptyString = (fieldName) => nonEmptyString(fieldName).optional();
+const optionalNonEmptyString = (fieldName) =>
+    nonEmptyString(fieldName).optional();
 /**
  * A function that creates an optional validator for non-empty Bangla strings.
  *
@@ -92,7 +106,8 @@ const optionalNonEmptyString = (fieldName) => nonEmptyString(fieldName).optional
  * @param {string} fieldName - The name of the field to be validated.
  * @returns {object} - A validation rule ensuring the field is optional or a non-empty Bangla string.
  */
-const optionalNonEmptyBangliString = (fieldName) => nonEmptyBangliString(fieldName).optional();
+const optionalNonEmptyBangliString = (fieldName) =>
+    nonEmptyBangliString(fieldName).optional();
 /**
  * A variable that represents an optional, non-empty English string.
  *
@@ -105,7 +120,8 @@ const optionalNonEmptyBangliString = (fieldName) => nonEmptyBangliString(fieldNa
  * @param {string} fieldName - The name of the field being validated.
  * @returns {Object} A validation schema enforcing the optional, non-empty English string rule.
  */
-const optionalNonEmptyEnglishString = (fieldName) => nonEmptyEnglishString(fieldName).optional();
+const optionalNonEmptyEnglishString = (fieldName) =>
+    nonEmptyEnglishString(fieldName).optional();
 
 /**
  * Defines a validation function that ensures the value is a non-negative number.
@@ -116,7 +132,8 @@ const optionalNonEmptyEnglishString = (fieldName) => nonEmptyEnglishString(field
  * The validation will fail if the value is negative, and an appropriate error message
  * will be generated using the provided field name.
  */
-const nonNegativeNumber = (fieldName) => z.number().nonnegative(`${fieldName} is required and cannot be negative`);
+const nonNegativeNumber = (fieldName) =>
+    z.number().nonnegative(`${fieldName} is required and cannot be negative`);
 /**
  * Generates a schema for validating and transforming input values into a boolean.
  * The schema accepts boolean values or string representations of boolean ('true' or 'false').
@@ -127,15 +144,15 @@ const nonNegativeNumber = (fieldName) => z.number().nonnegative(`${fieldName} is
  * Throws a validation error if the input is not a valid boolean representation.
  */
 const booleanString = (fieldName) =>
-    z.union([z.boolean(), z.literal('true'), z.literal('false')]).transform(value => {
-        if (typeof value === 'boolean') return value;
-        return value === 'true'; // Convert 'true' string to boolean true, and 'false' to boolean false
-    }).refine(
-        (value) => value === true || value === false,
-        {
+    z
+        .union([z.boolean(), z.literal('true'), z.literal('false')])
+        .transform((value) => {
+            if (typeof value === 'boolean') return value;
+            return value === 'true'; // Convert 'true' string to boolean true, and 'false' to boolean false
+        })
+        .refine((value) => value === true || value === false, {
             message: `${fieldName} must be a valid boolean value (true or false)`, // Custom error message with field name
-        }
-    );
+        });
 
 // Dynamic file validator with size check
 /**
@@ -153,10 +170,13 @@ const booleanString = (fieldName) =>
  * - If the file size exceeds `maxSize`, an error is raised specifying the maximum allowed size in MB.
  */
 const validFile = (fieldName, allowedTypes, maxSize) =>
-    z.instanceof(File, { message: `${fieldName} must be a file` })
-        .refine((file) => file.size > 0, { message: `${fieldName} file cannot be empty` })
+    z
+        .instanceof(File, { message: `${fieldName} must be a file` })
+        .refine((file) => file.size > 0, {
+            message: `${fieldName} file cannot be empty`,
+        })
         .refine((file) => allowedTypes.includes(file.type), {
-            message: `${fieldName} file type must be one of ${allowedTypes.join(", ")}`,
+            message: `${fieldName} file type must be one of ${allowedTypes.join(', ')}`,
         })
         .refine((file) => file.size <= maxSize, {
             message: `${fieldName} file size must be less than or equal to ${maxSize / (1024 * 1024)}MB`,
@@ -179,13 +199,25 @@ const validFile = (fieldName, allowedTypes, maxSize) =>
  * 3. Each file meets a non-empty size requirement.
  * 4. Each file conforms to the specified `allowedTypes` and `maxSize`.
  */
-const filesValidator = (fieldName, allowedTypes, maxSize, minFiles = 1, maxFiles = Infinity) =>
-    z.array(validFile(fieldName, allowedTypes, maxSize))
-        .nonempty({ message: "At least one file is required" })
-        .min(minFiles, { message: `At least ${minFiles} file(s) must be provided` })
-        .max(maxFiles, { message: `No more than ${maxFiles} file(s) can be provided` })
-        .refine(files => files.every(file => file.size > 0), {  // Check that no file in the array is empty
-            message: `All files in ${fieldName} must be non-empty`
+const filesValidator = (
+    fieldName,
+    allowedTypes,
+    maxSize,
+    minFiles = 1,
+    maxFiles = Infinity
+) =>
+    z
+        .array(validFile(fieldName, allowedTypes, maxSize))
+        .nonempty({ message: 'At least one file is required' })
+        .min(minFiles, {
+            message: `At least ${minFiles} file(s) must be provided`,
+        })
+        .max(maxFiles, {
+            message: `No more than ${maxFiles} file(s) can be provided`,
+        })
+        .refine((files) => files.every((file) => file.size > 0), {
+            // Check that no file in the array is empty
+            message: `All files in ${fieldName} must be non-empty`,
         });
 
 /**
@@ -206,16 +238,24 @@ const filesValidator = (fieldName, allowedTypes, maxSize, minFiles = 1, maxFiles
  *   - One numeric digit.
  *   - One special character.
  */
-const validPassword = (fieldName = 'Password', minLength = 8, maxLength = 128) =>
-    z.string()
+const validPassword = (
+    fieldName = 'Password',
+    minLength = 8,
+    maxLength = 128
+) =>
+    z
+        .string()
         .nonempty(`${fieldName} is required`)
         .transform((val) => decryptData(val)) // Decrypt password before validation
-        .refine((val) => val.length >= minLength, { message: `${fieldName} must be at least ${minLength} characters` })
-        .refine((val) => val.length <= maxLength, { message: `${fieldName} must be at most ${maxLength} characters` })
-        .refine(
-            (val) => constants.passwordRegex.test(val),
-            { message: `${fieldName} must contain an uppercase letter, lowercase letter, number, and special character` }
-        );
+        .refine((val) => val.length >= minLength, {
+            message: `${fieldName} must be at least ${minLength} characters`,
+        })
+        .refine((val) => val.length <= maxLength, {
+            message: `${fieldName} must be at most ${maxLength} characters`,
+        })
+        .refine((val) => constants.passwordRegex.test(val), {
+            message: `${fieldName} must contain an uppercase letter, lowercase letter, number, and special character`,
+        });
 
 /**
  * A function to validate an email address with multiple checks.
@@ -255,8 +295,11 @@ const validEmailArray = (fieldName) => z.array(validEmail(fieldName));
  * @param {string} fieldName - The name of the field being validated.
  * @returns {Object} Validation object containing the result of the mobile number check.
  */
-const validMobileNumber = (fieldName) => nonEmptyString(fieldName)
-    .regex(constants.bangladeshMobileRegex, `${fieldName} must be a valid Bangladeshi mobile number`);
+const validMobileNumber = (fieldName) =>
+    nonEmptyString(fieldName).regex(
+        constants.bangladeshMobileRegex,
+        `${fieldName} must be a valid Bangladeshi mobile number`
+    );
 
 /**
  * Creates a Zod array schema for validating mobile numbers.
@@ -268,7 +311,8 @@ const validMobileNumber = (fieldName) => nonEmptyString(fieldName)
  * @param {string} fieldName - The name of the field to be used in validation messages or processing.
  * @returns {ZodArray} - A Zod array schema containing valid mobile numbers.
  */
-const validMobileNumberArray = (fieldName) => z.array(validMobileNumber(fieldName));
+const validMobileNumberArray = (fieldName) =>
+    z.array(validMobileNumber(fieldName));
 
 /**
  * Validates whether a given field contains a valid Bangladeshi National ID (NID) number.
@@ -282,13 +326,14 @@ const validMobileNumberArray = (fieldName) => z.array(validMobileNumber(fieldNam
  *                     The rules include checking for a non-empty string, matching
  *                     the regex for Bangladeshi NIDs, and ensuring the length is 10 digits.
  */
-const validBangladeshiNidCardNumber = (fieldName) => nonEmptyString(fieldName)
-    .regex(constants.bangladeshNidRegex, {
-        message: `${fieldName} must be a valid 10-digit Bangladeshi NID number.`,
-    })
-    .refine((value) => value.length === 10, {
-        message: `${fieldName} must be a 10-digit number.`,
-    });
+const validBangladeshiNidCardNumber = (fieldName) =>
+    nonEmptyString(fieldName)
+        .regex(constants.bangladeshNidRegex, {
+            message: `${fieldName} must be a valid 10-digit Bangladeshi NID number.`,
+        })
+        .refine((value) => value.length === 10, {
+            message: `${fieldName} must be a 10-digit number.`,
+        });
 
 /**
  * Function to validate if the provided value for a field is a valid MongoDB ObjectId.
@@ -302,8 +347,8 @@ const validBangladeshiNidCardNumber = (fieldName) => nonEmptyString(fieldName)
  * string and matches the MongoDB ObjectId format. Upon failure, an error message
  * specifying the issue is provided.
  */
-const validMongooseId = (fieldName) => nonEmptyString(`${fieldName} is required`)
-    .refine(
+const validMongooseId = (fieldName) =>
+    nonEmptyString(`${fieldName} is required`).refine(
         (id) => Types.ObjectId.isValid(id), // Validate if the string is a valid ObjectId format
         { message: `${fieldName} must be a valid ObjectId format` } // Use fieldName in the message
     );
@@ -315,9 +360,12 @@ const validMongooseId = (fieldName) => nonEmptyString(`${fieldName} is required`
  * @param {Array<string>} allowedCategories - An array of allowed category values for validation.
  * @returns {ZodSchema} A strict Zod validation schema object that validates category parameters.
  */
-const categoryValidationSchema = (fieldName, allowedCategories) => z.object({
-    categoryParams: enumValidation(fieldName, allowedCategories),
-}).strict();
+const categoryValidationSchema = (fieldName, allowedCategories) =>
+    z
+        .object({
+            categoryParams: enumValidation(fieldName, allowedCategories),
+        })
+        .strict();
 
 // Define the Zod validation schema
 /**
@@ -328,9 +376,11 @@ const categoryValidationSchema = (fieldName, allowedCategories) => z.object({
  *
  * @type {import('zod').ZodObject}
  */
-const idValidationSchema = z.object({
-    id: validMongooseId('ID'),
-}).strict(); // Enforce strict mode to disallow extra fields
+const idValidationSchema = z
+    .object({
+        id: validMongooseId('ID'),
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * A function that returns a Zod schema for validating an array of Mongoose ObjectId values.
@@ -347,12 +397,12 @@ const validMongooseIdArray = (fieldName) => z.array(validMongooseId(fieldName));
  * @returns {Object} A validation rule that ensures the string is non-empty,
  *                   a valid URL, and starts with "https://".
  */
-const validUrl = (fieldName) => nonEmptyString(fieldName)
-    .url(`${fieldName} must be a valid URL`)
-    .refine(
-        (url) => url.startsWith('https://'),
-        { message: `${fieldName} must start with "https://"` }
-    );
+const validUrl = (fieldName) =>
+    nonEmptyString(fieldName)
+        .url(`${fieldName} must be a valid URL`)
+        .refine((url) => url.startsWith('https://'), {
+            message: `${fieldName} must start with "https://"`,
+        });
 
 /**
  * A function that returns a Zod schema definition for an array of valid URLs.
@@ -375,15 +425,19 @@ const validUrlArray = (fieldName) => z.array(validUrl(fieldName));
  * @param {string} fieldName - The name of the field for use in the error message.
  * @returns {ZodObject} A Zod schema object for validation.
  */
-const bankInformation = (fieldName) => z.object({
-    bankName: nonEmptyString('Bank name'),
-    branchName: nonEmptyString('Branch name'),
-}).partial().refine(
-    (data) => Object.values(data).some((value) => value?.trim() !== ''),
-    {
-        message: `${fieldName} must include "bankName" or "branchName" when "hasBankDetails" is true.`,
-    }
-);
+const bankInformation = (fieldName) =>
+    z
+        .object({
+            bankName: nonEmptyString('Bank name'),
+            branchName: nonEmptyString('Branch name'),
+        })
+        .partial()
+        .refine(
+            (data) => Object.values(data).some((value) => value?.trim() !== ''),
+            {
+                message: `${fieldName} must include "bankName" or "branchName" when "hasBankDetails" is true.`,
+            }
+        );
 
 /**
  * Creates a schema object for validating address details.
@@ -396,12 +450,13 @@ const bankInformation = (fieldName) => z.object({
  * @param {string} fieldName - The base name to be used in error messages or validation context.
  * @returns {ZodObject} The schema object for validating the address details.
  */
-const addressDetails = (fieldName) => z.object({
-    village: nonEmptyString(`${fieldName} village`).optional(),
-    postOffice: nonEmptyString(`${fieldName} post office`).optional(),
-    subdistrict: nonEmptyString(`${fieldName} subdistrict`).optional(),
-    district: nonEmptyString(`${fieldName} district`).optional(),
-});
+const addressDetails = (fieldName) =>
+    z.object({
+        village: nonEmptyString(`${fieldName} village`).optional(),
+        postOffice: nonEmptyString(`${fieldName} post office`).optional(),
+        subdistrict: nonEmptyString(`${fieldName} subdistrict`).optional(),
+        district: nonEmptyString(`${fieldName} district`).optional(),
+    });
 
 /**
  * Represents a schema definition for an uploaded file object with specific validation rules.
@@ -412,10 +467,11 @@ const addressDetails = (fieldName) => z.object({
  *  - id: A non-empty string representing the unique identifier of the uploaded file, validated with a custom message.
  *  - link: A valid URL representing the link to the uploaded file, validated with a custom message.
  */
-const uploadedFile = (fieldName) => z.object({
-    id: nonEmptyString(`${fieldName} ID`),
-    link: validUrl(`${fieldName} link`),
-});
+const uploadedFile = (fieldName) =>
+    z.object({
+        id: nonEmptyString(`${fieldName} ID`),
+        link: validUrl(`${fieldName} link`),
+    });
 
 /**
  * A validation function for checking if an input date string satisfies specific formatting rules.
@@ -427,16 +483,23 @@ const uploadedFile = (fieldName) => z.object({
  * @param {string} fieldName - The name of the field being validated.
  * @returns {Function} A refined validation function that validates the date format.
  */
-const validDate = (fieldName) => nonEmptyString(fieldName)
-    .refine((date) => {
-        // Validate if the date is in DD/MM/YYYY or ISO 8601 format
-        const isValidDDMMYYYY = moment(date, 'DD/MM/YYYY', true).isValid();
-        const isValidISO8601 = moment(date, moment.ISO_8601, true).isValid();
+const validDate = (fieldName) =>
+    nonEmptyString(fieldName).refine(
+        (date) => {
+            // Validate if the date is in DD/MM/YYYY or ISO 8601 format
+            const isValidDDMMYYYY = moment(date, 'DD/MM/YYYY', true).isValid();
+            const isValidISO8601 = moment(
+                date,
+                moment.ISO_8601,
+                true
+            ).isValid();
 
-        return isValidDDMMYYYY || isValidISO8601;
-    }, {
-        message: `${fieldName} must be a valid date in "DD/MM/YYYY" or ISO 8601 format.`,
-    });
+            return isValidDDMMYYYY || isValidISO8601;
+        },
+        {
+            message: `${fieldName} must be a valid date in "DD/MM/YYYY" or ISO 8601 format.`,
+        }
+    );
 
 /**
  * A function used to validate if a given field's value matches a predefined set of allowed types or values.
@@ -448,7 +511,7 @@ const validDate = (fieldName) => nonEmptyString(fieldName)
 const enumValidation = (fieldName, allowedTypes) => {
     return z.enum(allowedTypes, {
         required_error: `${fieldName} is required`,
-        invalid_type_error: `${fieldName} must be one of ${allowedTypes.join(", ")}`
+        invalid_type_error: `${fieldName} must be one of ${allowedTypes.join(', ')}`,
     });
 };
 
@@ -458,7 +521,8 @@ const enumValidation = (fieldName, allowedTypes) => {
  * @param {string} [fieldName='Blood group'] - The name of the field to validate. Defaults to 'Blood group' if no value is provided.
  * @returns {Function} A function to perform validation based on the predefined blood group types.
  */
-const validBloodGroup = (fieldName = 'Blood group') => enumValidation(fieldName, constants.bloodGroupTypes);
+const validBloodGroup = (fieldName = 'Blood group') =>
+    enumValidation(fieldName, constants.bloodGroupTypes);
 
 /**
  * A shared schema object containing various validation schemas and utilities

@@ -1,9 +1,9 @@
-import { CareerModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
-import careerSchema from "@/app/api/v1/career/career.schema";
+import { CareerModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
+import careerSchema from '@/app/api/v1/career/career.schema';
 
-import asyncHandler from "@/util/asyncHandler";
-import careerSelectionCriteria from "@/app/api/v1/career/career.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import careerSelectionCriteria from '@/app/api/v1/career/career.selection.criteria';
 
 /**
  * Asynchronous function to handle retrieving a list of careers.
@@ -18,7 +18,14 @@ import careerSelectionCriteria from "@/app/api/v1/career/career.selection.criter
 const handleGetCareerList = async (request, context) => {
     const selectionCriteria = careerSelectionCriteria();
 
-    return serviceShared.fetchEntryList(request, context, CareerModel, selectionCriteria, 'Career', careerSchema.getDataByQuery);
+    return serviceShared.fetchEntryList(
+        request,
+        context,
+        CareerModel,
+        selectionCriteria,
+        'Career',
+        careerSchema.getDataByQuery
+    );
 };
 
 /**

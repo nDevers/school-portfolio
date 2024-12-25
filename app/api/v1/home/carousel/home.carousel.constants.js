@@ -1,5 +1,5 @@
-import contentTypesConstants from "@/constants/contentTypes.constants";
-import mimeTypesConstants from "@/constants/mimeTypes.constants";
+import contentTypesConstants from '@/constants/contentTypes.constants';
+import mimeTypesConstants from '@/constants/mimeTypes.constants';
 
 /**
  * A list of content types that are allowed for processing.
@@ -24,7 +24,12 @@ const allowedContentTypes = [contentTypesConstants.FORM_DATA];
  *
  * Used to validate file types against these acceptable formats.
  */
-const allowedMimeTypes = [mimeTypesConstants.JPEG, mimeTypesConstants.JPG, mimeTypesConstants.PNG, mimeTypesConstants.GIF];
+const allowedMimeTypes = [
+    mimeTypesConstants.JPEG,
+    mimeTypesConstants.JPG,
+    mimeTypesConstants.PNG,
+    mimeTypesConstants.GIF,
+];
 
 /**
  * Represents the name of the field used to store or reference images.

@@ -1,24 +1,27 @@
-'use client'
-import React, { useState } from 'react'
-import InputWrapper from '@/components/ui/input-wrapper'
-import FormikSunEditor from '@/components/admin/sun-editor/FormikSunEditor'
-import Submit from '@/components/button/Submit'
-import Reset from '@/components/button/Reset'
-import { Field, Form, Formik } from 'formik'
-import { Input } from '@/components/ui/input'
-import * as Yup from 'yup'
-import { handleArrayFieldChangeForForm, handleImageChangeForForm } from '@/util/formikHelpers'
-import Add from '@/components/button/Add'
-import Remove from '@/components/button/Remove'
-import { Error } from '@/components/ui/error'
-import ComboboxFormik from '@/components/ui/ComboboxFormik'
-import apiConfig from '@/configs/apiConfig'
-import { fetchData, postData, updateData } from '@/util/axios'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
+'use client';
+import React, { useState } from 'react';
+import InputWrapper from '@/components/ui/input-wrapper';
+import FormikSunEditor from '@/components/admin/sun-editor/FormikSunEditor';
+import Submit from '@/components/button/Submit';
+import Reset from '@/components/button/Reset';
+import { Field, Form, Formik } from 'formik';
+import { Input } from '@/components/ui/input';
+import * as Yup from 'yup';
+import {
+    handleArrayFieldChangeForForm,
+    handleImageChangeForForm,
+} from '@/util/formikHelpers';
+import Add from '@/components/button/Add';
+import Remove from '@/components/button/Remove';
+import { Error } from '@/components/ui/error';
+import ComboboxFormik from '@/components/ui/ComboboxFormik';
+import apiConfig from '@/configs/apiConfig';
+import { fetchData, postData, updateData } from '@/util/axios';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
 export default function CurrentNewsForm({ data }) {
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
     const route = useRouter();
     const queryClient = useQueryClient();
     const initialValues = {
@@ -28,16 +31,16 @@ export default function CurrentNewsForm({ data }) {
         files: data?.files || [
             {
                 name: '',
-                file: null
-            }
+                file: null,
+            },
         ],
         links: data?.links || [
             {
                 name: '',
-                link: null
-            }
-        ]
-    }
+                link: null,
+            },
+        ],
+    };
 
     const validationSchema = Yup.object({
         title: Yup.string().required('Title is required'),
@@ -48,11 +51,18 @@ export default function CurrentNewsForm({ data }) {
             } else {
                 // Validate banner as required and check file type
                 return Yup.mixed()
-                    .required("Banner is required")
+                    .required('Banner is required')
                     .test(
                         'fileType',
                         'Unsupported file format. Only images are allowed',
-                        (value) => !value || ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'].includes(value?.type)
+                        (value) =>
+                            !value ||
+                            [
+                                'image/jpeg',
+                                'image/jpg',
+                                'image/png',
+                                'image/gif',
+                            ].includes(value?.type)
                     );
             }
         }),
@@ -67,8 +77,10 @@ export default function CurrentNewsForm({ data }) {
                     .test(
                         'fileType',
                         'Only PDF files are allowed',
-                        (value) => !value || (value && value.type === 'application/pdf')
-                    )
+                        (value) =>
+                            !value ||
+                            (value && value.type === 'application/pdf')
+                    ),
             })
         ),
         links: Yup.array().of(
@@ -78,13 +90,13 @@ export default function CurrentNewsForm({ data }) {
                 link: Yup.string()
                     // .required('Link is required')
                     .nullable()
-                    .url('Must be a valid URL')
+                    .url('Must be a valid URL'),
             })
-        )
+        ),
     });
 
     const onSubmit = async (values) => {
-        setIsLoading(true)
+        setIsLoading(true);
         const formData = new FormData();
 
         // Helper function to append only non-empty values
@@ -95,9 +107,9 @@ export default function CurrentNewsForm({ data }) {
         };
 
         // Append simple fields
-        appendIfPresent("title", values.title);
-        appendIfPresent("description", values.description);
-        appendIfPresent("banner", values.banner);
+        appendIfPresent('title', values.title);
+        appendIfPresent('description', values.description);
+        appendIfPresent('banner', values.banner);
 
         // Append files array if present
         if (values.files && values.files.length > 0) {
@@ -124,8 +136,8 @@ export default function CurrentNewsForm({ data }) {
 
         // Invalidate cache
         queryClient.invalidateQueries(['current-news']);
-        setIsLoading(false)
-        route.back()
+        setIsLoading(false);
+        route.back();
     };
 
     return (
@@ -136,15 +148,42 @@ export default function CurrentNewsForm({ data }) {
         >
             {({ errors, touched, values, setFieldValue, resetForm }) => (
                 <Form className="space-y-4">
-
-                    <InputWrapper label="Event Title" error={errors.title} touched={touched.title}>
-                        <Field as={Input} name="title" placeholder="Enter title" />
+                    <InputWrapper
+                        label="Event Title"
+                        error={errors.title}
+                        touched={touched.title}
+                    >
+                        <Field
+                            as={Input}
+                            name="title"
+                            placeholder="Enter title"
+                        />
                     </InputWrapper>
 
                     <div>
-                        {data?.banner && <img src={data?.banner} alt={data?.title} className='w-full h-40 object-cover rounded-lg border border-dashed' />}
-                        <InputWrapper label="Banner" error={errors.banner} touched={touched.banner}>
-                            <Input type="file" name="banner" accept="image/*" onChange={(event) => setFieldValue("banner", event.currentTarget.files[0])} />
+                        {data?.banner && (
+                            <img
+                                src={data?.banner}
+                                alt={data?.title}
+                                className="w-full h-40 object-cover rounded-lg border border-dashed"
+                            />
+                        )}
+                        <InputWrapper
+                            label="Banner"
+                            error={errors.banner}
+                            touched={touched.banner}
+                        >
+                            <Input
+                                type="file"
+                                name="banner"
+                                accept="image/*"
+                                onChange={(event) =>
+                                    setFieldValue(
+                                        'banner',
+                                        event.currentTarget.files[0]
+                                    )
+                                }
+                            />
                         </InputWrapper>
                     </div>
 
@@ -152,83 +191,165 @@ export default function CurrentNewsForm({ data }) {
                     <div className="space-y-2">
                         <InputWrapper label="PDF files">
                             {values.files.map((file, index) => (
-                                <div key={index} className="flex gap-2 items-start justify-between">
-                                    <div className='w-full'>
+                                <div
+                                    key={index}
+                                    className="flex gap-2 items-start justify-between"
+                                >
+                                    <div className="w-full">
                                         <Input
                                             name={`files[${index}].name`}
                                             placeholder={`File Name ${index + 1}`}
                                             value={file.name}
-                                            onChange={(e) => setFieldValue(`files[${index}].name`, e.target.value)}
+                                            onChange={(e) =>
+                                                setFieldValue(
+                                                    `files[${index}].name`,
+                                                    e.target.value
+                                                )
+                                            }
                                         />
-                                        <Error error={errors.files?.[index]?.name} touched={touched.files?.[index]?.name} />
+                                        <Error
+                                            error={errors.files?.[index]?.name}
+                                            touched={
+                                                touched.files?.[index]?.name
+                                            }
+                                        />
                                     </div>
-                                    <div className='w-full'>
+                                    <div className="w-full">
                                         <Input
                                             type="file"
                                             accept="application/pdf"
-                                            onChange={(e) => handleImageChangeForForm(setFieldValue, `files[${index}].file`)(e)}
+                                            onChange={(e) =>
+                                                handleImageChangeForForm(
+                                                    setFieldValue,
+                                                    `files[${index}].file`
+                                                )(e)
+                                            }
                                             className="file-input"
                                         />
-                                        <Error error={errors.files?.[index]?.file} touched={touched.files?.[index]?.file} />
+                                        <Error
+                                            error={errors.files?.[index]?.file}
+                                            touched={
+                                                touched.files?.[index]?.file
+                                            }
+                                        />
                                     </div>
-                                    <div className='max-w-12 flex items-center'>
+                                    <div className="max-w-12 flex items-center">
                                         <Remove
                                             disabled={values.files.length === 1}
-                                            onClick={() => handleArrayFieldChangeForForm({ values, setFieldValue }, 'remove', 'files', index)}
+                                            onClick={() =>
+                                                handleArrayFieldChangeForForm(
+                                                    { values, setFieldValue },
+                                                    'remove',
+                                                    'files',
+                                                    index
+                                                )
+                                            }
                                         />
                                     </div>
                                 </div>
                             ))}
                         </InputWrapper>
-                        <Add label="Add File" onClick={() => handleArrayFieldChangeForForm({ values, setFieldValue }, 'add', 'files')} />
+                        <Add
+                            label="Add File"
+                            onClick={() =>
+                                handleArrayFieldChangeForForm(
+                                    { values, setFieldValue },
+                                    'add',
+                                    'files'
+                                )
+                            }
+                        />
                     </div>
 
                     {/* links Field Array */}
                     <div className="space-y-2">
                         <InputWrapper label="Additional Links">
                             {values.links.map((link, index) => (
-                                <div key={index} className="flex gap-2 items-start justify-between">
-                                    <div className='w-full'>
+                                <div
+                                    key={index}
+                                    className="flex gap-2 items-start justify-between"
+                                >
+                                    <div className="w-full">
                                         <Input
                                             name={`links[${index}].name`}
                                             placeholder={`Link Name ${index + 1}`}
                                             value={link.name}
-                                            onChange={(e) => setFieldValue(`links[${index}].name`, e.target.value)}
+                                            onChange={(e) =>
+                                                setFieldValue(
+                                                    `links[${index}].name`,
+                                                    e.target.value
+                                                )
+                                            }
                                         />
-                                        <Error error={errors.links?.[index]?.name} touched={touched.links?.[index]?.name} />
+                                        <Error
+                                            error={errors.links?.[index]?.name}
+                                            touched={
+                                                touched.links?.[index]?.name
+                                            }
+                                        />
                                     </div>
-                                    <div className='w-full'>
+                                    <div className="w-full">
                                         <Input
-                                            type='link'
+                                            type="link"
                                             name={`links[${index}].name`}
                                             placeholder={`Link Name ${index + 1}`}
                                             value={link.link}
-                                            onChange={(e) => setFieldValue(`links[${index}].link`, e.target.value)}
+                                            onChange={(e) =>
+                                                setFieldValue(
+                                                    `links[${index}].link`,
+                                                    e.target.value
+                                                )
+                                            }
                                         />
-                                        <Error error={errors.links?.[index]?.link} touched={touched.links?.[index]?.link} />
+                                        <Error
+                                            error={errors.links?.[index]?.link}
+                                            touched={
+                                                touched.links?.[index]?.link
+                                            }
+                                        />
                                     </div>
-                                    <div className='max-w-12 flex items-center'>
+                                    <div className="max-w-12 flex items-center">
                                         <Remove
                                             disabled={values.files.length === 1}
-                                            onClick={() => handleArrayFieldChangeForForm({ values, setFieldValue }, 'remove', 'links', index)}
+                                            onClick={() =>
+                                                handleArrayFieldChangeForForm(
+                                                    { values, setFieldValue },
+                                                    'remove',
+                                                    'links',
+                                                    index
+                                                )
+                                            }
                                         />
                                     </div>
                                 </div>
                             ))}
                         </InputWrapper>
-                        <Add label="Add Link" onClick={() => handleArrayFieldChangeForForm({ values, setFieldValue }, 'add', 'links')} />
+                        <Add
+                            label="Add Link"
+                            onClick={() =>
+                                handleArrayFieldChangeForForm(
+                                    { values, setFieldValue },
+                                    'add',
+                                    'links'
+                                )
+                            }
+                        />
                     </div>
 
-                    <InputWrapper label="Description" error={errors.description} touched={touched.description}>
+                    <InputWrapper
+                        label="Description"
+                        error={errors.description}
+                        touched={touched.description}
+                    >
                         <FormikSunEditor name="description" />
                     </InputWrapper>
 
                     <div className="flex items-center space-x-2">
                         <Reset onClick={resetForm} />
-                        <Submit disabled={isLoading}/>
+                        <Submit disabled={isLoading} />
                     </div>
                 </Form>
             )}
         </Formik>
-    )
+    );
 }

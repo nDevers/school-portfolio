@@ -1,17 +1,17 @@
-import { SchoolInfoModel } from "@/shared/prisma.model.shared";
-import schoolInfoSchema from "@/app/api/v1/school/info/school.info.schema";
-import schoolInfoConstants from "@/app/api/v1/school/info/school.info.constants";
-import sharedResponseTypes from "@/shared/shared.response.types";
-import localFileOperations from "@/util/localFileOperations";
+import { SchoolInfoModel } from '@/shared/prisma.model.shared';
+import schoolInfoSchema from '@/app/api/v1/school/info/school.info.schema';
+import schoolInfoConstants from '@/app/api/v1/school/info/school.info.constants';
+import sharedResponseTypes from '@/shared/shared.response.types';
+import localFileOperations from '@/util/localFileOperations';
 
-import asyncHandler from "@/util/asyncHandler";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import validateToken from "@/util/validateToken";
-import schoolInfoSelectionCriteria from "@/app/api/v1/school/info/school.info.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import validateToken from '@/util/validateToken';
+import schoolInfoSelectionCriteria from '@/app/api/v1/school/info/school.info.selection.criteria';
 
-
-const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED, NOT_FOUND } = sharedResponseTypes;
+const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED, NOT_FOUND } =
+    sharedResponseTypes;
 
 /**
  * Creates a new school information entry in the database and retrieves the created document with specified selection criteria.
@@ -44,11 +44,18 @@ const createSchoolInfoEntry = async (userInput, request) => {
     });
 
     if (!createdDocument?.id) {
-        return INTERNAL_SERVER_ERROR(`Failed to create school info entry with title "${userInput?.title}".`, request);
+        return INTERNAL_SERVER_ERROR(
+            `Failed to create school info entry with title "${userInput?.title}".`,
+            request
+        );
     }
 
     // No need for an aggregation pipeline; Prisma returns the created document
-    return CREATED(`School info entry with title "${userInput?.title}" created successfully.`, createdDocument, request);
+    return CREATED(
+        `School info entry with title "${userInput?.title}" created successfully.`,
+        createdDocument,
+        request
+    );
 };
 
 /**
@@ -71,7 +78,10 @@ const createSchoolInfoEntry = async (userInput, request) => {
  */
 const handleCreateSchoolInfo = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, schoolInfoConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        schoolInfoConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
@@ -83,7 +93,12 @@ const handleCreateSchoolInfo = async (request, context) => {
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'create', schoolInfoSchema.createSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'create',
+        schoolInfoSchema.createSchema
+    );
 
     // Check if FAQ entry with the same title already exists
     const existingtitle = await SchoolInfoModel.findUnique({
@@ -92,15 +107,21 @@ const handleCreateSchoolInfo = async (request, context) => {
         },
         select: {
             id: true,
-        }
+        },
     });
     if (existingtitle) {
-        return CONFLICT(`School info entry with title "${userInput?.title}" already exists.`, request);
+        return CONFLICT(
+            `School info entry with title "${userInput?.title}" already exists.`,
+            request
+        );
     }
 
     // Upload file and generate link
     const newFile = userInput[schoolInfoConstants.fileFieldName][0];
-    const { fileId, fileLink } = await localFileOperations.uploadFile(request, newFile);
+    const { fileId, fileLink } = await localFileOperations.uploadFile(
+        request,
+        newFile
+    );
 
     userInput.iconId = fileId;
     userInput.icon = fileLink;

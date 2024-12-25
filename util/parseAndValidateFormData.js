@@ -1,12 +1,12 @@
-import { BadRequestError } from "@/util/asyncHandler";
+import { BadRequestError } from '@/util/asyncHandler';
 
-import logger from "@/lib/logger";
-import contentTypesConstants from "@/constants/contentTypes.constants";
+import logger from '@/lib/logger';
+import contentTypesConstants from '@/constants/contentTypes.constants';
 
-import prepareFormDataForLogging from "@/util/prepareFormDataForLogging";
-import convertToObjectId from "@/util/convertToObjectId";
-import getQueryParams from "@/util/getQueryParams";
-import toSentenceCase from "@/util/toSentenceCase";
+import prepareFormDataForLogging from '@/util/prepareFormDataForLogging';
+import convertToObjectId from '@/util/convertToObjectId';
+import getQueryParams from '@/util/getQueryParams';
+import toSentenceCase from '@/util/toSentenceCase';
 
 /**
  * Retrieves the value of a deeply nested field within an object using a dot-separated path.
@@ -86,14 +86,25 @@ const parseAndValidateFormData = async (request, context, mode, schema) => {
         try {
             data = await request.json();
             // Check if data is empty in JSON mode for "create" or "update" mode
-            if ((mode === 'create' || mode === 'update') && Object.keys(data).length === 0) {
-                throw new BadRequestError("Request body is empty, expected data in JSON format.");
+            if (
+                (mode === 'create' || mode === 'update') &&
+                Object.keys(data).length === 0
+            ) {
+                throw new BadRequestError(
+                    'Request body is empty, expected data in JSON format.'
+                );
             }
         } catch (error) {
             // Handle JSON parsing error, typically for an empty body
-            throw new BadRequestError("Invalid JSON body or empty request body.");
+            throw new BadRequestError(
+                'Invalid JSON body or empty request body.'
+            );
         }
-    } else if (contentType && contentType.includes(contentTypesConstants.FORM_DATA) && typeof request.formData === 'function') {
+    } else if (
+        contentType &&
+        contentType.includes(contentTypesConstants.FORM_DATA) &&
+        typeof request.formData === 'function'
+    ) {
         const formData = await request.formData();
         formData.forEach((value, key) => {
             const arrayFieldMatch = key.match(/^(\w+)\[(\d+)]\[(\w+)]$/);
@@ -106,7 +117,8 @@ const parseAndValidateFormData = async (request, context, mode, schema) => {
                 if (!arrayFields[fieldName]) arrayFields[fieldName] = [];
 
                 // Ensure the current index exists in the array
-                if (!arrayFields[fieldName][index]) arrayFields[fieldName][index] = {};
+                if (!arrayFields[fieldName][index])
+                    arrayFields[fieldName][index] = {};
 
                 // Set the property for the object at this index
                 arrayFields[fieldName][index][propName] = value;
@@ -124,7 +136,7 @@ const parseAndValidateFormData = async (request, context, mode, schema) => {
     } else if (contentType === null) {
         // No content type, do nothing
     } else {
-        throw new BadRequestError("Unsupported content type");
+        throw new BadRequestError('Unsupported content type');
     }
 
     // Merge params and query data into the data object
@@ -132,14 +144,19 @@ const parseAndValidateFormData = async (request, context, mode, schema) => {
     data = { ...data, ...queryAndParams.query, ...queryAndParams.params };
 
     // Log the request data
-    logger.info(`Request: ${JSON.stringify(await prepareFormDataForLogging(data, queryAndParams))}`);
+    logger.info(
+        `Request: ${JSON.stringify(await prepareFormDataForLogging(data, queryAndParams))}`
+    );
 
     // "Create" mode validation: ensure fields are defined
     if (mode === 'create') {
         Object.keys(data).forEach((key) => {
             const value = getNestedField(data, key);
 
-            if (value === undefined) throw new BadRequestError(`Got undefined data in field: ${key}`);
+            if (value === undefined)
+                throw new BadRequestError(
+                    `Got undefined data in field: ${key}`
+                );
 
             setNestedField(userInput, key, value);
         });
@@ -186,7 +203,9 @@ const parseAndValidateFormData = async (request, context, mode, schema) => {
     // Pass the property to the schema function
     if (typeof schema === 'function') {
         // Transform categoryParams and pass to the schema
-        const transformedCategoryParams = toSentenceCase(params?.categoryParams.replace(/_/g, ' '));
+        const transformedCategoryParams = toSentenceCase(
+            params?.categoryParams.replace(/_/g, ' ')
+        );
         schema(transformedCategoryParams).parse(userInput);
     } else {
         schema.parse(userInput);

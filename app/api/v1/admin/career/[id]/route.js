@@ -1,18 +1,17 @@
 import moment from 'moment';
 
-import { CareerModel } from "@/shared/prisma.model.shared";
-import careerSchema from "@/app/api/v1/career/career.schema";
-import careerConstants from "@/app/api/v1/career/career.constants";
-import sharedResponseTypes from "@/shared/shared.response.types";
-import localFileOperations from "@/util/localFileOperations";
-import schemaShared from "@/shared/schema.shared";
+import { CareerModel } from '@/shared/prisma.model.shared';
+import careerSchema from '@/app/api/v1/career/career.schema';
+import careerConstants from '@/app/api/v1/career/career.constants';
+import sharedResponseTypes from '@/shared/shared.response.types';
+import localFileOperations from '@/util/localFileOperations';
+import schemaShared from '@/shared/schema.shared';
 
-import asyncHandler from "@/util/asyncHandler";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import validateToken from "@/util/validateToken";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import careerSelectionCriteria from "@/app/api/v1/career/career.selection.criteria";
-
+import asyncHandler from '@/util/asyncHandler';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import validateToken from '@/util/validateToken';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import careerSelectionCriteria from '@/app/api/v1/career/career.selection.criteria';
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 const { idValidationSchema } = schemaShared;
@@ -33,7 +32,11 @@ const { idValidationSchema } = schemaShared;
 const updateCareerEntry = async (userInput, request) => {
     // Filter `userInput` to only include fields with non-null values
     const fieldsToUpdate = Object.keys(userInput).reduce((acc, key) => {
-        if (userInput[key] !== undefined && userInput[key] !== null && key !== 'id') {
+        if (
+            userInput[key] !== undefined &&
+            userInput[key] !== null &&
+            key !== 'id'
+        ) {
             acc[key] = userInput[key];
         }
         return acc;
@@ -58,10 +61,17 @@ const updateCareerEntry = async (userInput, request) => {
     });
 
     if (!updatedDocument?.id) {
-        return INTERNAL_SERVER_ERROR(`Failed to update career entry with the ID "${userInput?.id}".`, request);
+        return INTERNAL_SERVER_ERROR(
+            `Failed to update career entry with the ID "${userInput?.id}".`,
+            request
+        );
     }
 
-    return OK(`Career entry with the ID "${userInput?.id}" updated successfully.`, updatedDocument, request);
+    return OK(
+        `Career entry with the ID "${userInput?.id}" updated successfully.`,
+        updatedDocument,
+        request
+    );
 };
 
 /**
@@ -84,7 +94,10 @@ const updateCareerEntry = async (userInput, request) => {
  */
 const handleUpdateCareerById = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, careerConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        careerConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
@@ -96,7 +109,12 @@ const handleUpdateCareerById = async (request, context) => {
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'update', careerSchema.updateSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'update',
+        careerSchema.updateSchema
+    );
 
     // Check if FAQ entry with the same title already exists
     const existingCareer = await CareerModel.findUnique({
@@ -106,10 +124,13 @@ const handleUpdateCareerById = async (request, context) => {
         select: {
             id: true,
             files: true,
-        }
+        },
     });
     if (!existingCareer) {
-        return NOT_FOUND(`Career entry with ID "${userInput?.id}" not found.`, request);
+        return NOT_FOUND(
+            `Career entry with ID "${userInput?.id}" not found.`,
+            request
+        );
     }
 
     if (userInput?.title) {
@@ -120,24 +141,33 @@ const handleUpdateCareerById = async (request, context) => {
             },
             select: {
                 id: true,
-            }
+            },
         });
         if (existingQuestion) {
-            return CONFLICT(`Career entry with title "${userInput?.title}" already exists.`, request);
+            return CONFLICT(
+                `Career entry with title "${userInput?.title}" already exists.`,
+                request
+            );
         }
     }
 
     if (userInput?.files?.length) {
         // Upload files and construct the `files` array for documents
         const files = await Promise.all(
-            (userInput[careerConstants.fileFieldName] || []).map(async (fileEntry) => {
-                // Call your file upload operation
-                const { fileId, fileLink } = await localFileOperations.uploadFile(request, fileEntry);
-                return {
-                    fileId: fileId,
-                    file: fileLink
-                };
-            })
+            (userInput[careerConstants.fileFieldName] || []).map(
+                async (fileEntry) => {
+                    // Call your file upload operation
+                    const { fileId, fileLink } =
+                        await localFileOperations.uploadFile(
+                            request,
+                            fileEntry
+                        );
+                    return {
+                        fileId: fileId,
+                        file: fileLink,
+                    };
+                }
+            )
         );
 
         userInput.files = files;
@@ -147,22 +177,28 @@ const handleUpdateCareerById = async (request, context) => {
 
     if (userInput?.deleteFiles && Array.isArray(userInput.deleteFiles)) {
         // Check if all files in deleteFiles actually exist in the current files array
-        const nonExistingFiles = userInput.deleteFiles.filter(fileId =>
-            !existingCareer?.files?.some(file => file.fileId === fileId)
+        const nonExistingFiles = userInput.deleteFiles.filter(
+            (fileId) =>
+                !existingCareer?.files?.some((file) => file.fileId === fileId)
         );
 
         if (nonExistingFiles.length > 0) {
             // If any file to be deleted is not found in the database, return 404 with the missing file IDs
-            return NOT_FOUND(`File(s) with IDs [${nonExistingFiles.join(', ')}] not found in the database.`, request);
+            return NOT_FOUND(
+                `File(s) with IDs [${nonExistingFiles.join(', ')}] not found in the database.`,
+                request
+            );
         }
 
         // Create an array of promises for each file deletion
-        const deletePromises = userInput.deleteFiles.map(fileId => {
+        const deletePromises = userInput.deleteFiles.map((fileId) => {
             return localFileOperations.deleteFile(fileId); // Delete the file physically
         });
 
         // Filter out files that are being deleted (those in deleteFiles)
-        files = existingCareer?.files?.filter(file => !userInput.deleteFiles.includes(file?.fileId));
+        files = existingCareer?.files?.filter(
+            (file) => !userInput.deleteFiles.includes(file?.fileId)
+        );
 
         // Delete the files physically using Promise.all
         await Promise.all(deletePromises);
@@ -171,19 +207,23 @@ const handleUpdateCareerById = async (request, context) => {
         await CareerModel.update({
             where: { id: existingCareer.id }, // Assuming the record is identified by id
             data: {
-                files: files // Update the files field in the database, only keeping non-deleted files
-            }
+                files: files, // Update the files field in the database, only keeping non-deleted files
+            },
         });
     }
 
-    delete userInput.deleteFiles;  // Remove deleteFiles field from userInput
+    delete userInput.deleteFiles; // Remove deleteFiles field from userInput
 
     userInput.files = files; // Assign the updated files list to userInput
 
     // Use Moment.js to convert the date
     if (userInput?.date) {
         // Convert the date using Moment.js
-        userInput.date = moment(userInput.date, ['DD/MM/YYYY', moment.ISO_8601], true).toDate();
+        userInput.date = moment(
+            userInput.date,
+            ['DD/MM/YYYY', moment.ISO_8601],
+            true
+        ).toDate();
     }
 
     // Create the FAQ entry and send the response
@@ -217,7 +257,12 @@ const deleteCareerById = async (request, context) => {
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'delete', idValidationSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'delete',
+        idValidationSchema
+    );
 
     // Check if data exists
     const data = await CareerModel.findUnique({
@@ -230,12 +275,15 @@ const deleteCareerById = async (request, context) => {
         },
     });
     if (!data) {
-        return NOT_FOUND(`Career entry with ID "${userInput?.id}" not found.`, request);
+        return NOT_FOUND(
+            `Career entry with ID "${userInput?.id}" not found.`,
+            request
+        );
     }
 
     if (data?.files?.length) {
         // Create an array of promises for each file deletion
-        const deleteFilesPromises = data.files.map(file => {
+        const deleteFilesPromises = data.files.map((file) => {
             return localFileOperations.deleteFile(file?.fileId); // Delete the file physically
         });
 
@@ -256,15 +304,22 @@ const deleteCareerById = async (request, context) => {
             id: userInput?.id,
         },
         select: {
-            id: true // Only return the ID of the deleted document
+            id: true, // Only return the ID of the deleted document
         },
     });
     if (deletedData) {
-        return NOT_FOUND(`Failed to delete career entry with ID "${userInput?.id}".`, request);
+        return NOT_FOUND(
+            `Failed to delete career entry with ID "${userInput?.id}".`,
+            request
+        );
     }
 
     // Send a success response
-    return OK(`Career entry with ID "${userInput?.id}" deleted successfully.`, {}, request);
+    return OK(
+        `Career entry with ID "${userInput?.id}" deleted successfully.`,
+        {},
+        request
+    );
 };
 
 /**

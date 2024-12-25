@@ -1,5 +1,5 @@
-import contentTypesConstants from "@/constants/contentTypes.constants";
-import mimeTypesConstants from "@/constants/mimeTypes.constants";
+import contentTypesConstants from '@/constants/contentTypes.constants';
+import mimeTypesConstants from '@/constants/mimeTypes.constants';
 
 /**
  * Specifies the list of allowed content types for a given operation or request.
@@ -25,7 +25,12 @@ const allowedContentTypes = [contentTypesConstants.FORM_DATA];
  *
  * @type {string[]}
  */
-const allowedMimeTypes = [mimeTypesConstants.JPEG, mimeTypesConstants.JPG, mimeTypesConstants.PNG, mimeTypesConstants.GIF];
+const allowedMimeTypes = [
+    mimeTypesConstants.JPEG,
+    mimeTypesConstants.JPG,
+    mimeTypesConstants.PNG,
+    mimeTypesConstants.GIF,
+];
 
 /**
  * Represents the name of the field associated with a banner entity or component.

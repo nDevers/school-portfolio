@@ -1,9 +1,9 @@
-import { SchoolSpeechModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
-import schoolSpeechSchema from "@/app/api/v1/school/speech/school.speech.schema";
+import { SchoolSpeechModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
+import schoolSpeechSchema from '@/app/api/v1/school/speech/school.speech.schema';
 
-import asyncHandler from "@/util/asyncHandler";
-import schoolSpeechSelectionCriteria from "@/app/api/v1/school/speech/school.speech.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import schoolSpeechSelectionCriteria from '@/app/api/v1/school/speech/school.speech.selection.criteria';
 
 /**
  * An asynchronous function that handles fetching a list of school speeches
@@ -20,7 +20,14 @@ import schoolSpeechSelectionCriteria from "@/app/api/v1/school/speech/school.spe
 const handleGetSchoolSpeechList = async (request, context) => {
     const selectionCriteria = schoolSpeechSelectionCriteria();
 
-    return serviceShared.fetchEntryList(request, context, SchoolSpeechModel, selectionCriteria, 'School speech', schoolSpeechSchema.getDataByQuery);
+    return serviceShared.fetchEntryList(
+        request,
+        context,
+        SchoolSpeechModel,
+        selectionCriteria,
+        'School speech',
+        schoolSpeechSchema.getDataByQuery
+    );
 };
 
 /**

@@ -16,13 +16,13 @@
  *                   and the requirement of the "id" field.
  */
 const getMissingFieldsMessage = (data, schema) => {
-    const optionalFields = Object.keys(schema.shape).filter(field => {
+    const optionalFields = Object.keys(schema.shape).filter((field) => {
         const fieldDef = schema.shape[field];
         return fieldDef instanceof z.ZodOptional;
     });
 
-    const missingFields = optionalFields.filter(field => !data[field]);
+    const missingFields = optionalFields.filter((field) => !data[field]);
     return `At least one of "${missingFields.join('" or "')}" is required along with "id".`;
-}
+};
 
 export default getMissingFieldsMessage;

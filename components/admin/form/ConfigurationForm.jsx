@@ -1,22 +1,26 @@
-'use client'
-import React from 'react'
-import InputWrapper from '@/components/ui/input-wrapper'
-import Add from '@/components/button/Add'
-import Remove from '@/components/button/Remove'
-import Reset from '@/components/button/Reset'
-import Submit from '@/components/button/Submit'
-import * as Yup from 'yup'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { useMutation } from '@tanstack/react-query'
-import { useFormik } from 'formik'
-import { clearField, handleArrayFieldChange, handleImageChange } from '@/util/formikHelpers'
-import { postData, updateData } from '@/util/axios'
-import apiConfig from '@/configs/apiConfig'
-import { GoX } from 'react-icons/go'
-import { Button } from '@/components/ui/button'
-import { toast } from 'sonner'
-import { getChangedValues } from '@/util/getChangedValues'
+'use client';
+import React from 'react';
+import InputWrapper from '@/components/ui/input-wrapper';
+import Add from '@/components/button/Add';
+import Remove from '@/components/button/Remove';
+import Reset from '@/components/button/Reset';
+import Submit from '@/components/button/Submit';
+import * as Yup from 'yup';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useMutation } from '@tanstack/react-query';
+import { useFormik } from 'formik';
+import {
+    clearField,
+    handleArrayFieldChange,
+    handleImageChange,
+} from '@/util/formikHelpers';
+import { postData, updateData } from '@/util/axios';
+import apiConfig from '@/configs/apiConfig';
+import { GoX } from 'react-icons/go';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
+import { getChangedValues } from '@/util/getChangedValues';
 
 export default function ConfigurationForm({ data }) {
     const initialValues = {
@@ -31,30 +35,54 @@ export default function ConfigurationForm({ data }) {
         deleteContacts: [],
         socialLinks: data?.socialLinks || [''],
         deleteSocialLinks: [],
-    }
+    };
 
     const validationSchema = Yup.object({
         name: Yup.string().required('Required field'),
         description: Yup.string(),
         logo: Yup.mixed()
             // .required('Image is required')
-            .test('fileSize', 'File size too large', value => !value || (value && value.size <= 2000000)) // 2MB limit
-            .test('fileType', 'Unsupported file format', value =>
-                !value || ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'].includes(value.type)
+            .test(
+                'fileSize',
+                'File size too large',
+                (value) => !value || (value && value.size <= 2000000)
+            ) // 2MB limit
+            .test(
+                'fileType',
+                'Unsupported file format',
+                (value) =>
+                    !value ||
+                    [
+                        'image/png',
+                        'image/jpeg',
+                        'image/jpg',
+                        'image/gif',
+                    ].includes(value.type)
             ),
         address: Yup.string().required('Address is required'),
         emails: Yup.array()
-            .of(Yup.string().email('Invalid email address').required('Email is required'))
+            .of(
+                Yup.string()
+                    .email('Invalid email address')
+                    .required('Email is required')
+            )
             .min(1, 'At least one email is required'),
         contacts: Yup.array()
             .of(
                 Yup.string()
-                    .matches(/^(?:\+?88)?01[3-9]\d{8}$/, 'Invalid Bangladeshi phone number')
+                    .matches(
+                        /^(?:\+?88)?01[3-9]\d{8}$/,
+                        'Invalid Bangladeshi phone number'
+                    )
                     .required('Contact number is required')
             )
             .min(1, 'At least one contact is required'),
         socialLinks: Yup.array()
-            .of(Yup.string().url('Must be a valid URL').required('Social link is required'))
+            .of(
+                Yup.string()
+                    .url('Must be a valid URL')
+                    .required('Social link is required')
+            )
             .min(1, 'At least one social link is required'),
     });
 
@@ -96,15 +124,15 @@ export default function ConfigurationForm({ data }) {
         });
 
         if (data) {
-            await updateData(apiConfig?.UPDATE_CONFIGURATION, formData)
+            await updateData(apiConfig?.UPDATE_CONFIGURATION, formData);
         } else {
             await postData(apiConfig?.CREATE_CONFIGURATION, formData);
         }
     };
 
     const reset = () => {
-        formik?.resetForm()
-    }
+        formik?.resetForm();
+    };
 
     const formik = useFormik({
         initialValues,
@@ -118,34 +146,41 @@ export default function ConfigurationForm({ data }) {
         mutationKey: ['configuration'],
         mutationFn: submit,
         onSuccess: () => reset(),
-    })
+    });
 
     return (
-        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
             {(formik?.values?.logo || formik?.values?.dataImage) && (
                 <div className="flex items-center justify-end relative">
                     <img
-                        src={formik.values.logo instanceof File ? URL.createObjectURL(formik.values.logo) : formik?.values?.dataImage}
+                        src={
+                            formik.values.logo instanceof File
+                                ? URL.createObjectURL(formik.values.logo)
+                                : formik?.values?.dataImage
+                        }
                         alt="Selected Image"
                         className="w-24 h-24 object-cover border border-dashed rounded-md p-1"
                     />
                     <Button
                         type="button"
-                        size='icon'
+                        size="icon"
                         disabled={!formik.values.logo}
                         onClick={() => {
                             clearField(formik, 'logo');
-                            formik.setFieldValue('dataImage', '')
+                            formik.setFieldValue('dataImage', '');
                         }}
-                        className='absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full'
+                        className="absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full"
                     >
                         <GoX />
                     </Button>
                 </div>
             )}
-            <div className='grid gap-2 w-full'>
-
-                <InputWrapper label="Name" error={formik.errors?.name} touched={formik.touched?.name}>
+            <div className="grid gap-2 w-full">
+                <InputWrapper
+                    label="Name"
+                    error={formik.errors?.name}
+                    touched={formik.touched?.name}
+                >
                     <Input
                         name="name"
                         placeholder="Your Name"
@@ -155,7 +190,11 @@ export default function ConfigurationForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Description" error={formik.errors?.description} touched={formik.touched?.description}>
+                <InputWrapper
+                    label="Description"
+                    error={formik.errors?.description}
+                    touched={formik.touched?.description}
+                >
                     <Textarea
                         name="description"
                         placeholder="Description of the Organization"
@@ -166,7 +205,11 @@ export default function ConfigurationForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Logo URL" error={formik.errors?.logo} touched={formik.touched?.logo}>
+                <InputWrapper
+                    label="Logo URL"
+                    error={formik.errors?.logo}
+                    touched={formik.touched?.logo}
+                >
                     <Input
                         name="logo"
                         type="file"
@@ -176,7 +219,11 @@ export default function ConfigurationForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Address" error={formik.errors?.address} touched={formik.touched?.address}>
+                <InputWrapper
+                    label="Address"
+                    error={formik.errors?.address}
+                    touched={formik.touched?.address}
+                >
                     <Input
                         name="address"
                         placeholder="Address"
@@ -187,10 +234,17 @@ export default function ConfigurationForm({ data }) {
                 </InputWrapper>
 
                 {/* Emails Field Array */}
-                <div className='space-y-2'>
-                    <InputWrapper label="Emails" error={formik.errors?.emails} touched={formik.touched?.emails}>
+                <div className="space-y-2">
+                    <InputWrapper
+                        label="Emails"
+                        error={formik.errors?.emails}
+                        touched={formik.touched?.emails}
+                    >
                         {formik.values.emails.map((_, index) => (
-                            <div key={index} className="flex gap-2 items-center">
+                            <div
+                                key={index}
+                                className="flex gap-2 items-center"
+                            >
                                 <Input
                                     name={`emails[${index}]`}
                                     placeholder={`Email ${index + 1}`}
@@ -201,19 +255,39 @@ export default function ConfigurationForm({ data }) {
                                 />
                                 <Remove
                                     disabled={formik.values.emails.length === 1}
-                                    onClick={() => handleArrayFieldChange(formik, 'remove', 'emails', index, 'deleteEmails')}
+                                    onClick={() =>
+                                        handleArrayFieldChange(
+                                            formik,
+                                            'remove',
+                                            'emails',
+                                            index,
+                                            'deleteEmails'
+                                        )
+                                    }
                                 />
                             </div>
                         ))}
                     </InputWrapper>
-                    <Add label='Add Email' onClick={() => handleArrayFieldChange(formik, 'add', 'emails')} />
+                    <Add
+                        label="Add Email"
+                        onClick={() =>
+                            handleArrayFieldChange(formik, 'add', 'emails')
+                        }
+                    />
                 </div>
 
                 {/* Contacts Field Array */}
-                <div className='space-y-2'>
-                    <InputWrapper label="Contact Numbers" error={formik.errors?.contacts} touched={formik.touched?.contacts}>
+                <div className="space-y-2">
+                    <InputWrapper
+                        label="Contact Numbers"
+                        error={formik.errors?.contacts}
+                        touched={formik.touched?.contacts}
+                    >
                         {formik.values.contacts.map((_, index) => (
-                            <div key={index} className="flex gap-2 items-center">
+                            <div
+                                key={index}
+                                className="flex gap-2 items-center"
+                            >
                                 <Input
                                     name={`contacts[${index}]`}
                                     placeholder={`Contact Number ${index + 1}`}
@@ -223,20 +297,42 @@ export default function ConfigurationForm({ data }) {
                                     className="flex-1"
                                 />
                                 <Remove
-                                    disabled={formik.values.contacts.length === 1}
-                                    onClick={() => handleArrayFieldChange(formik, 'remove', 'contacts', index, 'deleteContacts')}
+                                    disabled={
+                                        formik.values.contacts.length === 1
+                                    }
+                                    onClick={() =>
+                                        handleArrayFieldChange(
+                                            formik,
+                                            'remove',
+                                            'contacts',
+                                            index,
+                                            'deleteContacts'
+                                        )
+                                    }
                                 />
                             </div>
                         ))}
                     </InputWrapper>
-                    <Add label='Add Contact' onClick={() => handleArrayFieldChange(formik, 'add', 'contacts')} />
+                    <Add
+                        label="Add Contact"
+                        onClick={() =>
+                            handleArrayFieldChange(formik, 'add', 'contacts')
+                        }
+                    />
                 </div>
 
                 {/* Social Links Field Array */}
-                <div className='space-y-2'>
-                    <InputWrapper label="Social Links" error={formik.errors?.socialLinks} touched={formik.touched?.socialLinks}>
+                <div className="space-y-2">
+                    <InputWrapper
+                        label="Social Links"
+                        error={formik.errors?.socialLinks}
+                        touched={formik.touched?.socialLinks}
+                    >
                         {formik.values.socialLinks.map((_, index) => (
-                            <div key={index} className="flex gap-2 items-center">
+                            <div
+                                key={index}
+                                className="flex gap-2 items-center"
+                            >
                                 <Input
                                     name={`socialLinks[${index}]`}
                                     placeholder={`Social Link URL ${index + 1}`}
@@ -246,20 +342,35 @@ export default function ConfigurationForm({ data }) {
                                     className="flex-1"
                                 />
                                 <Remove
-                                    disabled={formik.values.socialLinks.length === 1}
-                                    onClick={() => handleArrayFieldChange(formik, 'remove', 'socialLinks', index, 'deleteSocialLinks')}
+                                    disabled={
+                                        formik.values.socialLinks.length === 1
+                                    }
+                                    onClick={() =>
+                                        handleArrayFieldChange(
+                                            formik,
+                                            'remove',
+                                            'socialLinks',
+                                            index,
+                                            'deleteSocialLinks'
+                                        )
+                                    }
                                 />
                             </div>
                         ))}
                     </InputWrapper>
-                    <Add label='Add Social Link' onClick={() => handleArrayFieldChange(formik, 'add', 'socialLinks')} />
+                    <Add
+                        label="Add Social Link"
+                        onClick={() =>
+                            handleArrayFieldChange(formik, 'add', 'socialLinks')
+                        }
+                    />
                 </div>
             </div>
 
-            <div className='flex items-center space-x-2'>
+            <div className="flex items-center space-x-2">
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending} />
             </div>
         </form>
-    )
+    );
 }

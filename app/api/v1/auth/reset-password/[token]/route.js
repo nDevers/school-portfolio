@@ -1,6 +1,6 @@
-import serviceShared from "@/shared/service.shared";
+import serviceShared from '@/shared/service.shared';
 
-import asyncHandler from "@/util/asyncHandler";
+import asyncHandler from '@/util/asyncHandler';
 
 /**
  * Asynchronously handles the password reset process.
@@ -13,10 +13,7 @@ import asyncHandler from "@/util/asyncHandler";
  * @returns {Promise<*>} A promise that resolves with the result of the password reset operation.
  */
 const handleResetPassword = async (request, context) => {
-    return await serviceShared.handlePasswordReset(
-        request,
-        context,
-    );
+    return await serviceShared.handlePasswordReset(request, context);
 };
 
 /**

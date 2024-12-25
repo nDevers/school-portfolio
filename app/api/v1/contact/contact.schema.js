@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import schemaShared from "@/shared/schema.shared";
+import schemaShared from '@/shared/schema.shared';
 
 const { nonEmptyString, validEmail } = schemaShared;
 
@@ -25,6 +25,6 @@ const contactSchema = z
         subject: nonEmptyString('Contact subject'),
         message: nonEmptyString('Contact message'),
     })
-    .strict() // Enforce strict mode to disallow extra fields
+    .strict(); // Enforce strict mode to disallow extra fields
 
 export default contactSchema;

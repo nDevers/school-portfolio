@@ -1,8 +1,8 @@
-import { SchoolAchievementModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
+import { SchoolAchievementModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
 
-import asyncHandler from "@/util/asyncHandler";
-import schoolAchievementSelectionCriteria from "@/app/api/v1/school/achievement/school.achievement.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import schoolAchievementSelectionCriteria from '@/app/api/v1/school/achievement/school.achievement.selection.criteria';
 
 /**
  * Handles the retrieval of a school achievement by its unique identifier.
@@ -20,7 +20,13 @@ import schoolAchievementSelectionCriteria from "@/app/api/v1/school/achievement/
 export const handleGetAchievementById = async (request, context) => {
     const selectionCriteria = schoolAchievementSelectionCriteria();
 
-    return serviceShared.fetchEntryById(request, context, SchoolAchievementModel, selectionCriteria,  'School achievement');
+    return serviceShared.fetchEntryById(
+        request,
+        context,
+        SchoolAchievementModel,
+        selectionCriteria,
+        'School achievement'
+    );
 };
 
 /**

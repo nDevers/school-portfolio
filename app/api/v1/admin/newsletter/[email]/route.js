@@ -1,10 +1,10 @@
-import { NewsletterModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
-import newsletterSchema from "@/app/api/v1/newsletter/newsletter.schema";
+import { NewsletterModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
+import newsletterSchema from '@/app/api/v1/newsletter/newsletter.schema';
 
-import asyncHandler from "@/util/asyncHandler";
-import newsletterSelectionCriteria from "@/app/api/v1/newsletter/newsletter.selection.criteria";
-import validateToken from "@/util/validateToken";
+import asyncHandler from '@/util/asyncHandler';
+import newsletterSelectionCriteria from '@/app/api/v1/newsletter/newsletter.selection.criteria';
+import validateToken from '@/util/validateToken';
 
 /**
  * Represents the criteria used to filter and select newsletters.
@@ -34,7 +34,14 @@ const handleGetNewsletterSubscriberByEmail = async (request, context) => {
         return authResult.response;
     }
 
-    return serviceShared.fetchEntryByEmail(request, context, NewsletterModel, selectionCriteria, 'Newsletter', newsletterSchema);
+    return serviceShared.fetchEntryByEmail(
+        request,
+        context,
+        NewsletterModel,
+        selectionCriteria,
+        'Newsletter',
+        newsletterSchema
+    );
 };
 
 /**
@@ -51,7 +58,14 @@ const handleGetNewsletterSubscriberByEmail = async (request, context) => {
  * @returns {Promise<Object>} A promise resolving to the result of the deletion operation.
  */
 const handleDeleteNewsletterSubscriberByEmail = async (request, context) => {
-    return serviceShared.deleteEntryByEmail(request, context, NewsletterModel, '', 'Newsletter', newsletterSchema);
+    return serviceShared.deleteEntryByEmail(
+        request,
+        context,
+        NewsletterModel,
+        '',
+        'Newsletter',
+        newsletterSchema
+    );
 };
 
 /**

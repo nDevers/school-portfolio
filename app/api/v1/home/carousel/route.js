@@ -1,8 +1,8 @@
-import { HomeCarouselModel } from "@/shared/prisma.model.shared";
-import sharedResponseTypes from "@/shared/shared.response.types";
+import { HomeCarouselModel } from '@/shared/prisma.model.shared';
+import sharedResponseTypes from '@/shared/shared.response.types';
 
-import asyncHandler from "@/util/asyncHandler";
-import homeCarouselSelectionCriteria from "@/app/api/v1/home/carousel/home.carousel.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import homeCarouselSelectionCriteria from '@/app/api/v1/home/carousel/home.carousel.selection.criteria';
 
 /**
  * Represents the criteria used for selecting items in the home carousel component.
@@ -35,10 +35,14 @@ const handleGetGalleryPhotoList = async (request) => {
         select: selectionCriteria,
     });
     if (!data) {
-        return NOT_FOUND("Home carousel entry not found.", request);
+        return NOT_FOUND('Home carousel entry not found.', request);
     }
 
-    return OK(`${data?.images?.length} Home carousel images retrieved successfully.`, data?.images, request);
+    return OK(
+        `${data?.images?.length} Home carousel images retrieved successfully.`,
+        data?.images,
+        request
+    );
 };
 
 /**

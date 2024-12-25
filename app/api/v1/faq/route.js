@@ -1,9 +1,9 @@
-import { FaqModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
-import faqSchema from "@/app/api/v1/faq/faq.schema";
+import { FaqModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
+import faqSchema from '@/app/api/v1/faq/faq.schema';
 
-import asyncHandler from "@/util/asyncHandler";
-import faqSelectionCriteria from "@/app/api/v1/faq/faq.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import faqSelectionCriteria from '@/app/api/v1/faq/faq.selection.criteria';
 
 /**
  * Asynchronous function that handles the retrieval of a list of FAQs based on specified criteria.
@@ -17,7 +17,14 @@ import faqSelectionCriteria from "@/app/api/v1/faq/faq.selection.criteria";
 const handleGetFaqList = async (request, context) => {
     const selectionCriteria = faqSelectionCriteria();
 
-    return serviceShared.fetchEntryList(request, context, FaqModel, selectionCriteria, 'FAQ', faqSchema.getDataByQuery);
+    return serviceShared.fetchEntryList(
+        request,
+        context,
+        FaqModel,
+        selectionCriteria,
+        'FAQ',
+        faqSchema.getDataByQuery
+    );
 };
 
 /**

@@ -1,15 +1,14 @@
-import { FacultyModel } from "@/shared/prisma.model.shared";
-import facultySchema from "@/app/api/v1/faculty/faculty.schema";
-import facultyConstants from "@/app/api/v1/faculty/faculty.constants";
-import sharedResponseTypes from "@/shared/shared.response.types";
-import localFileOperations from "@/util/localFileOperations";
+import { FacultyModel } from '@/shared/prisma.model.shared';
+import facultySchema from '@/app/api/v1/faculty/faculty.schema';
+import facultyConstants from '@/app/api/v1/faculty/faculty.constants';
+import sharedResponseTypes from '@/shared/shared.response.types';
+import localFileOperations from '@/util/localFileOperations';
 
-import asyncHandler from "@/util/asyncHandler";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import validateToken from "@/util/validateToken";
-import facultySelectionCriteria from "@/app/api/v1/faculty/faculty.selection.criteria";
-
+import asyncHandler from '@/util/asyncHandler';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import validateToken from '@/util/validateToken';
+import facultySelectionCriteria from '@/app/api/v1/faculty/faculty.selection.criteria';
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, OK, NOT_FOUND } = sharedResponseTypes;
 
@@ -29,7 +28,11 @@ const { INTERNAL_SERVER_ERROR, CONFLICT, OK, NOT_FOUND } = sharedResponseTypes;
 const updateFacultyEntry = async (userInput, request) => {
     // Filter `userInput` to only include fields with non-null values
     const fieldsToUpdate = Object.keys(userInput).reduce((acc, key) => {
-        if (userInput[key] !== undefined && userInput[key] !== null && key !== 'id') {
+        if (
+            userInput[key] !== undefined &&
+            userInput[key] !== null &&
+            key !== 'id'
+        ) {
             acc[key] = userInput[key];
         }
         return acc;
@@ -53,11 +56,18 @@ const updateFacultyEntry = async (userInput, request) => {
     });
 
     if (!updatedDocument?.id) {
-        return INTERNAL_SERVER_ERROR(`Failed to update faculty entry with CATEGORY "${userInput?.categoryParams}" and ID "${userInput?.id}".`, request);
+        return INTERNAL_SERVER_ERROR(
+            `Failed to update faculty entry with CATEGORY "${userInput?.categoryParams}" and ID "${userInput?.id}".`,
+            request
+        );
     }
 
     // No need for an aggregation pipeline; Prisma returns the created document
-    return OK(`Faculty entry with CATEGORY "${userInput?.categoryParams}" and ID "${userInput?.id}" updated successfully.`, updatedDocument, request);
+    return OK(
+        `Faculty entry with CATEGORY "${userInput?.categoryParams}" and ID "${userInput?.id}" updated successfully.`,
+        updatedDocument,
+        request
+    );
 };
 
 /**
@@ -80,7 +90,10 @@ const updateFacultyEntry = async (userInput, request) => {
  */
 const handleUpdateFacultyByCategoryAndId = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, facultyConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        facultyConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
@@ -92,7 +105,12 @@ const handleUpdateFacultyByCategoryAndId = async (request, context) => {
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'update', () => facultySchema.updateSchema());
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'update',
+        () => facultySchema.updateSchema()
+    );
 
     // Check if faculty entry with the same title already exists
     const existingEntry = await FacultyModel.findUnique({
@@ -103,10 +121,13 @@ const handleUpdateFacultyByCategoryAndId = async (request, context) => {
         select: {
             id: true,
             imageId: true,
-        }
+        },
     });
     if (!existingEntry) {
-        return NOT_FOUND(`Faculty entry with ID "${userInput?.id}" and CATEGORY ${userInput?.categoryParams} not found.`, request);
+        return NOT_FOUND(
+            `Faculty entry with ID "${userInput?.id}" and CATEGORY ${userInput?.categoryParams} not found.`,
+            request
+        );
     }
 
     // Dynamically build the OR condition based on provided fields
@@ -125,25 +146,31 @@ const handleUpdateFacultyByCategoryAndId = async (request, context) => {
     if (conditions.length > 0) {
         const existingEntry = await FacultyModel.findFirst({
             where: {
-                OR: conditions
+                OR: conditions,
             },
             select: {
                 id: true,
                 imageId: true,
-            }
+            },
         });
 
         if (existingEntry) {
-            return CONFLICT(`Faculty entry with email: "${userInput?.email}", mobile: ${userInput?.mobile} and portfolio "${userInput?.portfolio}" already exists.`, request);
+            return CONFLICT(
+                `Faculty entry with email: "${userInput?.email}", mobile: ${userInput?.mobile} and portfolio "${userInput?.portfolio}" already exists.`,
+                request
+            );
         }
     }
 
     if (userInput[facultyConstants.imageFieldName]) {
-        await localFileOperations.deleteFile(existingEntry.imageId)
+        await localFileOperations.deleteFile(existingEntry.imageId);
 
         // Upload file and generate link
         const newFile = userInput[facultyConstants.imageFieldName][0];
-        const { fileId, fileLink } = await localFileOperations.uploadFile(request, newFile);
+        const { fileId, fileLink } = await localFileOperations.uploadFile(
+            request,
+            newFile
+        );
 
         userInput.imageId = fileId;
         userInput.image = fileLink;
@@ -183,7 +210,12 @@ const deleteFacultyByCategoryAndId = async (request, context) => {
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'delete', () => facultySchema.categoryAndIdSchema());
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'delete',
+        () => facultySchema.categoryAndIdSchema()
+    );
 
     // Check if data exists
     const data = await FacultyModel.findUnique({
@@ -197,7 +229,10 @@ const deleteFacultyByCategoryAndId = async (request, context) => {
         },
     });
     if (!data) {
-        return NOT_FOUND(`Faculty entry with ID "${userInput?.id}" and CATEGORY "${userInput?.categoryParams}" not found.`, request);
+        return NOT_FOUND(
+            `Faculty entry with ID "${userInput?.id}" and CATEGORY "${userInput?.categoryParams}" not found.`,
+            request
+        );
     }
 
     if (data?.imageId) {
@@ -208,7 +243,7 @@ const deleteFacultyByCategoryAndId = async (request, context) => {
     await FacultyModel.delete({
         where: {
             id: userInput?.id,
-            category: userInput?.categoryParams
+            category: userInput?.categoryParams,
         },
     });
 
@@ -216,18 +251,25 @@ const deleteFacultyByCategoryAndId = async (request, context) => {
     const deletedData = await FacultyModel.findUnique({
         where: {
             id: userInput?.id,
-            category: userInput?.categoryParams
+            category: userInput?.categoryParams,
         },
         select: {
-            id: true // Only return the ID of the deleted document
+            id: true, // Only return the ID of the deleted document
         },
     });
     if (deletedData) {
-        return NOT_FOUND(`Failed to delete faculty entry with ID "${userInput?.id}" and CATEGORY "${userInput?.categoryParams}".`, request);
+        return NOT_FOUND(
+            `Failed to delete faculty entry with ID "${userInput?.id}" and CATEGORY "${userInput?.categoryParams}".`,
+            request
+        );
     }
 
     // Send a success response
-    return OK(`Faculty entry with ID "${userInput?.id}" and CATEGORY "${userInput?.categoryParams}" deleted successfully.`, {}, request);
+    return OK(
+        `Faculty entry with ID "${userInput?.id}" and CATEGORY "${userInput?.categoryParams}" deleted successfully.`,
+        {},
+        request
+    );
 };
 
 /**
@@ -253,4 +295,3 @@ export const PATCH = asyncHandler(handleUpdateFacultyByCategoryAndId);
  * parameters to perform the deletion operation.
  */
 export const DELETE = asyncHandler(deleteFacultyByCategoryAndId);
-

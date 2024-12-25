@@ -1,4 +1,4 @@
-import sendEmail from "@/lib/email";
+import sendEmail from '@/lib/email';
 
 /**
  * Sends a notification email to the user upon detecting a successful login to their account.

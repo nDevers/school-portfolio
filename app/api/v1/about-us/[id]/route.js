@@ -1,8 +1,8 @@
-import { AboutUsModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
+import { AboutUsModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
 
-import asyncHandler from "@/util/asyncHandler";
-import aboutUsSelectionCriteria from "@/app/api/v1/about-us/about.us.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import aboutUsSelectionCriteria from '@/app/api/v1/about-us/about.us.selection.criteria';
 
 /**
  * Asynchronous handler function to retrieve the "About Us" entry by its unique identifier.
@@ -14,7 +14,13 @@ import aboutUsSelectionCriteria from "@/app/api/v1/about-us/about.us.selection.c
 export const handleGetAboutUsById = async (request, context) => {
     const selectionCriteria = aboutUsSelectionCriteria();
 
-    return serviceShared.fetchEntryById(request, context, AboutUsModel, selectionCriteria,  'About us');
+    return serviceShared.fetchEntryById(
+        request,
+        context,
+        AboutUsModel,
+        selectionCriteria,
+        'About us'
+    );
 };
 
 /**

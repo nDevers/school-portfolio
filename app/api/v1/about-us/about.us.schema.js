@@ -1,10 +1,21 @@
 import { z } from 'zod';
 
-import schemaShared from "@/shared/schema.shared";
-import aboutConstants from "@/app/api/v1/about-us/about.us.constants";
+import schemaShared from '@/shared/schema.shared';
+import aboutConstants from '@/app/api/v1/about-us/about.us.constants';
 
-const { nonEmptyString, nonEmptyStringArray, validMongooseId, validDate, filesValidator } = schemaShared;
-const { titleMaxCharacter, allowedFilesMimeTypes, allowedImagesMimeTypes, allowedFileSize } = aboutConstants;
+const {
+    nonEmptyString,
+    nonEmptyStringArray,
+    validMongooseId,
+    validDate,
+    filesValidator,
+} = schemaShared;
+const {
+    titleMaxCharacter,
+    allowedFilesMimeTypes,
+    allowedImagesMimeTypes,
+    allowedFileSize,
+} = aboutConstants;
 
 /**
  * Represents the title with a non-empty string validation, ensuring it contains a meaningful value.
@@ -42,7 +53,13 @@ const id = validMongooseId('More about us ID');
  *
  * @returns {Object} The file validation configuration object.
  */
-const files = filesValidator('More about us files', allowedFilesMimeTypes, allowedFileSize, 1, 10);
+const files = filesValidator(
+    'More about us files',
+    allowedFilesMimeTypes,
+    allowedFileSize,
+    1,
+    10
+);
 
 /**
  * Represents the validated and processed list of images for the "More about us" section.
@@ -57,7 +74,13 @@ const files = filesValidator('More about us files', allowedFilesMimeTypes, allow
  * @param {number} minFiles - The minimum number of image files required to be processed.
  * @param {number} maxFiles - The maximum number of image files allowed for the section.
  */
-const images = filesValidator('More about us images', allowedImagesMimeTypes, allowedFileSize, 1, 10);
+const images = filesValidator(
+    'More about us images',
+    allowedImagesMimeTypes,
+    allowedFileSize,
+    1,
+    10
+);
 
 /**
  * Represents a schema definition using a strict validation object.
@@ -72,12 +95,14 @@ const images = filesValidator('More about us images', allowedImagesMimeTypes, al
  * This schema is enforced strictly, meaning no additional properties
  * beyond the defined ones are allowed.
  */
-const createSchema = z.object({
-    title,
-    description,
-    files,
-    images,
-}).strict(); // Enforce strict mode to disallow extra fields
+const createSchema = z
+    .object({
+        title,
+        description,
+        files,
+        images,
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * Represents a schema for validating and structuring data objects
@@ -94,13 +119,15 @@ const createSchema = z.object({
  * - `updatedAt`: An optional property representing the last update time
  *   of the data object, validated as a valid date.
  */
-const getDataByQuery = z.object({
-    id: id.optional(),
-    title: title.optional(),
-    description: description.optional(),
-    createdAt: validDate('More about us creation time').optional(),
-    updatedAt: validDate('More about us last update time').optional(),
-}).strict(); // Enforce strict mode to disallow extra fields
+const getDataByQuery = z
+    .object({
+        id: id.optional(),
+        title: title.optional(),
+        description: description.optional(),
+        createdAt: validDate('More about us creation time').optional(),
+        updatedAt: validDate('More about us last update time').optional(),
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * Schema for updating an entity.
@@ -124,20 +151,26 @@ const getDataByQuery = z.object({
  * - Requires the presence of an `id` field and at least one additional property
  *   (e.g., `title`, `description`) to ensure meaningful updates.
  */
-const updateSchema = z.object({
-    id,
-    title: title.optional(),
-    description: description.optional(),
-    files: files.optional(),
-    images: files.optional(),
-    deleteFiles: nonEmptyStringArray('ID of the file that will be deleted').optional(),
-    deleteImages: nonEmptyStringArray('ID of the image that will be deleted').optional(),
-})
+const updateSchema = z
+    .object({
+        id,
+        title: title.optional(),
+        description: description.optional(),
+        files: files.optional(),
+        images: files.optional(),
+        deleteFiles: nonEmptyStringArray(
+            'ID of the file that will be deleted'
+        ).optional(),
+        deleteImages: nonEmptyStringArray(
+            'ID of the image that will be deleted'
+        ).optional(),
+    })
     .strict() // Enforce strict mode to disallow extra fields
     .refine(
         (data) => Object.keys(data).length > 1, // Must include `id` and at least one other field
         {
-            message: 'At least one of "title" or "description" is required along with "id".',
+            message:
+                'At least one of "title" or "description" is required along with "id".',
         }
     );
 

@@ -1,10 +1,11 @@
 import { z } from 'zod';
 
-import schemaShared from "@/shared/schema.shared";
-import careerConstants from "@/app/api/v1/career/career.constants";
+import schemaShared from '@/shared/schema.shared';
+import careerConstants from '@/app/api/v1/career/career.constants';
 
-const { nonEmptyString, nonEmptyStringArray, validMongooseId, validDate } = schemaShared;
-const { titleMaxCharacter} = careerConstants;
+const { nonEmptyString, nonEmptyStringArray, validMongooseId, validDate } =
+    schemaShared;
+const { titleMaxCharacter } = careerConstants;
 
 /**
  * Represents the title of a gallery video.
@@ -48,11 +49,13 @@ const youtubeLinks = nonEmptyStringArray('Gallery video youtube links');
  *
  * The `.strict()` method ensures that only the defined properties are allowed in the schema.
  */
-const createSchema = z.object({
-    title,
-    description,
-    youtubeLinks,
-}).strict(); // Enforce strict mode to disallow extra fields
+const createSchema = z
+    .object({
+        title,
+        description,
+        youtubeLinks,
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * Data structure definition for the `getDataByQuery` variable.
@@ -72,13 +75,15 @@ const createSchema = z.object({
  * - Uses custom validators such as `validDate` for date attributes.
  * - Enforcing strict validation ensures no additional properties are allowed.
  */
-const getDataByQuery = z.object({
-    id: id.optional(),
-    title: title.optional(),
-    description: description.optional(),
-    createdAt: validDate('Gallery video creation time').optional(),
-    updatedAt: validDate('Gallery video last update time').optional(),
-}).strict(); // Enforce strict mode to disallow extra fields
+const getDataByQuery = z
+    .object({
+        id: id.optional(),
+        title: title.optional(),
+        description: description.optional(),
+        createdAt: validDate('Gallery video creation time').optional(),
+        updatedAt: validDate('Gallery video last update time').optional(),
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * Schema to validate and enforce the structure for updating an entity.
@@ -100,18 +105,22 @@ const getDataByQuery = z.object({
  * - Strict mode to disallow extra fields not explicitly defined in the schema.
  * - A refinement to ensure that at least one field, in addition to `id`, is included during the update.
  */
-const updateSchema = z.object({
-    id,
-    title: title.optional(),
-    description: description.optional(),
-    youtubeLinks: youtubeLinks.optional(),
-    deleteYoutubeLinks: nonEmptyStringArray('IDs of the youtube link that will be deleted').optional(),
-})
+const updateSchema = z
+    .object({
+        id,
+        title: title.optional(),
+        description: description.optional(),
+        youtubeLinks: youtubeLinks.optional(),
+        deleteYoutubeLinks: nonEmptyStringArray(
+            'IDs of the youtube link that will be deleted'
+        ).optional(),
+    })
     .strict() // Enforce strict mode to disallow extra fields
     .refine(
         (data) => Object.keys(data).length > 1, // Must include `id` and at least one other field
         {
-            message: 'At least one of "title", "description", "youtubeLinks" or "deleteYoutubeLinks" is required along with "id".',
+            message:
+                'At least one of "title", "description", "youtubeLinks" or "deleteYoutubeLinks" is required along with "id".',
         }
     );
 

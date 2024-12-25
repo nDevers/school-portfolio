@@ -1,19 +1,19 @@
-'use client'
-import React from 'react'
-import InputWrapper from '@/components/ui/input-wrapper'
-import Reset from '@/components/button/Reset'
-import Submit from '@/components/button/Submit'
-import * as Yup from 'yup'
-import { Input } from '@/components/ui/input'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useFormik } from 'formik'
-import { clearField, handleImageChange } from '@/util/formikHelpers'
-import { postData, updateData } from '@/util/axios'
-import apiConfig from '@/configs/apiConfig'
-import { GoX } from 'react-icons/go'
-import { Button } from '@/components/ui/button'
-import { getChangedValues } from '@/util/getChangedValues'
-import { toast } from 'sonner'
+'use client';
+import React from 'react';
+import InputWrapper from '@/components/ui/input-wrapper';
+import Reset from '@/components/button/Reset';
+import Submit from '@/components/button/Submit';
+import * as Yup from 'yup';
+import { Input } from '@/components/ui/input';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useFormik } from 'formik';
+import { clearField, handleImageChange } from '@/util/formikHelpers';
+import { postData, updateData } from '@/util/axios';
+import apiConfig from '@/configs/apiConfig';
+import { GoX } from 'react-icons/go';
+import { Button } from '@/components/ui/button';
+import { getChangedValues } from '@/util/getChangedValues';
+import { toast } from 'sonner';
 
 export default function FacultyForm({ data, category }) {
     const queryClient = useQueryClient();
@@ -25,20 +25,36 @@ export default function FacultyForm({ data, category }) {
         email: data?.email || '',
         mobile: data?.mobile || '',
         portfolio: data?.portfolio || '',
-    }
+    };
 
     const validationSchema = Yup.object({
         name: Yup.string().required('Required field'),
         image: Yup.mixed()
             // .required('Image is required')
-            .test('fileSize', 'File size too large', value => !value || (value && value.size <= 2000000)) // 2MB limit
-            .test('fileType', 'Unsupported file format', value =>
-                !value || ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'].includes(value.type)
+            .test(
+                'fileSize',
+                'File size too large',
+                (value) => !value || (value && value.size <= 2000000)
+            ) // 2MB limit
+            .test(
+                'fileType',
+                'Unsupported file format',
+                (value) =>
+                    !value ||
+                    [
+                        'image/png',
+                        'image/jpeg',
+                        'image/jpg',
+                        'image/gif',
+                    ].includes(value.type)
             ),
         email: Yup.string().email('Invalid email address'),
         mobile: Yup.string()
             .required('Mobile is required')
-            .matches(/^(?:\+88|88)?01[3-9]\d{8}$/, 'Invalid Bangladeshi phone number'),
+            .matches(
+                /^(?:\+88|88)?01[3-9]\d{8}$/,
+                'Invalid Bangladeshi phone number'
+            ),
         designation: Yup.string().required('Required field'),
         portfolio: Yup.string().url('Must be a valid URL'),
     });
@@ -59,24 +75,30 @@ export default function FacultyForm({ data, category }) {
             }
         };
         // Append simple fields
-        appendIfPresent("name", changedValues.name);
-        appendIfPresent("image", changedValues.image);
-        appendIfPresent("email", changedValues.email);
-        appendIfPresent("mobile", changedValues.mobile);
-        appendIfPresent("portfolio", changedValues.portfolio);
-        appendIfPresent("designation", changedValues.designation);
+        appendIfPresent('name', changedValues.name);
+        appendIfPresent('image', changedValues.image);
+        appendIfPresent('email', changedValues.email);
+        appendIfPresent('mobile', changedValues.mobile);
+        appendIfPresent('portfolio', changedValues.portfolio);
+        appendIfPresent('designation', changedValues.designation);
 
         if (data) {
-            await updateData(`${apiConfig?.UPDATE_FACULTY_BY_CATEGORY}${category}/${data?.id}`, formData);
+            await updateData(
+                `${apiConfig?.UPDATE_FACULTY_BY_CATEGORY}${category}/${data?.id}`,
+                formData
+            );
         } else {
-            await postData(apiConfig?.CREATE_FACULTY_BY_CATEGORY + category, formData);
+            await postData(
+                apiConfig?.CREATE_FACULTY_BY_CATEGORY + category,
+                formData
+            );
         }
         formik?.resetForm();
-    }
+    };
 
     const reset = () => {
-        queryClient.invalidateQueries(['GET_FACULTY_BY_CATEGORY'])
-    }
+        queryClient.invalidateQueries(['GET_FACULTY_BY_CATEGORY']);
+    };
 
     const formik = useFormik({
         initialValues,
@@ -89,34 +111,42 @@ export default function FacultyForm({ data, category }) {
     const mutation = useMutation({
         mutationFn: submit,
         onSuccess: () => reset(),
-    })
+    });
 
     return (
-        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
             <div>
                 {(formik?.values?.image || formik?.values?.dataImage) && (
                     <div className="flex items-center justify-end relative">
                         <img
-                            src={formik.values.image instanceof File ? URL.createObjectURL(formik.values.image) : formik?.values?.dataImage}
+                            src={
+                                formik.values.image instanceof File
+                                    ? URL.createObjectURL(formik.values.image)
+                                    : formik?.values?.dataImage
+                            }
                             alt="Selected Image"
                             className="w-24 h-24 object-cover border border-dashed rounded-md p-1"
                         />
                         <Button
                             type="button"
-                            size='icon'
+                            size="icon"
                             disabled={!formik.values.image}
                             onClick={() => {
                                 clearField(formik, 'image');
-                                formik.setFieldValue('dataImage', '')
+                                formik.setFieldValue('dataImage', '');
                             }}
-                            className='absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full'
+                            className="absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full"
                         >
                             <GoX />
                         </Button>
                     </div>
                 )}
-                <div className='grid md:grid-cols-2 gap-2 w-full'>
-                    <InputWrapper label="Name" error={formik.errors?.name} touched={formik.touched?.name}>
+                <div className="grid md:grid-cols-2 gap-2 w-full">
+                    <InputWrapper
+                        label="Name"
+                        error={formik.errors?.name}
+                        touched={formik.touched?.name}
+                    >
                         <Input
                             name="name"
                             placeholder="Name"
@@ -126,7 +156,11 @@ export default function FacultyForm({ data, category }) {
                         />
                     </InputWrapper>
 
-                    <InputWrapper label="Profile Image" error={formik.errors?.image} touched={formik.touched?.image}>
+                    <InputWrapper
+                        label="Profile Image"
+                        error={formik.errors?.image}
+                        touched={formik.touched?.image}
+                    >
                         <Input
                             type="file"
                             name="image"
@@ -136,7 +170,11 @@ export default function FacultyForm({ data, category }) {
                         />
                     </InputWrapper>
 
-                    <InputWrapper label="Designation" error={formik.errors?.designation} touched={formik.touched?.designation}>
+                    <InputWrapper
+                        label="Designation"
+                        error={formik.errors?.designation}
+                        touched={formik.touched?.designation}
+                    >
                         <Input
                             name="designation"
                             placeholder="Designation"
@@ -146,7 +184,11 @@ export default function FacultyForm({ data, category }) {
                         />
                     </InputWrapper>
 
-                    <InputWrapper label="Mobile" error={formik.errors?.mobile} touched={formik.touched?.mobile}>
+                    <InputWrapper
+                        label="Mobile"
+                        error={formik.errors?.mobile}
+                        touched={formik.touched?.mobile}
+                    >
                         <Input
                             name="mobile"
                             placeholder="Mobile"
@@ -156,9 +198,13 @@ export default function FacultyForm({ data, category }) {
                         />
                     </InputWrapper>
 
-                    <InputWrapper label="Email" error={formik.errors?.email} touched={formik.touched?.email}>
+                    <InputWrapper
+                        label="Email"
+                        error={formik.errors?.email}
+                        touched={formik.touched?.email}
+                    >
                         <Input
-                            type='email'
+                            type="email"
                             name="email"
                             placeholder="Email"
                             value={formik.values?.email}
@@ -167,9 +213,13 @@ export default function FacultyForm({ data, category }) {
                         />
                     </InputWrapper>
 
-                    <InputWrapper label="Portfolio" error={formik.errors?.portfolio} touched={formik.touched?.portfolio}>
+                    <InputWrapper
+                        label="Portfolio"
+                        error={formik.errors?.portfolio}
+                        touched={formik.touched?.portfolio}
+                    >
                         <Input
-                            type='url'
+                            type="url"
                             name="portfolio"
                             placeholder="Portfolio"
                             value={formik.values?.portfolio}
@@ -180,10 +230,10 @@ export default function FacultyForm({ data, category }) {
                 </div>
             </div>
 
-            <div className='flex items-center space-x-2'>
+            <div className="flex items-center space-x-2">
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending} />
             </div>
         </form>
-    )
+    );
 }

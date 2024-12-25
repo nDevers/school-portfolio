@@ -1,5 +1,5 @@
-import contentTypesConstants from "@/constants/contentTypes.constants";
-import mimeTypesConstants from "@/constants/mimeTypes.constants";
+import contentTypesConstants from '@/constants/contentTypes.constants';
+import mimeTypesConstants from '@/constants/mimeTypes.constants';
 
 /**
  * An array that specifies the allowed content types for incoming requests.
@@ -27,7 +27,12 @@ const allowedContentTypes = [contentTypesConstants.FORM_DATA];
  * It is recommended to ensure that MIME types listed here comply with
  * the application's requirements and security policies.
  */
-const allowedFilesMimeTypes = [mimeTypesConstants.PDF, mimeTypesConstants.JPG, mimeTypesConstants.PNG, mimeTypesConstants.GIF];
+const allowedFilesMimeTypes = [
+    mimeTypesConstants.PDF,
+    mimeTypesConstants.JPG,
+    mimeTypesConstants.PNG,
+    mimeTypesConstants.GIF,
+];
 
 /**
  * An array that defines the allowed MIME types for image uploads.
@@ -36,7 +41,12 @@ const allowedFilesMimeTypes = [mimeTypesConstants.PDF, mimeTypesConstants.JPG, m
  * The allowed MIME types include JPEG, JPG, PNG, and GIF formats,
  * defined using constants from the `mimeTypesConstants` object.
  */
-const allowedImagesMimeTypes = [mimeTypesConstants.JPEG, mimeTypesConstants.JPG, mimeTypesConstants.PNG, mimeTypesConstants.GIF];
+const allowedImagesMimeTypes = [
+    mimeTypesConstants.JPEG,
+    mimeTypesConstants.JPG,
+    mimeTypesConstants.PNG,
+    mimeTypesConstants.GIF,
+];
 
 /**
  * Specifies the name of the field associated with file uploads.

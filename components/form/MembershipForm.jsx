@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React from 'react';
 import Reset from '@/components/button/Reset';
 import Submit from '@/components/button/Submit';
@@ -9,7 +9,11 @@ import { InputNumber } from '@/components/ui/Input-number';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { clearField, handleCheckboxChange, handleImageChange } from '@/util/formikHelpers';
+import {
+    clearField,
+    handleCheckboxChange,
+    handleImageChange,
+} from '@/util/formikHelpers';
 import { GoX } from 'react-icons/go';
 import { Button } from '@/components/ui/button';
 import { fetchData, postData, updateData } from '@/util/axios';
@@ -17,7 +21,6 @@ import apiConfig from '@/configs/apiConfig';
 import ComboboxFormik from '../ui/ComboboxFormik';
 
 export default function MembershipForm({ data }) {
-
     const currentDate = new Date().toISOString().split('T')[0];
 
     const initialValues = {
@@ -27,13 +30,13 @@ export default function MembershipForm({ data }) {
         phone: data?.phone || '',
         image: '',
         nid: data?.nid || '',
-        joinDate: data?.joinDate?.split("T")[0] || '',
+        joinDate: data?.joinDate?.split('T')[0] || '',
         educationalBackground: data?.educationalBackground || '',
         occupation: data?.occupation || '',
         workplace: data?.workplace || '',
         designation: data?.designation || '',
         bloodGroup: data?.bloodGroup || '',
-        dob: data?.dob?.split("T")[0] || '',
+        dob: data?.dob?.split('T')[0] || '',
         fatherName: data?.fatherName || '',
         husbandName: data?.husbandName || '',
         motherName: data?.motherName || '',
@@ -43,7 +46,8 @@ export default function MembershipForm({ data }) {
             subdistrict: '',
             district: '',
         },
-        isCurrentAddressSameAsPermanentAddress: data?.isCurrentAddressSameAsPermanentAddress || false,
+        isCurrentAddressSameAsPermanentAddress:
+            data?.isCurrentAddressSameAsPermanentAddress || false,
         currentAddress: data?.currentAddress || {
             village: '',
             postOffice: '',
@@ -56,10 +60,15 @@ export default function MembershipForm({ data }) {
 
     const validationSchema = Yup.object().shape({
         name: Yup.string().required('Required field'),
-        email: Yup.string().email('Invalid email address').required('Email is required'),
+        email: Yup.string()
+            .email('Invalid email address')
+            .required('Email is required'),
         phone: Yup.string()
             .required('Phone is required')
-            .matches(/^(?:\+88|88)?01[3-9]\d{8}$/, 'Invalid Bangladeshi phone number'),
+            .matches(
+                /^(?:\+88|88)?01[3-9]\d{8}$/,
+                'Invalid Bangladeshi phone number'
+            ),
         image: Yup.lazy((value, { parent }) => {
             if (parent?.image || data?.image) {
                 // If there's already a banner, no validation is needed
@@ -67,33 +76,45 @@ export default function MembershipForm({ data }) {
             } else {
                 // Validate banner as required and check file type
                 return Yup.mixed()
-                    .required("Image is required")
+                    .required('Image is required')
                     .test(
                         'fileType',
                         'Unsupported file format. Only images are allowed',
-                        (value) => !value || ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'].includes(value?.type)
+                        (value) =>
+                            !value ||
+                            [
+                                'image/jpeg',
+                                'image/jpg',
+                                'image/png',
+                                'image/gif',
+                            ].includes(value?.type)
                     );
             }
         }),
         nid: Yup.string()
-            .length(10, "NID number must be exactly 10 digits")
-            .required("NID number is required"),
+            .length(10, 'NID number must be exactly 10 digits')
+            .required('NID number is required'),
         joinDate: Yup.date()
             .required('Join date is required')
             .max(new Date(), 'Join date cannot be in the future'),
-        educationalBackground: Yup.string().required('Educational background is required'),
+        educationalBackground: Yup.string().required(
+            'Educational background is required'
+        ),
         occupation: Yup.string().required('Occupation is required'),
         workplace: Yup.string().required('Workplace is required'),
         designation: Yup.string().required('Designation is required'),
         bloodGroup: Yup.string()
-            .oneOf(['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'], 'Invalid blood group')
+            .oneOf(
+                ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'],
+                'Invalid blood group'
+            )
             .required('Blood group is required'),
         dob: Yup.date()
             .required('Date of birth is required')
             .max(new Date(), 'Date of birth cannot be in the future'),
-        fatherName: Yup.string().required('Father\'s name is required'),
+        fatherName: Yup.string().required("Father's name is required"),
         husbandName: Yup.string(),
-        motherName: Yup.string().required('Mother\'s name is required'),
+        motherName: Yup.string().required("Mother's name is required"),
         permanentAddress: Yup.object().shape({
             village: Yup.string().required('Village is required'),
             postOffice: Yup.string().required('Post office is required'),
@@ -113,8 +134,12 @@ export default function MembershipForm({ data }) {
             } else {
                 return Yup.object().shape({
                     village: Yup.string().required('Village is required'),
-                    postOffice: Yup.string().required('Post office is required'),
-                    subdistrict: Yup.string().required('Subdistrict is required'),
+                    postOffice: Yup.string().required(
+                        'Post office is required'
+                    ),
+                    subdistrict: Yup.string().required(
+                        'Subdistrict is required'
+                    ),
                     district: Yup.string().required('District is required'),
                 });
             }
@@ -150,19 +175,28 @@ export default function MembershipForm({ data }) {
         appendIfPresent('fatherName', values.fatherName);
         appendIfPresent('husbandName', values.husbandName);
         appendIfPresent('motherName', values.motherName);
-        appendIfPresent('isCurrentAddressSameAsPermanentAddress', values.isCurrentAddressSameAsPermanentAddress);
+        appendIfPresent(
+            'isCurrentAddressSameAsPermanentAddress',
+            values.isCurrentAddressSameAsPermanentAddress
+        );
         appendIfPresent('typeId', values.typeId);
         appendIfPresent('statusId', values.statusId);
 
         // Append nested permanentAddress fields
         Object.keys(values.permanentAddress).forEach((key) => {
-            appendIfPresent(`permanentAddress.${key}`, values.permanentAddress[key]);
+            appendIfPresent(
+                `permanentAddress.${key}`,
+                values.permanentAddress[key]
+            );
         });
 
         // Append nested currentAddress fields if addresses are different
         if (!values.isCurrentAddressSameAsPermanentAddress) {
             Object.keys(values.currentAddress).forEach((key) => {
-                appendIfPresent(`currentAddress.${key}`, values.currentAddress[key]);
+                appendIfPresent(
+                    `currentAddress.${key}`,
+                    values.currentAddress[key]
+                );
             });
         }
 
@@ -202,31 +236,42 @@ export default function MembershipForm({ data }) {
     return (
         <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
             <div className="grid gap-2 md:grid-cols-2 w-full">
-
                 <div>
-                    <p>{data ? 'Edit' : 'Create '} Date: {currentDate}</p>
-                    <p>Member ID: {formik?.values?.memberId && formik?.values?.memberId}</p>
+                    <p>
+                        {data ? 'Edit' : 'Create '} Date: {currentDate}
+                    </p>
+                    <p>
+                        Member ID:{' '}
+                        {formik?.values?.memberId && formik?.values?.memberId}
+                    </p>
                 </div>
                 <div>
                     {(formik?.values?.image || data?.image) && (
                         <div className="flex items-center justify-end relative">
                             <img
-                                src={data?.image || URL.createObjectURL(formik.values.image)}
+                                src={
+                                    data?.image ||
+                                    URL.createObjectURL(formik.values.image)
+                                }
                                 alt="Selected Image"
                                 className="w-24 h-24 object-cover border border-dashed rounded-md p-1"
                             />
                             <Button
                                 type="button"
-                                size='icon'
+                                size="icon"
                                 onClick={() => clearField(formik, 'image')}
-                                className='absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full'
+                                className="absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full"
                             >
                                 <GoX />
                             </Button>
                         </div>
                     )}
                 </div>
-                <InputWrapper label="Member Type" error={formik.errors?.typeId} touched={formik.touched?.typeId}>
+                <InputWrapper
+                    label="Member Type"
+                    error={formik.errors?.typeId}
+                    touched={formik.touched?.typeId}
+                >
                     <ComboboxFormik
                         select="_id"
                         display="type"
@@ -236,7 +281,11 @@ export default function MembershipForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Status" error={formik.errors?.statusId} touched={formik.touched?.statusId}>
+                <InputWrapper
+                    label="Status"
+                    error={formik.errors?.statusId}
+                    touched={formik.touched?.statusId}
+                >
                     <ComboboxFormik
                         select="_id"
                         display="status"
@@ -246,7 +295,11 @@ export default function MembershipForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Name" error={formik.errors.name} touched={formik.touched.name}>
+                <InputWrapper
+                    label="Name"
+                    error={formik.errors.name}
+                    touched={formik.touched.name}
+                >
                     <Input
                         name="name"
                         placeholder="Your Name"
@@ -256,17 +309,25 @@ export default function MembershipForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Image" error={formik.errors.image} touched={formik.touched.image}>
+                <InputWrapper
+                    label="Image"
+                    error={formik.errors.image}
+                    touched={formik.touched.image}
+                >
                     <Input
                         name="image"
                         type="file"
                         accept="image/*"
-                        onChange={handleImageChange(formik, "image")}
+                        onChange={handleImageChange(formik, 'image')}
                         onBlur={formik.handleBlur}
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Email" error={formik.errors.email} touched={formik.touched.email}>
+                <InputWrapper
+                    label="Email"
+                    error={formik.errors.email}
+                    touched={formik.touched.email}
+                >
                     <Input
                         name="email"
                         type="email"
@@ -277,7 +338,11 @@ export default function MembershipForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Phone" error={formik.errors.phone} touched={formik.touched.phone}>
+                <InputWrapper
+                    label="Phone"
+                    error={formik.errors.phone}
+                    touched={formik.touched.phone}
+                >
                     <Input
                         name="phone"
                         placeholder="Phone"
@@ -287,7 +352,11 @@ export default function MembershipForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Educational Background" error={formik.errors.educationalBackground} touched={formik.touched.educationalBackground}>
+                <InputWrapper
+                    label="Educational Background"
+                    error={formik.errors.educationalBackground}
+                    touched={formik.touched.educationalBackground}
+                >
                     <Input
                         name="educationalBackground"
                         placeholder="Educational Background"
@@ -297,7 +366,11 @@ export default function MembershipForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Occupation" error={formik.errors.occupation} touched={formik.touched.occupation}>
+                <InputWrapper
+                    label="Occupation"
+                    error={formik.errors.occupation}
+                    touched={formik.touched.occupation}
+                >
                     <Input
                         name="occupation"
                         placeholder="Occupation"
@@ -307,7 +380,11 @@ export default function MembershipForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Workplace" error={formik.errors.workplace} touched={formik.touched.workplace}>
+                <InputWrapper
+                    label="Workplace"
+                    error={formik.errors.workplace}
+                    touched={formik.touched.workplace}
+                >
                     <Input
                         name="workplace"
                         placeholder="Workplace"
@@ -317,7 +394,11 @@ export default function MembershipForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Designation" error={formik.errors.designation} touched={formik.touched.designation}>
+                <InputWrapper
+                    label="Designation"
+                    error={formik.errors.designation}
+                    touched={formik.touched.designation}
+                >
                     <Input
                         name="designation"
                         placeholder="Designation"
@@ -327,7 +408,11 @@ export default function MembershipForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Blood Group" error={formik.errors.bloodGroup} touched={formik.touched.bloodGroup}>
+                <InputWrapper
+                    label="Blood Group"
+                    error={formik.errors.bloodGroup}
+                    touched={formik.touched.bloodGroup}
+                >
                     <Input
                         name="bloodGroup"
                         placeholder="Blood Group"
@@ -337,7 +422,11 @@ export default function MembershipForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Father's Name" error={formik.errors.fatherName} touched={formik.touched.fatherName}>
+                <InputWrapper
+                    label="Father's Name"
+                    error={formik.errors.fatherName}
+                    touched={formik.touched.fatherName}
+                >
                     <Input
                         name="fatherName"
                         placeholder="Father's Name"
@@ -347,7 +436,11 @@ export default function MembershipForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Husband's Name" error={formik.errors.husbandName} touched={formik.touched.husbandName}>
+                <InputWrapper
+                    label="Husband's Name"
+                    error={formik.errors.husbandName}
+                    touched={formik.touched.husbandName}
+                >
                     <Input
                         name="husbandName"
                         placeholder="Husband's Name"
@@ -357,7 +450,11 @@ export default function MembershipForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Mother's Name" error={formik.errors.motherName} touched={formik.touched.motherName}>
+                <InputWrapper
+                    label="Mother's Name"
+                    error={formik.errors.motherName}
+                    touched={formik.touched.motherName}
+                >
                     <Input
                         name="motherName"
                         placeholder="Mother's Name"
@@ -367,7 +464,11 @@ export default function MembershipForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Date of Birth" error={formik.errors.dob} touched={formik.touched.dob}>
+                <InputWrapper
+                    label="Date of Birth"
+                    error={formik.errors.dob}
+                    touched={formik.touched.dob}
+                >
                     <Input
                         name="dob"
                         type="date"
@@ -378,7 +479,11 @@ export default function MembershipForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Join Date" error={formik.errors?.joinDate} touched={formik.touched?.joinDate}>
+                <InputWrapper
+                    label="Join Date"
+                    error={formik.errors?.joinDate}
+                    touched={formik.touched?.joinDate}
+                >
                     <Input
                         type="date"
                         name="joinDate"
@@ -388,10 +493,16 @@ export default function MembershipForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper hidden={!!data} label="NID Number" error={formik.errors.nid} touched={formik.touched.nid} className={'md:col-span-2'}>
+                <InputWrapper
+                    hidden={!!data}
+                    label="NID Number"
+                    error={formik.errors.nid}
+                    touched={formik.touched.nid}
+                    className={'md:col-span-2'}
+                >
                     <InputNumber
                         value={formik.values.nid}
-                        onChange={(value) => formik.setFieldValue("nid", value)}
+                        onChange={(value) => formik.setFieldValue('nid', value)}
                         onBlur={formik.handleBlur}
                         totalDigits={10}
                     />
@@ -399,33 +510,47 @@ export default function MembershipForm({ data }) {
             </div>
 
             {/* Permanent Address */}
-            <h2 className='font-bold text-lg md:text-xl'>Permanent Address</h2>
+            <h2 className="font-bold text-lg md:text-xl">Permanent Address</h2>
             <div className="grid gap-2 md:grid-cols-2">
-                {['village', 'postOffice', 'subdistrict', 'district'].map((field) => (
-                    <InputWrapper
-                        key={field}
-                        label={field.charAt(0).toUpperCase() + field.slice(1)}
-                        error={formik.errors?.permanentAddress?.[field]}
-                        touched={formik.touched?.permanentAddress?.[field]}
-                    >
-                        <Input
-                            name={`permanentAddress.${field}`}
-                            placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                            value={formik.values.permanentAddress[field]}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                        />
-                    </InputWrapper>
-                ))}
+                {['village', 'postOffice', 'subdistrict', 'district'].map(
+                    (field) => (
+                        <InputWrapper
+                            key={field}
+                            label={
+                                field.charAt(0).toUpperCase() + field.slice(1)
+                            }
+                            error={formik.errors?.permanentAddress?.[field]}
+                            touched={formik.touched?.permanentAddress?.[field]}
+                        >
+                            <Input
+                                name={`permanentAddress.${field}`}
+                                placeholder={
+                                    field.charAt(0).toUpperCase() +
+                                    field.slice(1)
+                                }
+                                value={formik.values.permanentAddress[field]}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                        </InputWrapper>
+                    )
+                )}
             </div>
 
             {/* Checkbox for current address */}
-            <div className='flex items-center space-x-10'>
-                <h2 className='font-bold text-lg md:text-xl'>Current Address</h2>
-                <label className='flex items-center space-x-2'>
+            <div className="flex items-center space-x-10">
+                <h2 className="font-bold text-lg md:text-xl">
+                    Current Address
+                </h2>
+                <label className="flex items-center space-x-2">
                     <Checkbox
-                        checked={formik.values.isCurrentAddressSameAsPermanentAddress}
-                        onCheckedChange={handleCheckboxChange(formik, "isCurrentAddressSameAsPermanentAddress")}
+                        checked={
+                            formik.values.isCurrentAddressSameAsPermanentAddress
+                        }
+                        onCheckedChange={handleCheckboxChange(
+                            formik,
+                            'isCurrentAddressSameAsPermanentAddress'
+                        )}
                     />
                     <span>Same as Permanent Address</span>
                 </label>
@@ -435,16 +560,29 @@ export default function MembershipForm({ data }) {
             {!formik.values.isCurrentAddressSameAsPermanentAddress && (
                 <>
                     <div className="grid gap-2 md:grid-cols-2">
-                        {['village', 'postOffice', 'subdistrict', 'district'].map((field) => (
+                        {[
+                            'village',
+                            'postOffice',
+                            'subdistrict',
+                            'district',
+                        ].map((field) => (
                             <InputWrapper
                                 key={field}
-                                label={field.charAt(0).toUpperCase() + field.slice(1)}
+                                label={
+                                    field.charAt(0).toUpperCase() +
+                                    field.slice(1)
+                                }
                                 error={formik.errors?.currentAddress?.[field]}
-                                touched={formik.touched?.currentAddress?.[field]}
+                                touched={
+                                    formik.touched?.currentAddress?.[field]
+                                }
                             >
                                 <Input
                                     name={`currentAddress.${field}`}
-                                    placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                                    placeholder={
+                                        field.charAt(0).toUpperCase() +
+                                        field.slice(1)
+                                    }
                                     value={formik.values.currentAddress[field]}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}

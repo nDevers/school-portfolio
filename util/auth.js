@@ -1,7 +1,7 @@
 import appConfig from '@/configs/appConfig';
 import { postData } from './axios';
 import { deleteCookie, getCookie, hasCookie, setCookie } from 'cookies-next';
-import { toast } from "sonner";
+import { toast } from 'sonner';
 import { decryptData } from './crypto.client';
 import { jwtVerify } from 'jose';
 
@@ -11,16 +11,18 @@ async function login(data, api) {
     try {
         const response = await postData(api, data);
         const { accessToken, refreshToken } = response;
-        if (accessToken) setCookie(appConfig?.CurrentUserToken, accessToken, {
-            path: '/',
-            secure: isProduction,
-            sameSite: isProduction ? 'Strict' : 'Lax',
-        });
-        if (refreshToken) setCookie(appConfig?.CurrentUserRefToken, refreshToken, {
-            path: '/',
-            secure: isProduction,
-            sameSite: isProduction ? 'Strict' : 'Lax',
-        });
+        if (accessToken)
+            setCookie(appConfig?.CurrentUserToken, accessToken, {
+                path: '/',
+                secure: isProduction,
+                sameSite: isProduction ? 'Strict' : 'Lax',
+            });
+        if (refreshToken)
+            setCookie(appConfig?.CurrentUserRefToken, refreshToken, {
+                path: '/',
+                secure: isProduction,
+                sameSite: isProduction ? 'Strict' : 'Lax',
+            });
 
         return response;
     } catch (error) {
@@ -96,8 +98,8 @@ async function getTokenPayload(token, type = 'access') {
 
     // Select the correct secret based on the token type
     const secret = new TextEncoder().encode(
-        type === 'access' 
-            ? process?.env?.JWT_ACCESS_TOKEN_SECRET 
+        type === 'access'
+            ? process?.env?.JWT_ACCESS_TOKEN_SECRET
             : process?.env?.JWT_REFRESH_TOKEN_SECRET
     );
 

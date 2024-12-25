@@ -1,5 +1,5 @@
-import contentTypesConstants from "@/constants/contentTypes.constants";
-import mimeTypesConstants from "@/constants/mimeTypes.constants";
+import contentTypesConstants from '@/constants/contentTypes.constants';
+import mimeTypesConstants from '@/constants/mimeTypes.constants';
 
 /**
  * Represents the list of allowed content types for a specific operation or configuration.
@@ -16,7 +16,12 @@ const allowedContentTypes = [contentTypesConstants.FORM_DATA];
  *
  * @type {Array<string>}
  */
-const allowedBannerMimeTypes = [mimeTypesConstants.JPEG, mimeTypesConstants.JPG, mimeTypesConstants.PNG, mimeTypesConstants.GIF];
+const allowedBannerMimeTypes = [
+    mimeTypesConstants.JPEG,
+    mimeTypesConstants.JPG,
+    mimeTypesConstants.PNG,
+    mimeTypesConstants.GIF,
+];
 
 /**
  * An array of allowed MIME types for file uploads.
@@ -31,7 +36,12 @@ const allowedBannerMimeTypes = [mimeTypesConstants.JPEG, mimeTypesConstants.JPG,
  *
  * These MIME types are typically used for validating user-uploaded content such as documents or images.
  */
-const allowedFilesMimeTypes = [mimeTypesConstants.PDF, mimeTypesConstants.JPG, mimeTypesConstants.PNG, mimeTypesConstants.GIF];
+const allowedFilesMimeTypes = [
+    mimeTypesConstants.PDF,
+    mimeTypesConstants.JPG,
+    mimeTypesConstants.PNG,
+    mimeTypesConstants.GIF,
+];
 
 /**
  * An array containing the allowed MIME types for image uploads.
@@ -39,7 +49,12 @@ const allowedFilesMimeTypes = [mimeTypesConstants.PDF, mimeTypesConstants.JPG, m
  * by ensuring they are of specific, predefined formats.
  * The MIME types included are JPEG, JPG, PNG, and GIF.
  */
-const allowedImagesMimeTypes = [mimeTypesConstants.JPEG, mimeTypesConstants.JPG, mimeTypesConstants.PNG, mimeTypesConstants.GIF];
+const allowedImagesMimeTypes = [
+    mimeTypesConstants.JPEG,
+    mimeTypesConstants.JPG,
+    mimeTypesConstants.PNG,
+    mimeTypesConstants.GIF,
+];
 
 /**
  * A constant variable representing the name of the banner field.

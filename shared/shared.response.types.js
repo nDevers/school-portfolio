@@ -1,6 +1,6 @@
-import httpStatusConstants from "@/constants/httpStatus.constants";
+import httpStatusConstants from '@/constants/httpStatus.constants';
 
-import sendResponse from "@/util/sendResponse";
+import sendResponse from '@/util/sendResponse';
 
 /**
  * Represents a function that sends a response with a "Created" status.
@@ -11,13 +11,8 @@ import sendResponse from "@/util/sendResponse";
  * @param {Object} request - The request information to include in the response.
  * @returns {*} The standardized "Created" response object.
  */
-const CREATED = (message, date, request) => sendResponse(
-    true,
-    httpStatusConstants.CREATED,
-    message,
-    date,
-    request
-);
+const CREATED = (message, date, request) =>
+    sendResponse(true, httpStatusConstants.CREATED, message, date, request);
 
 /**
  * A function that sends a successful response with predefined parameters.
@@ -27,13 +22,8 @@ const CREATED = (message, date, request) => sendResponse(
  * @param {object} request - The original request object.
  * @returns {object} The formatted response object indicating success.
  */
-const OK = (message, date, request) => sendResponse(
-    true,
-    httpStatusConstants.OK,
-    message,
-    date,
-    request
-);
+const OK = (message, date, request) =>
+    sendResponse(true, httpStatusConstants.OK, message, date, request);
 
 /**
  * Represents a function for handling internal server errors by generating a standardized response.
@@ -46,13 +36,14 @@ const OK = (message, date, request) => sendResponse(
  * @param {Object} request - The request object associated with the error, used for response construction.
  * @returns {void} - Sends the response with the internal server error status and the provided message.
  */
-const INTERNAL_SERVER_ERROR = (message, request) => sendResponse(
-    false,
-    httpStatusConstants.INTERNAL_SERVER_ERROR,
-    message,
-    {},
-    request
-);
+const INTERNAL_SERVER_ERROR = (message, request) =>
+    sendResponse(
+        false,
+        httpStatusConstants.INTERNAL_SERVER_ERROR,
+        message,
+        {},
+        request
+    );
 
 /**
  * Handles HTTP conflict responses by sending a standardized error response.
@@ -66,13 +57,8 @@ const INTERNAL_SERVER_ERROR = (message, request) => sendResponse(
  * @returns {Object} - The response object with a conflict status, containing the provided
  *                     message and metadata.
  */
-const CONFLICT = (message, request) => sendResponse(
-    false,
-    httpStatusConstants.CONFLICT,
-    message,
-    {},
-    request
-);
+const CONFLICT = (message, request) =>
+    sendResponse(false, httpStatusConstants.CONFLICT, message, {}, request);
 
 /**
  * A function that sends a response indicating a resource was not found.
@@ -81,13 +67,8 @@ const CONFLICT = (message, request) => sendResponse(
  * @param {Object} request - The original request object that led to the not found error.
  * @returns {void}
  */
-const NOT_FOUND = (message, request) => sendResponse(
-    false,
-    httpStatusConstants.NOT_FOUND,
-    message,
-    {},
-    request
-);
+const NOT_FOUND = (message, request) =>
+    sendResponse(false, httpStatusConstants.NOT_FOUND, message, {}, request);
 
 /**
  * BAD_REQUEST is a function used to send a standardized HTTP 400 Bad Request response.
@@ -98,13 +79,8 @@ const NOT_FOUND = (message, request) => sendResponse(
  * @param {Object} request - The original request object, used for processing and generating the response.
  * @returns {Object} - The standardized response object indicating the failure and including the provided message.
  */
-const BAD_REQUEST = (message, request) => sendResponse(
-    false,
-    httpStatusConstants.BAD_REQUEST,
-    message,
-    {},
-    request
-);
+const BAD_REQUEST = (message, request) =>
+    sendResponse(false, httpStatusConstants.BAD_REQUEST, message, {}, request);
 
 /**
  * Represents a function to handle unauthorized access responses.
@@ -117,13 +93,8 @@ const BAD_REQUEST = (message, request) => sendResponse(
  * @param {Object} request - The request object associated with the unauthorized access.
  * @returns {Object} The structured server response for the unauthorized access scenario.
  */
-const UNAUTHORIZED = (message, request) => sendResponse(
-    false,
-    httpStatusConstants.UNAUTHORIZED,
-    message,
-    {},
-    request
-);
+const UNAUTHORIZED = (message, request) =>
+    sendResponse(false, httpStatusConstants.UNAUTHORIZED, message, {}, request);
 
 /**
  * Sends a response indicating a forbidden request.
@@ -135,13 +106,8 @@ const UNAUTHORIZED = (message, request) => sendResponse(
  * @param {object} request - The HTTP request object triggering the response.
  * @returns {void} - Sends the forbidden response directly.
  */
-const FORBIDDEN = (message, request) => sendResponse(
-    false,
-    httpStatusConstants.FORBIDDEN,
-    message,
-    {},
-    request
-);
+const FORBIDDEN = (message, request) =>
+    sendResponse(false, httpStatusConstants.FORBIDDEN, message, {}, request);
 
 /**
  * A utility function that sends an HTTP response with the status code for "Unsupported Media Type".
@@ -154,13 +120,14 @@ const FORBIDDEN = (message, request) => sendResponse(
  * @param {Object} request - The request object containing details of the client request.
  * @returns {Object} The response object indicating the unsupported media type error.
  */
-const UNSUPPORTED_MEDIA_TYPE = (message, request) => sendResponse(
-    false,
-    httpStatusConstants.UNSUPPORTED_MEDIA_TYPE,
-    message,
-    {},
-    request
-);
+const UNSUPPORTED_MEDIA_TYPE = (message, request) =>
+    sendResponse(
+        false,
+        httpStatusConstants.UNSUPPORTED_MEDIA_TYPE,
+        message,
+        {},
+        request
+    );
 
 /**
  * Handles HTTP responses for unprocessable entity errors.
@@ -175,13 +142,14 @@ const UNSUPPORTED_MEDIA_TYPE = (message, request) => sendResponse(
  * @returns {object} - The response object sent to the client, containing status, message,
  * and any additional information.
  */
-const UNPROCESSABLE_ENTITY = (message, request) => sendResponse(
-    false,
-    httpStatusConstants.UNPROCESSABLE_ENTITY,
-    message,
-    {},
-    request
-);
+const UNPROCESSABLE_ENTITY = (message, request) =>
+    sendResponse(
+        false,
+        httpStatusConstants.UNPROCESSABLE_ENTITY,
+        message,
+        {},
+        request
+    );
 
 /**
  * An object containing a set of shared HTTP response types.

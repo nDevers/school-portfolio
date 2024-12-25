@@ -1,17 +1,16 @@
-import moment from "moment";
+import moment from 'moment';
 
-import { AcademicModel } from "@/shared/prisma.model.shared";
-import academicSchema from "@/app/api/v1/academic/academic.schema";
-import academicConstants from "@/app/api/v1/academic/academic.constants";
-import sharedResponseTypes from "@/shared/shared.response.types";
-import localFileOperations from "@/util/localFileOperations";
+import { AcademicModel } from '@/shared/prisma.model.shared';
+import academicSchema from '@/app/api/v1/academic/academic.schema';
+import academicConstants from '@/app/api/v1/academic/academic.constants';
+import sharedResponseTypes from '@/shared/shared.response.types';
+import localFileOperations from '@/util/localFileOperations';
 
-import asyncHandler from "@/util/asyncHandler";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import validateToken from "@/util/validateToken";
-import academicSelectionCriteria from "@/app/api/v1/academic/academic.selection.criteria";
-
+import asyncHandler from '@/util/asyncHandler';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import validateToken from '@/util/validateToken';
+import academicSelectionCriteria from '@/app/api/v1/academic/academic.selection.criteria';
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
 
@@ -49,11 +48,18 @@ const createAcademicEntry = async (userInput, request) => {
     });
 
     if (!createdDocument?.id) {
-        return INTERNAL_SERVER_ERROR(`Failed to create academic entry with title "${userInput?.title}".`, request);
+        return INTERNAL_SERVER_ERROR(
+            `Failed to create academic entry with title "${userInput?.title}".`,
+            request
+        );
     }
 
     // No need for an aggregation pipeline; Prisma returns the created document
-    return CREATED(`Academic entry with title "${userInput?.title}" created successfully.`, createdDocument, request);
+    return CREATED(
+        `Academic entry with title "${userInput?.title}" created successfully.`,
+        createdDocument,
+        request
+    );
 };
 
 /**
@@ -75,7 +81,10 @@ const createAcademicEntry = async (userInput, request) => {
  */
 const handleCreateAcademicByCategory = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, academicConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        academicConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
@@ -87,7 +96,12 @@ const handleCreateAcademicByCategory = async (request, context) => {
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'create', () => academicSchema.createSchema());
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'create',
+        () => academicSchema.createSchema()
+    );
 
     // Check if academic entry with the same title already exists
     const existingQuestion = await AcademicModel.findUnique({
@@ -97,20 +111,30 @@ const handleCreateAcademicByCategory = async (request, context) => {
         },
         select: {
             id: true,
-        }
+        },
     });
     if (existingQuestion) {
-        return CONFLICT(`Academic entry with title "${userInput?.title}" and CATEGORY "${userInput?.categoryParams}" already exists.`, request);
+        return CONFLICT(
+            `Academic entry with title "${userInput?.title}" and CATEGORY "${userInput?.categoryParams}" already exists.`,
+            request
+        );
     }
 
     // Upload file and generate link
     const newFile = userInput[academicConstants.fileFieldName][0];
-    const { fileId, fileLink } = await localFileOperations.uploadFile(request, newFile);
+    const { fileId, fileLink } = await localFileOperations.uploadFile(
+        request,
+        newFile
+    );
 
     userInput.fileId = fileId;
     userInput.file = fileLink;
     userInput.category = userInput.categoryParams;
-    userInput.publishDate = moment(userInput.publishDate, ['DD/MM/YYYY', moment.ISO_8601], true).toDate();
+    userInput.publishDate = moment(
+        userInput.publishDate,
+        ['DD/MM/YYYY', moment.ISO_8601],
+        true
+    ).toDate();
 
     delete userInput.categoryParams;
 

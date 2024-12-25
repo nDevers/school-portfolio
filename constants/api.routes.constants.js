@@ -240,8 +240,8 @@ const apiRoutesConstants = {
             DELETE: {
                 params: 'id',
                 permissions: [DELETE_BY_ID(routes.aboutUs)],
-            }
-        }
+            },
+        },
     },
 
     academic: {
@@ -252,7 +252,11 @@ const apiRoutesConstants = {
             },
             GET: {
                 params: 'categoryParams',
-                permissions: [GET(routes.academic), GET_BY_CATEGORY(routes.academic), GET_BY_CATEGORY_AND_ID(routes.academic)],
+                permissions: [
+                    GET(routes.academic),
+                    GET_BY_CATEGORY(routes.academic),
+                    GET_BY_CATEGORY_AND_ID(routes.academic),
+                ],
             },
             PATCH: {
                 params: 'categoryParams',
@@ -261,8 +265,8 @@ const apiRoutesConstants = {
             DELETE: {
                 params: 'categoryParams',
                 permissions: [DELETE_BY_CATEGORY_AND_ID(routes.academic)],
-            }
-        }
+            },
+        },
     },
 
     announcement: {
@@ -273,7 +277,11 @@ const apiRoutesConstants = {
             },
             GET: {
                 params: 'categoryParams',
-                permissions: [GET(routes.announcement), GET_BY_CATEGORY(routes.announcement), GET_BY_CATEGORY_AND_ID(routes.announcement)],
+                permissions: [
+                    GET(routes.announcement),
+                    GET_BY_CATEGORY(routes.announcement),
+                    GET_BY_CATEGORY_AND_ID(routes.announcement),
+                ],
             },
             PATCH: {
                 params: 'categoryParams',
@@ -282,8 +290,8 @@ const apiRoutesConstants = {
             DELETE: {
                 params: 'categoryParams',
                 permissions: [DELETE_BY_CATEGORY_AND_ID(routes.announcement)],
-            }
-        }
+            },
+        },
     },
 
     blog: {
@@ -303,8 +311,8 @@ const apiRoutesConstants = {
             DELETE: {
                 params: 'id',
                 permissions: [DELETE_BY_ID(routes.blog)],
-            }
-        }
+            },
+        },
     },
 
     career: {
@@ -324,8 +332,8 @@ const apiRoutesConstants = {
             DELETE: {
                 params: 'id',
                 permissions: [DELETE_BY_ID(routes.career)],
-            }
-        }
+            },
+        },
     },
 
     configuration: {
@@ -342,8 +350,8 @@ const apiRoutesConstants = {
             },
             DELETE: {
                 permissions: [DELETE(routes.configuration)],
-            }
-        }
+            },
+        },
     },
 
     contact: {
@@ -351,8 +359,8 @@ const apiRoutesConstants = {
         methods: {
             POST: {
                 permissions: [CREATE(routes.contact)],
-            }
-        }
+            },
+        },
     },
 
     faculty: {
@@ -363,7 +371,11 @@ const apiRoutesConstants = {
             },
             GET: {
                 params: 'categoryParams',
-                permissions: [GET(routes.faculty), GET_BY_CATEGORY(routes.faculty), GET_BY_CATEGORY_AND_ID(routes.faculty)],
+                permissions: [
+                    GET(routes.faculty),
+                    GET_BY_CATEGORY(routes.faculty),
+                    GET_BY_CATEGORY_AND_ID(routes.faculty),
+                ],
             },
             PATCH: {
                 params: 'categoryParams',
@@ -372,8 +384,8 @@ const apiRoutesConstants = {
             DELETE: {
                 params: 'categoryParams',
                 permissions: [DELETE_BY_CATEGORY_AND_ID(routes.faculty)],
-            }
-        }
+            },
+        },
     },
 
     faq: {
@@ -393,8 +405,8 @@ const apiRoutesConstants = {
             DELETE: {
                 params: 'id',
                 permissions: [DELETE(routes.faq)],
-            }
-        }
+            },
+        },
     },
 
     gallery: {
@@ -417,8 +429,8 @@ const apiRoutesConstants = {
                     DELETE: {
                         params: 'id',
                         permissions: [DELETE(routes.gallery.photo)],
-                    }
-                }
+                    },
+                },
             },
 
             video: {
@@ -438,10 +450,10 @@ const apiRoutesConstants = {
                     DELETE: {
                         params: 'id',
                         permissions: [DELETE(routes.gallery.video)],
-                    }
-                }
-            }
-        }
+                    },
+                },
+            },
+        },
     },
 
     home: {
@@ -461,10 +473,10 @@ const apiRoutesConstants = {
                     },
                     DELETE: {
                         permissions: [DELETE(routes.home.carousel)],
-                    }
-                }
-            }
-        }
+                    },
+                },
+            },
+        },
     },
 
     newsletter: {
@@ -483,8 +495,8 @@ const apiRoutesConstants = {
             DELETE: {
                 params: 'email',
                 permissions: [DELETE_BY_EMAIL(routes.newsletter)],
-            }
-        }
+            },
+        },
     },
 
     school: {
@@ -504,8 +516,8 @@ const apiRoutesConstants = {
                     },
                     DELETE: {
                         permissions: [DELETE(routes.school.achievement)],
-                    }
-                }
+                    },
+                },
             },
 
             info: {
@@ -522,8 +534,8 @@ const apiRoutesConstants = {
                     },
                     DELETE: {
                         permissions: [DELETE(routes.school.info)],
-                    }
-                }
+                    },
+                },
             },
 
             speech: {
@@ -540,11 +552,11 @@ const apiRoutesConstants = {
                     },
                     DELETE: {
                         permissions: [DELETE(routes.school.speech)],
-                    }
-                }
-            }
-        }
-    }
+                    },
+                },
+            },
+        },
+    },
 };
 
 export default apiRoutesConstants;

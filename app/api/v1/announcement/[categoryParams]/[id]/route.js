@@ -1,9 +1,9 @@
-import { AnnouncementModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
-import announcementSchema from "@/app/api/v1/announcement/announcement.schema";
+import { AnnouncementModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
+import announcementSchema from '@/app/api/v1/announcement/announcement.schema';
 
-import asyncHandler from "@/util/asyncHandler";
-import announcementSelectionCriteria from "@/app/api/v1/announcement/announcement.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import announcementSelectionCriteria from '@/app/api/v1/announcement/announcement.selection.criteria';
 
 /**
  * Asynchronous function that handles fetching an announcement by category and ID.
@@ -18,10 +18,20 @@ import announcementSelectionCriteria from "@/app/api/v1/announcement/announcemen
  * @param {Object} context - The context object providing additional runtime information.
  * @returns {Promise<Object>} A promise that resolves to the fetched announcement entry.
  */
-export const handleGetAnnouncementByCategoryAndId = async (request, context) => {
+export const handleGetAnnouncementByCategoryAndId = async (
+    request,
+    context
+) => {
     const selectionCriteria = announcementSelectionCriteria();
 
-    return serviceShared.fetchEntryByCategoryAndId(request, context, AnnouncementModel, selectionCriteria,  'Announcement', () => announcementSchema.categoryAndIdSchema());
+    return serviceShared.fetchEntryByCategoryAndId(
+        request,
+        context,
+        AnnouncementModel,
+        selectionCriteria,
+        'Announcement',
+        () => announcementSchema.categoryAndIdSchema()
+    );
 };
 
 /**

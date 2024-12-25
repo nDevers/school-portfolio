@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
-import CustomMenu from '@/components/common/CustomMenu'
-import NextTopLoader from 'nextjs-toploader'
-import QueryClientProviderWrapper from './QueryClientProvider'
-import { ThemeProvider } from './ThemeProvider'
-import { UserProvider } from '@/contexts/UserContext'
+import CustomMenu from '@/components/common/CustomMenu';
+import NextTopLoader from 'nextjs-toploader';
+import QueryClientProviderWrapper from './QueryClientProvider';
+import { ThemeProvider } from './ThemeProvider';
+import { UserProvider } from '@/contexts/UserContext';
 
 export default function Wrapper({ children }) {
     return (
@@ -32,12 +32,10 @@ export default function Wrapper({ children }) {
                 />
                 <QueryClientProviderWrapper>
                     <UserProvider>
-                        <CustomMenu>
-                            {children}
-                        </CustomMenu>
+                        <CustomMenu>{children}</CustomMenu>
                     </UserProvider>
                 </QueryClientProviderWrapper>
             </ThemeProvider>
         </>
-    )
+    );
 }

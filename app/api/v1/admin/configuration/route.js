@@ -1,15 +1,14 @@
-import { ConfigurationModel } from "@/shared/prisma.model.shared";
-import configurationSchema from "@/app/api/v1/configuration/configuration.schema";
-import configurationConstants from "@/app/api/v1/configuration/configuration.constants";
-import sharedResponseTypes from "@/shared/shared.response.types";
-import localFileOperations from "@/util/localFileOperations";
+import { ConfigurationModel } from '@/shared/prisma.model.shared';
+import configurationSchema from '@/app/api/v1/configuration/configuration.schema';
+import configurationConstants from '@/app/api/v1/configuration/configuration.constants';
+import sharedResponseTypes from '@/shared/shared.response.types';
+import localFileOperations from '@/util/localFileOperations';
 
-import asyncHandler from "@/util/asyncHandler";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import validateToken from "@/util/validateToken";
-import configurationSelectionCriteria from "@/app/api/v1/configuration/configuration.selection.criteria";
-
+import asyncHandler from '@/util/asyncHandler';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import validateToken from '@/util/validateToken';
+import configurationSelectionCriteria from '@/app/api/v1/configuration/configuration.selection.criteria';
 
 const { OK, CREATED, NOT_FOUND } = sharedResponseTypes;
 
@@ -35,7 +34,11 @@ const selectionCriteria = configurationSelectionCriteria();
  * @returns {Promise<Object>} A promise that resolves to a success response containing the status, message, and the created or updated entry.
  * @throws {Error} If creating a new configuration entry fails.
  */
-const createOrUpdateConfiguration = async (existingEntry, userInput, request) => {
+const createOrUpdateConfiguration = async (
+    existingEntry,
+    userInput,
+    request
+) => {
     if (existingEntry) {
         // Update the existing entry
         const updatedEntry = await ConfigurationModel.update({
@@ -58,7 +61,11 @@ const createOrUpdateConfiguration = async (existingEntry, userInput, request) =>
         throw new Error('Failed to create home carousel entry.');
     }
 
-    return CREATED('Configuration entry created successfully.', newDocument, request);
+    return CREATED(
+        'Configuration entry created successfully.',
+        newDocument,
+        request
+    );
 };
 
 /**
@@ -76,7 +83,10 @@ const createOrUpdateConfiguration = async (existingEntry, userInput, request) =>
  */
 const handleCreateConfiguration = async (request) => {
     // Validate content type
-    const contentValidation = validateUnsupportedContent(request, configurationConstants.allowedContentTypes);
+    const contentValidation = validateUnsupportedContent(
+        request,
+        configurationConstants.allowedContentTypes
+    );
     if (!contentValidation.isValid) return contentValidation.response;
 
     // Validate user authorization
@@ -84,7 +94,12 @@ const handleCreateConfiguration = async (request) => {
     if (!authResult.isAuthorized) return authResult.response;
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, {}, 'create', configurationSchema.createSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        {},
+        'create',
+        configurationSchema.createSchema
+    );
 
     // Fetch the existing carousel entry
     const existingEntry = await ConfigurationModel.findFirst({
@@ -93,7 +108,10 @@ const handleCreateConfiguration = async (request) => {
 
     if (userInput[configurationConstants.bannerFieldName]) {
         const newBanner = userInput[configurationConstants.bannerFieldName][0];
-        const { fileId, fileLink } = await localFileOperations.uploadFile(request, newBanner);
+        const { fileId, fileLink } = await localFileOperations.uploadFile(
+            request,
+            newBanner
+        );
 
         userInput.banner = fileLink;
         userInput.bannerId = fileId;
@@ -101,7 +119,10 @@ const handleCreateConfiguration = async (request) => {
 
     if (userInput[configurationConstants.logoFieldName]) {
         const newLogo = userInput[configurationConstants.logoFieldName][0];
-        const { fileId, fileLink } = await localFileOperations.uploadFile(request, newLogo);
+        const { fileId, fileLink } = await localFileOperations.uploadFile(
+            request,
+            newLogo
+        );
 
         userInput.logo = fileLink;
         userInput.logoId = fileId;
@@ -132,7 +153,10 @@ const handleCreateConfiguration = async (request) => {
  */
 const handleUpdateConfiguration = async (request) => {
     // Validate content type
-    const contentValidation = validateUnsupportedContent(request, configurationConstants.allowedContentTypes);
+    const contentValidation = validateUnsupportedContent(
+        request,
+        configurationConstants.allowedContentTypes
+    );
     if (!contentValidation.isValid) return contentValidation.response;
 
     // Validate user authorization
@@ -140,19 +164,27 @@ const handleUpdateConfiguration = async (request) => {
     if (!authResult.isAuthorized) return authResult.response;
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, {}, 'update', configurationSchema.updateSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        {},
+        'update',
+        configurationSchema.updateSchema
+    );
 
     // Fetch the existing configuration entry
     const existingEntry = await ConfigurationModel.findFirst({
         select: selectionCriteria,
     });
     if (!existingEntry) {
-        return NOT_FOUND("Configuration entry not found.", request);
+        return NOT_FOUND('Configuration entry not found.', request);
     }
 
     if (userInput[configurationConstants.bannerFieldName]) {
         const newBanner = userInput[configurationConstants.bannerFieldName][0];
-        const { fileId, fileLink } = await localFileOperations.uploadFile(request, newBanner);
+        const { fileId, fileLink } = await localFileOperations.uploadFile(
+            request,
+            newBanner
+        );
 
         userInput.banner = fileLink;
         userInput.bannerId = fileId;
@@ -160,7 +192,10 @@ const handleUpdateConfiguration = async (request) => {
 
     if (userInput[configurationConstants.logoFieldName]) {
         const newLogo = userInput[configurationConstants.logoFieldName][0];
-        const { fileId, fileLink } = await localFileOperations.uploadFile(request, newLogo);
+        const { fileId, fileLink } = await localFileOperations.uploadFile(
+            request,
+            newLogo
+        );
 
         userInput.logo = fileLink;
         userInput.logoId = fileId;
@@ -212,7 +247,11 @@ const handleUpdateConfiguration = async (request) => {
         select: selectionCriteria,
     });
 
-    return OK("Configuration entry updated successfully.", updatedEntry, request);
+    return OK(
+        'Configuration entry updated successfully.',
+        updatedEntry,
+        request
+    );
 };
 
 /**
@@ -244,17 +283,17 @@ const deleteConfiguration = async (request) => {
         },
     });
     if (!existingEntry) {
-        return NOT_FOUND("Configuration entry not found.", request);
+        return NOT_FOUND('Configuration entry not found.', request);
     }
 
     // Delete logo associated with the entry
     if (existingEntry.logoId) {
-        await localFileOperations.deleteFile(existingEntry.logoId)
+        await localFileOperations.deleteFile(existingEntry.logoId);
     }
 
     // Delete banner associated with the entry
     if (existingEntry.bannerId) {
-        await localFileOperations.deleteFile(existingEntry.bannerId)
+        await localFileOperations.deleteFile(existingEntry.bannerId);
     }
 
     // Delete the entry
@@ -262,7 +301,7 @@ const deleteConfiguration = async (request) => {
         where: { id: existingEntry.id },
     });
 
-    return OK("Configuration entry deleted successfully.", {}, request);
+    return OK('Configuration entry deleted successfully.', {}, request);
 };
 
 /**

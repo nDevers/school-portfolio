@@ -3,7 +3,7 @@
  * Used to specify the content type in HTTP requests or responses
  * when the data being sent or received is in JSON format.
  */
-const JSON = "application/json";
+const JSON = 'application/json';
 
 /**
  * Represents the MIME type for encoding form data that is submitted via HTTP.
@@ -11,7 +11,7 @@ const JSON = "application/json";
  *
  * Value: "multipart/form-data"
  */
-const FORM_DATA = "multipart/form-data";
+const FORM_DATA = 'multipart/form-data';
 
 /**
  * Represents the MIME type for form data that is encoded as key-value pairs.
@@ -24,7 +24,7 @@ const FORM_DATA = "multipart/form-data";
  *
  * @constant {string} X_WWW_FORM_URLENCODED
  */
-const X_WWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
+const X_WWW_FORM_URLENCODED = 'application/x-www-form-urlencoded';
 
 /**
  * An object representing commonly used content type constants.
@@ -37,9 +37,9 @@ const X_WWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
  * @property {string} X_WWW_FORM_URLENCODED - Represents the content type for URL-encoded form data.
  */
 const contentTypesConstants = {
-  JSON,
-  FORM_DATA,
-  X_WWW_FORM_URLENCODED,
+    JSON,
+    FORM_DATA,
+    X_WWW_FORM_URLENCODED,
 };
 
 export default contentTypesConstants;

@@ -10,8 +10,8 @@
  * @returns {string|null} The extracted authentication token if valid, otherwise null.
  */
 const getAuthToken = (request) => {
-    const authHeader = request.headers.get("Authorization");
-    if (authHeader && authHeader.startsWith("Bearer ")) {
+    const authHeader = request.headers.get('Authorization');
+    if (authHeader && authHeader.startsWith('Bearer ')) {
         return authHeader?.slice(7); // Remove "Bearer " (7 characters)
     }
     return null; // Return null if no valid token is found

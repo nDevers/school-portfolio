@@ -1,15 +1,14 @@
-import { SchoolSpeechModel } from "@/shared/prisma.model.shared";
-import schoolSpeechSchema from "@/app/api/v1/school/speech/school.speech.schema";
-import schoolSpeechConstants from "@/app/api/v1/school/speech/school.speech.constants";
-import sharedResponseTypes from "@/shared/shared.response.types";
-import localFileOperations from "@/util/localFileOperations";
+import { SchoolSpeechModel } from '@/shared/prisma.model.shared';
+import schoolSpeechSchema from '@/app/api/v1/school/speech/school.speech.schema';
+import schoolSpeechConstants from '@/app/api/v1/school/speech/school.speech.constants';
+import sharedResponseTypes from '@/shared/shared.response.types';
+import localFileOperations from '@/util/localFileOperations';
 
-import asyncHandler from "@/util/asyncHandler";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import validateToken from "@/util/validateToken";
-import schoolSpeechSelectionCriteria from "@/app/api/v1/school/speech/school.speech.selection.criteria";
-
+import asyncHandler from '@/util/asyncHandler';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import validateToken from '@/util/validateToken';
+import schoolSpeechSelectionCriteria from '@/app/api/v1/school/speech/school.speech.selection.criteria';
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
 
@@ -56,11 +55,18 @@ const createSchoolSpeechEntry = async (userInput, request) => {
     });
 
     if (!createdDocument?.id) {
-        return INTERNAL_SERVER_ERROR(`Failed to create school speech entry with title "${userInput?.title}".`, request);
+        return INTERNAL_SERVER_ERROR(
+            `Failed to create school speech entry with title "${userInput?.title}".`,
+            request
+        );
     }
 
     // No need for an aggregation pipeline; Prisma returns the created document
-    return CREATED(`School speech entry with title "${userInput?.title}" created successfully.`, createdDocument, request);
+    return CREATED(
+        `School speech entry with title "${userInput?.title}" created successfully.`,
+        createdDocument,
+        request
+    );
 };
 
 /**
@@ -79,7 +85,10 @@ const createSchoolSpeechEntry = async (userInput, request) => {
  */
 const handleCreateSchoolSpeech = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, schoolSpeechConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        schoolSpeechConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
@@ -91,7 +100,12 @@ const handleCreateSchoolSpeech = async (request, context) => {
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'create', schoolSpeechSchema.createSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'create',
+        schoolSpeechSchema.createSchema
+    );
 
     // Check if FAQ entry with the same title already exists
     const existingTitle = await SchoolSpeechModel.findUnique({
@@ -100,15 +114,21 @@ const handleCreateSchoolSpeech = async (request, context) => {
         },
         select: {
             id: true,
-        }
+        },
     });
     if (existingTitle) {
-        return CONFLICT(`School speech entry with title "${userInput?.title}" already exists.`, request);
+        return CONFLICT(
+            `School speech entry with title "${userInput?.title}" already exists.`,
+            request
+        );
     }
 
     // Upload file and generate link
     const newFile = userInput[schoolSpeechConstants.imageFieldName][0];
-    const { fileId, fileLink } = await localFileOperations.uploadFile(request, newFile);
+    const { fileId, fileLink } = await localFileOperations.uploadFile(
+        request,
+        newFile
+    );
 
     userInput.imageId = fileId;
     userInput.image = fileLink;

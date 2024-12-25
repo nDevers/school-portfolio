@@ -1,14 +1,33 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
+import * as React from 'react';
+import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons';
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from '@/components/ui/command';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '@/components/ui/popover';
 
-export default function Combobox({ data, icon, select, display, placeholder = 'Select an item', selectedValue, setSelectedValue }) {
+export default function Combobox({
+    data,
+    icon,
+    select,
+    display,
+    placeholder = 'Select an item',
+    selectedValue,
+    setSelectedValue,
+}) {
     const [open, setOpen] = React.useState(false);
 
     // Find the selected item
@@ -34,28 +53,35 @@ export default function Combobox({ data, icon, select, display, placeholder = 'S
                     <CommandList>
                         <CommandEmpty>No framework found.</CommandEmpty>
                         <CommandGroup>
-                            {data && data.map((item) => (
-                                <CommandItem
-                                    key={item?.[select]}
-                                    value={item?.[select]}  // Store the select value (e.g., id)
-                                    onSelect={(currentValue) => {
-                                        setSelectedValue(currentValue === selectedValue ? "" : currentValue)
-                                        setOpen(false)
-                                    }}
-                                >
-                                    {item?.[display]}
-                                    <CheckIcon
-                                        className={cn(
-                                            "ml-auto h-4 w-4",
-                                            selectedValue === item?.[select] ? "opacity-100" : "opacity-0"
-                                        )}
-                                    />
-                                </CommandItem>
-                            ))}
+                            {data &&
+                                data.map((item) => (
+                                    <CommandItem
+                                        key={item?.[select]}
+                                        value={item?.[select]} // Store the select value (e.g., id)
+                                        onSelect={(currentValue) => {
+                                            setSelectedValue(
+                                                currentValue === selectedValue
+                                                    ? ''
+                                                    : currentValue
+                                            );
+                                            setOpen(false);
+                                        }}
+                                    >
+                                        {item?.[display]}
+                                        <CheckIcon
+                                            className={cn(
+                                                'ml-auto h-4 w-4',
+                                                selectedValue === item?.[select]
+                                                    ? 'opacity-100'
+                                                    : 'opacity-0'
+                                            )}
+                                        />
+                                    </CommandItem>
+                                ))}
                         </CommandGroup>
                     </CommandList>
                 </Command>
             </PopoverContent>
         </Popover>
-    )
+    );
 }

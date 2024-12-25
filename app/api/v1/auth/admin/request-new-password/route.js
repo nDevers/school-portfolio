@@ -1,7 +1,7 @@
-import { AdminModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
+import { AdminModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
 
-import asyncHandler from "@/util/asyncHandler";
+import asyncHandler from '@/util/asyncHandler';
 
 /**
  * Handles the request to reset a user's password.

@@ -1,9 +1,9 @@
-import { FacultyModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
-import facultySchema from "@/app/api/v1/faculty/faculty.schema";
+import { FacultyModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
+import facultySchema from '@/app/api/v1/faculty/faculty.schema';
 
-import asyncHandler from "@/util/asyncHandler";
-import facultySelectionCriteria from "@/app/api/v1/faculty/faculty.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import facultySelectionCriteria from '@/app/api/v1/faculty/faculty.selection.criteria';
 
 /**
  * Asynchronous handler function to fetch faculty information based on category and ID.
@@ -21,7 +21,14 @@ import facultySelectionCriteria from "@/app/api/v1/faculty/faculty.selection.cri
 export const handleGetFacultyByCategoryAndId = async (request, context) => {
     const selectionCriteria = facultySelectionCriteria();
 
-    return serviceShared.fetchEntryByCategoryAndId(request, context, FacultyModel, selectionCriteria,  'Faculty', () => facultySchema.categoryAndIdSchema());
+    return serviceShared.fetchEntryByCategoryAndId(
+        request,
+        context,
+        FacultyModel,
+        selectionCriteria,
+        'Faculty',
+        () => facultySchema.categoryAndIdSchema()
+    );
 };
 
 /**

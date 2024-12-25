@@ -10,9 +10,10 @@
  * @returns {(string|null)} The YouTube video ID if valid, otherwise null.
  */
 const id = (url) => {
-    const regExp = /^.*(?:youtu.be\/|v\/|watch\?v=|embed\/|watch\?.*v=)([^#\&\?]*).*/;
+    const regExp =
+        /^.*(?:youtu.be\/|v\/|watch\?v=|embed\/|watch\?.*v=)([^#\&\?]*).*/;
     const match = url.match(regExp);
-    return (match && match[1].length === 11) ? match[1] : null;
+    return match && match[1].length === 11 ? match[1] : null;
 };
 
 /**
@@ -22,8 +23,8 @@ const id = (url) => {
  * @returns {string} The URL for the high-quality thumbnail image of the specified YouTube video.
  */
 const thumbnail = (id) => {
-    return `https://img.youtube.com/vi/${id}/hqdefault.jpg`
-}
+    return `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+};
 
 /**
  * Represents a YouTube video with specific details.
@@ -35,6 +36,6 @@ const thumbnail = (id) => {
 const getYoutubeVideo = {
     id,
     thumbnail,
-}
+};
 
-export default getYoutubeVideo
+export default getYoutubeVideo;

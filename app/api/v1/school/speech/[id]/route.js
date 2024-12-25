@@ -1,8 +1,8 @@
-import { SchoolSpeechModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
+import { SchoolSpeechModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
 
-import asyncHandler from "@/util/asyncHandler";
-import schoolSpeechSelectionCriteria from "@/app/api/v1/school/speech/school.speech.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import schoolSpeechSelectionCriteria from '@/app/api/v1/school/speech/school.speech.selection.criteria';
 
 /**
  * Asynchronous handler function to retrieve a school speech by its unique identifier.
@@ -18,7 +18,13 @@ import schoolSpeechSelectionCriteria from "@/app/api/v1/school/speech/school.spe
 export const handleGetSpeechById = async (request, context) => {
     const selectionCriteria = schoolSpeechSelectionCriteria();
 
-    return serviceShared.fetchEntryById(request, context, SchoolSpeechModel, selectionCriteria,  'School speech');
+    return serviceShared.fetchEntryById(
+        request,
+        context,
+        SchoolSpeechModel,
+        selectionCriteria,
+        'School speech'
+    );
 };
 
 /**

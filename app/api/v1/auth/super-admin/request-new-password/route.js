@@ -1,7 +1,7 @@
-import serviceShared from "@/shared/service.shared";
-import SuperAdminModel from "@/app/api/v1/auth/super-admin/super.admin.model";
+import serviceShared from '@/shared/service.shared';
+import SuperAdminModel from '@/app/api/v1/auth/super-admin/super.admin.model';
 
-import asyncHandler from "@/util/asyncHandler";
+import asyncHandler from '@/util/asyncHandler';
 
 /**
  * Asynchronously handles a new password reset request.

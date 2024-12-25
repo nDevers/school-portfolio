@@ -1,5 +1,5 @@
 import middlewareConstants from '@/constants/middleware.constants';
-import httpStatusConstants from "@/constants/httpStatus.constants";
+import httpStatusConstants from '@/constants/httpStatus.constants';
 
 /**
  * Asynchronous function to validate request permissions based on headers and user-agent.
@@ -21,7 +21,9 @@ const permissionValidator = async (request) => {
         const requestedSite = request.headers.get('X-Site-Identifier') ?? '';
 
         // Block requests from specific user agents or missing headers
-        const isBlockedUserAgent = middlewareConstants.blockedUserAgents.some(ua => userAgent.includes(ua));
+        const isBlockedUserAgent = middlewareConstants.blockedUserAgents.some(
+            (ua) => userAgent.includes(ua)
+        );
 
         if (isBlockedUserAgent || (!referer && !origin)) {
             // return new Response('Access Denied', { status: httpStatusConstants.FORBIDDEN });
@@ -30,7 +32,9 @@ const permissionValidator = async (request) => {
         // If everything passes, return null
         return null;
     } catch (error) {
-        return new Response('Service unavailable', { status: httpStatusConstants.SERVICE_UNAVAILABLE });
+        return new Response('Service unavailable', {
+            status: httpStatusConstants.SERVICE_UNAVAILABLE,
+        });
     }
 };
 

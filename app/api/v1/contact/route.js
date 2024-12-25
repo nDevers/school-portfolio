@@ -1,14 +1,14 @@
-import { ContactModel } from "@/shared/prisma.model.shared";
-import contactSchema from "@/app/api/v1/contact/contact.schema";
-import contactConstants from "@/app/api/v1/contact/contact.constants";
-import sharedResponseTypes from "@/shared/shared.response.types";
+import { ContactModel } from '@/shared/prisma.model.shared';
+import contactSchema from '@/app/api/v1/contact/contact.schema';
+import contactConstants from '@/app/api/v1/contact/contact.constants';
+import sharedResponseTypes from '@/shared/shared.response.types';
 
-import asyncHandler from "@/util/asyncHandler";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import sendEmail from "@/lib/email";
-import configurations from "@/configs/configurations";
-import galleryVideoSelectionCriteria from "@/app/api/v1/gallery/video/gallery.video.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import sendEmail from '@/lib/email';
+import configurations from '@/configs/configurations';
+import galleryVideoSelectionCriteria from '@/app/api/v1/gallery/video/gallery.video.selection.criteria';
 
 /**
  * Holds the application configurations.
@@ -55,13 +55,21 @@ const selectionCriteria = galleryVideoSelectionCriteria();
  */
 const handleSendContactEmail = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, contactConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        contactConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'create', contactSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'create',
+        contactSchema
+    );
 
     // Create a new "contact" entry in the database
     const createdContact = await ContactModel.create({
@@ -91,7 +99,7 @@ const handleSendContactEmail = async (request, context) => {
     `;
 
     // Prepare email details for the sender (User)
-    const senderEmailSubject = `Thank you for reaching out to us!`;
+    const senderEmailSubject = 'Thank you for reaching out to us!';
     const senderHtml = `
         <h3>Dear ${userInput.email},</h3>
         <p>We have successfully received your message:</p>
@@ -103,7 +111,11 @@ const handleSendContactEmail = async (request, context) => {
     `;
 
     // Send email to the sender
-    const sendEmailToSenderResponse = await sendEmail(userInput.email, senderEmailSubject, senderHtml);
+    const sendEmailToSenderResponse = await sendEmail(
+        userInput.email,
+        senderEmailSubject,
+        senderHtml
+    );
     if (!sendEmailToSenderResponse?.messageId) {
         return UNPROCESSABLE_ENTITY(
             `Failed to send email to sender ${userInput.email}.`,
@@ -112,7 +124,11 @@ const handleSendContactEmail = async (request, context) => {
     }
 
     // Send email to the admin/receiver
-    const sendEmailToReceiverResponse = await sendEmail(configuration.systemAdmin.email, receiverEmailSubject, receiverHtml);
+    const sendEmailToReceiverResponse = await sendEmail(
+        configuration.systemAdmin.email,
+        receiverEmailSubject,
+        receiverHtml
+    );
     if (!sendEmailToReceiverResponse?.messageId) {
         return UNPROCESSABLE_ENTITY(
             `Failed to send contact email to receiver ${configuration.systemAdmin.email}.`,
@@ -121,11 +137,7 @@ const handleSendContactEmail = async (request, context) => {
     }
 
     // Send a success response
-    return OK(
-        'Contact email sent successfully.',
-        createdContact,
-        request
-    );
+    return OK('Contact email sent successfully.', createdContact, request);
 };
 
 /**

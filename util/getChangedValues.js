@@ -20,7 +20,9 @@ export const getChangedValues = (initialValues, currentValues) => {
         if (Array.isArray(initialValue) && Array.isArray(currentValue)) {
             // Deep check for arrays
             const arrayChanges = currentValue.filter((item, index) => {
-                return JSON.stringify(item) !== JSON.stringify(initialValue[index]);
+                return (
+                    JSON.stringify(item) !== JSON.stringify(initialValue[index])
+                );
             });
             if (arrayChanges.length) {
                 changedValues[key] = currentValue;

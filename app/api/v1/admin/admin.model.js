@@ -1,54 +1,61 @@
-import {Schema, models, model} from 'mongoose';
+import { Schema, models, model } from 'mongoose';
 
-const adminSchema = new Schema({
-    name: {
-        type: String,
-        required: [true, 'Name is required'],
-        trim: true,
-    },
-    dateOfBirth: {
-        type: String, // Use `Date` if you want date parsing, or `String` for flexibility in formats
-        required: [true, 'Date of Birth is required'],
-    },
-    email: {
-        type: String,
-        required: [true, 'Email is required'],
-        unique: true,
-        match: [/^\S+@\S+\.\S+$/, 'Invalid email format'],
-    },
-    password: {
-        type: String,
-        required: [true, 'Password is required'],
-        minlength: [8, 'Password must be at least 8 characters'],
-        validate: {
-            validator: function (value) {
-                return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/.test(value);
+const adminSchema = new Schema(
+    {
+        name: {
+            type: String,
+            required: [true, 'Name is required'],
+            trim: true,
+        },
+        dateOfBirth: {
+            type: String, // Use `Date` if you want date parsing, or `String` for flexibility in formats
+            required: [true, 'Date of Birth is required'],
+        },
+        email: {
+            type: String,
+            required: [true, 'Email is required'],
+            unique: true,
+            match: [/^\S+@\S+\.\S+$/, 'Invalid email format'],
+        },
+        password: {
+            type: String,
+            required: [true, 'Password is required'],
+            minlength: [8, 'Password must be at least 8 characters'],
+            validate: {
+                validator: function (value) {
+                    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/.test(
+                        value
+                    );
+                },
+                message:
+                    'Password must contain an uppercase letter, lowercase letter, number, and special character',
             },
-            message: 'Password must contain an uppercase letter, lowercase letter, number, and special character',
+        },
+        emailVerifyToken: {
+            type: String,
+            trim: true,
+            description:
+                "Token used to verify the (users)'s identity for account creation process.",
+        },
+        resetPasswordToken: {
+            type: String,
+            trim: true,
+            description:
+                "Token used to verify the (users)'s identity for password reset process.",
+        },
+        resetPasswordTokenExpiration: {
+            type: Date,
+            trim: true,
+            description:
+                ' Expiration date and time for the reset password verification token.',
         },
     },
-    emailVerifyToken: {
-        type: String,
-        trim: true,
-        description:
-            "Token used to verify the (users)'s identity for account creation process.",
-    },
-    resetPasswordToken: {
-        type: String,
-        trim: true,
-        description:
-            "Token used to verify the (users)'s identity for password reset process.",
-    },
-    resetPasswordTokenExpiration: {
-        type: Date,
-        trim: true,
-        description:
-            ' Expiration date and time for the reset password verification token.',
-    },
-}, { timestamps: true });
+    { timestamps: true }
+);
 
 // Virtual field for confirmPassword
-adminSchema.virtual('confirmPassword')
+adminSchema
+    .virtual('confirmPassword')
     .get(function () {
         return this._confirmPassword;
     })

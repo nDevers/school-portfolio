@@ -1,5 +1,5 @@
-import Link from "next/link";
-import Marquee from "react-fast-marquee";
+import Link from 'next/link';
+import Marquee from 'react-fast-marquee';
 
 export default function MarqueeNotice() {
     const notices = [
@@ -36,20 +36,22 @@ export default function MarqueeNotice() {
             <div className="hidden sm:block px-3 md:px-6 py-1 md:py-2 bg-secondary text-white font-bold">
                 ঘোষণা
             </div>
-            
+
             {/* Marquee with Notices */}
             <Marquee
                 speed={40}
                 delay={2}
                 autoFill
                 pauseOnHover
-                direction="left">
+                direction="left"
+            >
                 {notices.map((notice) => (
                     <Link
                         key={notice.id}
                         href={notice.link}
                         aria-label={`Link to notice ${notice.title}`}
-                        className="hover:underline px-2 space-x-2">
+                        className="hover:underline px-2 space-x-2"
+                    >
                         <span>{notice.title}</span> <span>•</span>
                     </Link>
                 ))}

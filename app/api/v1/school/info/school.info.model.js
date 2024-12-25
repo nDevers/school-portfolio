@@ -1,6 +1,6 @@
 import { Schema, model, models } from 'mongoose';
 
-import schemaModelShared from "@/shared/schema.model.shared";
+import schemaModelShared from '@/shared/schema.model.shared';
 
 const { requiredString } = schemaModelShared;
 

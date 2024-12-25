@@ -1,9 +1,9 @@
-import { AcademicModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
-import academicSchema from "@/app/api/v1/academic/academic.schema";
+import { AcademicModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
+import academicSchema from '@/app/api/v1/academic/academic.schema';
 
-import asyncHandler from "@/util/asyncHandler";
-import academicSelectionCriteria from "@/app/api/v1/academic/academic.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import academicSelectionCriteria from '@/app/api/v1/academic/academic.selection.criteria';
 
 /**
  * Asynchronous handler to retrieve academic entries by category and ID.
@@ -19,7 +19,14 @@ import academicSelectionCriteria from "@/app/api/v1/academic/academic.selection.
 export const handleGetAcademicByCategoryAndId = async (request, context) => {
     const selectionCriteria = academicSelectionCriteria();
 
-    return serviceShared.fetchEntryByCategoryAndId(request, context, AcademicModel, selectionCriteria,  'Academic', () => academicSchema.categoryAndIdSchema());
+    return serviceShared.fetchEntryByCategoryAndId(
+        request,
+        context,
+        AcademicModel,
+        selectionCriteria,
+        'Academic',
+        () => academicSchema.categoryAndIdSchema()
+    );
 };
 
 /**

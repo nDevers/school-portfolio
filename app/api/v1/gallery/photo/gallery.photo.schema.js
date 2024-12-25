@@ -1,10 +1,17 @@
 import { z } from 'zod';
 
-import schemaShared from "@/shared/schema.shared";
-import galleryPhotoConstants from "@/app/api/v1/gallery/photo/gallery.photo.constants";
+import schemaShared from '@/shared/schema.shared';
+import galleryPhotoConstants from '@/app/api/v1/gallery/photo/gallery.photo.constants';
 
-const { nonEmptyString, nonEmptyStringArray, validMongooseId, validDate, filesValidator } = schemaShared;
-const { titleMaxCharacter, allowedMimeTypes, allowedBannerFileSize } = galleryPhotoConstants;
+const {
+    nonEmptyString,
+    nonEmptyStringArray,
+    validMongooseId,
+    validDate,
+    filesValidator,
+} = schemaShared;
+const { titleMaxCharacter, allowedMimeTypes, allowedBannerFileSize } =
+    galleryPhotoConstants;
 
 /**
  * The nonEmptyString function applied to create a validated string value
@@ -53,7 +60,13 @@ const id = validMongooseId('Gallery photo ID');
  * The `filesValidator` function referenced here is assumed to implement the logic
  * for verifying these constraints.
  */
-const images = filesValidator('Gallery photo images', allowedMimeTypes, allowedBannerFileSize, 1, 10);
+const images = filesValidator(
+    'Gallery photo images',
+    allowedMimeTypes,
+    allowedBannerFileSize,
+    1,
+    10
+);
 
 /**
  * Represents the schema definition for creating an object with specific properties.
@@ -66,11 +79,13 @@ const images = filesValidator('Gallery photo images', allowedMimeTypes, allowedB
  *
  * This schema does not permit any extra or unspecified fields outside the defined properties.
  */
-const createSchema = z.object({
-    title,
-    description,
-    images,
-}).strict(); // Enforce strict mode to disallow extra fields
+const createSchema = z
+    .object({
+        title,
+        description,
+        images,
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * `getDataByQuery` is a schema object that defines the structure and validation
@@ -85,13 +100,15 @@ const createSchema = z.object({
  * - createdAt: An optional valid date representing the creation time of the gallery photo.
  * - updatedAt: An optional valid date representing the last update time of the gallery photo.
  */
-const getDataByQuery = z.object({
-    id: id.optional(),
-    title: title.optional(),
-    description: description.optional(),
-    createdAt: validDate('Gallery photo creation time').optional(),
-    updatedAt: validDate('Gallery photo last update time').optional(),
-}).strict(); // Enforce strict mode to disallow extra fields
+const getDataByQuery = z
+    .object({
+        id: id.optional(),
+        title: title.optional(),
+        description: description.optional(),
+        createdAt: validDate('Gallery photo creation time').optional(),
+        updatedAt: validDate('Gallery photo last update time').optional(),
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * Schema validation for updating an entity, ensuring specific fields are present,
@@ -109,18 +126,22 @@ const getDataByQuery = z.object({
  * - The data must contain `id` and at least one of `title`, `description`, `images`, or `deleteImages`.
  * - Throws an error if no fields other than `id` are provided.
  */
-const updateSchema = z.object({
-    id,
-    title: title.optional(),
-    description: description.optional(),
-    images: images.optional(),
-    deleteImages: nonEmptyStringArray('ID of the image that will be deleted').optional(),
-})
+const updateSchema = z
+    .object({
+        id,
+        title: title.optional(),
+        description: description.optional(),
+        images: images.optional(),
+        deleteImages: nonEmptyStringArray(
+            'ID of the image that will be deleted'
+        ).optional(),
+    })
     .strict() // Enforce strict mode to disallow extra fields
     .refine(
         (data) => Object.keys(data).length > 1, // Must include `id` and at least one other field
         {
-            message: 'At least one of "title" or "description" is required along with "id".',
+            message:
+                'At least one of "title" or "description" is required along with "id".',
         }
     );
 

@@ -1,9 +1,8 @@
-import { BlogModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
+import { BlogModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
 
-import asyncHandler from "@/util/asyncHandler";
-import blogSelectionCriteria from "@/app/api/v1/blog/blog.selection.criteria";
-
+import asyncHandler from '@/util/asyncHandler';
+import blogSelectionCriteria from '@/app/api/v1/blog/blog.selection.criteria';
 
 /**
  * Asynchronous function to handle the retrieval of a blog post by its ID.
@@ -20,7 +19,13 @@ import blogSelectionCriteria from "@/app/api/v1/blog/blog.selection.criteria";
 export const handleGetBlogById = async (request, context) => {
     const selectionCriteria = blogSelectionCriteria();
 
-    return serviceShared.fetchEntryById(request, context, BlogModel, selectionCriteria,  'Blog');
+    return serviceShared.fetchEntryById(
+        request,
+        context,
+        BlogModel,
+        selectionCriteria,
+        'Blog'
+    );
 };
 
 /**

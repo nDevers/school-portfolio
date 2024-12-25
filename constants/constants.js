@@ -153,7 +153,7 @@ const constants = {
     bangliLanguageRegex,
     englishLanguageRegex,
     bangladeshNidRegex,
-    bloodGroupTypes
+    bloodGroupTypes,
 };
 
 export default constants;

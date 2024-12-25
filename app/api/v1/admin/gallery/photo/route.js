@@ -1,15 +1,14 @@
-import { GalleryPhotoModel } from "@/shared/prisma.model.shared";
-import galleryPhotoSchema from "@/app/api/v1/gallery/photo/gallery.photo.schema";
-import galleryPhotoConstants from "@/app/api/v1/gallery/photo/gallery.photo.constants";
-import sharedResponseTypes from "@/shared/shared.response.types";
-import localFileOperations from "@/util/localFileOperations";
+import { GalleryPhotoModel } from '@/shared/prisma.model.shared';
+import galleryPhotoSchema from '@/app/api/v1/gallery/photo/gallery.photo.schema';
+import galleryPhotoConstants from '@/app/api/v1/gallery/photo/gallery.photo.constants';
+import sharedResponseTypes from '@/shared/shared.response.types';
+import localFileOperations from '@/util/localFileOperations';
 
-import asyncHandler from "@/util/asyncHandler";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import validateToken from "@/util/validateToken";
-import galleryPhotoSelectionCriteria from "@/app/api/v1/gallery/photo/gallery.photo.selection.criteria";
-
+import asyncHandler from '@/util/asyncHandler';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import validateToken from '@/util/validateToken';
+import galleryPhotoSelectionCriteria from '@/app/api/v1/gallery/photo/gallery.photo.selection.criteria';
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
 
@@ -44,11 +43,18 @@ const createGalleryPhotoEntry = async (userInput, request) => {
     });
 
     if (!createdDocument?.id) {
-        return INTERNAL_SERVER_ERROR(`Failed to create gallery photo entry with title "${userInput?.title}".`, request);
+        return INTERNAL_SERVER_ERROR(
+            `Failed to create gallery photo entry with title "${userInput?.title}".`,
+            request
+        );
     }
 
     // No need for an aggregation pipeline; Prisma returns the created document
-    return CREATED(`Gallery photo entry with title "${userInput?.title}" created successfully.`, createdDocument, request);
+    return CREATED(
+        `Gallery photo entry with title "${userInput?.title}" created successfully.`,
+        createdDocument,
+        request
+    );
 };
 
 /**
@@ -68,7 +74,10 @@ const createGalleryPhotoEntry = async (userInput, request) => {
  */
 const handleCreateGalleryPhoto = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, galleryPhotoConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        galleryPhotoConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
@@ -80,7 +89,12 @@ const handleCreateGalleryPhoto = async (request, context) => {
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'create', galleryPhotoSchema.createSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'create',
+        galleryPhotoSchema.createSchema
+    );
 
     // Check if FAQ entry with the same title already exists
     const existingQuestion = await GalleryPhotoModel.findUnique({
@@ -89,22 +103,28 @@ const handleCreateGalleryPhoto = async (request, context) => {
         },
         select: {
             id: true,
-        }
+        },
     });
     if (existingQuestion) {
-        return CONFLICT(`Gallery photo entry with title "${userInput?.title}" already exists.`, request);
+        return CONFLICT(
+            `Gallery photo entry with title "${userInput?.title}" already exists.`,
+            request
+        );
     }
 
     // Upload files and construct the `files` array for documents
     const images = await Promise.all(
-        (userInput[galleryPhotoConstants.imagesFieldName]).map(async (fileEntry) => {
-            // Call your file upload operation
-            const { fileId, fileLink } = await localFileOperations.uploadFile(request, fileEntry);
-            return {
-                imageId: fileId,
-                image: fileLink
-            };
-        })
+        userInput[galleryPhotoConstants.imagesFieldName].map(
+            async (fileEntry) => {
+                // Call your file upload operation
+                const { fileId, fileLink } =
+                    await localFileOperations.uploadFile(request, fileEntry);
+                return {
+                    imageId: fileId,
+                    image: fileLink,
+                };
+            }
+        )
     );
 
     userInput.images = images;

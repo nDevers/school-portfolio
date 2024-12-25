@@ -1,5 +1,5 @@
-import contentTypesConstants from "@/constants/contentTypes.constants";
-import mimeTypesConstants from "@/constants/mimeTypes.constants";
+import contentTypesConstants from '@/constants/contentTypes.constants';
+import mimeTypesConstants from '@/constants/mimeTypes.constants';
 
 /**
  * A variable that defines the allowed content types for a specific operation or context.
@@ -18,7 +18,12 @@ const allowedContentTypes = [contentTypesConstants.FORM_DATA];
  * Utilizes predefined constants from `mimeTypesConstants` to maintain consistency
  * and avoid hardcoding MIME type strings directly.
  */
-const allowedMimeTypes = [mimeTypesConstants.JPEG, mimeTypesConstants.JPG, mimeTypesConstants.PNG, mimeTypesConstants.GIF];
+const allowedMimeTypes = [
+    mimeTypesConstants.JPEG,
+    mimeTypesConstants.JPG,
+    mimeTypesConstants.PNG,
+    mimeTypesConstants.GIF,
+];
 /**
  * A variable representing the name of the field that stores the image information.
  * This is typically used as a key to access or reference image-related data in objects or systems.

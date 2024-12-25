@@ -1,12 +1,24 @@
-"use client";
-import { useState, useMemo } from "react";
-import { useReactTable, getCoreRowModel, getPaginationRowModel, getSortedRowModel, getFilteredRowModel } from "@tanstack/react-table";
-import Pagination from "./core/Pagination";
-import RowsPerPage from "./core/RowsPerPage";
-import ReactTableBody from "./core/ReactTableBody";
-import GlobalSearchBox from "./core/GlobalSearchBox";
+'use client';
+import { useState, useMemo } from 'react';
+import {
+    useReactTable,
+    getCoreRowModel,
+    getPaginationRowModel,
+    getSortedRowModel,
+    getFilteredRowModel,
+} from '@tanstack/react-table';
+import Pagination from './core/Pagination';
+import RowsPerPage from './core/RowsPerPage';
+import ReactTableBody from './core/ReactTableBody';
+import GlobalSearchBox from './core/GlobalSearchBox';
 
-export default function DefaultTable({ list, column, isLoading, items = 10, setSelectedRow }) {
+export default function DefaultTable({
+    list,
+    column,
+    isLoading,
+    items = 10,
+    setSelectedRow,
+}) {
     const data = useMemo(() => list, [list]);
     const columns = useMemo(() => column, [column]);
     const [sorting, setSorting] = useState([]);
@@ -53,13 +65,23 @@ export default function DefaultTable({ list, column, isLoading, items = 10, setS
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between space-x-4">
-                <GlobalSearchBox filtering={filtering} setFiltering={setFiltering} />
+                <GlobalSearchBox
+                    filtering={filtering}
+                    setFiltering={setFiltering}
+                />
                 <RowsPerPage table={table} pagination={pagination} />
             </div>
-            
-            <ReactTableBody isLoading={isLoading} table={table} onRowClick={handleRowClick} selectedRowIndex={selectedRowIndex} />
-            
-            {(table.getCanPreviousPage() || table.getCanNextPage()) && ( <Pagination table={table} /> )}
+
+            <ReactTableBody
+                isLoading={isLoading}
+                table={table}
+                onRowClick={handleRowClick}
+                selectedRowIndex={selectedRowIndex}
+            />
+
+            {(table.getCanPreviousPage() || table.getCanNextPage()) && (
+                <Pagination table={table} />
+            )}
         </div>
     );
 }

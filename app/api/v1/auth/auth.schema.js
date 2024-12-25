@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-import schemaShared from "@/shared/schema.shared";
+import schemaShared from '@/shared/schema.shared';
 
-import { decryptData } from "@/util/crypto";
+import { decryptData } from '@/util/crypto';
 
 const { validPassword, validEmail, nonEmptyString } = schemaShared;
 
@@ -32,10 +32,12 @@ const password = validPassword('Password', 8, 20);
  * Designed to validate the structure of an object containing email and password fields.
  * Ensures strict adherence to the defined schema with no additional properties allowed.
  */
-const loginSchema = z.object({
-    email,
-    password,
-}).strict(); // Enforce strict mode to disallow extra fields
+const loginSchema = z
+    .object({
+        email,
+        password,
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * Schema definition for requesting a new password.
@@ -47,9 +49,11 @@ const loginSchema = z.object({
  * Properties:
  * - email: Represents the email address of the user requesting a new password.
  */
-const requestNewPassword = z.object({
-    email,
-}).strict(); // Enforce strict mode to disallow extra fields
+const requestNewPassword = z
+    .object({
+        email,
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * Schema definition for the `resetPassword` variable.

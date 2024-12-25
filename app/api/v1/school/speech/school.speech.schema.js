@@ -1,10 +1,12 @@
 import { z } from 'zod';
 
-import schemaShared from "@/shared/schema.shared";
-import schoolSpeechConstants from "@/app/api/v1/school/speech/school.speech.constants";
+import schemaShared from '@/shared/schema.shared';
+import schoolSpeechConstants from '@/app/api/v1/school/speech/school.speech.constants';
 
-const { nonEmptyString, validMongooseId, validDate, filesValidator } = schemaShared;
-const { titleMaxCharacter, allowedMimeTypes, allowedBannerFileSize } = schoolSpeechConstants;
+const { nonEmptyString, validMongooseId, validDate, filesValidator } =
+    schemaShared;
+const { titleMaxCharacter, allowedMimeTypes, allowedBannerFileSize } =
+    schoolSpeechConstants;
 
 /**
  * Represents the title of a school speech.
@@ -38,7 +40,13 @@ const id = validMongooseId('School speech ID');
  * @param {number} maxFileCount The maximum number of files allowed to upload, in this case, 1.
  * @return {Object} Returns an object containing the validation results.
  */
-const image = filesValidator('School speech image', allowedMimeTypes, allowedBannerFileSize, 1, 1);
+const image = filesValidator(
+    'School speech image',
+    allowedMimeTypes,
+    allowedBannerFileSize,
+    1,
+    1
+);
 
 /**
  * createSchema is a Zod object schema definition that validates an object with specific properties.
@@ -49,11 +57,13 @@ const image = filesValidator('School speech image', allowedMimeTypes, allowedBan
  *
  * The schema uses "strict" mode to restrict any additional properties not defined in the object schema.
  */
-const createSchema = z.object({
-    title,
-    description,
-    image,
-}).strict(); // Enforce strict mode to disallow extra fields
+const createSchema = z
+    .object({
+        title,
+        description,
+        image,
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * A schema object that validates data based on the specified query structure.
@@ -69,13 +79,15 @@ const createSchema = z.object({
  *
  * The schema is strict, meaning no additional properties outside of the defined ones are allowed.
  */
-const getDataByQuery = z.object({
-    id: id.optional(),
-    title: title.optional(),
-    description: description.optional(),
-    createdAt: validDate('School speech creation time').optional(),
-    updatedAt: validDate('School speech last update time').optional(),
-}).strict(); // Enforce strict mode to disallow extra fields
+const getDataByQuery = z
+    .object({
+        id: id.optional(),
+        title: title.optional(),
+        description: description.optional(),
+        createdAt: validDate('School speech creation time').optional(),
+        updatedAt: validDate('School speech last update time').optional(),
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * Represents a schema for updating an entity where certain fields can be optionally updated.
@@ -95,17 +107,19 @@ const getDataByQuery = z.object({
  * - Provides a custom validation error message if the `id` field is included without any other fields:
  *   "At least one of 'title' or 'description' is required along with 'id'."
  */
-const updateSchema = z.object({
-    id,
-    title: title.optional(),
-    description: description.optional(),
-    image: image.optional(),
-})
+const updateSchema = z
+    .object({
+        id,
+        title: title.optional(),
+        description: description.optional(),
+        image: image.optional(),
+    })
     .strict() // Enforce strict mode to disallow extra fields
     .refine(
         (data) => Object.keys(data).length > 1, // Must include `id` and at least one other field
         {
-            message: 'At least one of "title" or "description" is required along with "id".',
+            message:
+                'At least one of "title" or "description" is required along with "id".',
         }
     );
 

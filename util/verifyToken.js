@@ -35,13 +35,19 @@ const configuration = await configurations();
 const verifyToken = async (token, type) => {
     try {
         if (type === 'refresh') {
-            return await jwt.verify(token, configuration.jwt.refreshToken.secret);
+            return await jwt.verify(
+                token,
+                configuration.jwt.refreshToken.secret
+            );
         } else {
-            return await jwt.verify(token, configuration.jwt.accessToken.secret);
+            return await jwt.verify(
+                token,
+                configuration.jwt.accessToken.secret
+            );
         }
     } catch (error) {
         return false;
     }
-}
+};
 
 export default verifyToken;

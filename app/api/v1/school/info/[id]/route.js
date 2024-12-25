@@ -1,8 +1,8 @@
-import { SchoolInfoModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
+import { SchoolInfoModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
 
-import asyncHandler from "@/util/asyncHandler";
-import schoolInfoSelectionCriteria from "@/app/api/v1/school/info/school.info.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import schoolInfoSelectionCriteria from '@/app/api/v1/school/info/school.info.selection.criteria';
 
 /**
  * Asynchronous function to handle retrieving school information by ID.
@@ -18,7 +18,13 @@ import schoolInfoSelectionCriteria from "@/app/api/v1/school/info/school.info.se
 export const handleGetInfoById = async (request, context) => {
     const selectionCriteria = schoolInfoSelectionCriteria();
 
-    return serviceShared.fetchEntryById(request, context, SchoolInfoModel, selectionCriteria,  'School info');
+    return serviceShared.fetchEntryById(
+        request,
+        context,
+        SchoolInfoModel,
+        selectionCriteria,
+        'School info'
+    );
 };
 
 /**

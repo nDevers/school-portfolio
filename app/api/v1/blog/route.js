@@ -1,9 +1,9 @@
-import { BlogModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
-import blogSchema from "@/app/api/v1/blog/blog.schema";
+import { BlogModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
+import blogSchema from '@/app/api/v1/blog/blog.schema';
 
-import asyncHandler from "@/util/asyncHandler";
-import blogSelectionCriteria from "@/app/api/v1/blog/blog.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import blogSelectionCriteria from '@/app/api/v1/blog/blog.selection.criteria';
 
 /**
  * Asynchronous function to handle fetching a list of blog entries.
@@ -20,7 +20,14 @@ import blogSelectionCriteria from "@/app/api/v1/blog/blog.selection.criteria";
 const handleGetBlogList = async (request, context) => {
     const selectionCriteria = blogSelectionCriteria();
 
-    return serviceShared.fetchEntryList(request, context, BlogModel, selectionCriteria, 'Blog', blogSchema.getDataByQuery);
+    return serviceShared.fetchEntryList(
+        request,
+        context,
+        BlogModel,
+        selectionCriteria,
+        'Blog',
+        blogSchema.getDataByQuery
+    );
 };
 
 /**

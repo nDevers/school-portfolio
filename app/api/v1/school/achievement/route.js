@@ -1,9 +1,9 @@
-import { SchoolAchievementModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
-import faqSchema from "@/app/api/v1/faq/faq.schema";
+import { SchoolAchievementModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
+import faqSchema from '@/app/api/v1/faq/faq.schema';
 
-import asyncHandler from "@/util/asyncHandler";
-import schoolAchievementSelectionCriteria from "@/app/api/v1/school/achievement/school.achievement.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import schoolAchievementSelectionCriteria from '@/app/api/v1/school/achievement/school.achievement.selection.criteria';
 
 /**
  * Asynchronous function to handle the retrieval of a list of school achievements.
@@ -21,7 +21,14 @@ import schoolAchievementSelectionCriteria from "@/app/api/v1/school/achievement/
 const handleGetSchoolAchievementList = async (request, context) => {
     const selectionCriteria = schoolAchievementSelectionCriteria();
 
-    return serviceShared.fetchEntryList(request, context, SchoolAchievementModel, selectionCriteria, 'School achievement', faqSchema.getDataByQuery);
+    return serviceShared.fetchEntryList(
+        request,
+        context,
+        SchoolAchievementModel,
+        selectionCriteria,
+        'School achievement',
+        faqSchema.getDataByQuery
+    );
 };
 
 /**

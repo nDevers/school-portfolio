@@ -1,4 +1,4 @@
-import contentTypesConstants from "@/constants/contentTypes.constants";
+import contentTypesConstants from '@/constants/contentTypes.constants';
 
 /**
  * An array that defines the list of allowed content types for a particular operation or configuration.
@@ -13,7 +13,7 @@ const allowedContentTypes = [contentTypesConstants.JSON];
  * @property {Array<string>} allowedContentTypes - An array of strings specifying the allowed content types for login-related operations.
  */
 const loginConstants = {
-    allowedContentTypes
+    allowedContentTypes,
 };
 
 export default loginConstants;

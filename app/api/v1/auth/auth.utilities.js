@@ -1,4 +1,4 @@
-import sharedResponseTypes from "@/shared/shared.response.types";
+import sharedResponseTypes from '@/shared/shared.response.types';
 
 const { UNAUTHORIZED, OK } = sharedResponseTypes;
 
@@ -25,11 +25,7 @@ const unauthorizedResponse = (message, request) => {
  * @returns {Object} A response object representing a successful execution, containing the provided message, return data, and additional details.
  */
 const authorizedResponse = (message, returnData, request) => {
-    return OK(
-        message,
-        returnData,
-        request
-    );
+    return OK(message, returnData, request);
 };
 
 /**

@@ -1,6 +1,6 @@
-import crypto from "crypto";
+import crypto from 'crypto';
 
-import createHashedPassword from "@/util/createHashedPassword";
+import createHashedPassword from '@/util/createHashedPassword';
 
 /**
  * Asynchronously generates a verification token.
@@ -23,7 +23,7 @@ const generateVerificationToken = async () => {
 
     return {
         verifyToken,
-        token
+        token,
     };
 };
 

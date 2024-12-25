@@ -1,8 +1,8 @@
-import { GalleryPhotoModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
+import { GalleryPhotoModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
 
-import asyncHandler from "@/util/asyncHandler";
-import galleryPhotoSelectionCriteria from "@/app/api/v1/gallery/photo/gallery.photo.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import galleryPhotoSelectionCriteria from '@/app/api/v1/gallery/photo/gallery.photo.selection.criteria';
 
 /**
  * Asynchronous function to handle retrieving a gallery photo by its ID.
@@ -19,7 +19,13 @@ import galleryPhotoSelectionCriteria from "@/app/api/v1/gallery/photo/gallery.ph
 export const handleGetGalleryPhotoById = async (request, context) => {
     const selectionCriteria = galleryPhotoSelectionCriteria();
 
-    return serviceShared.fetchEntryById(request, context, GalleryPhotoModel, selectionCriteria,  'Gallery photo');
+    return serviceShared.fetchEntryById(
+        request,
+        context,
+        GalleryPhotoModel,
+        selectionCriteria,
+        'Gallery photo'
+    );
 };
 
 /**

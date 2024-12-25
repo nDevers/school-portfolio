@@ -33,7 +33,8 @@ const prepareFormDataForLogging = async (data, queryAndParams = {}) => {
             if (value instanceof File) {
                 const fileData = await value.arrayBuffer();
                 const base64String = Buffer.from(fileData).toString('base64');
-                loggedData.body[key] = `data:${value.type};base64,${base64String}`;
+                loggedData.body[key] =
+                    `data:${value.type};base64,${base64String}`;
             } else {
                 loggedData.body[key] = value;
             }
@@ -44,7 +45,8 @@ const prepareFormDataForLogging = async (data, queryAndParams = {}) => {
             if (value instanceof File) {
                 const fileData = await value.arrayBuffer();
                 const base64String = Buffer.from(fileData).toString('base64');
-                loggedData.body[key] = `data:${value.type};base64,${base64String}`;
+                loggedData.body[key] =
+                    `data:${value.type};base64,${base64String}`;
             } else {
                 loggedData.body[key] = value;
             }

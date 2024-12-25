@@ -1,16 +1,15 @@
-import { SchoolAchievementModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
-import schoolAchievementSchema from "@/app/api/v1/school/achievement/school.achievement.schema";
-import schoolAchievementConstants from "@/app/api/v1/school/achievement/school.achievement.constants";
-import sharedResponseTypes from "@/shared/shared.response.types";
-import localFileOperations from "@/util/localFileOperations";
+import { SchoolAchievementModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
+import schoolAchievementSchema from '@/app/api/v1/school/achievement/school.achievement.schema';
+import schoolAchievementConstants from '@/app/api/v1/school/achievement/school.achievement.constants';
+import sharedResponseTypes from '@/shared/shared.response.types';
+import localFileOperations from '@/util/localFileOperations';
 
-import asyncHandler from "@/util/asyncHandler";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import validateToken from "@/util/validateToken";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import schoolAchievementSelectionCriteria from "@/app/api/v1/school/achievement/school.achievement.selection.criteria";
-
+import asyncHandler from '@/util/asyncHandler';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import validateToken from '@/util/validateToken';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import schoolAchievementSelectionCriteria from '@/app/api/v1/school/achievement/school.achievement.selection.criteria';
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 
@@ -32,7 +31,11 @@ const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 const updateSchoolAchievementEntry = async (userInput, request) => {
     // Filter `userInput` to only include fields with non-null values
     const fieldsToUpdate = Object.keys(userInput).reduce((acc, key) => {
-        if (userInput[key] !== undefined && userInput[key] !== null && key !== 'id') {
+        if (
+            userInput[key] !== undefined &&
+            userInput[key] !== null &&
+            key !== 'id'
+        ) {
             acc[key] = userInput[key];
         }
         return acc;
@@ -57,10 +60,17 @@ const updateSchoolAchievementEntry = async (userInput, request) => {
     });
 
     if (!updatedDocument?.id) {
-        return INTERNAL_SERVER_ERROR(`Failed to update school achievement entry with the ID "${userInput?.id}".`, request);
+        return INTERNAL_SERVER_ERROR(
+            `Failed to update school achievement entry with the ID "${userInput?.id}".`,
+            request
+        );
     }
 
-    return OK(`School achievement entry with the ID "${userInput?.id}" updated successfully.`, updatedDocument, request);
+    return OK(
+        `School achievement entry with the ID "${userInput?.id}" updated successfully.`,
+        updatedDocument,
+        request
+    );
 };
 
 /**
@@ -82,7 +92,10 @@ const updateSchoolAchievementEntry = async (userInput, request) => {
  */
 const handleUpdateSchoolAchievementById = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, schoolAchievementConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        schoolAchievementConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
@@ -94,7 +107,12 @@ const handleUpdateSchoolAchievementById = async (request, context) => {
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'update', schoolAchievementSchema.updateSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'update',
+        schoolAchievementSchema.updateSchema
+    );
 
     // Check if school achievement entry with the same title already exists
     const existingSchoolAchievement = await SchoolAchievementModel.findUnique({
@@ -103,11 +121,14 @@ const handleUpdateSchoolAchievementById = async (request, context) => {
         },
         select: {
             id: true,
-            iconId: true
-        }
+            iconId: true,
+        },
     });
     if (!existingSchoolAchievement) {
-        return NOT_FOUND(`School achievement entry with ID "${userInput?.id}" not found.`, request);
+        return NOT_FOUND(
+            `School achievement entry with ID "${userInput?.id}" not found.`,
+            request
+        );
     }
 
     if (userInput?.title) {
@@ -118,19 +139,28 @@ const handleUpdateSchoolAchievementById = async (request, context) => {
             },
             select: {
                 id: true,
-            }
+            },
         });
         if (existingQuestion) {
-            return CONFLICT(`School achievement entry with title "${userInput?.title}" already exists.`, request);
+            return CONFLICT(
+                `School achievement entry with title "${userInput?.title}" already exists.`,
+                request
+            );
         }
     }
 
     // Handle file replacement if a new file is provided
-    if (userInput[schoolAchievementConstants.fileFieldName] && userInput[schoolAchievementConstants.fileFieldName][0]) {
+    if (
+        userInput[schoolAchievementConstants.fileFieldName] &&
+        userInput[schoolAchievementConstants.fileFieldName][0]
+    ) {
         await localFileOperations.deleteFile(existingSchoolAchievement?.iconId); // Delete old file
 
         const newFile = userInput[schoolAchievementConstants.fileFieldName][0];
-        const { fileId, fileLink } = await localFileOperations.uploadFile(request, newFile);
+        const { fileId, fileLink } = await localFileOperations.uploadFile(
+            request,
+            newFile
+        );
 
         userInput.iconId = fileId;
         userInput.icon = fileLink;
@@ -155,7 +185,13 @@ const handleUpdateSchoolAchievementById = async (request, context) => {
  * @returns {Promise<Object>} A promise that resolves to the result of the deletion operation, typically indicating success or failure.
  */
 const deleteSchoolAchievementById = async (request, context) => {
-    return serviceShared.deleteEntryById(request, context, SchoolAchievementModel, 'iconId', 'school achievement');
+    return serviceShared.deleteEntryById(
+        request,
+        context,
+        SchoolAchievementModel,
+        'iconId',
+        'school achievement'
+    );
 };
 
 /**

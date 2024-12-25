@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import schemaShared from "@/shared/schema.shared";
+import schemaShared from '@/shared/schema.shared';
 
 const { validEmail } = schemaShared;
 
@@ -19,6 +19,6 @@ const newsletterSchema = z
     .object({
         email: validEmail('Newsletter email'),
     })
-    .strict() // Enforce strict mode to disallow extra fields
+    .strict(); // Enforce strict mode to disallow extra fields
 
 export default newsletterSchema;

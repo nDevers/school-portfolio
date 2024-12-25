@@ -1,19 +1,19 @@
 import moment from 'moment';
 
-import { BlogModel } from "@/shared/prisma.model.shared";
-import blogSchema from "@/app/api/v1/blog/blog.schema";
-import blogConstants from "@/app/api/v1/blog/blog.constants";
-import sharedResponseTypes from "@/shared/shared.response.types";
-import localFileOperations from "@/util/localFileOperations";
+import { BlogModel } from '@/shared/prisma.model.shared';
+import blogSchema from '@/app/api/v1/blog/blog.schema';
+import blogConstants from '@/app/api/v1/blog/blog.constants';
+import sharedResponseTypes from '@/shared/shared.response.types';
+import localFileOperations from '@/util/localFileOperations';
 
-import asyncHandler from "@/util/asyncHandler";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import validateToken from "@/util/validateToken";
-import blogSelectionCriteria from "@/app/api/v1/blog/blog.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import validateToken from '@/util/validateToken';
+import blogSelectionCriteria from '@/app/api/v1/blog/blog.selection.criteria';
 
-
-const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED, NOT_FOUND } = sharedResponseTypes;
+const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED, NOT_FOUND } =
+    sharedResponseTypes;
 
 /**
  * Asynchronously creates an "About Us" blog entry in the database and retrieves the created document with specific selection criteria.
@@ -46,11 +46,18 @@ const createAboutUsEntry = async (userInput, request) => {
     });
 
     if (!createdDocument?.id) {
-        return INTERNAL_SERVER_ERROR(`Failed to create blog entry with title "${userInput?.title}".`, request);
+        return INTERNAL_SERVER_ERROR(
+            `Failed to create blog entry with title "${userInput?.title}".`,
+            request
+        );
     }
 
     // No need for an aggregation pipeline; Prisma returns the created document
-    return CREATED(`Blog entry with title "${userInput?.title}" created successfully.`, createdDocument, request);
+    return CREATED(
+        `Blog entry with title "${userInput?.title}" created successfully.`,
+        createdDocument,
+        request
+    );
 };
 
 /**
@@ -72,7 +79,10 @@ const createAboutUsEntry = async (userInput, request) => {
  */
 const handleCreateAboutUs = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, blogConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        blogConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
@@ -84,7 +94,12 @@ const handleCreateAboutUs = async (request, context) => {
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'create', blogSchema.createSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'create',
+        blogSchema.createSchema
+    );
 
     // Check if FAQ entry with the same title already exists
     const existingQuestion = await BlogModel.findUnique({
@@ -93,38 +108,50 @@ const handleCreateAboutUs = async (request, context) => {
         },
         select: {
             id: true,
-        }
+        },
     });
     if (existingQuestion) {
-        return CONFLICT(`Blog entry with title "${userInput?.title}" already exists.`, request);
+        return CONFLICT(
+            `Blog entry with title "${userInput?.title}" already exists.`,
+            request
+        );
     }
 
     // Upload file and generate link
     const newFile = userInput[blogConstants.bannerFieldName][0];
-    const { fileId, fileLink } = await localFileOperations.uploadFile(request, newFile);
+    const { fileId, fileLink } = await localFileOperations.uploadFile(
+        request,
+        newFile
+    );
 
     // Upload files and construct the `files` array for documents
     const files = await Promise.all(
-        (userInput[blogConstants.fileFieldName] || []).map(async (fileEntry) => {
-            // Call your file upload operation
-            const { fileId, fileLink } = await localFileOperations.uploadFile(request, fileEntry);
-            return {
-                fileId: fileId,
-                file: fileLink
-            };
-        })
+        (userInput[blogConstants.fileFieldName] || []).map(
+            async (fileEntry) => {
+                // Call your file upload operation
+                const { fileId, fileLink } =
+                    await localFileOperations.uploadFile(request, fileEntry);
+                return {
+                    fileId: fileId,
+                    file: fileLink,
+                };
+            }
+        )
     );
 
     // Upload files and construct the `files` array for documents
     const images = await Promise.all(
-        (userInput[blogConstants.imageFieldName] || []).map(async (imageEntry) => {
-            // Call your file upload operation
-            const { fileId, fileLink } = await localFileOperations.uploadFile(request, imageEntry);
-            return {
-                imageId: fileId,
-                image: fileLink
-            };
-        })
+        (userInput[blogConstants.imageFieldName] || []).map(
+            async (imageEntry) => {
+                // Call your file upload operation
+                const { fileId, fileLink } =
+                    await localFileOperations.uploadFile(request, imageEntry);
+                return {
+                    imageId: fileId,
+                    image: fileLink,
+                };
+            }
+        )
     );
 
     userInput.bannerId = fileId;
@@ -133,7 +160,11 @@ const handleCreateAboutUs = async (request, context) => {
     userInput.images = images;
 
     // Convert the date using Moment.js
-    userInput.date = moment(userInput.date, ['DD/MM/YYYY', moment.ISO_8601], true).toDate();
+    userInput.date = moment(
+        userInput.date,
+        ['DD/MM/YYYY', moment.ISO_8601],
+        true
+    ).toDate();
 
     console.log(userInput);
 

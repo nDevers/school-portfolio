@@ -1,23 +1,23 @@
-'use client'
-import React from 'react'
-import InputWrapper from '@/components/ui/input-wrapper'
-import Reset from '@/components/button/Reset'
-import Submit from '@/components/button/Submit'
-import * as Yup from 'yup'
-import { Input } from '@/components/ui/input'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useFormik } from 'formik'
-import { postData, updateData } from '@/util/axios'
-import apiConfig from '@/configs/apiConfig'
-import { Checkbox } from '@/components/ui/checkbox'
-import { handleCheckboxChange } from '@/util/formikHelpers'
+'use client';
+import React from 'react';
+import InputWrapper from '@/components/ui/input-wrapper';
+import Reset from '@/components/button/Reset';
+import Submit from '@/components/button/Submit';
+import * as Yup from 'yup';
+import { Input } from '@/components/ui/input';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useFormik } from 'formik';
+import { postData, updateData } from '@/util/axios';
+import apiConfig from '@/configs/apiConfig';
+import { Checkbox } from '@/components/ui/checkbox';
+import { handleCheckboxChange } from '@/util/formikHelpers';
 
 export default function EventCategoryForm({ data }) {
     const queryClient = useQueryClient();
     const initialValues = {
         category: data?.category || '',
         isSpecial: data?.isSpecial || false,
-    }
+    };
 
     const validationSchema = Yup.object({
         category: Yup.string().required('Required field'),
@@ -25,16 +25,19 @@ export default function EventCategoryForm({ data }) {
 
     const submit = async (values) => {
         if (data) {
-            await updateData(apiConfig?.UPDATE_EVENT_CATEGORY + data?._id, values);
+            await updateData(
+                apiConfig?.UPDATE_EVENT_CATEGORY + data?._id,
+                values
+            );
         } else {
             await postData(apiConfig?.CREATE_EVENT_CATEGORY, values);
         }
-    }
+    };
 
     const reset = () => {
         formik?.resetForm();
-        queryClient.invalidateQueries(['category'])
-    }
+        queryClient.invalidateQueries(['category']);
+    };
 
     const formik = useFormik({
         initialValues,
@@ -48,12 +51,16 @@ export default function EventCategoryForm({ data }) {
         mutationKey: ['event-category'],
         mutationFn: submit,
         onSuccess: () => reset(),
-    })
+    });
 
     return (
-        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
-            <div className='grid md:grid-cols-2 gap-2 w-full'>
-                <InputWrapper label="Category" error={formik.errors?.category} touched={formik.touched?.category}>
+        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
+            <div className="grid md:grid-cols-2 gap-2 w-full">
+                <InputWrapper
+                    label="Category"
+                    error={formik.errors?.category}
+                    touched={formik.touched?.category}
+                >
                     <Input
                         name="category"
                         placeholder="Category"
@@ -68,15 +75,18 @@ export default function EventCategoryForm({ data }) {
                         <span>Make this category as special</span>
                         <Checkbox
                             checked={formik.values.isSpecial}
-                            onCheckedChange={handleCheckboxChange(formik, "isSpecial")}
+                            onCheckedChange={handleCheckboxChange(
+                                formik,
+                                'isSpecial'
+                            )}
                         />
                     </label>
                 </InputWrapper>
             </div>
 
-            <div className='flex items-center space-x-2'>
+            <div className="flex items-center space-x-2">
                 <Submit disabled={mutation.isPending || mutation.isSuccess} />
             </div>
         </form>
-    )
+    );
 }

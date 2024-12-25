@@ -19,7 +19,10 @@ const prepareSearchQuery = (userInput) => {
                 whereCondition[key] = { in: userInput[key] };
             } else if (typeof userInput[key] === 'string' && key === 'id') {
                 whereCondition[key] = userInput[key];
-            } else if (typeof userInput[key] === 'string' && key === 'createdAt') {
+            } else if (
+                typeof userInput[key] === 'string' &&
+                key === 'createdAt'
+            ) {
                 // Handle createdAt field correctly, assuming it's a string in 'YYYY-MM-DD' format
                 whereCondition[key] = {
                     gte: new Date(`${userInput[key]}T00:00:00.000Z`), // Start of the day

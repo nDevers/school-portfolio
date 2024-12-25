@@ -1,10 +1,11 @@
 import { z } from 'zod';
 
-import schemaShared from "@/shared/schema.shared";
-import homeCarouselConstants from "@/app/api/v1/home/carousel/home.carousel.constants";
+import schemaShared from '@/shared/schema.shared';
+import homeCarouselConstants from '@/app/api/v1/home/carousel/home.carousel.constants';
 
 const { nonEmptyStringArray, filesValidator } = schemaShared;
-const { allowedMimeTypes, allowedImageFileSize, maxImage } = homeCarouselConstants;
+const { allowedMimeTypes, allowedImageFileSize, maxImage } =
+    homeCarouselConstants;
 
 /**
  * Validates and manages the uploaded files for the "Home carousel images" feature.
@@ -22,7 +23,13 @@ const { allowedMimeTypes, allowedImageFileSize, maxImage } = homeCarouselConstan
  *
  * Used to manage and verify the home page carousel image uploads.
  */
-const images = filesValidator('Home carousel images', allowedMimeTypes, allowedImageFileSize, 1, maxImage);
+const images = filesValidator(
+    'Home carousel images',
+    allowedMimeTypes,
+    allowedImageFileSize,
+    1,
+    maxImage
+);
 
 /**
  * `createSchema` is a schema definition created using the `zod` library.
@@ -32,9 +39,11 @@ const images = filesValidator('Home carousel images', allowedMimeTypes, allowedI
  * - Validates that the object includes an `images` property.
  * - Enforces strict mode to disallow additional unexpected properties.
  */
-const createSchema = z.object({
-    images,
-}).strict(); // Enforce strict mode to disallow extra fields
+const createSchema = z
+    .object({
+        images,
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * Update schema definition that validates the structure of an update request.
@@ -52,10 +61,13 @@ const createSchema = z.object({
  * Error Behavior:
  * - If neither `images` nor `deleteImages` is provided, an error message will indicate that at least one is required.
  */
-const updateSchema = z.object({
-    images: images.optional(),
-    deleteImages: nonEmptyStringArray('ID of the image that will be deleted').optional(),
-})
+const updateSchema = z
+    .object({
+        images: images.optional(),
+        deleteImages: nonEmptyStringArray(
+            'ID of the image that will be deleted'
+        ).optional(),
+    })
     .strict() // Enforce strict mode to disallow extra fields
     .refine(
         (data) => Object.keys(data).length > 1, // Must include `id` and at least one other field

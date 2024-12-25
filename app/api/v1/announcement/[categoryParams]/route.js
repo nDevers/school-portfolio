@@ -1,9 +1,9 @@
-import { AnnouncementModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
-import announcementSchema from "@/app/api/v1/announcement/announcement.schema";
+import { AnnouncementModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
+import announcementSchema from '@/app/api/v1/announcement/announcement.schema';
 
-import asyncHandler from "@/util/asyncHandler";
-import announcementSelectionCriteria from "@/app/api/v1/announcement/announcement.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import announcementSelectionCriteria from '@/app/api/v1/announcement/announcement.selection.criteria';
 
 /**
  * Handles the retrieval of announcements filtered by category.
@@ -23,7 +23,14 @@ import announcementSelectionCriteria from "@/app/api/v1/announcement/announcemen
 export const handleGetAnnouncementByCategory = async (request, context) => {
     const selectionCriteria = announcementSelectionCriteria();
 
-    return serviceShared.fetchEntryByCategory(request, context, AnnouncementModel, selectionCriteria,  'Announcement', () => announcementSchema.categorySchema());
+    return serviceShared.fetchEntryByCategory(
+        request,
+        context,
+        AnnouncementModel,
+        selectionCriteria,
+        'Announcement',
+        () => announcementSchema.categorySchema()
+    );
 };
 
 /**

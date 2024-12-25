@@ -24,7 +24,7 @@ const refreshAxiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
     async (config) => {
         const token = getTokenFromCookie();
-        if (token) config.headers['Authorization'] = `Bearer ${token}`
+        if (token) config.headers['Authorization'] = `Bearer ${token}`;
         return config;
     },
     (error) => {
@@ -35,7 +35,8 @@ axiosInstance.interceptors.request.use(
 refreshAxiosInstance.interceptors.request.use(
     async (config) => {
         const refreshToken = getRefreshTokenFromCookie();
-        if (refreshToken) config.headers['Authorization'] = `Bearer ${refreshToken}`
+        if (refreshToken)
+            config.headers['Authorization'] = `Bearer ${refreshToken}`;
         return config;
     },
     (error) => {
@@ -49,7 +50,7 @@ const getMessageFromResponse = (response) => {
     }
 
     // Fallback if the "message" field is not present
-    return "No response from server";
+    return 'No response from server';
 };
 
 export const handleAxiosError = (error) => {
@@ -65,7 +66,9 @@ export const handleAxiosError = (error) => {
 
     if (error.response) {
         const code = error.response.status;
-        const errorMessage = error.response?.data?.data?.message || error.response?.data?.message;
+        const errorMessage =
+            error.response?.data?.data?.message ||
+            error.response?.data?.message;
 
         if (code === 401) {
             logout(true);
@@ -101,7 +104,9 @@ export const handleAxiosErrorAsServer = (error) => {
         const errorMessage = error.response?.data?.message;
 
         if (code === 404) {
-            console.warn(`Resource not found (404): ${errorMessage || 'No additional message'}`);
+            console.warn(
+                `Resource not found (404): ${errorMessage || 'No additional message'}`
+            );
             return null; // Return null for missing data
         } else {
             console.error(`Server error: ${code} - ${errorMessage}`);
@@ -144,9 +149,15 @@ export async function postData(endpoint, data, isFileRequest = false) {
             : { 'Content-Type': 'application/json' };
 
         // If the request is for a file, we set the responseType to 'blob'
-        const config = isFileRequest ? { headers, responseType: 'blob' } : { headers };
+        const config = isFileRequest
+            ? { headers, responseType: 'blob' }
+            : { headers };
 
-        const response = await axiosInstance.post(endpoint, requestData, config);
+        const response = await axiosInstance.post(
+            endpoint,
+            requestData,
+            config
+        );
 
         // If it's a file request, we don't return a success toast, just return the file
         if (isFileRequest) {
@@ -170,7 +181,9 @@ export async function updateData(endpoint, data) {
             ? { 'Content-Type': 'multipart/form-data' }
             : { 'Content-Type': 'application/json' };
 
-        const response = await axiosInstance.patch(endpoint, requestData, { headers });
+        const response = await axiosInstance.patch(endpoint, requestData, {
+            headers,
+        });
 
         const message = getMessageFromResponse(response);
         toast.success(message);
@@ -196,13 +209,20 @@ export async function deleteData(endpoint, id) {
 async function axiosRefreshToken() {
     const refreshToken = getRefreshTokenFromCookie();
     if (!refreshToken) return;
-    
-    try {
-        const response = await refreshAxiosInstance.get(apiConfig.REFRESH_TOKEN);
-        const { accessToken, refreshToken: newRefreshToken } = response.data?.data;
 
-        if (accessToken) setCookie(appConfig.CurrentUserToken, accessToken, { path: '/' });
-        if (newRefreshToken) setCookie(appConfig.CurrentUserRefToken, newRefreshToken, { path: '/' });
+    try {
+        const response = await refreshAxiosInstance.get(
+            apiConfig.REFRESH_TOKEN
+        );
+        const { accessToken, refreshToken: newRefreshToken } =
+            response.data?.data;
+
+        if (accessToken)
+            setCookie(appConfig.CurrentUserToken, accessToken, { path: '/' });
+        if (newRefreshToken)
+            setCookie(appConfig.CurrentUserRefToken, newRefreshToken, {
+                path: '/',
+            });
     } catch (error) {
         console.error('Error refreshing token:', error.message);
         handleAxiosError(error);

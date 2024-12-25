@@ -1,14 +1,14 @@
-'use client'
+'use client';
 
-import InputWrapper from '@/components/ui/input-wrapper'
-import Submit from '@/components/button/Submit'
-import Reset from '@/components/button/Reset'
-import { useFormik } from 'formik'
-import { Input } from '@/components/ui/input'
-import * as Yup from 'yup'
-import apiConfig from '@/configs/apiConfig'
-import { postData, updateData } from '@/util/axios'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import InputWrapper from '@/components/ui/input-wrapper';
+import Submit from '@/components/button/Submit';
+import Reset from '@/components/button/Reset';
+import { useFormik } from 'formik';
+import { Input } from '@/components/ui/input';
+import * as Yup from 'yup';
+import apiConfig from '@/configs/apiConfig';
+import { postData, updateData } from '@/util/axios';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export default function NoticeForm({ data }) {
     const queryClient = useQueryClient();
@@ -28,7 +28,9 @@ export default function NoticeForm({ data }) {
 
     const validationSchema = Yup.object({
         title: Yup.string().required('Title is required'),
-        publishDate: Yup.date().required('Date is required').max(new Date(), 'Date cannot be in the future'),
+        publishDate: Yup.date()
+            .required('Date is required')
+            .max(new Date(), 'Date cannot be in the future'),
         file: Yup.object({
             name: Yup.string(),
             file: Yup.mixed()
@@ -36,14 +38,13 @@ export default function NoticeForm({ data }) {
                 .test(
                     'fileType',
                     'Only PDF files are allowed',
-                    (value) => !value || (value && value.type === 'application/pdf')
+                    (value) =>
+                        !value || (value && value.type === 'application/pdf')
                 ),
         }),
         link: Yup.object({
             name: Yup.string(),
-            link: Yup.string()
-                .nullable()
-                .url('Must be a valid URL'),
+            link: Yup.string().nullable().url('Must be a valid URL'),
         }),
     });
 
@@ -99,7 +100,11 @@ export default function NoticeForm({ data }) {
         <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
             <div className="grid md:grid-cols-2 gap-2 w-full">
                 {/* Title Field */}
-                <InputWrapper label="Title" error={formik.errors?.title} touched={formik.touched?.title}>
+                <InputWrapper
+                    label="Title"
+                    error={formik.errors?.title}
+                    touched={formik.touched?.title}
+                >
                     <Input
                         name="title"
                         placeholder="Title"
@@ -110,7 +115,11 @@ export default function NoticeForm({ data }) {
                 </InputWrapper>
 
                 {/* Publish Date Field */}
-                <InputWrapper label="Publish Date" error={formik.errors?.publishDate} touched={formik.touched?.publishDate}>
+                <InputWrapper
+                    label="Publish Date"
+                    error={formik.errors?.publishDate}
+                    touched={formik.touched?.publishDate}
+                >
                     <Input
                         type="date"
                         name="publishDate"
@@ -123,7 +132,11 @@ export default function NoticeForm({ data }) {
 
             {/* File Upload Section */}
             <div className="grid md:grid-cols-2 gap-2 w-full">
-                <InputWrapper label="File Name" error={formik.errors?.file?.name} touched={formik.touched?.file?.name}>
+                <InputWrapper
+                    label="File Name"
+                    error={formik.errors?.file?.name}
+                    touched={formik.touched?.file?.name}
+                >
                     <Input
                         name="file.name"
                         placeholder="File Name"
@@ -134,12 +147,19 @@ export default function NoticeForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Upload File" error={formik.errors?.file?.file} touched={formik.touched?.file?.file}>
+                <InputWrapper
+                    label="Upload File"
+                    error={formik.errors?.file?.file}
+                    touched={formik.touched?.file?.file}
+                >
                     <Input
                         type="file"
                         name="file.file"
                         onChange={(event) => {
-                            formik.setFieldValue('file.file', event.currentTarget.files[0]);
+                            formik.setFieldValue(
+                                'file.file',
+                                event.currentTarget.files[0]
+                            );
                         }}
                     />
                 </InputWrapper>
@@ -147,7 +167,11 @@ export default function NoticeForm({ data }) {
 
             {/* Link Section */}
             <div className="grid md:grid-cols-2 gap-2 w-full">
-                <InputWrapper label="Link Name" error={formik.errors?.link?.name} touched={formik.touched?.link?.name}>
+                <InputWrapper
+                    label="Link Name"
+                    error={formik.errors?.link?.name}
+                    touched={formik.touched?.link?.name}
+                >
                     <Input
                         name="link.name"
                         placeholder="Link Name"
@@ -157,7 +181,11 @@ export default function NoticeForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Link URL" error={formik.errors?.link?.link} touched={formik.touched?.link?.link}>
+                <InputWrapper
+                    label="Link URL"
+                    error={formik.errors?.link?.link}
+                    touched={formik.touched?.link?.link}
+                >
                     <Input
                         name="link.link"
                         placeholder="Link URL"

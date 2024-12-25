@@ -1,5 +1,5 @@
-import contentTypesConstants from "@/constants/contentTypes.constants";
-import mimeTypesConstants from "@/constants/mimeTypes.constants";
+import contentTypesConstants from '@/constants/contentTypes.constants';
+import mimeTypesConstants from '@/constants/mimeTypes.constants';
 
 /**
  * An array specifying the allowed content types for a particular operation or request.
@@ -25,7 +25,12 @@ const allowedContentTypes = [contentTypesConstants.FORM_DATA];
  *
  * The constants for the MIME types are imported from `mimeTypesConstants`.
  */
-const allowedMimeTypes = [mimeTypesConstants.JPEG, mimeTypesConstants.JPG, mimeTypesConstants.PNG, mimeTypesConstants.GIF];
+const allowedMimeTypes = [
+    mimeTypesConstants.JPEG,
+    mimeTypesConstants.JPG,
+    mimeTypesConstants.PNG,
+    mimeTypesConstants.GIF,
+];
 
 /**
  * The constant `filesFieldName` represents the name of the field typically
@@ -78,10 +83,10 @@ const descriptionMaxCharacter = 50;
  * @property {string} admissionInfo - The category representing admission information.
  */
 const categories = {
-    notice: "notice",
-    leaveCalender: "leave_calender",
-    transportation: "transportation",
-    admissionInfo: "admission_info",
+    notice: 'notice',
+    leaveCalender: 'leave_calender',
+    transportation: 'transportation',
+    admissionInfo: 'admission_info',
 };
 
 /**

@@ -62,7 +62,7 @@ const httpMethodsConstants = {
     POST,
     PUT,
     DELETE,
-    OPTIONS
+    OPTIONS,
 };
 
-export default httpMethodsConstants
+export default httpMethodsConstants;

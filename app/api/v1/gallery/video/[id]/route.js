@@ -1,8 +1,8 @@
-import { GalleryVideoModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
+import { GalleryVideoModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
 
-import asyncHandler from "@/util/asyncHandler";
-import galleryVideoSelectionCriteria from "@/app/api/v1/gallery/video/gallery.video.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import galleryVideoSelectionCriteria from '@/app/api/v1/gallery/video/gallery.video.selection.criteria';
 
 /**
  * Represents the criteria used for selecting videos in the gallery.
@@ -26,7 +26,13 @@ const selectionCriteria = galleryVideoSelectionCriteria();
  * @returns {Promise<Object>} - A promise that resolves to the gallery video entry object, or rejects with an error if fetching fails.
  */
 export const handleGetGalleryVideoById = async (request, context) => {
-    return serviceShared.fetchEntryById(request, context, GalleryVideoModel, selectionCriteria,  'Gallery video');
+    return serviceShared.fetchEntryById(
+        request,
+        context,
+        GalleryVideoModel,
+        selectionCriteria,
+        'Gallery video'
+    );
 };
 
 /**

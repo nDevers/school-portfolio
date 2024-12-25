@@ -1,11 +1,11 @@
-import { NewsletterModel } from "@/shared/prisma.model.shared";
-import newsletterConstants from "@/app/api/v1/newsletter/newsletter.constants";
-import serviceShared from "@/shared/service.shared";
+import { NewsletterModel } from '@/shared/prisma.model.shared';
+import newsletterConstants from '@/app/api/v1/newsletter/newsletter.constants';
+import serviceShared from '@/shared/service.shared';
 
-import asyncHandler from "@/util/asyncHandler";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import newsletterSelectionCriteria from "@/app/api/v1/newsletter/newsletter.selection.criteria";
-import validateToken from "@/util/validateToken";
+import asyncHandler from '@/util/asyncHandler';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import newsletterSelectionCriteria from '@/app/api/v1/newsletter/newsletter.selection.criteria';
+import validateToken from '@/util/validateToken';
 
 /**
  * Represents the criteria used to filter and select newsletters.
@@ -36,7 +36,10 @@ const selectionCriteria = newsletterSelectionCriteria();
  */
 const handleGetNewsletterSubscriber = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, newsletterConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        newsletterConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
@@ -47,7 +50,14 @@ const handleGetNewsletterSubscriber = async (request, context) => {
         return authResult.response;
     }
 
-    return serviceShared.fetchEntryList(request, context, NewsletterModel, selectionCriteria, 'Newsletter', null);
+    return serviceShared.fetchEntryList(
+        request,
+        context,
+        NewsletterModel,
+        selectionCriteria,
+        'Newsletter',
+        null
+    );
 };
 
 /**

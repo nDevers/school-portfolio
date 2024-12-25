@@ -1,10 +1,22 @@
 import { z } from 'zod';
 
-import schemaShared from "@/shared/schema.shared";
-import academicConstants from "@/app/api/v1/academic/academic.constants";
+import schemaShared from '@/shared/schema.shared';
+import academicConstants from '@/app/api/v1/academic/academic.constants';
 
-const { nonEmptyString, enumValidation, validMongooseId, validDate, filesValidator } = schemaShared;
-const { titleMaxCharacter, badgeMaxCharacter, allowedCategories, allowedMimeTypes, allowedFileSize } = academicConstants;
+const {
+    nonEmptyString,
+    enumValidation,
+    validMongooseId,
+    validDate,
+    filesValidator,
+} = schemaShared;
+const {
+    titleMaxCharacter,
+    badgeMaxCharacter,
+    allowedCategories,
+    allowedMimeTypes,
+    allowedFileSize,
+} = academicConstants;
 
 /**
  * Generates a non-empty string representing the title for the given field name,
@@ -13,7 +25,8 @@ const { titleMaxCharacter, badgeMaxCharacter, allowedCategories, allowedMimeType
  * @param {string} fieldName - The name of the field for which the title is being generated.
  * @returns {string} A validated non-empty string representing the title.
  */
-const title = (fieldName) => nonEmptyString(`${fieldName} title`, titleMaxCharacter);
+const title = (fieldName) =>
+    nonEmptyString(`${fieldName} title`, titleMaxCharacter);
 
 /**
  * Generates a non-empty string description for a given field name.
@@ -37,7 +50,8 @@ const id = (fieldName) => validMongooseId(`${fieldName} ID`);
  * @param {string} fieldName - The name of the field for which the category parameter is being validated.
  * @returns {Function} - Returns a function that performs validation using the provided field name and allowed categories.
  */
-const categoryParams = (fieldName) => enumValidation(`${fieldName} category parameter`, allowedCategories);
+const categoryParams = (fieldName) =>
+    enumValidation(`${fieldName} category parameter`, allowedCategories);
 
 /**
  * A function that creates a file validation rule for validating a single file field.
@@ -45,7 +59,14 @@ const categoryParams = (fieldName) => enumValidation(`${fieldName} category para
  * @param {string} fieldName - The name of the field being validated.
  * @returns {function} A validation function that checks if the provided file meets the specified criteria.
  */
-const file = (fieldName) => filesValidator(`${fieldName} file`, allowedMimeTypes, allowedFileSize, 1, 1);
+const file = (fieldName) =>
+    filesValidator(
+        `${fieldName} file`,
+        allowedMimeTypes,
+        allowedFileSize,
+        1,
+        1
+    );
 
 /**
  * A function that validates the publish date of a given field.
@@ -64,7 +85,8 @@ const publishDate = (fieldName) => validDate(`${fieldName} publish date`);
  * @param {string} fieldName - The name of the field to be used as the basis for the badge name.
  * @returns {string} The generated badge name as a non-empty string, subject to the maximum character restriction.
  */
-const badge = (fieldName) => nonEmptyString(`${fieldName} badge`, badgeMaxCharacter);
+const badge = (fieldName) =>
+    nonEmptyString(`${fieldName} badge`, badgeMaxCharacter);
 
 /**
  * Constructs and returns a strict schema object using the provided `fieldName`.
@@ -80,14 +102,17 @@ const badge = (fieldName) => nonEmptyString(`${fieldName} badge`, badgeMaxCharac
  * @param {string} fieldName - The name of the field to be used for constructing the schema.
  * @returns {ZodObject} A strict Zod schema object with the defined structure and validation rules.
  */
-const createSchema = (fieldName) => z.object({
-    categoryParams: categoryParams(fieldName),
-    title: title(fieldName),
-    description: description(fieldName),
-    file: file(fieldName),
-    publishDate: publishDate(fieldName),
-    badge: badge(fieldName)
-}).strict(); // Enforce strict mode to disallow extra fields
+const createSchema = (fieldName) =>
+    z
+        .object({
+            categoryParams: categoryParams(fieldName),
+            title: title(fieldName),
+            description: description(fieldName),
+            file: file(fieldName),
+            publishDate: publishDate(fieldName),
+            badge: badge(fieldName),
+        })
+        .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * Constructs and validates a structured object schema based on a specified field name.
@@ -104,16 +129,19 @@ const createSchema = (fieldName) => z.object({
  * - publishDate: An optional, validated publish date related to the specified field name.
  * - badge: An optional field representing additional badges, evaluated for the provided field name context.
  */
-const getDataByQuery = (fieldName = 'Category') => z.object({
-    id: id(fieldName).optional(),
-    categoryParams: categoryParams(fieldName).optional(),
-    title: title(fieldName).optional(),
-    description: description(fieldName).optional(),
-    createdAt: validDate(`${fieldName} creation time`).optional(),
-    updatedAt: validDate(`${fieldName} last update time`).optional(),
-    publishDate: publishDate(fieldName).optional(),
-    badge: badge(fieldName).optional(),
-}).strict(); // Enforce strict mode to disallow extra fields
+const getDataByQuery = (fieldName = 'Category') =>
+    z
+        .object({
+            id: id(fieldName).optional(),
+            categoryParams: categoryParams(fieldName).optional(),
+            title: title(fieldName).optional(),
+            description: description(fieldName).optional(),
+            createdAt: validDate(`${fieldName} creation time`).optional(),
+            updatedAt: validDate(`${fieldName} last update time`).optional(),
+            publishDate: publishDate(fieldName).optional(),
+            badge: badge(fieldName).optional(),
+        })
+        .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * Constructs a schema for updating records.
@@ -130,23 +158,26 @@ const getDataByQuery = (fieldName = 'Category') => z.object({
  * @param {string} fieldName - The base name for individual field validation.
  * @returns {object} A zod schema used to validate the update payload.
  */
-const updateSchema = (fieldName) => z.object({
-    id: id(fieldName),
-    categoryParams: categoryParams(fieldName),
-    category: categoryParams(fieldName).optional(),
-    title: title(fieldName).optional(),
-    description: description(fieldName).optional(),
-    file: file(fieldName).optional(),
-    publishDate: publishDate(fieldName).optional(),
-    badge: badge(fieldName).optional(),
-})
-    .strict() // Enforce strict mode to disallow extra fields
-    .refine(
-        (data) => Object.keys(data).length > 1, // Must include `id` and at least one other field
-        {
-            message: 'At least one of "category", "title", "description", "file", "publishDate" or "badge" is required along with "id" and "categoryParams".',
-        }
-    );
+const updateSchema = (fieldName) =>
+    z
+        .object({
+            id: id(fieldName),
+            categoryParams: categoryParams(fieldName),
+            category: categoryParams(fieldName).optional(),
+            title: title(fieldName).optional(),
+            description: description(fieldName).optional(),
+            file: file(fieldName).optional(),
+            publishDate: publishDate(fieldName).optional(),
+            badge: badge(fieldName).optional(),
+        })
+        .strict() // Enforce strict mode to disallow extra fields
+        .refine(
+            (data) => Object.keys(data).length > 1, // Must include `id` and at least one other field
+            {
+                message:
+                    'At least one of "category", "title", "description", "file", "publishDate" or "badge" is required along with "id" and "categoryParams".',
+            }
+        );
 
 /**
  * A schema definition for a category object.
@@ -160,9 +191,12 @@ const updateSchema = (fieldName) => z.object({
  * @returns {object} A Zod schema object that enforces the validation of the
  *                   defined category structure.
  */
-const categorySchema = (fieldName) => z.object({
-    categoryParams: categoryParams(fieldName),
-}).strict();
+const categorySchema = (fieldName) =>
+    z
+        .object({
+            categoryParams: categoryParams(fieldName),
+        })
+        .strict();
 
 /**
  * Schema generator function for validating objects with category and ID properties.
@@ -172,10 +206,13 @@ const categorySchema = (fieldName) => z.object({
  * The `categoryParams` property is validated using the `categoryParams` schema function, and the `id` property
  * is validated using the `id` schema function.
  */
-const categoryAndIdSchema = (fieldName) => z.object({
-    categoryParams: categoryParams(fieldName),
-    id: id(fieldName),
-}).strict();
+const categoryAndIdSchema = (fieldName) =>
+    z
+        .object({
+            categoryParams: categoryParams(fieldName),
+            id: id(fieldName),
+        })
+        .strict();
 
 /**
  * Represents a collection of functionalities and schemas related to academic data management.

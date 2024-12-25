@@ -1,8 +1,8 @@
-import { ConfigurationModel } from "@/shared/prisma.model.shared";
-import sharedResponseTypes from "@/shared/shared.response.types";
+import { ConfigurationModel } from '@/shared/prisma.model.shared';
+import sharedResponseTypes from '@/shared/shared.response.types';
 
-import asyncHandler from "@/util/asyncHandler";
-import configurationSelectionCriteria from "@/app/api/v1/configuration/configuration.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import configurationSelectionCriteria from '@/app/api/v1/configuration/configuration.selection.criteria';
 
 /**
  * Represents the criteria used for selecting a specific configuration.

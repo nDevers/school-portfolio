@@ -1,12 +1,12 @@
-import PageTitle from "@/components/admin/common/PageTitle";
-import FacultyForm from "@/components/admin/form/FacultyForm";
+import PageTitle from '@/components/admin/common/PageTitle';
+import FacultyForm from '@/components/admin/form/FacultyForm';
 
 export default function FacultyAddPage({ params }) {
-    const { category } = params
-    return(
+    const { category } = params;
+    return (
         <div>
-            <PageTitle title="Create New Faculty Member"/>
-            <FacultyForm category={category}/>
+            <PageTitle title="Create New Faculty Member" />
+            <FacultyForm category={category} />
         </div>
-    )
+    );
 }

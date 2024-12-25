@@ -2,10 +2,10 @@ import path from 'path';
 import fs from 'fs/promises';
 import { v4 as uuidv4 } from 'uuid';
 
-import logger from "@/lib/logger";
+import logger from '@/lib/logger';
 
 import generateFileLink from './generateFileLink';
-import {BadRequestError} from "@/util/asyncHandler";
+import { BadRequestError } from '@/util/asyncHandler';
 
 /**
  * Generates a unique file name based on the provided name, ensuring uniqueness
@@ -18,7 +18,9 @@ import {BadRequestError} from "@/util/asyncHandler";
 const generateUniqueFileName = (name) => {
     const fileId = uuidv4(); // Generate a unique file ID
     const originalExtension = path.extname(name); // Get the original file extension
-    const sanitizedOriginalName = path.basename(name, originalExtension).replaceAll(" ", "_"); // Get the base name without extension
+    const sanitizedOriginalName = path
+        .basename(name, originalExtension)
+        .replaceAll(' ', '_'); // Get the base name without extension
 
     return `${fileId}_${sanitizedOriginalName}${originalExtension}`;
 };
@@ -44,7 +46,7 @@ const createFileBuffer = async (file) => Buffer.from(await file.arrayBuffer());
  * @returns {Promise<{fileLink: string, fileId: string}>} An object containing the publicly accessible file link and the unique file identifier.
  */
 const uploadFile = async (request, file) => {
-    if (!file) throw new BadRequestError("No files received.");
+    if (!file) throw new BadRequestError('No files received.');
 
     const buffer = await createFileBuffer(file);
     const fileName = generateUniqueFileName(file.name);
@@ -73,7 +75,8 @@ const uploadFile = async (request, file) => {
  * - `fileId`: The unique identifier or name of the uploaded file.
  */
 const uploadFiles = async (request, files) => {
-    if (!files || files.length === 0) throw new BadRequestError("No files received.");
+    if (!files || files.length === 0)
+        throw new BadRequestError('No files received.');
 
     const fullDirPath = path.join(process.cwd(), 'public/assets');
     await fs.mkdir(fullDirPath, { recursive: true }); // Ensure the directory exists

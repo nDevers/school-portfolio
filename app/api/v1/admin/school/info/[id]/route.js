@@ -1,16 +1,15 @@
-import { SchoolInfoModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
-import schoolInfoSchema from "@/app/api/v1/school/info/school.info.schema";
-import schoolInfoConstants from "@/app/api/v1/school/info/school.info.constants";
-import sharedResponseTypes from "@/shared/shared.response.types";
-import localFileOperations from "@/util/localFileOperations";
+import { SchoolInfoModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
+import schoolInfoSchema from '@/app/api/v1/school/info/school.info.schema';
+import schoolInfoConstants from '@/app/api/v1/school/info/school.info.constants';
+import sharedResponseTypes from '@/shared/shared.response.types';
+import localFileOperations from '@/util/localFileOperations';
 
-import asyncHandler from "@/util/asyncHandler";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import validateToken from "@/util/validateToken";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import schoolInfoSelectionCriteria from "@/app/api/v1/school/info/school.info.selection.criteria";
-
+import asyncHandler from '@/util/asyncHandler';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import validateToken from '@/util/validateToken';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import schoolInfoSelectionCriteria from '@/app/api/v1/school/info/school.info.selection.criteria';
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 
@@ -32,7 +31,11 @@ const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 const updateSchoolInfoEntry = async (userInput, request) => {
     // Filter `userInput` to only include fields with non-null values
     const fieldsToUpdate = Object.keys(userInput).reduce((acc, key) => {
-        if (userInput[key] !== undefined && userInput[key] !== null && key !== 'id') {
+        if (
+            userInput[key] !== undefined &&
+            userInput[key] !== null &&
+            key !== 'id'
+        ) {
             acc[key] = userInput[key];
         }
         return acc;
@@ -57,10 +60,17 @@ const updateSchoolInfoEntry = async (userInput, request) => {
     });
 
     if (!updatedDocument?.id) {
-        return INTERNAL_SERVER_ERROR(`Failed to update school info entry with the ID "${userInput?.id}".`, request);
+        return INTERNAL_SERVER_ERROR(
+            `Failed to update school info entry with the ID "${userInput?.id}".`,
+            request
+        );
     }
 
-    return OK(`School info entry with the ID "${userInput?.id}" updated successfully.`, updatedDocument, request);
+    return OK(
+        `School info entry with the ID "${userInput?.id}" updated successfully.`,
+        updatedDocument,
+        request
+    );
 };
 
 /**
@@ -82,7 +92,10 @@ const updateSchoolInfoEntry = async (userInput, request) => {
  */
 const handleUpdateSchoolInfoById = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, schoolInfoConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        schoolInfoConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
@@ -94,7 +107,12 @@ const handleUpdateSchoolInfoById = async (request, context) => {
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'update', schoolInfoSchema.updateSchema);
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'update',
+        schoolInfoSchema.updateSchema
+    );
 
     // Check if school info entry with the same title already exists
     const existingSchoolInfo = await SchoolInfoModel.findUnique({
@@ -103,11 +121,14 @@ const handleUpdateSchoolInfoById = async (request, context) => {
         },
         select: {
             id: true,
-            iconId: true
-        }
+            iconId: true,
+        },
     });
     if (!existingSchoolInfo) {
-        return NOT_FOUND(`School info entry with ID "${userInput?.id}" not found.`, request);
+        return NOT_FOUND(
+            `School info entry with ID "${userInput?.id}" not found.`,
+            request
+        );
     }
 
     if (userInput?.title) {
@@ -118,19 +139,28 @@ const handleUpdateSchoolInfoById = async (request, context) => {
             },
             select: {
                 id: true,
-            }
+            },
         });
         if (existingQuestion) {
-            return CONFLICT(`School info entry with title "${userInput?.title}" already exists.`, request);
+            return CONFLICT(
+                `School info entry with title "${userInput?.title}" already exists.`,
+                request
+            );
         }
     }
 
     // Handle file replacement if a new file is provided
-    if (userInput[schoolInfoConstants.fileFieldName] && userInput[schoolInfoConstants.fileFieldName][0]) {
+    if (
+        userInput[schoolInfoConstants.fileFieldName] &&
+        userInput[schoolInfoConstants.fileFieldName][0]
+    ) {
         await localFileOperations.deleteFile(existingSchoolInfo?.iconId); // Delete old file
 
         const newFile = userInput[schoolInfoConstants.fileFieldName][0];
-        const { fileId, fileLink } = await localFileOperations.uploadFile(request, newFile);
+        const { fileId, fileLink } = await localFileOperations.uploadFile(
+            request,
+            newFile
+        );
 
         userInput.iconId = fileId;
         userInput.icon = fileLink;
@@ -150,7 +180,13 @@ const handleUpdateSchoolInfoById = async (request, context) => {
  * @returns {Promise<any>} A promise that resolves to the result of the deletion operation.
  */
 const deleteSchoolInfoById = async (request, context) => {
-    return serviceShared.deleteEntryById(request, context, SchoolInfoModel, 'iconId', 'school info');
+    return serviceShared.deleteEntryById(
+        request,
+        context,
+        SchoolInfoModel,
+        'iconId',
+        'school info'
+    );
 };
 
 /**

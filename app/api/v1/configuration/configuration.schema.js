@@ -1,10 +1,25 @@
 import { z } from 'zod';
 
-import schemaShared from "@/shared/schema.shared";
-import configurationConstants from "@/app/api/v1/configuration/configuration.constants";
+import schemaShared from '@/shared/schema.shared';
+import configurationConstants from '@/app/api/v1/configuration/configuration.constants';
 
-const { nonEmptyString, nonEmptyStringArray, validMongooseId, validDate, filesValidator, validEmailArray, validMobileNumberArray, validUrlArray } = schemaShared;
-const { nameMaxCharacter, addressMaxCharacter, allowedMimeTypes, allowedLogoFileSize, allowedBannerFileSize } = configurationConstants;
+const {
+    nonEmptyString,
+    nonEmptyStringArray,
+    validMongooseId,
+    validDate,
+    filesValidator,
+    validEmailArray,
+    validMobileNumberArray,
+    validUrlArray,
+} = schemaShared;
+const {
+    nameMaxCharacter,
+    addressMaxCharacter,
+    allowedMimeTypes,
+    allowedLogoFileSize,
+    allowedBannerFileSize,
+} = configurationConstants;
 
 /**
  * Represents a non-empty string used as a configuration name.
@@ -38,7 +53,13 @@ const description = nonEmptyString('Configuration description');
  *
  * The variable `logo` stores this specific configuration for validating logo files.
  */
-const logo = filesValidator('Configuration logo', allowedMimeTypes, allowedLogoFileSize, 1, 1);
+const logo = filesValidator(
+    'Configuration logo',
+    allowedMimeTypes,
+    allowedLogoFileSize,
+    1,
+    1
+);
 
 /**
  * The `banner` variable represents a configuration option for file validation applied to a banner file.
@@ -52,7 +73,13 @@ const logo = filesValidator('Configuration logo', allowedMimeTypes, allowedLogoF
  * - Maximum Files: Allows a maximum of 1 file to be uploaded.
  * - Optional: This field is marked as optional.
  */
-const banner = filesValidator('Configuration banner', allowedMimeTypes, allowedBannerFileSize, 1, 1).optional();
+const banner = filesValidator(
+    'Configuration banner',
+    allowedMimeTypes,
+    allowedBannerFileSize,
+    1,
+    1
+).optional();
 
 /**
  * Represents the configuration address.
@@ -116,16 +143,18 @@ const socialLinks = validUrlArray('Configuration social links');
  *
  * The `strict()` modifier enforces that only the specified properties are allowed.
  */
-const createSchema = z.object({
-    name,
-    description,
-    logo,
-    banner,
-    address,
-    emails,
-    contacts,
-    socialLinks,
-}).strict(); // Enforce strict mode to disallow extra fields
+const createSchema = z
+    .object({
+        name,
+        description,
+        logo,
+        banner,
+        address,
+        emails,
+        contacts,
+        socialLinks,
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * Represents a schema definition object for validating query parameters using the Zod library.
@@ -137,12 +166,14 @@ const createSchema = z.object({
  * - `createdAt` (optional): Validates the configuration creation time as a date. This field is optional.
  * - `updatedAt` (optional): Validates the configuration's last update time as a date. This field is optional.
  */
-const getDataByQuery = z.object({
-    name: name.optional(),
-    description: description.optional(),
-    createdAt: validDate('Configuration creation time').optional(),
-    updatedAt: validDate('Configuration last update time').optional(),
-}).strict(); // Enforce strict mode to disallow extra fields
+const getDataByQuery = z
+    .object({
+        name: name.optional(),
+        description: description.optional(),
+        createdAt: validDate('Configuration creation time').optional(),
+        updatedAt: validDate('Configuration last update time').optional(),
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * `updateSchema` defines a schema for validating updates to an entity using the `zod` library.
@@ -162,24 +193,26 @@ const getDataByQuery = z.object({
  * - Enforces that at least two fields are provided, where one must be an identifier (`id`) and the other could be, for instance, "name" or "description".
  * - If the schema validation fails, a specific error message is returned: "At least one of 'name' or 'description' is required along with 'id'."
  */
-const updateSchema = z.object({
-    name: name.optional(),
-    description: description.optional(),
-    logo: logo.optional(),
-    banner: banner.optional(),
-    address: address.optional(),
-    emails: emails.optional(),
-    contacts: contacts.optional(),
-    socialLinks: socialLinks.optional(),
-    // deleteEmails: emails.optional(),
-    // deleteContacts: contacts.optional(),
-    // deleteSocialLinks: socialLinks.optional(),
-})
+const updateSchema = z
+    .object({
+        name: name.optional(),
+        description: description.optional(),
+        logo: logo.optional(),
+        banner: banner.optional(),
+        address: address.optional(),
+        emails: emails.optional(),
+        contacts: contacts.optional(),
+        socialLinks: socialLinks.optional(),
+        // deleteEmails: emails.optional(),
+        // deleteContacts: contacts.optional(),
+        // deleteSocialLinks: socialLinks.optional(),
+    })
     .strict() // Enforce strict mode to disallow extra fields
     .refine(
         (data) => Object.keys(data).length > 1, // Must include `id` and at least one other field
         {
-            message: 'At least one of "name" or "description" is required along with "id".',
+            message:
+                'At least one of "name" or "description" is required along with "id".',
         }
     );
 

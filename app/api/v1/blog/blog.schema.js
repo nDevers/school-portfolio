@@ -1,10 +1,22 @@
 import { z } from 'zod';
 
-import schemaShared from "@/shared/schema.shared";
-import blogConstants from "@/app/api/v1/blog/blog.constants";
+import schemaShared from '@/shared/schema.shared';
+import blogConstants from '@/app/api/v1/blog/blog.constants';
 
-const { nonEmptyString, nonEmptyStringArray, validMongooseId, validDate, filesValidator } = schemaShared;
-const { titleMaxCharacter, allowedBannerMimeTypes, allowedFilesMimeTypes, allowedImagesMimeTypes, allowedFileSize } = blogConstants;
+const {
+    nonEmptyString,
+    nonEmptyStringArray,
+    validMongooseId,
+    validDate,
+    filesValidator,
+} = schemaShared;
+const {
+    titleMaxCharacter,
+    allowedBannerMimeTypes,
+    allowedFilesMimeTypes,
+    allowedImagesMimeTypes,
+    allowedFileSize,
+} = blogConstants;
 
 /**
  * The title of the blog, expected to be a non-empty string.
@@ -42,7 +54,13 @@ const id = validMongooseId('Blog ID');
  * @param {number} 1 - The minimum number of files that must be uploaded.
  * @param {number} 1 - The maximum number of files that can be uploaded.
  */
-const banner = filesValidator('Blog banner', allowedBannerMimeTypes, allowedFileSize, 1, 1);
+const banner = filesValidator(
+    'Blog banner',
+    allowedBannerMimeTypes,
+    allowedFileSize,
+    1,
+    1
+);
 
 /**
  * Represents the configuration for file validation.
@@ -58,7 +76,13 @@ const banner = filesValidator('Blog banner', allowedBannerMimeTypes, allowedFile
  * @property {number} minFiles - The minimum number of files that must be uploaded, set as 1.
  * @property {number} maxFiles - The maximum number of files that can be uploaded, set as 10.
  */
-const files = filesValidator('Blog files', allowedFilesMimeTypes, allowedFileSize, 1, 10);
+const files = filesValidator(
+    'Blog files',
+    allowedFilesMimeTypes,
+    allowedFileSize,
+    1,
+    10
+);
 
 /**
  * A variable representing the validation rules for blog images.
@@ -72,7 +96,13 @@ const files = filesValidator('Blog files', allowedFilesMimeTypes, allowedFileSiz
  *
  * @type {Array|Object} - The validated image files or validation result.
  */
-const images = filesValidator('Blog images', allowedImagesMimeTypes, allowedFileSize, 1, 10);
+const images = filesValidator(
+    'Blog images',
+    allowedImagesMimeTypes,
+    allowedFileSize,
+    1,
+    10
+);
 
 /**
  * The `date` variable stores the result of the `validDate` function, which is used to handle the date associated with a blog.
@@ -96,14 +126,16 @@ const date = validDate('Blog date');
  * - `images`: Represents the images field.
  * - `date`: Represents the date field.
  */
-const createSchema = z.object({
-    title,
-    description,
-    banner,
-    files,
-    images,
-    date,
-}).strict(); // Enforce strict mode to disallow extra fields
+const createSchema = z
+    .object({
+        title,
+        description,
+        banner,
+        files,
+        images,
+        date,
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * Represents a schema to validate the structure and optionality of data retrieved by a query.
@@ -117,14 +149,16 @@ const createSchema = z.object({
  * - updatedAt: An optional valid date representing the last update time of a blog.
  * - date: An optional date field.
  */
-const getDataByQuery = z.object({
-    id: id.optional(),
-    title: title.optional(),
-    description: description.optional(),
-    createdAt: validDate('Blog creation time').optional(),
-    updatedAt: validDate('Blog last update time').optional(),
-    date: date.optional(),
-}).strict(); // Enforce strict mode to disallow extra fields
+const getDataByQuery = z
+    .object({
+        id: id.optional(),
+        title: title.optional(),
+        description: description.optional(),
+        createdAt: validDate('Blog creation time').optional(),
+        updatedAt: validDate('Blog last update time').optional(),
+        date: date.optional(),
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * A validation schema for updating an entity, ensuring required and optional fields follow specific rules.
@@ -149,22 +183,28 @@ const getDataByQuery = z.object({
  * Notes: The `deleteFiles` and `deleteImages` fields expect non-empty arrays of strings containing the IDs
  * to be deleted. Each optional property, if provided, must comply with its respective field validation rule.
  */
-const updateSchema = z.object({
-    id,
-    title: title.optional(),
-    description: description.optional(),
-    banner: banner.optional(),
-    files: files.optional(),
-    images: images.optional(),
-    deleteFiles: nonEmptyStringArray('The IDs of the files that will be deleted').optional(),
-    deleteImages: nonEmptyStringArray('The IDs of the images that will be deleted').optional(),
-    date: date.optional(),
-})
+const updateSchema = z
+    .object({
+        id,
+        title: title.optional(),
+        description: description.optional(),
+        banner: banner.optional(),
+        files: files.optional(),
+        images: images.optional(),
+        deleteFiles: nonEmptyStringArray(
+            'The IDs of the files that will be deleted'
+        ).optional(),
+        deleteImages: nonEmptyStringArray(
+            'The IDs of the images that will be deleted'
+        ).optional(),
+        date: date.optional(),
+    })
     .strict() // Enforce strict mode to disallow extra fields
     .refine(
         (data) => Object.keys(data).length > 1, // Must include `id` and at least one other field
         {
-            message: 'At least one of "title", "description", "banner", "files", "images", "deleteFiles", "deleteImages" or "date" is required along with "id".',
+            message:
+                'At least one of "title", "description", "banner", "files", "images", "deleteFiles", "deleteImages" or "date" is required along with "id".',
         }
     );
 

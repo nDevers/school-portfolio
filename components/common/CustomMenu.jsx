@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import {
     ContextMenu,
     ContextMenuCheckboxItem,
@@ -13,8 +13,8 @@ import {
     ContextMenuSubContent,
     ContextMenuSubTrigger,
     ContextMenuTrigger,
-} from "@/components/ui/context-menu"
-import { usePathname, useRouter } from 'next/navigation'
+} from '@/components/ui/context-menu';
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function CustomMenu({ children }) {
     const route = useRouter();
@@ -22,9 +22,7 @@ export default function CustomMenu({ children }) {
     const adminURL = pathname.startsWith('/admin');
     return (
         <ContextMenu>
-            <ContextMenuTrigger >
-                {children}
-            </ContextMenuTrigger>
+            <ContextMenuTrigger>{children}</ContextMenuTrigger>
             <ContextMenuContent className="w-64">
                 <ContextMenuItem inset onClick={() => route.back()}>
                     Back
@@ -39,7 +37,9 @@ export default function CustomMenu({ children }) {
                     <ContextMenuShortcut>⌘R</ContextMenuShortcut>
                 </ContextMenuItem>
                 <ContextMenuSub>
-                    <ContextMenuSubTrigger inset>More Tools</ContextMenuSubTrigger>
+                    <ContextMenuSubTrigger inset>
+                        More Tools
+                    </ContextMenuSubTrigger>
                     <ContextMenuSubContent className="w-48">
                         <ContextMenuItem>
                             Save Page As...
@@ -56,7 +56,9 @@ export default function CustomMenu({ children }) {
                     Show SideBar
                     <ContextMenuShortcut>⌘⇧B</ContextMenuShortcut>
                 </ContextMenuCheckboxItem>
-                <ContextMenuCheckboxItem>Show Full URLs</ContextMenuCheckboxItem>
+                <ContextMenuCheckboxItem>
+                    Show Full URLs
+                </ContextMenuCheckboxItem>
                 <ContextMenuSeparator />
                 <ContextMenuRadioGroup value="pedro">
                     <ContextMenuLabel inset>People</ContextMenuLabel>
@@ -64,9 +66,11 @@ export default function CustomMenu({ children }) {
                     <ContextMenuRadioItem value="pedro">
                         Pedro Duarte
                     </ContextMenuRadioItem>
-                    <ContextMenuRadioItem value="colm">Colm Tuite</ContextMenuRadioItem>
+                    <ContextMenuRadioItem value="colm">
+                        Colm Tuite
+                    </ContextMenuRadioItem>
                 </ContextMenuRadioGroup>
             </ContextMenuContent>
         </ContextMenu>
-    )
+    );
 }

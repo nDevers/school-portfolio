@@ -1,4 +1,4 @@
-import contentTypesConstants from "@/constants/contentTypes.constants";
+import contentTypesConstants from '@/constants/contentTypes.constants';
 
 /**
  * A constant defining the allowed content types for a specific operation or configuration.

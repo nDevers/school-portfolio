@@ -13,23 +13,23 @@ export default function EditButton({ title = 'Edit', link, selectedRow }) {
 
     return selectedRow ? (
         <Link href={link || '#'} passHref>
-            <Button 
-                size='sm' 
-                variant='default' 
-                className='bg-amber-500 hover:bg-amber-500/80 space-x-2 flex items-center'
+            <Button
+                size="sm"
+                variant="default"
+                className="bg-amber-500 hover:bg-amber-500/80 space-x-2 flex items-center"
             >
-                <HiPencil className='w-4 h-4' />
+                <HiPencil className="w-4 h-4" />
                 <span>{title}</span>
             </Button>
         </Link>
     ) : (
         <Button
-            size='sm'
-            variant='default'
+            size="sm"
+            variant="default"
             onClick={handleClick}
-            className='bg-amber-500 hover:bg-amber-500/80 space-x-2 flex items-center'
+            className="bg-amber-500 hover:bg-amber-500/80 space-x-2 flex items-center"
         >
-            <HiPencil className='w-4 h-4' />
+            <HiPencil className="w-4 h-4" />
             <span>{title}</span>
         </Button>
     );

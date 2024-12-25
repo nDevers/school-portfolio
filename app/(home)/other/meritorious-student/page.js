@@ -1,7 +1,5 @@
-import React from 'react'
+import React from 'react';
 
 export default function MeritoriousStudentPage() {
-  return (
-    <div>MeritoriousStudentPage</div>
-  )
+    return <div>MeritoriousStudentPage</div>;
 }

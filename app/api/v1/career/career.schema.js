@@ -1,10 +1,17 @@
 import { z } from 'zod';
 
-import schemaShared from "@/shared/schema.shared";
-import careerConstants from "@/app/api/v1/career/career.constants";
+import schemaShared from '@/shared/schema.shared';
+import careerConstants from '@/app/api/v1/career/career.constants';
 
-const { nonEmptyString, nonEmptyStringArray, validMongooseId, validDate, filesValidator } = schemaShared;
-const { titleMaxCharacter, allowedMimeTypes, allowedBannerFileSize } = careerConstants;
+const {
+    nonEmptyString,
+    nonEmptyStringArray,
+    validMongooseId,
+    validDate,
+    filesValidator,
+} = schemaShared;
+const { titleMaxCharacter, allowedMimeTypes, allowedBannerFileSize } =
+    careerConstants;
 
 /**
  * Represents the title of a school career.
@@ -59,7 +66,13 @@ const id = validMongooseId('School career ID');
  * @property {number} minFileCount - The minimum number of files required for validation.
  * @property {number} maxFileCount - The maximum number of files allowed for validation.
  */
-const files = filesValidator('School career files', allowedMimeTypes, allowedBannerFileSize, 1, 10);
+const files = filesValidator(
+    'School career files',
+    allowedMimeTypes,
+    allowedBannerFileSize,
+    1,
+    10
+);
 
 /**
  * The `date` variable represents a validated date input, specifically intended
@@ -78,13 +91,15 @@ const date = validDate('School career date');
  * Type safety and validation are enforced for the specified properties,
  * enabling robust data integrity checks when instantiated or validated.
  */
-const createSchema = z.object({
-    title,
-    subTitle,
-    description,
-    date,
-    files,
-}).strict(); // Enforce strict mode to disallow extra fields
+const createSchema = z
+    .object({
+        title,
+        subTitle,
+        description,
+        date,
+        files,
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * An object schema definition for validating data using a query structure.
@@ -105,15 +120,17 @@ const createSchema = z.object({
  *
  * The schema is strict, meaning no additional fields beyond those defined will be permitted.
  */
-const getDataByQuery = z.object({
-    id: id.optional(),
-    title: title.optional(),
-    subTitle: subTitle.optional(),
-    description: description.optional(),
-    date: date.optional(),
-    createdAt: validDate('School career creation time').optional(),
-    updatedAt: validDate('School career last update time').optional(),
-}).strict(); // Enforce strict mode to disallow extra fields
+const getDataByQuery = z
+    .object({
+        id: id.optional(),
+        title: title.optional(),
+        subTitle: subTitle.optional(),
+        description: description.optional(),
+        date: date.optional(),
+        createdAt: validDate('School career creation time').optional(),
+        updatedAt: validDate('School career last update time').optional(),
+    })
+    .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * A schema definition for updating an object with specific validation rules.
@@ -138,20 +155,24 @@ const getDataByQuery = z.object({
  * - The object must include an "id" field and at least one additional field for updates.
  * - If no optional fields are provided, the update is considered invalid.
  */
-const updateSchema = z.object({
-    id,
-    title: title.optional(),
-    subTitle: subTitle.optional(),
-    description: description.optional(),
-    date: date.optional(),
-    files: files.optional(),
-    deleteFiles: nonEmptyStringArray('ID of the file that will be deleted').optional(),
-})
+const updateSchema = z
+    .object({
+        id,
+        title: title.optional(),
+        subTitle: subTitle.optional(),
+        description: description.optional(),
+        date: date.optional(),
+        files: files.optional(),
+        deleteFiles: nonEmptyStringArray(
+            'ID of the file that will be deleted'
+        ).optional(),
+    })
     .strict() // Enforce strict mode to disallow extra fields
     .refine(
         (data) => Object.keys(data).length > 1, // Must include `id` and at least one other field
         {
-            message: 'At least one of "title" or "description" is required along with "id".',
+            message:
+                'At least one of "title" or "description" is required along with "id".',
         }
     );
 

@@ -1,15 +1,14 @@
-import { FacultyModel } from "@/shared/prisma.model.shared";
-import facultySchema from "@/app/api/v1/faculty/faculty.schema";
-import facultyConstants from "@/app/api/v1/faculty/faculty.constants";
-import sharedResponseTypes from "@/shared/shared.response.types";
-import localFileOperations from "@/util/localFileOperations";
+import { FacultyModel } from '@/shared/prisma.model.shared';
+import facultySchema from '@/app/api/v1/faculty/faculty.schema';
+import facultyConstants from '@/app/api/v1/faculty/faculty.constants';
+import sharedResponseTypes from '@/shared/shared.response.types';
+import localFileOperations from '@/util/localFileOperations';
 
-import asyncHandler from "@/util/asyncHandler";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import validateToken from "@/util/validateToken";
-import facultySelectionCriteria from "@/app/api/v1/faculty/faculty.selection.criteria";
-
+import asyncHandler from '@/util/asyncHandler';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import validateToken from '@/util/validateToken';
+import facultySelectionCriteria from '@/app/api/v1/faculty/faculty.selection.criteria';
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
 
@@ -44,11 +43,18 @@ const createFacultyEntry = async (userInput, request) => {
     });
 
     if (!createdDocument?.id) {
-        return INTERNAL_SERVER_ERROR(`Failed to create faculty entry with title "${userInput?.title}".`, request);
+        return INTERNAL_SERVER_ERROR(
+            `Failed to create faculty entry with title "${userInput?.title}".`,
+            request
+        );
     }
 
     // No need for an aggregation pipeline; Prisma returns the created document
-    return CREATED(`Faculty entry with title "${userInput?.title}" created successfully.`, createdDocument, request);
+    return CREATED(
+        `Faculty entry with title "${userInput?.title}" created successfully.`,
+        createdDocument,
+        request
+    );
 };
 
 /**
@@ -69,7 +75,10 @@ const createFacultyEntry = async (userInput, request) => {
  */
 const handleCreateFacultyByCategory = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, facultyConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        facultyConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
@@ -81,7 +90,12 @@ const handleCreateFacultyByCategory = async (request, context) => {
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'create', () => facultySchema.createSchema());
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'create',
+        () => facultySchema.createSchema()
+    );
 
     // Check if faculty entry with the same email, mobile, or portfolio already exists
     const existingEntry = await FacultyModel.findFirst({
@@ -89,20 +103,26 @@ const handleCreateFacultyByCategory = async (request, context) => {
             OR: [
                 { email: userInput?.email },
                 { mobile: userInput?.mobile },
-                { portfolio: userInput?.portfolio }
-            ]
+                { portfolio: userInput?.portfolio },
+            ],
         },
         select: {
             id: true,
-        }
+        },
     });
     if (existingEntry) {
-        return CONFLICT(`Faculty entry with email: "${userInput?.email}", mobile: ${userInput?.mobile} and portfolio "${userInput?.portfolio}" already exists.`, request);
+        return CONFLICT(
+            `Faculty entry with email: "${userInput?.email}", mobile: ${userInput?.mobile} and portfolio "${userInput?.portfolio}" already exists.`,
+            request
+        );
     }
 
     // Upload file and generate link
     const newImage = userInput[facultyConstants.imageFieldName][0];
-    const { fileId, fileLink } = await localFileOperations.uploadFile(request, newImage);
+    const { fileId, fileLink } = await localFileOperations.uploadFile(
+        request,
+        newImage
+    );
 
     userInput.imageId = fileId;
     userInput.image = fileLink;

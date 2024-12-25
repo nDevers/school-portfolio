@@ -1,13 +1,13 @@
-import {PrismaClient} from "@prisma/client";
-import {CryptoError} from "@/util/asyncHandler";
+import { PrismaClient } from '@prisma/client';
+import { CryptoError } from '@/util/asyncHandler';
 
-import sharedResponseTypes from "@/shared/shared.response.types";
+import sharedResponseTypes from '@/shared/shared.response.types';
 
-import getAuthToken from "./getAuthToken";
-import {decryptData} from "@/util/crypto";
-import verifyToken from "@/util/verifyToken";
-import convertToObjectId from "@/util/convertToObjectId";
-import getDeviceType from "@/util/getDeviceType";
+import getAuthToken from './getAuthToken';
+import { decryptData } from '@/util/crypto';
+import verifyToken from '@/util/verifyToken';
+import convertToObjectId from '@/util/convertToObjectId';
+import getDeviceType from '@/util/getDeviceType';
 
 /**
  * An instance of the PrismaClient used to interact with the database.
@@ -44,7 +44,7 @@ const validateToken = async (request, type = 'access') => {
     try {
         token = decryptData(encryptedToken);
     } catch (error) {
-        throw new CryptoError('Invalid token provided.')
+        throw new CryptoError('Invalid token provided.');
     }
 
     const tokenDetails = await verifyToken(token, type);
@@ -52,7 +52,10 @@ const validateToken = async (request, type = 'access') => {
     if (!tokenDetails?.currentUser?._id) {
         return {
             isAuthorized: false,
-            response: FORBIDDEN('Authorization failed. User is not authorized to perform this action.', request),
+            response: FORBIDDEN(
+                'Authorization failed. User is not authorized to perform this action.',
+                request
+            ),
         };
     }
 
@@ -62,35 +65,37 @@ const validateToken = async (request, type = 'access') => {
     if (tokenDetails?.currentUser?.userType === 'admin') {
         existingUser = await prisma.admin.findUnique({
             where: {
-                id: userId
+                id: userId,
             },
             select: {
                 id: true,
                 email: true,
                 name: true,
-            }
+            },
         });
 
         existingUser.userType = tokenDetails?.currentUser?.userType;
     } else if (tokenDetails?.currentUser?.userType === 'super-admin') {
         existingUser = await prisma.admin.findUnique({
             where: {
-                id: userId
+                id: userId,
             },
             select: {
                 id: true,
-            }
+            },
         });
 
         existingUser.userType = tokenDetails?.currentUser?.userType;
     } else {
-
     }
 
     if (!existingUser) {
         return {
             isAuthorized: false,
-            response: FORBIDDEN('Authorization failed. User is not authorized to perform this action.', request),
+            response: FORBIDDEN(
+                'Authorization failed. User is not authorized to perform this action.',
+                request
+            ),
         };
     }
 

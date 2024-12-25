@@ -1,18 +1,18 @@
-'use client'
-import React from 'react'
-import InputWrapper from '@/components/ui/input-wrapper'
-import Reset from '@/components/button/Reset'
-import Submit from '@/components/button/Submit'
-import * as Yup from 'yup'
-import { toast } from 'sonner'
-import { Input } from '@/components/ui/input'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { useFormik } from 'formik'
-import { handleImageChange } from '@/util/formikHelpers'
-import ComboboxFormik from '@/components/ui/ComboboxFormik'
-import { fetchData, postData, updateData } from '@/util/axios'
-import apiConfig from '@/configs/apiConfig'
-import { useRouter } from 'next/navigation'
+'use client';
+import React from 'react';
+import InputWrapper from '@/components/ui/input-wrapper';
+import Reset from '@/components/button/Reset';
+import Submit from '@/components/button/Submit';
+import * as Yup from 'yup';
+import { toast } from 'sonner';
+import { Input } from '@/components/ui/input';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useFormik } from 'formik';
+import { handleImageChange } from '@/util/formikHelpers';
+import ComboboxFormik from '@/components/ui/ComboboxFormik';
+import { fetchData, postData, updateData } from '@/util/axios';
+import apiConfig from '@/configs/apiConfig';
+import { useRouter } from 'next/navigation';
 
 export default function TeamForm({ data }) {
     const route = useRouter();
@@ -20,21 +20,36 @@ export default function TeamForm({ data }) {
         name: data?.name || '',
         email: data?.email || '',
         image: '',
-        joinDate: data?.joinDate.split("T")[0] || '',
+        joinDate: data?.joinDate.split('T')[0] || '',
         designation: data?.designation || '',
         organization: data?.organization || '',
         typeId: data?.typeId || '',
         statusId: data?.statusId || '',
-    }
+    };
 
     const validationSchema = Yup.object({
         name: Yup.string().required('Required field'),
-        email: Yup.string().email('Invalid email format').required('Required field'),
+        email: Yup.string()
+            .email('Invalid email format')
+            .required('Required field'),
         image: Yup.mixed()
             // .required('Image is required')
-            .test('fileSize', 'File size too large', value => !value || (value && value.size <= 2000000)) // 2MB limit
-            .test('fileType', 'Unsupported file format', value => 
-                !value || ['image/png', 'image/jpeg', 'image/jpg','image/gif'].includes(value.type)
+            .test(
+                'fileSize',
+                'File size too large',
+                (value) => !value || (value && value.size <= 2000000)
+            ) // 2MB limit
+            .test(
+                'fileType',
+                'Unsupported file format',
+                (value) =>
+                    !value ||
+                    [
+                        'image/png',
+                        'image/jpeg',
+                        'image/jpg',
+                        'image/gif',
+                    ].includes(value.type)
             ),
         joinDate: Yup.date()
             .required('Join date is required')
@@ -57,18 +72,21 @@ export default function TeamForm({ data }) {
         formData.append('organization', values.organization);
         formData.append('typeId', values.typeId);
         formData.append('statusId', values.statusId);
-        
+
         if (data) {
-            await updateData(apiConfig?.UPDATE_TEAM_COMMITTEE + data?._id, formData);
+            await updateData(
+                apiConfig?.UPDATE_TEAM_COMMITTEE + data?._id,
+                formData
+            );
         } else {
             await postData(apiConfig?.CREATE_TEAM_COMMITTEE, formData);
         }
-    }
+    };
 
     const reset = () => {
         formik?.resetForm();
         route.back();
-    }
+    };
 
     const formik = useFormik({
         initialValues,
@@ -82,7 +100,7 @@ export default function TeamForm({ data }) {
         mutationKey: ['team'],
         mutationFn: submit,
         onSuccess: () => reset(),
-    })
+    });
 
     const { isLoading: teamTypeLoading, data: teamType } = useQuery({
         queryKey: ['team-type'],
@@ -95,10 +113,13 @@ export default function TeamForm({ data }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
-            <div className='grid md:grid-cols-2 gap-2 w-full'>
-
-                <InputWrapper label="Name" error={formik.errors?.name} touched={formik.touched?.name}>
+        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
+            <div className="grid md:grid-cols-2 gap-2 w-full">
+                <InputWrapper
+                    label="Name"
+                    error={formik.errors?.name}
+                    touched={formik.touched?.name}
+                >
                     <Input
                         name="name"
                         placeholder="Your Name"
@@ -108,7 +129,11 @@ export default function TeamForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Profile Image" error={formik.errors?.image} touched={formik.touched?.image}>
+                <InputWrapper
+                    label="Profile Image"
+                    error={formik.errors?.image}
+                    touched={formik.touched?.image}
+                >
                     <Input
                         type="file"
                         name="image"
@@ -118,7 +143,11 @@ export default function TeamForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Email" error={formik.errors?.email} touched={formik.touched?.email}>
+                <InputWrapper
+                    label="Email"
+                    error={formik.errors?.email}
+                    touched={formik.touched?.email}
+                >
                     <Input
                         type="email"
                         name="email"
@@ -129,7 +158,11 @@ export default function TeamForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Join Date" error={formik.errors?.joinDate} touched={formik.touched?.joinDate}>
+                <InputWrapper
+                    label="Join Date"
+                    error={formik.errors?.joinDate}
+                    touched={formik.touched?.joinDate}
+                >
                     <Input
                         type="date"
                         name="joinDate"
@@ -139,7 +172,11 @@ export default function TeamForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Designation" error={formik.errors?.designation} touched={formik.touched?.designation}>
+                <InputWrapper
+                    label="Designation"
+                    error={formik.errors?.designation}
+                    touched={formik.touched?.designation}
+                >
                     <Input
                         name="designation"
                         placeholder="Your Designation"
@@ -149,7 +186,11 @@ export default function TeamForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Organization" error={formik.errors?.organization} touched={formik.touched?.organization}>
+                <InputWrapper
+                    label="Organization"
+                    error={formik.errors?.organization}
+                    touched={formik.touched?.organization}
+                >
                     <Input
                         name="organization"
                         placeholder="Your Organization"
@@ -159,7 +200,11 @@ export default function TeamForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Team Type" error={formik.errors?.typeId} touched={formik.touched?.typeId}>
+                <InputWrapper
+                    label="Team Type"
+                    error={formik.errors?.typeId}
+                    touched={formik.touched?.typeId}
+                >
                     <ComboboxFormik
                         select="_id"
                         display="type"
@@ -169,7 +214,11 @@ export default function TeamForm({ data }) {
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Status" error={formik.errors?.statusId} touched={formik.touched?.statusId}>
+                <InputWrapper
+                    label="Status"
+                    error={formik.errors?.statusId}
+                    touched={formik.touched?.statusId}
+                >
                     <ComboboxFormik
                         select="_id"
                         display="status"
@@ -180,10 +229,10 @@ export default function TeamForm({ data }) {
                 </InputWrapper>
             </div>
 
-            <div className='flex items-center space-x-2'>
+            <div className="flex items-center space-x-2">
                 <Reset onClick={reset} />
-                <Submit disabled={mutation.isPending || mutation.isSuccess}/>
+                <Submit disabled={mutation.isPending || mutation.isSuccess} />
             </div>
         </form>
-    )
+    );
 }

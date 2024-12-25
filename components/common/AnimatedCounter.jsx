@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { animate, useInView, useIsomorphicLayoutEffect } from "framer-motion";
-import { useRef } from "react";
+import { animate, useInView, useIsomorphicLayoutEffect } from 'framer-motion';
+import { useRef } from 'react';
 
 export default function AnimatedCounter({ from, to, animationOptions }) {
     const ref = useRef(null); // Reference to the span element
@@ -17,14 +17,14 @@ export default function AnimatedCounter({ from, to, animationOptions }) {
         element.textContent = String(from);
 
         // Check if reduced motion is enabled in the user's system
-        if (window.matchMedia("(prefers-reduced-motion)").matches) {
+        if (window.matchMedia('(prefers-reduced-motion)').matches) {
             element.textContent = String(to);
             return;
         }
 
         const controls = animate(from, to, {
             duration: 2,
-            ease: "easeOut",
+            ease: 'easeOut',
             ...animationOptions,
             onUpdate(value) {
                 element.textContent = value.toFixed(0); // Update element text content
@@ -38,4 +38,4 @@ export default function AnimatedCounter({ from, to, animationOptions }) {
     }, [ref, inView, from, to]);
 
     return <span ref={ref} />;
-};
+}

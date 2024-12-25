@@ -1,10 +1,25 @@
 import { z } from 'zod';
 
-import schemaShared from "@/shared/schema.shared";
-import facultyConstants from "@/app/api/v1/faculty/faculty.constants";
+import schemaShared from '@/shared/schema.shared';
+import facultyConstants from '@/app/api/v1/faculty/faculty.constants';
 
-const { nonEmptyString, enumValidation, validMongooseId, validDate, filesValidator, validEmail, validMobileNumber, validUrl } = schemaShared;
-const { nameMaxCharacter, designationMaxCharacter, allowedCategories, allowedMimeTypes, allowedFileSize } = facultyConstants;
+const {
+    nonEmptyString,
+    enumValidation,
+    validMongooseId,
+    validDate,
+    filesValidator,
+    validEmail,
+    validMobileNumber,
+    validUrl,
+} = schemaShared;
+const {
+    nameMaxCharacter,
+    designationMaxCharacter,
+    allowedCategories,
+    allowedMimeTypes,
+    allowedFileSize,
+} = facultyConstants;
 
 /**
  * A function that generates a non-empty string representation of a name for a given field.
@@ -12,7 +27,8 @@ const { nameMaxCharacter, designationMaxCharacter, allowedCategories, allowedMim
  * @param {string} fieldName - The name of the field associated with this name entry.
  * @returns {string} A non-empty string representation of the field name with a maximum character limit.
  */
-const name = (fieldName) => nonEmptyString(`${fieldName} name`, nameMaxCharacter);
+const name = (fieldName) =>
+    nonEmptyString(`${fieldName} name`, nameMaxCharacter);
 
 /**
  * Generates a designation string based on the provided field name.
@@ -21,7 +37,8 @@ const name = (fieldName) => nonEmptyString(`${fieldName} name`, nameMaxCharacter
  * @param {string} fieldName - The name of the field used to create a designation string.
  * @returns {string} A non-empty designation string created from the input field name.
  */
-const designation = (fieldName) => nonEmptyString(`${fieldName} designation`, designationMaxCharacter);
+const designation = (fieldName) =>
+    nonEmptyString(`${fieldName} designation`, designationMaxCharacter);
 
 /**
  * Generates a Mongoose-valid ID for a specified field name.
@@ -42,7 +59,8 @@ const id = (fieldName) => validMongooseId(`${fieldName} ID`);
  * @param {string} fieldName - The name of the field to be validated as a category parameter.
  * @returns {Function} A configured validation function to validate the given fieldName with the allowed categories.
  */
-const categoryParams = (fieldName) => enumValidation(`${fieldName} category parameter`, allowedCategories);
+const categoryParams = (fieldName) =>
+    enumValidation(`${fieldName} category parameter`, allowedCategories);
 
 /**
  * Defines a function that validates an image file based on allowed MIME types,
@@ -51,7 +69,14 @@ const categoryParams = (fieldName) => enumValidation(`${fieldName} category para
  * @param {string} fieldName - The name of the field being validated.
  * @returns {Function} A validation function specific to the provided field name.
  */
-const image = (fieldName) => filesValidator(`${fieldName} image`, allowedMimeTypes, allowedFileSize, 1, 1);
+const image = (fieldName) =>
+    filesValidator(
+        `${fieldName} image`,
+        allowedMimeTypes,
+        allowedFileSize,
+        1,
+        1
+    );
 
 /**
  * A function that returns a validation rule for an email field.
@@ -99,15 +124,18 @@ const portfolio = (fieldName) => validUrl(`${fieldName} portfolio`).optional();
  * @param {string} fieldName - The base field name used to generate the schema's sub-fields.
  * @returns {ZodObject} A Zod schema object that conforms to the defined structure.
  */
-const createSchema = (fieldName) => z.object({
-    categoryParams: categoryParams(fieldName),
-    name: name(fieldName),
-    designation: designation(fieldName),
-    image: image(fieldName),
-    email: email(fieldName),
-    mobile: mobile(fieldName),
-    portfolio: portfolio(fieldName)
-}).strict(); // Enforce strict mode to disallow extra fields
+const createSchema = (fieldName) =>
+    z
+        .object({
+            categoryParams: categoryParams(fieldName),
+            name: name(fieldName),
+            designation: designation(fieldName),
+            image: image(fieldName),
+            email: email(fieldName),
+            mobile: mobile(fieldName),
+            portfolio: portfolio(fieldName),
+        })
+        .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * Constructs a strict schema for validating data using the provided field name.
@@ -130,17 +158,20 @@ const createSchema = (fieldName) => z.object({
  *
  * All fields are strictly validated.
  */
-const getDataByQuery = (fieldName) => z.object({
-    id: id(fieldName).optional(),
-    categoryParams: categoryParams(fieldName).optional(),
-    name: name(fieldName).optional(),
-    designation: designation(fieldName).optional(),
-    createdAt: validDate(`${fieldName} creation time`).optional(),
-    updatedAt: validDate(`${fieldName} last update time`).optional(),
-    email: email(fieldName),
-    mobile: mobile(fieldName).optional(),
-    portfolio: portfolio(fieldName)
-}).strict(); // Enforce strict mode to disallow extra fields
+const getDataByQuery = (fieldName) =>
+    z
+        .object({
+            id: id(fieldName).optional(),
+            categoryParams: categoryParams(fieldName).optional(),
+            name: name(fieldName).optional(),
+            designation: designation(fieldName).optional(),
+            createdAt: validDate(`${fieldName} creation time`).optional(),
+            updatedAt: validDate(`${fieldName} last update time`).optional(),
+            email: email(fieldName),
+            mobile: mobile(fieldName).optional(),
+            portfolio: portfolio(fieldName),
+        })
+        .strict(); // Enforce strict mode to disallow extra fields
 
 /**
  * A schema generator function for validating data objects based on the provided `fieldName`.
@@ -166,24 +197,27 @@ const getDataByQuery = (fieldName) => z.object({
  * Refinement validation error message:
  * "At least one of 'category', 'name', 'designation', 'image', 'email' or 'mobile' is required along with 'id' and 'categoryParams'."
  */
-const updateSchema = (fieldName) => z.object({
-    id: id(fieldName),
-    categoryParams: categoryParams(fieldName),
-    category: categoryParams(fieldName).optional(),
-    name: name(fieldName).optional(),
-    designation: designation(fieldName).optional(),
-    image: image(fieldName).optional(),
-    email: email(fieldName),
-    mobile: mobile(fieldName).optional(),
-    portfolio: portfolio(fieldName)
-})
-    .strict() // Enforce strict mode to disallow extra fields
-    .refine(
-        (data) => Object.keys(data).length > 1, // Must include `id` and at least one other field
-        {
-            message: 'At least one of "category", "name", "designation", "image", "email" or "mobile" is required along with "id" and "categoryParams".',
-        }
-    );
+const updateSchema = (fieldName) =>
+    z
+        .object({
+            id: id(fieldName),
+            categoryParams: categoryParams(fieldName),
+            category: categoryParams(fieldName).optional(),
+            name: name(fieldName).optional(),
+            designation: designation(fieldName).optional(),
+            image: image(fieldName).optional(),
+            email: email(fieldName),
+            mobile: mobile(fieldName).optional(),
+            portfolio: portfolio(fieldName),
+        })
+        .strict() // Enforce strict mode to disallow extra fields
+        .refine(
+            (data) => Object.keys(data).length > 1, // Must include `id` and at least one other field
+            {
+                message:
+                    'At least one of "category", "name", "designation", "image", "email" or "mobile" is required along with "id" and "categoryParams".',
+            }
+        );
 
 /**
  * Defines a schema for a category object using Zod's validation library.
@@ -195,9 +229,12 @@ const updateSchema = (fieldName) => z.object({
  * The schema enforces a structure with the following:
  * - `categoryParams`: A nested schema generated by invoking `categoryParams` function with `fieldName` as its argument.
  */
-const categorySchema = (fieldName) => z.object({
-    categoryParams: categoryParams(fieldName),
-}).strict();
+const categorySchema = (fieldName) =>
+    z
+        .object({
+            categoryParams: categoryParams(fieldName),
+        })
+        .strict();
 
 /**
  * Function that defines a schema for validating objects with specific fields related to a category and its ID.
@@ -210,10 +247,13 @@ const categorySchema = (fieldName) => z.object({
  * The `id` is validated using the `id` function which also takes `fieldName` as a parameter.
  * The `.strict()` method enforces that no additional properties are allowed in the object.
  */
-const categoryAndIdSchema = (fieldName) => z.object({
-    categoryParams: categoryParams(fieldName),
-    id: id(fieldName),
-}).strict();
+const categoryAndIdSchema = (fieldName) =>
+    z
+        .object({
+            categoryParams: categoryParams(fieldName),
+            id: id(fieldName),
+        })
+        .strict();
 
 /**
  * facultySchema is an object representing various schema-related methods and definitions for managing faculty data.

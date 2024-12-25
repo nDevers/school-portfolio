@@ -1,35 +1,48 @@
-'use client'
-import React from 'react'
-import InputWrapper from '@/components/ui/input-wrapper'
-import Reset from '@/components/button/Reset'
-import Submit from '@/components/button/Submit'
-import * as Yup from 'yup'
-import { Input } from '@/components/ui/input'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useFormik } from 'formik'
-import { clearField, handleImageChange } from '@/util/formikHelpers'
-import { postData, updateData } from '@/util/axios'
-import apiConfig from '@/configs/apiConfig'
-import { Textarea } from '@/components/ui/textarea'
-import { Button } from '@/components/ui/button'
-import { GoX } from 'react-icons/go'
+'use client';
+import React from 'react';
+import InputWrapper from '@/components/ui/input-wrapper';
+import Reset from '@/components/button/Reset';
+import Submit from '@/components/button/Submit';
+import * as Yup from 'yup';
+import { Input } from '@/components/ui/input';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useFormik } from 'formik';
+import { clearField, handleImageChange } from '@/util/formikHelpers';
+import { postData, updateData } from '@/util/axios';
+import apiConfig from '@/configs/apiConfig';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import { GoX } from 'react-icons/go';
 
 export default function PhotoAlbumForm({ data }) {
     const queryClient = useQueryClient();
     const initialValues = {
         image: '',
         title: data?.title || '',
-        date: data?.date?.split("T")[0] || '',
+        date: data?.date?.split('T')[0] || '',
         description: data?.description || '',
-    }
+    };
 
     const validationSchema = Yup.object({
         title: Yup.string().required('Required field'),
         image: Yup.mixed()
             .required('Image is required')
-            .test('fileSize', 'File size too large', value => !value || (value && value.size <= 2000000)) // 2MB limit
-            .test('fileType', 'Unsupported file format', value =>
-                !value || ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'].includes(value.type)
+            .test(
+                'fileSize',
+                'File size too large',
+                (value) => !value || (value && value.size <= 2000000)
+            ) // 2MB limit
+            .test(
+                'fileType',
+                'Unsupported file format',
+                (value) =>
+                    !value ||
+                    [
+                        'image/png',
+                        'image/jpeg',
+                        'image/jpg',
+                        'image/gif',
+                    ].includes(value.type)
             ),
         date: Yup.date()
             .required('Date is required')
@@ -50,12 +63,12 @@ export default function PhotoAlbumForm({ data }) {
         } else {
             await postData(apiConfig?.CREATE_PHOTO, formData);
         }
-    }
+    };
 
     const reset = () => {
         formik?.resetForm();
-        queryClient.invalidateQueries(['photo'])
-    }
+        queryClient.invalidateQueries(['photo']);
+    };
 
     const formik = useFormik({
         initialValues,
@@ -69,14 +82,22 @@ export default function PhotoAlbumForm({ data }) {
         mutationKey: ['photo'],
         mutationFn: submit,
         onSuccess: () => reset(),
-    })
+    });
 
     return (
-        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
             <div>
-                <div className={`gap-2 ${data?.image && 'grid md:grid-cols-2'}`}>
-                    <div className={`gap-2 ${!data?.image && 'grid md:grid-cols-2'}`}>
-                        <InputWrapper label="Profile Image" error={formik.errors?.image} touched={formik.touched?.image}>
+                <div
+                    className={`gap-2 ${data?.image && 'grid md:grid-cols-2'}`}
+                >
+                    <div
+                        className={`gap-2 ${!data?.image && 'grid md:grid-cols-2'}`}
+                    >
+                        <InputWrapper
+                            label="Profile Image"
+                            error={formik.errors?.image}
+                            touched={formik.touched?.image}
+                        >
                             <Input
                                 type="file"
                                 name="image"
@@ -86,7 +107,11 @@ export default function PhotoAlbumForm({ data }) {
                             />
                         </InputWrapper>
 
-                        <InputWrapper label="Date" error={formik.errors?.date} touched={formik.touched?.date}>
+                        <InputWrapper
+                            label="Date"
+                            error={formik.errors?.date}
+                            touched={formik.touched?.date}
+                        >
                             <Input
                                 type="date"
                                 name="date"
@@ -105,18 +130,22 @@ export default function PhotoAlbumForm({ data }) {
                             />
                             <Button
                                 type="button"
-                                size='icon'
+                                size="icon"
                                 onClick={() => clearField(formik, 'image')}
-                                className='absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full'
+                                className="absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full"
                             >
                                 <GoX />
                             </Button>
                         </div>
                     )}
                 </div>
-                <div className='grid md:grid-cols-2 gap-2 w-full'>
-
-                    <InputWrapper label="Title" error={formik.errors?.title} touched={formik.touched?.title} className={'md:col-span-2'}>
+                <div className="grid md:grid-cols-2 gap-2 w-full">
+                    <InputWrapper
+                        label="Title"
+                        error={formik.errors?.title}
+                        touched={formik.touched?.title}
+                        className={'md:col-span-2'}
+                    >
                         <Input
                             name="title"
                             placeholder="Photo Title"
@@ -126,7 +155,12 @@ export default function PhotoAlbumForm({ data }) {
                         />
                     </InputWrapper>
 
-                    <InputWrapper label="Description" error={formik.errors?.description} touched={formik.touched?.description} className={'md:col-span-2'}>
+                    <InputWrapper
+                        label="Description"
+                        error={formik.errors?.description}
+                        touched={formik.touched?.description}
+                        className={'md:col-span-2'}
+                    >
                         <Textarea
                             name="description"
                             placeholder="Description"
@@ -138,10 +172,10 @@ export default function PhotoAlbumForm({ data }) {
                 </div>
             </div>
 
-            <div className='flex items-center space-x-2'>
+            <div className="flex items-center space-x-2">
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending} />
             </div>
         </form>
-    )
+    );
 }

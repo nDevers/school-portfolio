@@ -1,5 +1,5 @@
-import contentTypesConstants from "@/constants/contentTypes.constants";
-import mimeTypesConstants from "@/constants/mimeTypes.constants";
+import contentTypesConstants from '@/constants/contentTypes.constants';
+import mimeTypesConstants from '@/constants/mimeTypes.constants';
 
 /**
  * A constant that defines the allowed content types for a specific context or operation.
@@ -21,7 +21,12 @@ const allowedContentTypes = [contentTypesConstants.FORM_DATA];
  *
  * @type {string[]}
  */
-const allowedMimeTypes = [mimeTypesConstants.JPEG, mimeTypesConstants.JPG, mimeTypesConstants.PNG, mimeTypesConstants.GIF];
+const allowedMimeTypes = [
+    mimeTypesConstants.JPEG,
+    mimeTypesConstants.JPG,
+    mimeTypesConstants.PNG,
+    mimeTypesConstants.GIF,
+];
 
 /**
  * A constant string that represents the field name used for storing or referencing image data.
@@ -62,10 +67,10 @@ const designationMaxCharacter = 50;
  * @property {string} meritStudent - Represents the "merit_student" category.
  */
 const categories = {
-    teacher: "teacher",
-    board: "board",
-    exHeadTeacher: "ex_head_teacher",
-    meritStudent: "merit_student",
+    teacher: 'teacher',
+    board: 'board',
+    exHeadTeacher: 'ex_head_teacher',
+    meritStudent: 'merit_student',
 };
 
 /**

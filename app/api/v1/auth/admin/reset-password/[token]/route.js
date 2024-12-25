@@ -1,7 +1,7 @@
-import { AdminModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
+import { AdminModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
 
-import asyncHandler from "@/util/asyncHandler";
+import asyncHandler from '@/util/asyncHandler';
 
 /**
  * Asynchronous function to handle the reset password process for an admin user.
@@ -22,7 +22,7 @@ const handleResetPassword = async (request, context) => {
     return await serviceShared.handlePasswordReset(
         request,
         context,
-        AdminModel,
+        AdminModel
     );
 };
 

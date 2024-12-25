@@ -1,17 +1,16 @@
-import moment from "moment";
+import moment from 'moment';
 
-import { AnnouncementModel } from "@/shared/prisma.model.shared";
-import announcementSchema from "@/app/api/v1/announcement/announcement.schema";
-import announcementConstants from "@/app/api/v1/announcement/announcement.constants";
-import sharedResponseTypes from "@/shared/shared.response.types";
-import localFileOperations from "@/util/localFileOperations";
+import { AnnouncementModel } from '@/shared/prisma.model.shared';
+import announcementSchema from '@/app/api/v1/announcement/announcement.schema';
+import announcementConstants from '@/app/api/v1/announcement/announcement.constants';
+import sharedResponseTypes from '@/shared/shared.response.types';
+import localFileOperations from '@/util/localFileOperations';
 
-import asyncHandler from "@/util/asyncHandler";
-import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import validateToken from "@/util/validateToken";
-import announcementSelectionCriteria from "@/app/api/v1/announcement/announcement.selection.criteria";
-
+import asyncHandler from '@/util/asyncHandler';
+import validateUnsupportedContent from '@/util/validateUnsupportedContent';
+import parseAndValidateFormData from '@/util/parseAndValidateFormData';
+import validateToken from '@/util/validateToken';
+import announcementSelectionCriteria from '@/app/api/v1/announcement/announcement.selection.criteria';
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
 
@@ -45,11 +44,18 @@ const createAnnouncementEntry = async (userInput, request) => {
     });
 
     if (!createdDocument?.id) {
-        return INTERNAL_SERVER_ERROR(`Failed to create announcement entry with title "${userInput?.title}".`, request);
+        return INTERNAL_SERVER_ERROR(
+            `Failed to create announcement entry with title "${userInput?.title}".`,
+            request
+        );
     }
 
     // No need for an aggregation pipeline; Prisma returns the created document
-    return CREATED(`Announcement entry with title "${userInput?.title}" created successfully.`, createdDocument, request);
+    return CREATED(
+        `Announcement entry with title "${userInput?.title}" created successfully.`,
+        createdDocument,
+        request
+    );
 };
 
 /**
@@ -70,7 +76,10 @@ const createAnnouncementEntry = async (userInput, request) => {
  */
 const handleCreateAnnouncementByCategory = async (request, context) => {
     // Validate content type
-    const contentValidationResult = validateUnsupportedContent(request, announcementConstants.allowedContentTypes);
+    const contentValidationResult = validateUnsupportedContent(
+        request,
+        announcementConstants.allowedContentTypes
+    );
     if (!contentValidationResult.isValid) {
         return contentValidationResult.response;
     }
@@ -82,7 +91,12 @@ const handleCreateAnnouncementByCategory = async (request, context) => {
     }
 
     // Parse and validate form data
-    const userInput = await parseAndValidateFormData(request, context, 'create', () => announcementSchema.createSchema());
+    const userInput = await parseAndValidateFormData(
+        request,
+        context,
+        'create',
+        () => announcementSchema.createSchema()
+    );
 
     // Check if announcement entry with the same email, mobile, or portfolio already exists
     const existingEntry = await AnnouncementModel.findUnique({
@@ -92,27 +106,41 @@ const handleCreateAnnouncementByCategory = async (request, context) => {
         },
         select: {
             id: true,
-        }
+        },
     });
     if (existingEntry) {
-        return CONFLICT(`Faculty entry with TITLE "${userInput?.title}" and CATEGORY ${userInput?.categoryParams} not found.`, request);
+        return CONFLICT(
+            `Faculty entry with TITLE "${userInput?.title}" and CATEGORY ${userInput?.categoryParams} not found.`,
+            request
+        );
     }
 
     // Upload files and construct the `files` array for documents
     const files = await Promise.all(
-        (userInput[announcementConstants.filesFieldName] || []).map(async (fileEntry) => {
-            // Call your file upload operation
-            const { fileId, fileLink } = await localFileOperations.uploadFile(request, fileEntry);
-            return {
-                fileId: fileId,
-                file: fileLink
-            };
-        })
+        (userInput[announcementConstants.filesFieldName] || []).map(
+            async (fileEntry) => {
+                // Call your file upload operation
+                const { fileId, fileLink } =
+                    await localFileOperations.uploadFile(request, fileEntry);
+                return {
+                    fileId: fileId,
+                    file: fileLink,
+                };
+            }
+        )
     );
 
     userInput.files = files;
-    userInput.date = moment(userInput.date, ['DD/MM/YYYY', moment.ISO_8601], true).toDate();
-    userInput.advertiseMailTime = moment(userInput.advertiseMailTime, ['DD/MM/YYYY', moment.ISO_8601], true).toDate();
+    userInput.date = moment(
+        userInput.date,
+        ['DD/MM/YYYY', moment.ISO_8601],
+        true
+    ).toDate();
+    userInput.advertiseMailTime = moment(
+        userInput.advertiseMailTime,
+        ['DD/MM/YYYY', moment.ISO_8601],
+        true
+    ).toDate();
 
     userInput.category = userInput.categoryParams;
     userInput.isHeadline = userInput.isHeadline === true;

@@ -1,4 +1,4 @@
-import {Schema, models, model} from 'mongoose';
+import { Schema, models, model } from 'mongoose';
 
 /**
  * Schema definition for SuperAdmin data.
@@ -16,55 +16,62 @@ import {Schema, models, model} from 'mongoose';
  * @property {Date} [resetPasswordTokenExpiration] - Expiration date and time for the reset password token; optional.
  * @property {Object} timestamps - Automatically includes `createdAt` and `updatedAt` timestamps for the schema.
  */
-const superAdminSchema = new Schema({
-    name: {
-        type: String,
-        required: [true, 'Name is required'],
-        trim: true,
-    },
-    dateOfBirth: {
-        type: String, // Use `Date` if you want date parsing, or `String` for flexibility in formats
-        required: [true, 'Date of Birth is required'],
-    },
-    email: {
-        type: String,
-        required: [true, 'Email is required'],
-        unique: true,
-        match: [/^\S+@\S+\.\S+$/, 'Invalid email format'],
-    },
-    password: {
-        type: String,
-        required: [true, 'Password is required'],
-        minlength: [8, 'Password must be at least 8 characters'],
-        validate: {
-            validator: function (value) {
-                return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/.test(value);
+const superAdminSchema = new Schema(
+    {
+        name: {
+            type: String,
+            required: [true, 'Name is required'],
+            trim: true,
+        },
+        dateOfBirth: {
+            type: String, // Use `Date` if you want date parsing, or `String` for flexibility in formats
+            required: [true, 'Date of Birth is required'],
+        },
+        email: {
+            type: String,
+            required: [true, 'Email is required'],
+            unique: true,
+            match: [/^\S+@\S+\.\S+$/, 'Invalid email format'],
+        },
+        password: {
+            type: String,
+            required: [true, 'Password is required'],
+            minlength: [8, 'Password must be at least 8 characters'],
+            validate: {
+                validator: function (value) {
+                    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/.test(
+                        value
+                    );
+                },
+                message:
+                    'Password must contain an uppercase letter, lowercase letter, number, and special character',
             },
-            message: 'Password must contain an uppercase letter, lowercase letter, number, and special character',
+        },
+        emailVerifyToken: {
+            type: String,
+            trim: true,
+            description:
+                "Token used to verify the (users)'s identity for account creation process.",
+        },
+        resetPasswordToken: {
+            type: String,
+            trim: true,
+            description:
+                "Token used to verify the (users)'s identity for password reset process.",
+        },
+        resetPasswordTokenExpiration: {
+            type: Date,
+            trim: true,
+            description:
+                ' Expiration date and time for the reset password verification token.',
         },
     },
-    emailVerifyToken: {
-        type: String,
-        trim: true,
-        description:
-            "Token used to verify the (users)'s identity for account creation process.",
-    },
-    resetPasswordToken: {
-        type: String,
-        trim: true,
-        description:
-            "Token used to verify the (users)'s identity for password reset process.",
-    },
-    resetPasswordTokenExpiration: {
-        type: Date,
-        trim: true,
-        description:
-            ' Expiration date and time for the reset password verification token.',
-    },
-}, { timestamps: true });
+    { timestamps: true }
+);
 
 // Virtual field for confirmPassword
-superAdminSchema.virtual('confirmPassword')
+superAdminSchema
+    .virtual('confirmPassword')
     .get(function () {
         return this._confirmPassword;
     })
@@ -89,6 +96,7 @@ superAdminSchema.pre('save', function (next) {
  *
  * The model is used to perform CRUD operations and schema validations for the "SuperAdmins" collection.
  */
-const AdminModel = models?.SuperAdmins || model('SuperAdmins', superAdminSchema);
+const AdminModel =
+    models?.SuperAdmins || model('SuperAdmins', superAdminSchema);
 
 export default AdminModel;

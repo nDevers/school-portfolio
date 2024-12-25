@@ -1,10 +1,10 @@
-import mongodb from "@/lib/mongodb";
-import authUtilities from "@/app/api/v1/auth/auth.utilities";
+import mongodb from '@/lib/mongodb';
+import authUtilities from '@/app/api/v1/auth/auth.utilities';
 
-import asyncHandler from "@/util/asyncHandler";
-import {encryptData} from "@/util/crypto";
-import createAuthenticationToken from "@/util/createAuthenticationToken";
-import validateToken from "@/util/validateToken";
+import asyncHandler from '@/util/asyncHandler';
+import { encryptData } from '@/util/crypto';
+import createAuthenticationToken from '@/util/createAuthenticationToken';
+import validateToken from '@/util/validateToken';
 
 /**
  * Asynchronously handles the process of refreshing authentication tokens.
@@ -36,20 +36,20 @@ const handleRefreshToken = async (request) => {
         userType: authResult?.user?.userType,
     };
 
-    const { accessToken, refreshToken } = await createAuthenticationToken(userTokenData);
+    const { accessToken, refreshToken } =
+        await createAuthenticationToken(userTokenData);
 
-    console.log(accessToken)
-    console.log(refreshToken)
+    console.log(accessToken);
+    console.log(refreshToken);
 
     // Encrypt the token for response
-    const returnData = { accessToken: encryptData(accessToken), refreshToken: encryptData(refreshToken) };
+    const returnData = {
+        accessToken: encryptData(accessToken),
+        refreshToken: encryptData(refreshToken),
+    };
 
     // Return success response
-    return authUtilities.authorizedResponse(
-        'Authorized.',
-        returnData,
-        request
-    );
+    return authUtilities.authorizedResponse('Authorized.', returnData, request);
 };
 
 /**

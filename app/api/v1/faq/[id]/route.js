@@ -1,8 +1,8 @@
-import { FaqModel } from "@/shared/prisma.model.shared";
-import serviceShared from "@/shared/service.shared";
+import { FaqModel } from '@/shared/prisma.model.shared';
+import serviceShared from '@/shared/service.shared';
 
-import asyncHandler from "@/util/asyncHandler";
-import faqSelectionCriteria from "@/app/api/v1/faq/faq.selection.criteria";
+import asyncHandler from '@/util/asyncHandler';
+import faqSelectionCriteria from '@/app/api/v1/faq/faq.selection.criteria';
 
 /**
  * Handles the retrieval of a specific FAQ entry by its ID.
@@ -18,7 +18,13 @@ import faqSelectionCriteria from "@/app/api/v1/faq/faq.selection.criteria";
 export const handleGetFaqById = async (request, context) => {
     const selectionCriteria = faqSelectionCriteria();
 
-    return serviceShared.fetchEntryById(request, context, FaqModel, selectionCriteria,  'FAQ');
+    return serviceShared.fetchEntryById(
+        request,
+        context,
+        FaqModel,
+        selectionCriteria,
+        'FAQ'
+    );
 };
 
 /**
