@@ -1,36 +1,16 @@
-import AdminModel from "@/app/api/v1/admin/admin.model";
-import serviceShared from "@/shared/service.shared";
+import { AdminModel } from "@/shared/prisma.model.shared";
+import authSchema from "@/app/api/v1/auth/auth.schema";
+import authConstants from "@/app/api/v1/auth/auth.constants";
+import authUtilities from "@/app/api/v1/auth/auth.utilities";
+import authEmailTemplate from "@/app/api/v1/auth/auth.email.template";
 
 import asyncHandler from "@/util/asyncHandler";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
-import authConstants from "@/app/api/v1/auth/auth.constants";
 import parseAndValidateFormData from "@/util/parseAndValidateFormData";
-import authSchema from "@/app/api/v1/auth/auth.schema";
-import authUtilities from "@/app/api/v1/auth/auth.utilities";
 import getDeviceType from "@/util/getDeviceType";
 import comparePassword from "@/util/comparePassword";
 import {decryptData, encryptData} from "@/util/crypto";
 import createAuthenticationToken from "@/util/createAuthenticationToken";
-import authEmailTemplate from "@/app/api/v1/auth/auth.email.template";
-
-import { PrismaClient } from '@prisma/client';
-
-/**
- * Initializes a new instance of the PrismaClient, which provides
- * a database connection and methods for interacting with the database.
- *
- * The PrismaClient instance is used to perform CRUD operations and other
- * database queries in applications. It acts as the database client,
- * bridging the application with the database through Prisma's ORM.
- *
- * Note: Ensure to properly manage the lifecycle of the PrismaClient instance,
- * such as connecting and disconnecting, to avoid excessive connection pooling
- * or memory issues.
- *
- * Variable: prisma
- * Type: PrismaClient
- */
-const prisma = new PrismaClient();
 
 /**
  * Handles the login process for administrators.
@@ -66,7 +46,7 @@ const handleAdminLogin = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'create', authSchema.loginSchema);
 
     // Check if the user exists using Prisma
-    const existingUser = await prisma.admin.findUnique({
+    const existingUser = await AdminModel.findUnique({
         where: { email: userInput.email }
     });
     if (!existingUser) {

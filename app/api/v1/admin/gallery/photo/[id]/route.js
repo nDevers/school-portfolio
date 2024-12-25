@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
+import { GalleryPhotoModel } from "@/shared/prisma.model.shared";
 import galleryPhotoSchema from "@/app/api/v1/gallery/photo/gallery.photo.schema";
 import galleryPhotoConstants from "@/app/api/v1/gallery/photo/gallery.photo.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -12,36 +11,9 @@ import validateToken from "@/util/validateToken";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
 import galleryPhotoSelectionCriteria from "@/app/api/v1/gallery/photo/gallery.photo.selection.criteria";
 
-/**
- * The `prisma` instance is a client for interacting with the Prisma ORM, enabling database access and operations.
- * It provides methods to perform queries and mutations on the database models defined in the Prisma schema.
- *
- * This instance is typically used to manage the database connection and perform various CRUD (Create, Read, Update, Delete) operations.
- *
- * Note:
- * - Ensure that the Prisma schema is properly defined and migrated to the database.
- * - Proper initialization and cleanup (e.g., connection closing) should be handled in the application lifecycle.
- */
-const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 const { idValidationSchema } = schemaShared;
-
-/**
- * Represents the GalleryPhoto model managed by Prisma ORM.
- *
- * This model is used to store and manage information related to photos
- * in the gallery, including relevant metadata such as the associated
- * gallery, photo details, and any relationships or constraints defined
- * in the database schema.
- *
- * The fields and structure of this model are defined within the Prisma
- * schema file and are automatically mapped to database records.
- *
- * This is a centralized representation of a GalleryPhoto for data
- * consistency and ease of querying/manipulation within the application.
- */
-const model = prisma.GalleryPhoto;
 
 /**
  * Asynchronously updates a gallery photo entry with the specified user input.
@@ -71,7 +43,7 @@ const updateGalleryPhotoEntry = async (userInput, request) => {
     }, {});
 
     // Update the document with the filtered data
-    const updateDocument = await model.update({
+    const updateDocument = await GalleryPhotoModel.update({
         where: { id: userInput?.id },
         data: fieldsToUpdate,
         select: {
@@ -81,7 +53,7 @@ const updateGalleryPhotoEntry = async (userInput, request) => {
 
     const selectionCriteria = galleryPhotoSelectionCriteria();
 
-    const updatedDocument = await model.findUnique({
+    const updatedDocument = await GalleryPhotoModel.findUnique({
         where: {
             id: updateDocument?.id,
         },
@@ -135,7 +107,7 @@ const handleUpdateGalleryPhotoById = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'update', galleryPhotoSchema.updateSchema);
 
     // Check if FAQ entry with the same title already exists
-    const existingGalleryPhoto = await model.findUnique({
+    const existingGalleryPhoto = await GalleryPhotoModel.findUnique({
         where: {
             id: userInput?.id,
         },
@@ -150,7 +122,7 @@ const handleUpdateGalleryPhotoById = async (request, context) => {
 
     if (userInput?.title) {
         // Check if FAQ entry with the same title already exists
-        const existingQuestion = await model.findUnique({
+        const existingQuestion = await GalleryPhotoModel.findUnique({
             where: {
                 title: userInput?.title,
             },
@@ -204,7 +176,7 @@ const handleUpdateGalleryPhotoById = async (request, context) => {
         await Promise.all(deletePromises);
 
         // After deletion, update the database to remove the deleted image objects
-        await model.update({
+        await GalleryPhotoModel.update({
             where: { id: existingGalleryPhoto.id }, // Assuming the record is identified by id
             data: {
                 images: images // Update the images field in the database, only keeping non-deleted images
@@ -249,7 +221,7 @@ const deleteGalleryPhotoById = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'delete', idValidationSchema);
 
     // Check if data exists
-    const data = await model.findUnique({
+    const data = await GalleryPhotoModel.findUnique({
         where: {
             id: userInput?.id,
         },
@@ -273,14 +245,14 @@ const deleteGalleryPhotoById = async (request, context) => {
     }
 
     // Perform the deletion with the specified projection field for optional image handling
-    await model.delete({
+    await GalleryPhotoModel.delete({
         where: {
             id: userInput?.id,
         },
     });
 
     // If no document is found, send a 404 response
-    const deletedData = await model.findUnique({
+    const deletedData = await GalleryPhotoModel.findUnique({
         where: {
             id: userInput?.id,
         },

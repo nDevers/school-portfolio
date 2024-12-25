@@ -1,34 +1,9 @@
-import {PrismaClient} from "@prisma/client";
-
+import { GalleryPhotoModel } from "@/shared/prisma.model.shared";
 import serviceShared from "@/shared/service.shared";
 import galleryPhotoSchema from "@/app/api/v1/gallery/photo/gallery.photo.schema";
 
 import asyncHandler from "@/util/asyncHandler";
 import galleryPhotoSelectionCriteria from "@/app/api/v1/gallery/photo/gallery.photo.selection.criteria";
-
-/**
- * An instance of the PrismaClient class, used to interact with the database.
- *
- * The PrismaClient provides methods to perform database operations such as
- * querying, creating, updating, and deleting data. It acts as a bridge
- * between the application and the connected database, enabling
- * type-safe and efficient data handling.
- *
- * This variable should be used to execute all database queries and
- * mutations in the application. Ensure to properly manage the lifecycle
- * of this instance, including opening and closing database connections.
- */
-const prisma = new PrismaClient();
-
-/**
- * Represents a GalleryPhoto model from Prisma.
- *
- * This model is used to manage and interact with photo entries in a gallery.
- * It typically contains attributes and relationships pertaining to a single photo entity
- * within a gallery context. The model enables CRUD operations as well as associations with
- * other models where applicable.
- */
-const model = prisma.GalleryPhoto;
 
 /**
  * Handles the retrieval of a list of gallery photos based on the provided request and context.
@@ -43,7 +18,7 @@ const model = prisma.GalleryPhoto;
 const handleGetGalleryPhotoList = async (request, context) => {
     const selectionCriteria = galleryPhotoSelectionCriteria();
 
-    return serviceShared.fetchEntryList(request, context, model, selectionCriteria, 'Gallery photo', galleryPhotoSchema.getDataByQuery);
+    return serviceShared.fetchEntryList(request, context, GalleryPhotoModel, selectionCriteria, 'Gallery photo', galleryPhotoSchema.getDataByQuery);
 };
 
 /**

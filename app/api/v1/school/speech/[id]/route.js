@@ -1,32 +1,8 @@
-import {PrismaClient} from "@prisma/client";
-
+import { SchoolSpeechModel } from "@/shared/prisma.model.shared";
 import serviceShared from "@/shared/service.shared";
 
 import asyncHandler from "@/util/asyncHandler";
 import schoolSpeechSelectionCriteria from "@/app/api/v1/school/speech/school.speech.selection.criteria";
-
-/**
- * An instance of the PrismaClient used to interact with a database.
- *
- * PrismaClient provides an interface to query and manipulate data in a database.
- * It acts as an abstraction over raw SQL queries, allowing easier interaction
- * with the database using a type-safe and auto-completed query builder.
- *
- * This instance can be used to perform CRUD operations, execute raw queries,
- * and perform database migrations.
- *
- * Ensure to properly manage the PrismaClient lifecycle by connecting, using,
- * and disconnecting the instance when needed, especially in long-running
- * applications, to avoid connection pool exhaustion or memory leaks.
- */
-const prisma = new PrismaClient();
-
-/**
- * Represents the `SchoolSpeech` model from the Prisma Client.
- * This model is typically used to interact with the `SchoolSpeech` table in the database.
- * It allows for querying, creating, updating, and deleting records related to school speeches.
- */
-const model = prisma.SchoolSpeech;
 
 /**
  * Asynchronous handler function to retrieve a school speech by its unique identifier.
@@ -42,7 +18,7 @@ const model = prisma.SchoolSpeech;
 export const handleGetSpeechById = async (request, context) => {
     const selectionCriteria = schoolSpeechSelectionCriteria();
 
-    return serviceShared.fetchEntryById(request, context, model, selectionCriteria,  'School speech');
+    return serviceShared.fetchEntryById(request, context, SchoolSpeechModel, selectionCriteria,  'School speech');
 };
 
 /**

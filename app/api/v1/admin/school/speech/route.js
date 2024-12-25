@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
+import { SchoolSpeechModel } from "@/shared/prisma.model.shared";
 import schoolSpeechSchema from "@/app/api/v1/school/speech/school.speech.schema";
 import schoolSpeechConstants from "@/app/api/v1/school/speech/school.speech.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -11,33 +10,8 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import schoolSpeechSelectionCriteria from "@/app/api/v1/school/speech/school.speech.selection.criteria";
 
-/**
- * An instance of the PrismaClient used for database interactions.
- *
- * PrismaClient is a database toolkit that enables type-safe and efficient operations with a database.
- * This instance is used to perform queries, mutations, and other database access tasks.
- *
- * The PrismaClient connects to the database defined in the Prisma schema file
- * and provides generated methods to manipulate data on the respective models.
- *
- * By default, the instance should be used within an application to interact with the database
- * while following best practices, such as proper connection management and handling exceptions.
- */
-const prisma = new PrismaClient();
 
-const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED, NOT_FOUND } = sharedResponseTypes;
-
-/**
- * Represents the `SchoolSpeech` model from Prisma.
- * This model corresponds to the database table or entity managed by Prisma.
- *
- * The `SchoolSpeech` model may represent various attributes and relationships
- * pertaining to school speech records or similar entities within the database.
- *
- * Use this model to perform actions such as querying, creating, updating, or
- * deleting `SchoolSpeech` records in the database through Prisma's ORM methods.
- */
-const model = prisma.SchoolSpeech;
+const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
 
 /**
  * Asynchronously creates a new school speech entry in the database and returns the created document.
@@ -65,7 +39,7 @@ const model = prisma.SchoolSpeech;
  * and response generation.
  */
 const createSchoolSpeechEntry = async (userInput, request) => {
-    const newDocument = await model.create({
+    const newDocument = await SchoolSpeechModel.create({
         data: userInput,
         select: {
             id: true, // Only return the ID of the updated document
@@ -74,7 +48,7 @@ const createSchoolSpeechEntry = async (userInput, request) => {
 
     const selectionCriteria = schoolSpeechSelectionCriteria();
 
-    const createdDocument = await model.findUnique({
+    const createdDocument = await SchoolSpeechModel.findUnique({
         where: {
             id: newDocument?.id,
         },
@@ -120,7 +94,7 @@ const handleCreateSchoolSpeech = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'create', schoolSpeechSchema.createSchema);
 
     // Check if FAQ entry with the same title already exists
-    const existingTitle = await model.findUnique({
+    const existingTitle = await SchoolSpeechModel.findUnique({
         where: {
             title: userInput?.title,
         },

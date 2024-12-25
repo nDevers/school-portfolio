@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
+import { GalleryPhotoModel } from "@/shared/prisma.model.shared";
 import galleryPhotoSchema from "@/app/api/v1/gallery/photo/gallery.photo.schema";
 import galleryPhotoConstants from "@/app/api/v1/gallery/photo/gallery.photo.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -11,37 +10,8 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import galleryPhotoSelectionCriteria from "@/app/api/v1/gallery/photo/gallery.photo.selection.criteria";
 
-/**
- * An instance of the PrismaClient used for database interactions.
- *
- * The PrismaClient is the primary interface for querying and mutating data
- * in the connected database. It provides methods for performing Create,
- * Read, Update, and Delete (CRUD) operations on the defined models.
- *
- * Prisma automatically generates this client based on the schema definition,
- * allowing you to work with your database seamlessly using an API tailored
- * to the models in your application.
- *
- * Ensure to properly manage the lifecycle of the prisma instance. In most
- * cases, avoid creating multiple instances during runtime, especially in
- * server environments, as it can lead to connection pool exhaustion or
- * performance degradation.
- *
- * It is important to call `prisma.$disconnect()` when the application
- * shuts down in order to close database connections cleanly.
- */
-const prisma = new PrismaClient();
 
-const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED, NOT_FOUND } = sharedResponseTypes;
-
-/**
- * Represents the `GalleryPhoto` model from Prisma schema.
- * This model is used to handle photo data associated with a gallery in the application.
- *
- * The `GalleryPhoto` model contains information about an individual photo,
- * including its related metadata and the gallery it belongs to.
- */
-const model = prisma.GalleryPhoto;
+const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
 
 /**
  * Asynchronously creates a new gallery photo entry in the database and retrieves the created document.
@@ -57,7 +27,7 @@ const model = prisma.GalleryPhoto;
  * containing the result of the operation.
  */
 const createGalleryPhotoEntry = async (userInput, request) => {
-    const newDocument = await model.create({
+    const newDocument = await GalleryPhotoModel.create({
         data: userInput,
         select: {
             id: true, // Only return the ID of the updated document
@@ -66,7 +36,7 @@ const createGalleryPhotoEntry = async (userInput, request) => {
 
     const selectionCriteria = galleryPhotoSelectionCriteria();
 
-    const createdDocument = await model.findUnique({
+    const createdDocument = await GalleryPhotoModel.findUnique({
         where: {
             id: newDocument?.id,
         },
@@ -113,7 +83,7 @@ const handleCreateGalleryPhoto = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'create', galleryPhotoSchema.createSchema);
 
     // Check if FAQ entry with the same title already exists
-    const existingQuestion = await model.findUnique({
+    const existingQuestion = await GalleryPhotoModel.findUnique({
         where: {
             title: userInput?.title,
         },

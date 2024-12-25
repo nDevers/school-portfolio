@@ -1,38 +1,9 @@
-import {PrismaClient} from "@prisma/client";
-
+import { GalleryVideoModel } from "@/shared/prisma.model.shared";
 import serviceShared from "@/shared/service.shared";
 import galleryVideoSchema from "@/app/api/v1/gallery/video/gallery.video.schema";
 
 import asyncHandler from "@/util/asyncHandler";
 import galleryVideoSelectionCriteria from "@/app/api/v1/gallery/video/gallery.video.selection.criteria";
-
-/**
- * An instance of the PrismaClient class, used to interact with a database
- * through Prisma's type-safe query interface. Provides access to all Prisma
- * models and their respective CRUD operations.
- *
- * The `prisma` variable connects to the database defined in the Prisma schema
- * configuration and manages all database interactions such as querying,
- * creating, updating, and deleting records.
- *
- * It supports middleware, logging, and transaction management, ensuring efficient
- * and secure communication with the database.
- *
- * Note: Always ensure proper instantiation and disconnection of the PrismaClient
- * instance to avoid issues like connection leaks.
- */
-const prisma = new PrismaClient();
-
-/**
- * The `GalleryVideo` model represents a video entity associated with a gallery, typically used
- * to manage video content in a database through Prisma ORM. It encapsulates the properties and
- * relationships for video data such as video metadata, associations, and identifiers.
- *
- * This model may include fields for storing video details like its unique identifier, gallery
- * associations, timestamps, and additional metadata. It is part of the Prisma schema and enables
- * structured interactions with the video-related data in the application's database.
- */
-const model = prisma.GalleryVideo;
 
 /**
  * Represents the criteria used for selecting videos from a gallery.
@@ -58,7 +29,7 @@ const selectionCriteria = galleryVideoSelectionCriteria();
  * @returns {Promise<Object>} A promise that resolves to the list of gallery videos fetched from the shared service.
  */
 const handleGetGalleryVideoList = async (request, context) => {
-    return serviceShared.fetchEntryList(request, context, model, selectionCriteria, 'Gallery video', galleryVideoSchema.getDataByQuery);
+    return serviceShared.fetchEntryList(request, context, GalleryVideoModel, selectionCriteria, 'Gallery video', galleryVideoSchema.getDataByQuery);
 };
 
 /**

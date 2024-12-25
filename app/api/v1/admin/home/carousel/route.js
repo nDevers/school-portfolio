@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
+import { HomeCarouselModel } from "@/shared/prisma.model.shared";
 import homeCarouselSchema from "@/app/api/v1/home/carousel/home.carousel.schema";
 import homeCarouselConstants from "@/app/api/v1/home/carousel/home.carousel.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -11,36 +10,8 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import homeCarouselSelectionCriteria from "@/app/api/v1/home/carousel/home.carousel.selection.criteria";
 
-/**
- * The `prisma` variable is an instance of the `PrismaClient` class.
- * It provides an interface to interact with a connected database using the Prisma ORM.
- *
- * Use the `prisma` client to perform database operations such as querying,
- * creating, updating, and deleting records in a type-safe manner.
- *
- * Ensure that the database connection is properly configured in the Prisma schema file,
- * and that migrations (if any) have been applied before using the client.
- *
- * This object manages the database connection lifecycle, and it is recommended
- * to use `prisma.$connect()` and `prisma.$disconnect()` methods when manually handling
- * connection setup and teardown, especially in serverless or long-running applications.
- */
-const prisma = new PrismaClient();
 
 const { OK, CREATED, BAD_REQUEST, NOT_FOUND } = sharedResponseTypes;
-
-/**
- * Represents the HomeCarousel model in the Prisma schema.
- *
- * This model is used to define the structure and fields for the HomeCarousel entity in the database.
- *
- * The HomeCarousel model typically represents a carousel feature on a homepage,
- * which could include multiple items such as images, links, or textual content
- * displayed in a rotating or sliding format.
- *
- * Fields and their constraints for this model are defined within the Prisma schema file.
- */
-const model = prisma.HomeCarousel;
 
 /**
  * Represents the selection criteria for the home carousel.
@@ -70,7 +41,7 @@ const selectionCriteria = homeCarouselSelectionCriteria();
 const createOrUpdateHomeCarousel = async (existingEntry, userInput, request) => {
     if (existingEntry) {
         // Update the existing entry
-        const updatedEntry = await model.update({
+        const updatedEntry = await HomeCarouselModel.update({
             where: { id: existingEntry.id },
             data: {
                 images: userInput.images,
@@ -81,7 +52,7 @@ const createOrUpdateHomeCarousel = async (existingEntry, userInput, request) => 
     }
 
     // Create a new entry
-    const newDocument = await model.create({
+    const newDocument = await HomeCarouselModel.create({
         data: userInput,
         select: selectionCriteria,
     });
@@ -121,7 +92,7 @@ const handleCreateHomeCarousel = async (request) => {
     const userInput = await parseAndValidateFormData(request, {}, 'create', homeCarouselSchema.createSchema);
 
     // Fetch the existing carousel entry
-    const existingEntry = await model.findFirst({
+    const existingEntry = await HomeCarouselModel.findFirst({
         select: selectionCriteria,
     });
 
@@ -186,7 +157,7 @@ const handleUpdateHomeCarousel = async (request) => {
     const userInput = await parseAndValidateFormData(request, {}, 'update', homeCarouselSchema.updateSchema);
 
     // Fetch the existing carousel entry
-    const existingEntry = await model.findFirst({
+    const existingEntry = await HomeCarouselModel.findFirst({
         select: selectionCriteria,
     });
     if (!existingEntry) {
@@ -220,7 +191,7 @@ const handleUpdateHomeCarousel = async (request) => {
     }
 
     // Perform the update
-    const updatedEntry = await model.update({
+    const updatedEntry = await HomeCarouselModel.update({
         where: { id: existingEntry.id },
         data: {
             images: updatedImages,
@@ -252,7 +223,7 @@ const deleteHomeCarousel = async (request) => {
     if (!authResult.isAuthorized) return authResult.response;
 
     // Fetch the existing carousel entry
-    const existingEntry = await model.findFirst({
+    const existingEntry = await HomeCarouselModel.findFirst({
         select: selectionCriteria,
     });
     if (!existingEntry) {
@@ -268,7 +239,7 @@ const deleteHomeCarousel = async (request) => {
     }
 
     // Delete the entry
-    await model.delete({
+    await HomeCarouselModel.delete({
         where: { id: existingEntry.id },
     });
 

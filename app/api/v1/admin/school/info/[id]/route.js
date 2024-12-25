@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
+import { SchoolInfoModel } from "@/shared/prisma.model.shared";
 import serviceShared from "@/shared/service.shared";
 import schoolInfoSchema from "@/app/api/v1/school/info/school.info.schema";
 import schoolInfoConstants from "@/app/api/v1/school/info/school.info.constants";
@@ -12,30 +11,8 @@ import validateToken from "@/util/validateToken";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
 import schoolInfoSelectionCriteria from "@/app/api/v1/school/info/school.info.selection.criteria";
 
-/**
- * An instance of the PrismaClient, which serves as the primary way to interact with the database
- * in a Prisma-based application. It provides a set of auto-generated methods and types to perform
- * queries and mutations against the database in a type-safe manner.
- *
- * This instance establishes a connection to the database and allows performing operations such
- * as reading, writing, updating, and deleting records. It supports schema-defined models and
- * relations as configured in the Prisma schema.
- *
- * Note: Ensure to properly manage the lifecycle of the PrismaClient instance, particularly
- * when working in serverless environments or long-running processes to avoid resource leaks.
- */
-const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
-
-/**
- * Represents the SchoolInfo model retrieved from the Prisma client.
- *
- * This model is used to interact with the `SchoolInfo` table or entity in the database.
- * Methods and properties associated with this model allow for creating, reading, updating,
- * and deleting records related to school information in the database.
- */
-const model = prisma.SchoolInfo;
 
 /**
  * Asynchronously updates a school information entry based on the provided user input.
@@ -62,7 +39,7 @@ const updateSchoolInfoEntry = async (userInput, request) => {
     }, {});
 
     // Update the document with the filtered data
-    const updateDocument = await model.update({
+    const updateDocument = await SchoolInfoModel.update({
         where: { id: userInput?.id },
         data: fieldsToUpdate,
         select: {
@@ -72,7 +49,7 @@ const updateSchoolInfoEntry = async (userInput, request) => {
 
     const selectionCriteria = schoolInfoSelectionCriteria();
 
-    const updatedDocument = await model.findUnique({
+    const updatedDocument = await SchoolInfoModel.findUnique({
         where: {
             id: updateDocument?.id,
         },
@@ -120,7 +97,7 @@ const handleUpdateSchoolInfoById = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'update', schoolInfoSchema.updateSchema);
 
     // Check if school info entry with the same title already exists
-    const existingSchoolInfo = await model.findUnique({
+    const existingSchoolInfo = await SchoolInfoModel.findUnique({
         where: {
             id: userInput?.id,
         },
@@ -135,7 +112,7 @@ const handleUpdateSchoolInfoById = async (request, context) => {
 
     if (userInput?.title) {
         // Check if school info entry with the same title already exists
-        const existingQuestion = await model.findUnique({
+        const existingQuestion = await SchoolInfoModel.findUnique({
             where: {
                 title: userInput?.title,
             },
@@ -173,7 +150,7 @@ const handleUpdateSchoolInfoById = async (request, context) => {
  * @returns {Promise<any>} A promise that resolves to the result of the deletion operation.
  */
 const deleteSchoolInfoById = async (request, context) => {
-    return serviceShared.deleteEntryById(request, context, model, 'iconId', 'school info');
+    return serviceShared.deleteEntryById(request, context, SchoolInfoModel, 'iconId', 'school info');
 };
 
 /**

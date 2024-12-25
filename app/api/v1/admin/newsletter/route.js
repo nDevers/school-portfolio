@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
+import { NewsletterModel } from "@/shared/prisma.model.shared";
 import newsletterConstants from "@/app/api/v1/newsletter/newsletter.constants";
 import serviceShared from "@/shared/service.shared";
 
@@ -7,34 +6,6 @@ import asyncHandler from "@/util/asyncHandler";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
 import newsletterSelectionCriteria from "@/app/api/v1/newsletter/newsletter.selection.criteria";
 import validateToken from "@/util/validateToken";
-
-/**
- * An instance of PrismaClient, a database client to interact with a Prisma-managed database.
- * PrismaClient facilitates querying, creating, updating, and deleting records in the database
- * while offering type-safe and efficient database transactions.
- *
- * Initialized as a singleton object to manage database connections and perform
- * operations defined in the Prisma schema.
- *
- * Note: Ensure proper connection and disconnection lifecycle management
- * when using this instance, especially in server-side applications.
- *
- * Avoid creating multiple instances of PrismaClient in a single application runtime.
- */
-const prisma = new PrismaClient();
-
-/**
- * Represents the Newsletter model from Prisma schema.
- *
- * This model is mapped to the `Newsletter` table in the database, and it is typically used
- * to handle newsletter-related data such as content, subscribers, and status. It provides
- * an interface to perform operations like create, read, update, and delete for newsletter records.
- *
- * Ensure proper use of the model to manage newsletter-specific functionality within the application.
- *
- * Note: The exact structure of the model is defined in your Prisma schema.
- */
-const model = prisma.Newsletter;
 
 /**
  * Represents the criteria used to filter and select newsletters.
@@ -76,7 +47,7 @@ const handleGetNewsletterSubscriber = async (request, context) => {
         return authResult.response;
     }
 
-    return serviceShared.fetchEntryList(request, context, model, selectionCriteria, 'Newsletter', null);
+    return serviceShared.fetchEntryList(request, context, NewsletterModel, selectionCriteria, 'Newsletter', null);
 };
 
 /**

@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
+import { GalleryVideoModel } from "@/shared/prisma.model.shared";
 import galleryVideoSchema from "@/app/api/v1/gallery/video/gallery.video.schema";
 import galleryVideoConstants from "@/app/api/v1/gallery/video/gallery.video.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -11,33 +10,7 @@ import validateToken from "@/util/validateToken";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
 import galleryVideoSelectionCriteria from "@/app/api/v1/gallery/video/gallery.video.selection.criteria";
 
-/**
- * An instance of the Prisma Client that provides access to the database.
- *
- * The `prisma` variable is used to interact with the database by
- * invoking various methods for querying and mutating data.
- *
- * It is a generated client tailored to the specific database schema
- * and provides a strongly-typed API for database operations.
- *
- * Note: Ensure to properly manage the lifecycle of the Prisma Client by
- * closing database connections when they are no longer needed.
- */
-const prisma = new PrismaClient();
-
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
-
-/**
- * Represents the Prisma model for a GalleryVideo entity.
- *
- * This model corresponds to the `GalleryVideo` table or collection in the database
- * and is managed by Prisma's ORM. It is used for performing operations such as creating,
- * reading, updating, and deleting `GalleryVideo` records in the database.
- *
- * Each instance of the `GalleryVideo` model represents a record with specific fields
- * defined in the Prisma schema.
- */
-const model = prisma.GalleryVideo;
 
 /**
  * Represents the criteria used to select videos in a gallery.
@@ -77,7 +50,7 @@ const updateGalleryVideoEntry = async (userInput, request) => {
     }, {});
 
     // Update the document with the filtered data
-    const updateDocument = await model.update({
+    const updateDocument = await GalleryVideoModel.update({
         where: { id: userInput?.id },
         data: fieldsToUpdate,
         select: {
@@ -85,7 +58,7 @@ const updateGalleryVideoEntry = async (userInput, request) => {
         },
     });
 
-    const updatedDocument = await model.findUnique({
+    const updatedDocument = await GalleryVideoModel.findUnique({
         where: {
             id: updateDocument?.id,
         },
@@ -136,7 +109,7 @@ const handleUpdateGalleryVideoById = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'update', galleryVideoSchema.updateSchema);
 
     // Check if FAQ entry with the same title already exists
-    const existingGalleryVideo = await model.findUnique({
+    const existingGalleryVideo = await GalleryVideoModel.findUnique({
         where: {
             id: userInput?.id,
         },
@@ -151,7 +124,7 @@ const handleUpdateGalleryVideoById = async (request, context) => {
 
     if (userInput?.title) {
         // Check if FAQ entry with the same title already exists
-        const existingQuestion = await model.findUnique({
+        const existingQuestion = await GalleryVideoModel.findUnique({
             where: {
                 title: userInput?.title,
             },
@@ -213,7 +186,7 @@ const handleUpdateGalleryVideoById = async (request, context) => {
  * @returns {Promise<Object>} Resolves with a result object that confirms deletion or contains relevant data.
  */
 const deleteGalleryVideoById = async (request, context) => {
-    return serviceShared.deleteEntryById(request, context, model, '', 'Gallery video');
+    return serviceShared.deleteEntryById(request, context, GalleryVideoModel, '', 'Gallery video');
 };
 
 /**

@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
+import { ContactModel } from "@/shared/prisma.model.shared";
 import contactSchema from "@/app/api/v1/contact/contact.schema";
 import contactConstants from "@/app/api/v1/contact/contact.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -28,31 +27,7 @@ import galleryVideoSelectionCriteria from "@/app/api/v1/gallery/video/gallery.vi
  */
 const configuration = await configurations();
 
-/**
- * An instance of PrismaClient, a database client used to interact with a Prisma-based database.
- * This client provides methods for querying, creating, updating, and deleting data
- * in a connected database as defined in the Prisma schema.
- *
- * It manages the database connection pool and supports various operations with
- * transactional integrity. The PrismaClient instance should be reused throughout
- * the application to optimize performance and resource management.
- *
- * Note: Ensure that the database connection is closed when the application terminates
- * to avoid connection leaks.
- */
-const prisma = new PrismaClient();
-
 const { OK, UNPROCESSABLE_ENTITY } = sharedResponseTypes;
-
-/**
- * Represents the `Contact` model mapped from the database using Prisma ORM.
- *
- * The `Contact` model typically defines the structure and relationships of a contact entity in the database.
- * It is used to perform CRUD operations and interact with the `Contact` table.
- *
- * This model should be manipulated using Prisma client queries to ensure type safety and proper database interaction.
- */
-const model = prisma.Contact;
 
 /**
  * Represents the criteria used for selecting videos from a gallery.
@@ -89,7 +64,7 @@ const handleSendContactEmail = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'create', contactSchema);
 
     // Create a new "contact" entry in the database
-    const createdContact = await model.create({
+    const createdContact = await ContactModel.create({
         data: {
             email: userInput?.email,
             subject: userInput?.subject,

@@ -1,33 +1,10 @@
-import { PrismaClient } from '@prisma/client';
-
+import { NewsletterModel } from "@/shared/prisma.model.shared";
 import serviceShared from "@/shared/service.shared";
 import newsletterSchema from "@/app/api/v1/newsletter/newsletter.schema";
 
 import asyncHandler from "@/util/asyncHandler";
 import newsletterSelectionCriteria from "@/app/api/v1/newsletter/newsletter.selection.criteria";
 import validateToken from "@/util/validateToken";
-
-/**
- * An instance of the PrismaClient, which serves as the primary method for interacting with a database in a Prisma application.
- * Provides connectivity and CRUD operations for defined database models.
- *
- * This variable should be used to perform database queries, mutations, or any interaction
- * involving the Prisma ORM within the application.
- *
- * It is recommended to manage the lifecycle of this instance carefully and ensure proper
- * connection handling to avoid potential issues with long-running applications.
- *
- * Note: PrismaClient automatically infers connected data models via the schema defined in `schema.prisma`.
- */
-const prisma = new PrismaClient();
-
-/**
- * Represents the Prisma model for the `Newsletter`.
- * This model is used to interact with the `Newsletter` table
- * within the database, providing methods to query, create, update,
- * and delete records related to newsletters.
- */
-const model = prisma.Newsletter;
 
 /**
  * Represents the criteria used to filter and select newsletters.
@@ -57,7 +34,7 @@ const handleGetNewsletterSubscriberByEmail = async (request, context) => {
         return authResult.response;
     }
 
-    return serviceShared.fetchEntryByEmail(request, context, model, selectionCriteria, 'Newsletter', newsletterSchema);
+    return serviceShared.fetchEntryByEmail(request, context, NewsletterModel, selectionCriteria, 'Newsletter', newsletterSchema);
 };
 
 /**
@@ -74,7 +51,7 @@ const handleGetNewsletterSubscriberByEmail = async (request, context) => {
  * @returns {Promise<Object>} A promise resolving to the result of the deletion operation.
  */
 const handleDeleteNewsletterSubscriberByEmail = async (request, context) => {
-    return serviceShared.deleteEntryByEmail(request, context, model, '', 'Newsletter', newsletterSchema);
+    return serviceShared.deleteEntryByEmail(request, context, NewsletterModel, '', 'Newsletter', newsletterSchema);
 };
 
 /**

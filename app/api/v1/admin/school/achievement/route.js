@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
+import { SchoolAchievementModel } from "@/shared/prisma.model.shared";
 import schoolAchievementSchema from "@/app/api/v1/school/achievement/school.achievement.schema";
 import schoolAchievementConstants from "@/app/api/v1/school/achievement/school.achievement.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -11,29 +10,8 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import schoolAchievementSelectionCriteria from "@/app/api/v1/school/achievement/school.achievement.selection.criteria";
 
-/**
- * An instance of the PrismaClient that allows for interaction with the database.
- * PrismaClient is used to configure and execute queries, mutations, and other database operations.
- * It acts as a database ORM, supporting various relational and non-relational databases.
- *
- * The instance should be initialized once and reused across the application
- * to maintain an efficient connection to the database and prevent
- * the exhaustion of database connections.
- *
- * Ensure proper lifecycle management of the PrismaClient, such as calling
- * the `$disconnect` method to close the database connection when it is no
- * longer needed, especially in long-living processes such as servers.
- */
-const prisma = new PrismaClient();
 
-const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED, NOT_FOUND } = sharedResponseTypes;
-
-/**
- * Represents the `SchoolAchievement` model from Prisma.
- * This model is used to interact with the `SchoolAchievement` table in the database.
- * It defines the structure and relationships of the `SchoolAchievement` entity.
- */
-const model = prisma.SchoolAchievement;
+const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
 
 /**
  * Asynchronously creates a new school achievement entry in the database.
@@ -46,7 +24,7 @@ const model = prisma.SchoolAchievement;
  * @throws {Error} If the creation process fails or the created document cannot be retrieved.
  */
 const createSchoolAchievementEntry = async (userInput, request) => {
-    const newDocument = await model.create({
+    const newDocument = await SchoolAchievementModel.create({
         data: userInput,
         select: {
             id: true, // Only return the ID of the updated document
@@ -55,7 +33,7 @@ const createSchoolAchievementEntry = async (userInput, request) => {
 
     const selectionCriteria = schoolAchievementSelectionCriteria();
 
-    const createdDocument = await model.findUnique({
+    const createdDocument = await SchoolAchievementModel.findUnique({
         where: {
             id: newDocument?.id,
         },
@@ -107,7 +85,7 @@ const handleCreateSchoolAchievement = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'create', schoolAchievementSchema.createSchema);
 
     // Check if FAQ entry with the same title already exists
-    const existingtitle = await model.findUnique({
+    const existingtitle = await SchoolAchievementModel.findUnique({
         where: {
             title: userInput?.title,
         },

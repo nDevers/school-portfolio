@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
+import { SchoolSpeechModel } from "@/shared/prisma.model.shared";
 import serviceShared from "@/shared/service.shared";
 import schoolSpeechSchema from "@/app/api/v1/school/speech/school.speech.schema";
 import schoolSpeechConstants from "@/app/api/v1/school/speech/school.speech.constants";
@@ -12,41 +11,8 @@ import validateToken from "@/util/validateToken";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
 import schoolSpeechSelectionCriteria from "@/app/api/v1/school/speech/school.speech.selection.criteria";
 
-/**
- * An instance of PrismaClient which is used to interact with a database
- * through the Prisma ORM. It provides a programmatic interface to perform
- * queries, mutations, and transactions on the database.
- *
- * This variable allows the application to connect to and manage the
- * database defined in the Prisma schema. It supports CRUD operations
- * as well as advanced query capabilities.
- *
- * Make sure to properly handle connection lifecycle for the PrismaClient instance.
- * This includes opening and closing the connection to avoid resource leaks.
- *
- * Note: Initializing multiple instances of PrismaClient can cause issues
- * such as exceeding database connection limits. Use a single instance
- * throughout the application if possible.
- *
- * @const {PrismaClient} prisma - The PrismaClient instance for database operations.
- */
-const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
-
-/**
- * Represents the SchoolSpeech model provided by Prisma.
- * This model is used to interact with the corresponding
- * database table for storing and managing data related to school speeches.
- *
- * The `SchoolSpeech` model typically includes properties
- * and relationships defined in the Prisma schema.
- *
- * It is part of Prisma's ORM capabilities that allow querying,
- * creating, updating, and deleting records associated with
- * school speech entities in the database.
- */
-const model = prisma.SchoolSpeech;
 
 /**
  * Updates an existing school speech entry based on the provided user input.
@@ -73,7 +39,7 @@ const updateSchoolSpeechEntry = async (userInput, request) => {
     }, {});
 
     // Update the document with the filtered data
-    const updateDocument = await model.update({
+    const updateDocument = await SchoolSpeechModel.update({
         where: { id: userInput?.id },
         data: fieldsToUpdate,
         select: {
@@ -83,7 +49,7 @@ const updateSchoolSpeechEntry = async (userInput, request) => {
 
     const selectionCriteria = schoolSpeechSelectionCriteria();
 
-    const updatedDocument = await model.findUnique({
+    const updatedDocument = await SchoolSpeechModel.findUnique({
         where: {
             id: updateDocument?.id,
         },
@@ -137,7 +103,7 @@ const handleUpdateSchoolSpeechById = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'update', schoolSpeechSchema.updateSchema);
 
     // Check if school speech entry with the same title already exists
-    const existingSchoolSpeech = await model.findUnique({
+    const existingSchoolSpeech = await SchoolSpeechModel.findUnique({
         where: {
             id: userInput?.id,
         },
@@ -152,7 +118,7 @@ const handleUpdateSchoolSpeechById = async (request, context) => {
 
     if (userInput?.title) {
         // Check if school speech entry with the same title already exists
-        const existingQuestion = await model.findUnique({
+        const existingQuestion = await SchoolSpeechModel.findUnique({
             where: {
                 title: userInput?.title,
             },
@@ -191,7 +157,7 @@ const handleUpdateSchoolSpeechById = async (request, context) => {
  * @returns {Promise<*>} A promise resolving with the result of the deletion operation.
  */
 const deleteSchoolSpeechById = async (request, context) => {
-    return serviceShared.deleteEntryById(request, context, model, 'imageId', 'school speech');
+    return serviceShared.deleteEntryById(request, context, SchoolSpeechModel, 'imageId', 'school speech');
 };
 
 /**

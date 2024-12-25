@@ -1,40 +1,8 @@
-import {PrismaClient} from "@prisma/client";
-
+import { HomeCarouselModel } from "@/shared/prisma.model.shared";
 import sharedResponseTypes from "@/shared/shared.response.types";
 
 import asyncHandler from "@/util/asyncHandler";
 import homeCarouselSelectionCriteria from "@/app/api/v1/home/carousel/home.carousel.selection.criteria";
-
-/**
- * An instance of PrismaClient used to interact with the database.
- *
- * PrismaClient is a database toolkit and ORM (Object-Relational Mapping)
- * that allows performing database queries and transactions in a structured
- * and type-safe manner. It connects to the database and provides an API
- * for executing operations on specific models defined in the Prisma schema.
- *
- * This instance is typically used throughout an application to manage
- * database interactions such as creating, reading, updating, and deleting
- * records, as well as running custom queries and transactions.
- *
- * Note: PrismaClient should be properly managed, especially in serverless
- * or long-running environments, to avoid issues related to connection pooling.
- * Always ensure database connections are cleaned up when no longer needed.
- */
-const prisma = new PrismaClient();
-
-/**
- * Represents the HomeCarousel model in the Prisma schema.
- * The HomeCarousel model is used for managing data related to carousel images
- * or content that is displayed on the home page of an application or website.
- *
- * This model may include properties such as identifiers, image URLs,
- * associated metadata, and display order, depending on the schema definition.
- *
- * Intended for use in scenarios where dynamic carousel content is fetched
- * and managed through Prisma's ORM functionality.
- */
-const model = prisma.HomeCarousel;
 
 /**
  * Represents the criteria used for selecting items in the home carousel component.
@@ -63,7 +31,7 @@ const { NOT_FOUND, OK } = sharedResponseTypes;
  */
 const handleGetGalleryPhotoList = async (request) => {
     // Fetch the existing carousel entry
-    const data = await model.findFirst({
+    const data = await HomeCarouselModel.findFirst({
         select: selectionCriteria,
     });
     if (!data) {

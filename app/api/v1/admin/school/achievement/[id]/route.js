@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
+import { SchoolAchievementModel } from "@/shared/prisma.model.shared";
 import serviceShared from "@/shared/service.shared";
 import schoolAchievementSchema from "@/app/api/v1/school/achievement/school.achievement.schema";
 import schoolAchievementConstants from "@/app/api/v1/school/achievement/school.achievement.constants";
@@ -12,46 +11,8 @@ import validateToken from "@/util/validateToken";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
 import schoolAchievementSelectionCriteria from "@/app/api/v1/school/achievement/school.achievement.selection.criteria";
 
-/**
- * An instance of PrismaClient that provides a connection to the database and allows
- * interaction with it using Prisma's query engine. PrismaClient is used for executing
- * queries, performing CRUD operations, and managing database transactions.
- *
- * Creating an instance of PrismaClient establishes a connection to the database as
- * defined in the Prisma schema file. Make sure to properly manage the lifecycle of
- * this instance to avoid connection leaks.
- *
- * It is recommended to initialize the PrismaClient once and reuse the instance across
- * your application to optimize database connections.
- *
- * For improved performance and predictable behavior, ensure that the schema file
- * and database structure are in sync during development and production deployments.
- *
- * Example use cases:
- * - Querying data from the database.
- * - Executing mutations to create, update, or delete records.
- * - Managing database transactions for business logic consistency.
- */
-const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
-
-/**
- * Represents the SchoolAchievement model from Prisma schema.
- * This model is typically used to manage and interact with data
- * related to school achievements in the database.
- *
- * This object enables querying, creating, updating, and deleting
- * entries for school achievements within the underlying database.
- *
- * The structure and fields of the SchoolAchievement model are defined
- * in the Prisma schema file, and the model is integrated with the Prisma
- * Client for seamless database operations.
- *
- * Note: The actual fields and their types are defined in the corresponding
- * Prisma schema and should be referred to for details regarding the model structure.
- */
-const model = prisma.SchoolAchievement;
 
 /**
  * Updates a school achievement entry in the database based on user-provided input.
@@ -78,7 +39,7 @@ const updateSchoolAchievementEntry = async (userInput, request) => {
     }, {});
 
     // Update the document with the filtered data
-    const updateDocument = await model.update({
+    const updateDocument = await SchoolAchievementModel.update({
         where: { id: userInput?.id },
         data: fieldsToUpdate,
         select: {
@@ -88,7 +49,7 @@ const updateSchoolAchievementEntry = async (userInput, request) => {
 
     const selectionCriteria = schoolAchievementSelectionCriteria();
 
-    const updatedDocument = await model.findUnique({
+    const updatedDocument = await SchoolAchievementModel.findUnique({
         where: {
             id: updateDocument?.id,
         },
@@ -136,7 +97,7 @@ const handleUpdateSchoolAchievementById = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'update', schoolAchievementSchema.updateSchema);
 
     // Check if school achievement entry with the same title already exists
-    const existingSchoolAchievement = await model.findUnique({
+    const existingSchoolAchievement = await SchoolAchievementModel.findUnique({
         where: {
             id: userInput?.id,
         },
@@ -151,7 +112,7 @@ const handleUpdateSchoolAchievementById = async (request, context) => {
 
     if (userInput?.title) {
         // Check if school achievement entry with the same title already exists
-        const existingQuestion = await model.findUnique({
+        const existingQuestion = await SchoolAchievementModel.findUnique({
             where: {
                 title: userInput?.title,
             },
@@ -194,7 +155,7 @@ const handleUpdateSchoolAchievementById = async (request, context) => {
  * @returns {Promise<Object>} A promise that resolves to the result of the deletion operation, typically indicating success or failure.
  */
 const deleteSchoolAchievementById = async (request, context) => {
-    return serviceShared.deleteEntryById(request, context, model, 'iconId', 'school achievement');
+    return serviceShared.deleteEntryById(request, context, SchoolAchievementModel, 'iconId', 'school achievement');
 };
 
 /**

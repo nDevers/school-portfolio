@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
+import { NewsletterModel } from "@/shared/prisma.model.shared";
 import newsletterSchema from "@/app/api/v1/newsletter/newsletter.schema";
 import newsletterConstants from "@/app/api/v1/newsletter/newsletter.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -10,29 +9,8 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import sendEmail from "@/lib/email";
 import newsletterSelectionCriteria from "@/app/api/v1/newsletter/newsletter.selection.criteria";
 
-/**
- * An instance of the PrismaClient, used to interact with the database.
- *
- * PrismaClient provides a set of methods to perform database queries
- * including creating, reading, updating, and deleting records. It leverages
- * an auto-generated object model based on the database schema.
- *
- * Ensure to call `connect` to establish the database connection if necessary
- * and `disconnect` to release resources when the application shuts down.
- */
-const prisma = new PrismaClient();
 
 const { OK, UNPROCESSABLE_ENTITY } = sharedResponseTypes;
-
-/**
- * Represents the Prisma model for the Newsletter.
- * This model interacts with the "Newsletter" table in the database,
- * encapsulating all related operations, attributes, and relationships.
- * Use this model to perform CRUD operations and queries for emails, publication details, or other newsletter-related data.
- *
- * @type {Prisma.Newsletter}
- */
-const model = prisma.Newsletter;
 
 /**
  * Represents the criteria used to select newsletters.
@@ -78,7 +56,7 @@ const handleSubscribeToNewsletter = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'create', newsletterSchema);
 
     // Check if the email is already subscribed
-    const existingSubscription = await model.findUnique({
+    const existingSubscription = await NewsletterModel.findUnique({
         where: {
             email: userInput?.email,
         },
@@ -106,7 +84,7 @@ const handleSubscribeToNewsletter = async (request, context) => {
     }
 
     // Create a new "newsletter" entry in the database
-    const createdNewsletter = await model.create({
+    const createdNewsletter = await NewsletterModel.create({
         data: {
             email: userInput?.email,
         },

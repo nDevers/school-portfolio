@@ -1,5 +1,5 @@
+import { AdminModel } from "@/shared/prisma.model.shared";
 import serviceShared from "@/shared/service.shared";
-import AdminModel from "@/app/api/v1/admin/admin.model";
 
 import asyncHandler from "@/util/asyncHandler";
 
