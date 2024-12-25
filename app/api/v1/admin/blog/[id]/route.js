@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import moment from 'moment';
 
+import { BlogModel } from "@/shared/prisma.model.shared";
 import blogSchema from "@/app/api/v1/blog/blog.schema";
 import blogConstants from "@/app/api/v1/blog/blog.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -13,34 +13,9 @@ import validateToken from "@/util/validateToken";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
 import blogSelectionCriteria from "@/app/api/v1/blog/blog.selection.criteria";
 
-/**
- * An instance of the PrismaClient, used to interact with the database.
- * Provides methods for querying, updating, and managing the connected database.
- *
- * This client allows communication with the database defined in the Prisma schema.
- * It connects to the database, handles queries, and manages transactions.
- * Ensure to properly handle the lifecycle of PrismaClient, including connecting and disconnecting.
- *
- * Common use cases include creating, reading, updating, and deleting records,
- * as well as executing raw database queries.
- */
-const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 const { idValidationSchema } = schemaShared;
-
-/**
- * Represents the `Blog` model from Prisma.
- *
- * This model is used to interact with the `Blog` table in the database.
- * It provides functionality to query, create, update, and delete blog records.
- *
- * The `Blog` model typically includes attributes such as title, content, author,
- * and createdAt/updatedAt timestamps, depending on the Prisma schema definition.
- *
- * Use this model to perform operations related to blog posts.
- */
-const model = prisma.Blog;
 
 /**
  * Updates a blog entry in the database based on the given user input.
@@ -71,7 +46,7 @@ const updateBlogEntry = async (userInput, request) => {
     }, {});
 
     // Update the document with the filtered data
-    const updateDocument = await model.update({
+    const updateDocument = await BlogModel.update({
         where: { id: userInput?.id },
         data: fieldsToUpdate,
         select: {
@@ -81,7 +56,7 @@ const updateBlogEntry = async (userInput, request) => {
 
     const selectionCriteria = blogSelectionCriteria();
 
-    const updatedDocument = await model.findUnique({
+    const updatedDocument = await BlogModel.findUnique({
         where: {
             id: updateDocument?.id,
         },
@@ -134,7 +109,7 @@ const handleUpdateBlogById = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'update', blogSchema.updateSchema);
 
     // Check if FAQ entry with the same title already exists
-    const existingBlog = await model.findUnique({
+    const existingBlog = await BlogModel.findUnique({
         where: {
             id: userInput?.id,
         },
@@ -151,7 +126,7 @@ const handleUpdateBlogById = async (request, context) => {
 
     if (userInput?.title) {
         // Check if FAQ entry with the same title already exists
-        const existingQuestion = await model.findUnique({
+        const existingQuestion = await BlogModel.findUnique({
             where: {
                 title: userInput?.title,
             },
@@ -233,7 +208,7 @@ const handleUpdateBlogById = async (request, context) => {
         await Promise.all(deletePromises);
 
         // After deletion, update the database to remove the deleted file objects
-        await model.update({
+        await BlogModel.update({
             where: { id: existingBlog.id }, // Assuming the record is identified by id
             data: {
                 files: files, // Update the files field in the database, only keeping non-deleted files
@@ -265,7 +240,7 @@ const handleUpdateBlogById = async (request, context) => {
         await Promise.all(deleteImagePromises);
 
         // After deletion, update the database to remove the deleted image objects
-        await model.update({
+        await BlogModel.update({
             where: { id: existingBlog.id }, // Assuming the record is identified by id
             data: {
                 images: images, // Update the images field in the database, only keeping non-deleted images
@@ -316,7 +291,7 @@ const deleteBlogById = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'delete', idValidationSchema);
 
     // Check if data exists
-    const data = await model.findUnique({
+    const data = await BlogModel.findUnique({
         where: {
             id: userInput?.id,
         },
@@ -355,14 +330,14 @@ const deleteBlogById = async (request, context) => {
     }
 
     // Perform the deletion with the specified projection field for optional file handling
-    await model.delete({
+    await BlogModel.delete({
         where: {
             id: userInput?.id,
         },
     });
 
     // If no document is found, send a 404 response
-    const deletedData = await model.findUnique({
+    const deletedData = await BlogModel.findUnique({
         where: {
             id: userInput?.id,
         },

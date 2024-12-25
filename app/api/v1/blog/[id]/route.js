@@ -1,32 +1,9 @@
-import {PrismaClient} from "@prisma/client";
-
+import { BlogModel } from "@/shared/prisma.model.shared";
 import serviceShared from "@/shared/service.shared";
 
 import asyncHandler from "@/util/asyncHandler";
 import blogSelectionCriteria from "@/app/api/v1/blog/blog.selection.criteria";
 
-/**
- * An instance of PrismaClient used to handle database operations.
- * PrismaClient provides an abstraction layer for interacting with
- * the database, enabling seamless execution of queries, mutations,
- * and other database-related operations using a type-safe approach.
- *
- * This instance should be used to initialize connections to the
- * database and perform queries or transaction management within
- * the application.
- *
- * It is designed to be instantiated once and reused throughout
- * the entire lifecycle of the application in order to manage
- * the database connection pool efficiently.
- */
-const prisma = new PrismaClient();
-
-/**
- * Represents the Prisma Blog model.
- * This model corresponds to the `Blog` table in the database.
- * Typically used to interact with the `Blog` data through Prisma ORM.
- */
-const model = prisma.Blog;
 
 /**
  * Asynchronous function to handle the retrieval of a blog post by its ID.
@@ -43,7 +20,7 @@ const model = prisma.Blog;
 export const handleGetBlogById = async (request, context) => {
     const selectionCriteria = blogSelectionCriteria();
 
-    return serviceShared.fetchEntryById(request, context, model, selectionCriteria,  'Blog');
+    return serviceShared.fetchEntryById(request, context, BlogModel, selectionCriteria,  'Blog');
 };
 
 /**

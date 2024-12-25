@@ -32,7 +32,7 @@ const configuration = await configurations();
  * @returns {Promise<Object|boolean>} Returns the decoded token object if verification is successful,
  * or `false` if the verification fails or an error occurs.
  */
-const verifyToken = async (token, type = 'access') => {
+const verifyToken = async (token, type) => {
     try {
         if (type === 'refresh') {
             return await jwt.verify(token, configuration.jwt.refreshToken.secret);

@@ -37,7 +37,7 @@ const { FORBIDDEN } = sharedResponseTypes;
  *                             If unauthorized, the object includes a forbidden response.
  * @throws {CryptoError} Throws a `CryptoError` if the token decryption fails.
  */
-const validateToken = async (request, type) => {
+const validateToken = async (request, type = 'access') => {
     const encryptedToken = getAuthToken(request);
     let token;
 

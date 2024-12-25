@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import moment from 'moment';
 
+import { BlogModel } from "@/shared/prisma.model.shared";
 import blogSchema from "@/app/api/v1/blog/blog.schema";
 import blogConstants from "@/app/api/v1/blog/blog.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -12,38 +12,8 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import blogSelectionCriteria from "@/app/api/v1/blog/blog.selection.criteria";
 
-/**
- * Represents an instance of the PrismaClient, used to interact with the database.
- * The PrismaClient provides an API for performing database operations such as queries, mutations, and transactions.
- * It is typically used to manage application data in a type-safe manner.
- *
- * Note:
- * - Ensure that the instance is properly closed using `prisma.$disconnect()` when it is no longer needed to prevent resource leaks.
- * - The client should be instantiated once and reused throughout the application to maintain efficiency.
- * - Configuration and connection to the database are defined in the `prisma.schema` file.
- */
-const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED, NOT_FOUND } = sharedResponseTypes;
-
-/**
- * Represents the Blog model in the Prisma schema.
- *
- * This model corresponds to a database entity and is used for defining
- * the structure of a blog entry in the application.
- * It handles the operations and interactions with the Blog data in the database.
- *
- * Usage of this model allows for performing CRUD operations
- * such as creating new blog entries, reading existing entries,
- * updating content, and deleting unnecessary blogs.
- *
- * The structure of the Blog model, including its fields and relationships,
- * is defined in the Prisma schema file.
- *
- * Ensure that database migrations are kept in sync with any changes
- * made to the model definition.
- */
-const model = prisma.Blog;
 
 /**
  * Asynchronously creates an "About Us" blog entry in the database and retrieves the created document with specific selection criteria.
@@ -59,7 +29,7 @@ const model = prisma.Blog;
  * @throws Will throw an error if blog creation fails or the document fetch returns null.
  */
 const createAboutUsEntry = async (userInput, request) => {
-    const newDocument = await model.create({
+    const newDocument = await BlogModel.create({
         data: userInput,
         select: {
             id: true, // Only return the ID of the updated document
@@ -68,7 +38,7 @@ const createAboutUsEntry = async (userInput, request) => {
 
     const selectionCriteria = blogSelectionCriteria();
 
-    const createdDocument = await model.findUnique({
+    const createdDocument = await BlogModel.findUnique({
         where: {
             id: newDocument?.id,
         },
@@ -117,7 +87,7 @@ const handleCreateAboutUs = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'create', blogSchema.createSchema);
 
     // Check if FAQ entry with the same title already exists
-    const existingQuestion = await model.findUnique({
+    const existingQuestion = await BlogModel.findUnique({
         where: {
             title: userInput?.title,
         },
