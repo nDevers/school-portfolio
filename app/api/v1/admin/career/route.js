@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import moment from 'moment';
 
+import { CareerModel } from "@/shared/prisma.model.shared";
 import careerSchema from "@/app/api/v1/career/career.schema";
 import careerConstants from "@/app/api/v1/career/career.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -12,38 +12,8 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import careerSelectionCriteria from "@/app/api/v1/career/career.selection.criteria";
 
-/**
- * An instance of the PrismaClient, which is used for interacting with a Prisma-connected database.
- * Allows querying, creating, updating, and deleting records in the database using Prisma ORM.
- * Provides a type-safe and auto-completable API for database operations.
- *
- * This client is typically used to interface with a database defined in a Prisma schema file.
- * It should be properly instantiated and managed to maintain database connections efficiently.
- *
- * Ensure to `disconnect` the client instance when it is no longer needed or before application shutdown
- * to prevent open connections from lingering.
- */
-const prisma = new PrismaClient();
 
-const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED, NOT_FOUND } = sharedResponseTypes;
-
-/**
- * Represents the Career model in the Prisma schema.
- *
- * This model is typically used to interact with and manage career-related data
- * within the application. It allows performing operations such as creating,
- * reading, updating, and deleting records in the associated career database table.
- *
- * The structure and fields of the Career model are defined within the Prisma schema,
- * and are mapped to a database table. Ensure proper schema synchronization and database
- * migrations when modifying this model.
- *
- * Usage of this model involves accessing it through the Prisma Client.
- *
- * Note: Refer to the Prisma schema for detailed field definitions and relationships
- * associated with this model.
- */
-const model = prisma.Career;
+const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
 
 /**
  * Asynchronous function to create a new career entry in the database.
@@ -60,7 +30,7 @@ const model = prisma.Career;
  * @returns {Object} A response object indicating success or failure, and the data of the created career entry.
  */
 const createCareerEntry = async (userInput, request) => {
-    const newDocument = await model.create({
+    const newDocument = await CareerModel.create({
         data: userInput,
         select: {
             id: true, // Only return the ID of the updated document
@@ -69,7 +39,7 @@ const createCareerEntry = async (userInput, request) => {
 
     const selectionCriteria = careerSelectionCriteria();
 
-    const createdDocument = await model.findUnique({
+    const createdDocument = await CareerModel.findUnique({
         where: {
             id: newDocument?.id,
         },
@@ -118,7 +88,7 @@ const handleCreateCareer = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'create', careerSchema.createSchema);
 
     // Check if FAQ entry with the same title already exists
-    const existingQuestion = await model.findUnique({
+    const existingQuestion = await CareerModel.findUnique({
         where: {
             title: userInput?.title,
         },

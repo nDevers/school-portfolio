@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import moment from 'moment';
 
+import { CareerModel } from "@/shared/prisma.model.shared";
 import careerSchema from "@/app/api/v1/career/career.schema";
 import careerConstants from "@/app/api/v1/career/career.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -13,29 +13,9 @@ import validateToken from "@/util/validateToken";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
 import careerSelectionCriteria from "@/app/api/v1/career/career.selection.criteria";
 
-/**
- * An instance of PrismaClient, which is used to interact with a database through Prisma's query engine.
- *
- * PrismaClient provides methods for performing CRUD operations, executing raw SQL queries, and managing database connections.
- *
- * This instance is typically used as the main access point for querying and manipulating data in a Prisma-managed database.
- *
- * Ensure to call the appropriate lifecycle methods (e.g., `$connect`, `$disconnect`) to manage database connections effectively in your application.
- */
-const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 const { idValidationSchema } = schemaShared;
-
-/**
- * Represents the Prisma model `Career`.
- * This model is typically used for interaction with the `Career` table in the database.
- * Provides mechanisms to query, create, update, and delete `Career` records.
- *
- * The structure and fields of this model are defined in the Prisma schema.
- * Use this model to perform database operations related to career data.
- */
-const model = prisma.Career;
 
 /**
  * Updates a career entry in the database based on the given user input.
@@ -60,7 +40,7 @@ const updateCareerEntry = async (userInput, request) => {
     }, {});
 
     // Update the document with the filtered data
-    const updateDocument = await model.update({
+    const updateDocument = await CareerModel.update({
         where: { id: userInput?.id },
         data: fieldsToUpdate,
         select: {
@@ -70,7 +50,7 @@ const updateCareerEntry = async (userInput, request) => {
 
     const selectionCriteria = careerSelectionCriteria();
 
-    const updatedDocument = await model.findUnique({
+    const updatedDocument = await CareerModel.findUnique({
         where: {
             id: updateDocument?.id,
         },
@@ -119,7 +99,7 @@ const handleUpdateCareerById = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'update', careerSchema.updateSchema);
 
     // Check if FAQ entry with the same title already exists
-    const existingCareer = await model.findUnique({
+    const existingCareer = await CareerModel.findUnique({
         where: {
             id: userInput?.id,
         },
@@ -134,7 +114,7 @@ const handleUpdateCareerById = async (request, context) => {
 
     if (userInput?.title) {
         // Check if FAQ entry with the same title already exists
-        const existingQuestion = await model.findUnique({
+        const existingQuestion = await CareerModel.findUnique({
             where: {
                 title: userInput?.title,
             },
@@ -188,7 +168,7 @@ const handleUpdateCareerById = async (request, context) => {
         await Promise.all(deletePromises);
 
         // After deletion, update the database to remove the deleted file objects
-        await model.update({
+        await CareerModel.update({
             where: { id: existingCareer.id }, // Assuming the record is identified by id
             data: {
                 files: files // Update the files field in the database, only keeping non-deleted files
@@ -240,7 +220,7 @@ const deleteCareerById = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'delete', idValidationSchema);
 
     // Check if data exists
-    const data = await model.findUnique({
+    const data = await CareerModel.findUnique({
         where: {
             id: userInput?.id,
         },
@@ -264,14 +244,14 @@ const deleteCareerById = async (request, context) => {
     }
 
     // Perform the deletion with the specified projection field for optional file handling
-    await model.delete({
+    await CareerModel.delete({
         where: {
             id: userInput?.id,
         },
     });
 
     // If no document is found, send a 404 response
-    const deletedData = await model.findUnique({
+    const deletedData = await CareerModel.findUnique({
         where: {
             id: userInput?.id,
         },

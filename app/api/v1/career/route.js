@@ -1,44 +1,9 @@
-import {PrismaClient} from "@prisma/client";
-
+import { CareerModel } from "@/shared/prisma.model.shared";
 import serviceShared from "@/shared/service.shared";
 import careerSchema from "@/app/api/v1/career/career.schema";
 
 import asyncHandler from "@/util/asyncHandler";
 import careerSelectionCriteria from "@/app/api/v1/career/career.selection.criteria";
-
-/**
- * An instance of PrismaClient used to interact with a database.
- *
- * The `prisma` variable provides an interface for performing database
- * operations such as queries and mutations using the Prisma ORM. It acts
- * as a bridge between the application and the database, allowing developers
- * to work with the database in a type-safe manner.
- *
- * This instance should be used to execute operations like creating, reading,
- * updating, and deleting records in the configured database. Ensure proper
- * lifecycle management, including initiating connections and closing the
- * client, when appropriate.
- *
- * Note: Avoid creating multiple instances of `PrismaClient` to prevent
- * potential connection overhead or resource issues.
- */
-const prisma = new PrismaClient();
-
-/**
- * Represents a Prisma model for a Career entity.
- * This model is typically used to interact with the `Career` table in the database
- * through Prisma's ORM.
- *
- * This variable allows querying, creating, updating, deleting, and managing
- * `Career` records in the database.
- *
- * It includes default methods provided by Prisma such as `findUnique`,
- * `findMany`, `create`, `update`, `delete`, and other related operations.
- *
- * Note: Ensure that the Prisma schema contains a definition for `Career`
- * to avoid runtime errors when using this model.
- */
-const model = prisma.Career;
 
 /**
  * Asynchronous function to handle retrieving a list of careers.
@@ -53,7 +18,7 @@ const model = prisma.Career;
 const handleGetCareerList = async (request, context) => {
     const selectionCriteria = careerSelectionCriteria();
 
-    return serviceShared.fetchEntryList(request, context, model, selectionCriteria, 'Career', careerSchema.getDataByQuery);
+    return serviceShared.fetchEntryList(request, context, CareerModel, selectionCriteria, 'Career', careerSchema.getDataByQuery);
 };
 
 /**
