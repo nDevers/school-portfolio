@@ -11,13 +11,47 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import facultySelectionCriteria from "@/app/api/v1/faculty/faculty.selection.criteria";
 
+/**
+ * The `prisma` variable represents an instance of the PrismaClient,
+ * which is responsible for connecting to the database and providing
+ * an interface for interacting with it. This includes querying,
+ * creating, updating, and deleting data in a type-safe manner.
+ *
+ * The PrismaClient is generated based on the schema defined in your
+ * Prisma project, allowing you to interact with your database
+ * through the auto-generated methods and models specific to your schema.
+ *
+ * Ensure proper initialization and handling of the `prisma` instance
+ * to prevent connection or resource management issues.
+ */
 const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, OK, NOT_FOUND } = sharedResponseTypes;
 
+/**
+ * Represents the Faculty model in the Prisma schema.
+ *
+ * This model is used to interact with the Faculty table in the database.
+ * It defines the structure of the Faculty entity, including its fields and relationships.
+ *
+ * Usage of the Faculty model allows for querying, creating, updating,
+ * and deleting Faculty records in the database.
+ */
 const model = prisma.Faculty;
 
-// Helper function to create and respond with the faculty
+/**
+ * Updates an existing faculty entry in the database with the provided user input.
+ * Filters the user input to exclude null, undefined, and specific fields, and updates only valid fields.
+ *
+ * @async
+ * @param {Object} userInput - The data provided by the user to update the faculty entry.
+ * @param {string} userInput.id - The unique identifier of the faculty entry to be updated.
+ * @param {string} userInput.categoryParams - The category parameter related to the entry.
+ * @param {Object} request - The incoming request object related to the update operation.
+ * @returns {Promise<Object>} A response indicating the success or failure of the update operation,
+ * containing the updated faculty entry or an error message.
+ * @throws {Error} If the update operation fails or if the document cannot be located after the update.
+ */
 const updateFacultyEntry = async (userInput, request) => {
     // Filter `userInput` to only include fields with non-null values
     const fieldsToUpdate = Object.keys(userInput).reduce((acc, key) => {
@@ -52,7 +86,24 @@ const updateFacultyEntry = async (userInput, request) => {
     return OK(`Faculty entry with CATEGORY "${userInput?.categoryParams}" and ID "${userInput?.id}" updated successfully.`, updatedDocument, request);
 };
 
-// Named export for the POST request handler (Create faculty)
+/**
+ * Asynchronously handles the update of a faculty entry by category and ID.
+ *
+ * This function validates the incoming request and processes it to update a faculty record in the database.
+ * It performs the following operations:
+ * - Validates the content type of the request.
+ * - Confirms if the user is authorized to perform the update.
+ * - Parses and validates the incoming form data against a predefined schema.
+ * - Checks if the specified faculty entry exists in the database based on the provided ID and category.
+ * - Ensures no duplicate entry exists based on unique fields such as email, mobile, or portfolio.
+ * - Handles the replacement of the faculty image if a new file is uploaded, including deleting the old image and uploading the new one.
+ * - Updates the faculty entry and constructs the appropriate response.
+ *
+ * @async
+ * @param {Object} request - The request object containing all the necessary data for the update operation.
+ * @param {Object} context - The context object containing utility and runtime information for the function.
+ * @returns {Object} - An appropriate response based on the operation's success or failure.
+ */
 const handleUpdateFacultyByCategoryAndId = async (request, context) => {
     // Validate content type
     const contentValidationResult = validateUnsupportedContent(request, facultyConstants.allowedContentTypes);
@@ -130,6 +181,26 @@ const handleUpdateFacultyByCategoryAndId = async (request, context) => {
     return updateFacultyEntry(userInput, request);
 };
 
+/**
+ * Function to delete a faculty entry by its category and ID.
+ *
+ * Validates the request token to ensure the user is authorized to
+ * perform the deletion. Parses and validates the request body
+ * against the expected schema to ensure input correctness.
+ *
+ * Checks whether a faculty entry matching the provided ID and
+ * category exists. If the entry exists, it deletes any associated
+ * physical files before removing the entry from the database.
+ *
+ * If the specified faculty entry does not exist, or if the
+ * deletion fails unexpectedly, an appropriate error response
+ * is returned. On successful deletion, a success response is
+ * sent back to the requester.
+ *
+ * @param {Object} request - The incoming request containing the necessary data to delete a faculty entry.
+ * @param {Object} context - The context object containing dependencies and configurations for processing the request.
+ * @returns {Promise<Object>} A promise resolving to a response indicating the result of the deletion operation.
+ */
 const deleteFacultyByCategoryAndId = async (request, context) => {
     // Validate admin
     const authResult = await validateToken(request);
@@ -185,9 +256,27 @@ const deleteFacultyByCategoryAndId = async (request, context) => {
     return OK(`Faculty entry with ID "${userInput?.id}" and CATEGORY "${userInput?.categoryParams}" deleted successfully.`, {}, request);
 };
 
-// Export the route wrapped with asyncHandler
+/**
+ * An asynchronous handler function assigned to the `PATCH` variable.
+ * It is responsible for updating a faculty record based on its category and ID.
+ * The function utilizes an asynchronous wrapper to handle errors and streamline the update process.
+ *
+ * @constant
+ * @type {Function}
+ * @async
+ * @param {Function} asyncHandler - A middleware function used to catch and handle errors in asynchronous operations.
+ * @param {Function} handleUpdateFacultyByCategoryAndId - A controller function that processes the update logic for updating a faculty member based on the specified category and identifier.
+ */
 export const PATCH = asyncHandler(handleUpdateFacultyByCategoryAndId);
 
-// Export the route wrapped with asyncHandler
+/**
+ * DELETE is a variable representing an asynchronous handler function.
+ * It is used to delete a faculty member by their category and ID.
+ * The function is wrapped using an asyncHandler utility to handle
+ * potential errors during asynchronous operations.
+ *
+ * The deleteFacultyByCategoryAndId function is invoked with the required
+ * parameters to perform the deletion operation.
+ */
 export const DELETE = asyncHandler(deleteFacultyByCategoryAndId);
 
