@@ -12,14 +12,48 @@ import validateToken from "@/util/validateToken";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
 import aboutUsSelectionCriteria from "@/app/api/v1/about-us/about.us.selection.criteria";
 
+/**
+ * An instance of PrismaClient used to interact with the database.
+ * PrismaClient is an ORM (Object-Relational Mapping) tool that allows
+ * querying, updating, and managing the database through JavaScript and TypeScript.
+ *
+ * This variable serves as the main entry point for all database-related operations,
+ * including retrieving, creating, updating, and deleting records.
+ *
+ * Ensure to properly manage the lifecycle of the PrismaClient instance by explicitly
+ * connecting and disconnecting when necessary to avoid database connection leaks.
+ */
 const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 const { idValidationSchema } = schemaShared;
 
+/**
+ * Represents the `AboutUs` model in the Prisma schema.
+ * This model corresponds to the `AboutUs` table in the database and is used to interact with its records.
+ * It is typically used to store and retrieve information about the "About Us" section.
+ *
+ * @typedef {Object} AboutUs
+ * @property {number} id - The unique identifier for the `AboutUs` entry.
+ * @property {string} title - The title of the "About Us" section.
+ * @property {string} description - The detailed description or narrative for the "About Us" section.
+ * @property {Date} createdAt - The timestamp when the `AboutUs` entry was created.
+ * @property {Date} updatedAt - The timestamp when the `AboutUs` entry was last updated.
+ */
 const model = prisma.AboutUs;
 
-// Helper function to update and respond with the FAQ
+/**
+ * Asynchronous function to update an "About Us" entry in the database.
+ *
+ * Filters the input to exclude null or undefined values, and fields named "id" before updating the database.
+ * It updates the specific entry in the database based on the provided `id` and then retrieves the updated data based on pre-defined selection criteria.
+ * Returns a success response with the updated document or an error response if the update fails.
+ *
+ * @param {Object} userInput - The user-provided data for updating the "About Us" entry. Must include an `id` field for identifying the entry.
+ * @param {Object} request - The HTTP request object associated with the update operation.
+ * @returns {Promise<Object>} A promise that resolves to an HTTP response indicating the success or failure of the update operation.
+ * @throws {Error} Throws an error if the update process fails or the entry cannot be retrieved.
+ */
 const updateAboutUsEntry = async (userInput, request) => {
     // Filter `userInput` to only include fields with non-null values
     const fieldsToUpdate = Object.keys(userInput).reduce((acc, key) => {
@@ -54,7 +88,25 @@ const updateAboutUsEntry = async (userInput, request) => {
     return OK(`AboutUs entry with the ID "${userInput?.id}" updated successfully.`, updatedDocument, request);
 };
 
-// Named export for the GET request handler
+/**
+ * Asynchronous function to handle the update of an "About Us" entry by its ID.
+ * The function performs a series of operations to validate the request, authorize the user,
+ * parse and validate input data, process file and image uploads or deletions, and finally
+ * update the entry in the database.
+ *
+ * Key operations:
+ * - Validates the content type of the request against allowed content types.
+ * - Validates the authorization token to ensure the user has the required access.
+ * - Parses and validates the input data based on the provided schema.
+ * - Checks for potential conflicts, such as an entry with the same title already existing.
+ * - Handles file and image additions or deletions, uploading or removing them physically
+ *   and updating the corresponding database records.
+ * - Updates the "About Us" database entry with the modified data.
+ *
+ * @param {Object} request - The incoming request object containing data and parameters.
+ * @param {Object} context - The context object with relevant details for handling the request.
+ * @returns {Promise<Object>} A response object indicating the success or failure of the operation.
+ */
 const handleUpdateAboutUsById = async (request, context) => {
     // Validate content type
     const contentValidationResult = validateUnsupportedContent(request, aboutUsConstants.allowedContentTypes);
@@ -193,6 +245,25 @@ const handleUpdateAboutUsById = async (request, context) => {
     return updateAboutUsEntry(userInput, request);
 };
 
+/**
+ * Handles the deletion of a "career" entity by its ID.
+ *
+ * This asynchronous function validates the request, checks if the "career" entity exists, deletes any associated files
+ * or images, and then deletes the entity from the database. It ensures proper error handling and returns appropriate
+ * responses, including error messages if the entity is not found or deletion fails.
+ *
+ * Steps:
+ * 1. Validates the admin user via token verification.
+ * 2. Parses and validates the input data using the provided schema.
+ * 3. Checks if the "career" entity exists in the database.
+ * 4. Deletes associated files and images from the file system if applicable.
+ * 5. Deletes the "career" entity from the database.
+ * 6. Returns success or failure messages based on the operation's results.
+ *
+ * @param {Object} request - The incoming HTTP request containing the data required for deletion.
+ * @param {Object} context - The execution context containing relevant data and utilities for the operation.
+ * @returns {Promise<Object>} A response object indicating the result of the delete operation.
+ */
 const deleteCareerById = async (request, context) => {
     // Validate admin
     const authResult = await validateToken(request);
@@ -261,8 +332,22 @@ const deleteCareerById = async (request, context) => {
     return OK(`About us entry with ID "${userInput?.id}" deleted successfully.`, {}, request);
 };
 
-// Export the route wrapped with asyncHandler
+/**
+ * PATCH variable assigned to an asynchronous route handler for updating an "About Us" entry by its ID.
+ *
+ * This handler leverages an async error-handling middleware (`asyncHandler`) to manage execution flow
+ * and ensure proper error handling during the update process. It uses the `handleUpdateAboutUsById`
+ * function which encapsulates the logic for updating the specified resource in a data store or database.
+ */
 export const PATCH = asyncHandler(handleUpdateAboutUsById);
 
-// Export the route wrapped with asyncHandler
+/**
+ * DELETE is a constant that represents an asynchronous handler function for deleting a career entry by its identifier.
+ * The function utilizes an asyncHandler utility to handle any asynchronous operations and errors during the process.
+ *
+ * The primary purpose of this variable is to encapsulate the logic for deleting a specific career record using its unique ID.
+ * It ensures that the operation is handled asynchronously with proper error handling.
+ *
+ * The handler is expected to be used in an Express.js route or similar framework to handle HTTP DELETE requests.
+ */
 export const DELETE = asyncHandler(deleteCareerById);
