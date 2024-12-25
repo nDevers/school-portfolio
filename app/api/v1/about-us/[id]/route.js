@@ -1,43 +1,18 @@
-import {PrismaClient} from "@prisma/client";
-
+import prismaModelsConstants from "@/constants/prisma.models.constants";
 import serviceShared from "@/shared/service.shared";
 
 import asyncHandler from "@/util/asyncHandler";
 import aboutUsSelectionCriteria from "@/app/api/v1/about-us/about.us.selection.criteria";
 
-/**
- * An instance of PrismaClient used to interact with a database.
- * Provides methods for querying, inserting, updating, and deleting
- * data in a Prisma-supported database. This instance establishes
- * a connection to the database based on the configuration provided
- * in the Prisma schema file.
- *
- * PrismaClient includes features such as query batching, transaction
- * support, and query optimization to efficiently manage database
- * interactions.
- *
- * This instance should be reused throughout the application to avoid
- * creating multiple database connections.
- */
-const prisma = new PrismaClient();
+
+const model = prismaModelsConstants.AboutUs;
 
 /**
- * Represents the AboutUs model from Prisma schema.
+ * Asynchronous handler function to retrieve the "About Us" entry by its unique identifier.
  *
- * This model corresponds to the 'AboutUs' table in the database.
- * It defines the structure and relationships for the 'AboutUs' entity.
- */
-const model = prisma.AboutUs;
-
-/**
- * Asynchronous function to handle retrieving "About Us" information by ID.
- *
- * This function uses a selection criteria specific to "About Us" entries to fetch
- * the desired record from the database or service using the provided model and handler.
- *
- * @param {Object} request - The request object containing information about the ID and other request parameters.
- * @param {Object} context - The context object providing additional metadata or processing context for the operation.
- * @returns {Promise<Object>} A promise that resolves to the fetched "About Us" entry.
+ * @param {Object} request - The incoming request object containing necessary parameters such as the ID.
+ * @param {Object} context - The context object containing information required for the execution of the function.
+ * @returns {Promise<Object>} Resolves with the fetched "About Us" entry object or an error if the retrieval fails.
  */
 export const handleGetAboutUsById = async (request, context) => {
     const selectionCriteria = aboutUsSelectionCriteria();
@@ -46,18 +21,13 @@ export const handleGetAboutUsById = async (request, context) => {
 };
 
 /**
- * GET variable is an asynchronous route handler.
- * It is used to process HTTP GET requests by handling
- * "About Us" data retrieval based on a specific ID.
- * This handler ensures that the associated logic is executed
- * safely within an error-handling wrapper provided by asyncHandler.
+ * GET variable is assigned an asynchronous handler function.
+ * This handler is responsible for processing GET requests, specifically those
+ * related to retrieving information about "About Us" content by a given ID.
  *
- * The operation performed by GET includes:
- * - Receiving the "About Us" ID from the route parameter.
- * - Delegating the ID to the handleGetAboutUsById function.
- * - Returning the corresponding "About Us" data as a response.
+ * The assigned function typically uses the `asyncHandler` utility to manage
+ * asynchronous request processing and error handling.
  *
- * It uses the asyncHandler utility to handle potential asynchronous
- * errors that may occur in the handleGetAboutUsById function.
+ * @type {Function}
  */
 export const GET = asyncHandler(handleGetAboutUsById);

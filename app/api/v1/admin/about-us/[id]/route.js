@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
+import prismaModelsConstants from "@/constants/prisma.models.constants";
 import aboutUsSchema from "@/app/api/v1/about-us/about.us.schema";
 import aboutUsConstants from "@/app/api/v1/about-us/about.us.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -12,35 +11,10 @@ import validateToken from "@/util/validateToken";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
 import aboutUsSelectionCriteria from "@/app/api/v1/about-us/about.us.selection.criteria";
 
-/**
- * An instance of PrismaClient used to interact with the database.
- * PrismaClient is an ORM (Object-Relational Mapping) tool that allows
- * querying, updating, and managing the database through JavaScript and TypeScript.
- *
- * This variable serves as the main entry point for all database-related operations,
- * including retrieving, creating, updating, and deleting records.
- *
- * Ensure to properly manage the lifecycle of the PrismaClient instance by explicitly
- * connecting and disconnecting when necessary to avoid database connection leaks.
- */
-const prisma = new PrismaClient();
 
+const model = prismaModelsConstants.AboutUs;
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 const { idValidationSchema } = schemaShared;
-
-/**
- * Represents the `AboutUs` model in the Prisma schema.
- * This model corresponds to the `AboutUs` table in the database and is used to interact with its records.
- * It is typically used to store and retrieve information about the "About Us" section.
- *
- * @typedef {Object} AboutUs
- * @property {number} id - The unique identifier for the `AboutUs` entry.
- * @property {string} title - The title of the "About Us" section.
- * @property {string} description - The detailed description or narrative for the "About Us" section.
- * @property {Date} createdAt - The timestamp when the `AboutUs` entry was created.
- * @property {Date} updatedAt - The timestamp when the `AboutUs` entry was last updated.
- */
-const model = prisma.AboutUs;
 
 /**
  * Asynchronous function to update an "About Us" entry in the database.
