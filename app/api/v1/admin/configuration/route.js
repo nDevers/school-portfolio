@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
+import { ConfigurationModel } from "@/shared/prisma.model.shared";
 import configurationSchema from "@/app/api/v1/configuration/configuration.schema";
 import configurationConstants from "@/app/api/v1/configuration/configuration.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -11,36 +10,8 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import configurationSelectionCriteria from "@/app/api/v1/configuration/configuration.selection.criteria";
 
-/**
- * Represents an instance of the PrismaClient, which is utilized
- * to manage and interact with a connected database using Prisma ORM.
- * This instance provides methods for executing operations such as
- * creating, reading, updating, and deleting data across various models.
- *
- * The PrismaClient initializes a connection to the underlying database
- * configuration as defined in the Prisma schema file.
- *
- * Note: Ensure to invoke the `disconnect`, `close`, or equivalent method on the instance
- * during application shutdown to release database connections properly.
- *
- * Caution: Avoid initializing multiple instances of PrismaClient simultaneously
- * as it may lead to unexpected behavior or resource contention.
- */
-const prisma = new PrismaClient();
 
-const { OK, CREATED, BAD_REQUEST, NOT_FOUND } = sharedResponseTypes;
-
-/**
- * Represents the Configuration model as defined in the Prisma schema.
- *
- * This model provides the structure and schema for configuration-related
- * data within the application. All fields, relationships, and associated
- * properties are defined and managed by the Prisma schema.
- *
- * The Configuration model is typically used for managing and storing application
- * configurations, settings or preferences required for system functionality.
- */
-const model = prisma.Configuration;
+const { OK, CREATED, NOT_FOUND } = sharedResponseTypes;
 
 /**
  * Represents the criteria used for selecting a specific configuration.
@@ -67,7 +38,7 @@ const selectionCriteria = configurationSelectionCriteria();
 const createOrUpdateConfiguration = async (existingEntry, userInput, request) => {
     if (existingEntry) {
         // Update the existing entry
-        const updatedEntry = await model.update({
+        const updatedEntry = await ConfigurationModel.update({
             where: { id: existingEntry.id },
             data: {
                 ...userInput,
@@ -78,7 +49,7 @@ const createOrUpdateConfiguration = async (existingEntry, userInput, request) =>
     }
 
     // Create a new entry
-    const newDocument = await model.create({
+    const newDocument = await ConfigurationModel.create({
         data: userInput,
         select: selectionCriteria,
     });
@@ -116,7 +87,7 @@ const handleCreateConfiguration = async (request) => {
     const userInput = await parseAndValidateFormData(request, {}, 'create', configurationSchema.createSchema);
 
     // Fetch the existing carousel entry
-    const existingEntry = await model.findFirst({
+    const existingEntry = await ConfigurationModel.findFirst({
         select: selectionCriteria,
     });
 
@@ -172,7 +143,7 @@ const handleUpdateConfiguration = async (request) => {
     const userInput = await parseAndValidateFormData(request, {}, 'update', configurationSchema.updateSchema);
 
     // Fetch the existing configuration entry
-    const existingEntry = await model.findFirst({
+    const existingEntry = await ConfigurationModel.findFirst({
         select: selectionCriteria,
     });
     if (!existingEntry) {
@@ -229,7 +200,7 @@ const handleUpdateConfiguration = async (request) => {
     // }
 
     // Perform the update
-    const updatedEntry = await model.update({
+    const updatedEntry = await ConfigurationModel.update({
         where: { id: existingEntry.id },
         data: {
             ...userInput,
@@ -265,7 +236,7 @@ const deleteConfiguration = async (request) => {
     if (!authResult.isAuthorized) return authResult.response;
 
     // Fetch the existing carousel entry
-    const existingEntry = await model.findFirst({
+    const existingEntry = await ConfigurationModel.findFirst({
         select: {
             ...selectionCriteria,
             logoId: true,
@@ -278,16 +249,16 @@ const deleteConfiguration = async (request) => {
 
     // Delete logo associated with the entry
     if (existingEntry.logoId) {
-        localFileOperations.deleteFile(existingEntry.logoId)
+        await localFileOperations.deleteFile(existingEntry.logoId)
     }
 
     // Delete banner associated with the entry
     if (existingEntry.bannerId) {
-        localFileOperations.deleteFile(existingEntry.bannerId)
+        await localFileOperations.deleteFile(existingEntry.bannerId)
     }
 
     // Delete the entry
-    await model.delete({
+    await ConfigurationModel.delete({
         where: { id: existingEntry.id },
     });
 
