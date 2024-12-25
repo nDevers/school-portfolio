@@ -11,15 +11,59 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import configurationSelectionCriteria from "@/app/api/v1/configuration/configuration.selection.criteria";
 
+/**
+ * Represents an instance of the PrismaClient, which is utilized
+ * to manage and interact with a connected database using Prisma ORM.
+ * This instance provides methods for executing operations such as
+ * creating, reading, updating, and deleting data across various models.
+ *
+ * The PrismaClient initializes a connection to the underlying database
+ * configuration as defined in the Prisma schema file.
+ *
+ * Note: Ensure to invoke the `disconnect`, `close`, or equivalent method on the instance
+ * during application shutdown to release database connections properly.
+ *
+ * Caution: Avoid initializing multiple instances of PrismaClient simultaneously
+ * as it may lead to unexpected behavior or resource contention.
+ */
 const prisma = new PrismaClient();
 
 const { OK, CREATED, BAD_REQUEST, NOT_FOUND } = sharedResponseTypes;
 
+/**
+ * Represents the Configuration model as defined in the Prisma schema.
+ *
+ * This model provides the structure and schema for configuration-related
+ * data within the application. All fields, relationships, and associated
+ * properties are defined and managed by the Prisma schema.
+ *
+ * The Configuration model is typically used for managing and storing application
+ * configurations, settings or preferences required for system functionality.
+ */
 const model = prisma.Configuration;
 
+/**
+ * Represents the criteria used for selecting a specific configuration.
+ *
+ * The `selectionCriteria` variable is initialized by calling the
+ * `configurationSelectionCriteria()` method, which defines the logic
+ * for determining applicable configurations.
+ *
+ * This variable is typically used in processes where filtering or
+ * prioritizing configurations based on predefined standards or rules
+ * is required.
+ */
 const selectionCriteria = configurationSelectionCriteria();
 
-// Helper function to create and respond with the FAQ
+/**
+ * Asynchronously creates a new configuration entry or updates an existing one.
+ *
+ * @param {Object|null} existingEntry - The existing configuration entry, if it exists. If null, a new entry will be created.
+ * @param {Object} userInput - The data provided by the user for creating or updating the configuration entry.
+ * @param {Object} request - The request object, typically used for providing additional context or metadata.
+ * @returns {Promise<Object>} A promise that resolves to a success response containing the status, message, and the created or updated entry.
+ * @throws {Error} If creating a new configuration entry fails.
+ */
 const createOrUpdateConfiguration = async (existingEntry, userInput, request) => {
     if (existingEntry) {
         // Update the existing entry
@@ -46,7 +90,19 @@ const createOrUpdateConfiguration = async (existingEntry, userInput, request) =>
     return CREATED('Configuration entry created successfully.', newDocument, request);
 };
 
-// Named export for the POST request handler (Create or Update Home Carousel)
+/**
+ * Asynchronously handles the creation or update of a configuration entry.
+ *
+ * This function validates the incoming request for unsupported content types,
+ * user authorization, and form data compliance with the expected schema. It
+ * processes specific fields like banners and logos by uploading their files
+ * to the local file system and attaching their links and IDs to the user input.
+ * If an existing configuration entry exists, it updates it; otherwise, a new
+ * configuration is created.
+ *
+ * @param {Object} request - The request object containing the necessary data for processing.
+ * @returns {Promise<Object>} A response object indicating the success or failure of the operation.
+ */
 const handleCreateConfiguration = async (request) => {
     // Validate content type
     const contentValidation = validateUnsupportedContent(request, configurationConstants.allowedContentTypes);
@@ -84,7 +140,25 @@ const handleCreateConfiguration = async (request) => {
     return await createOrUpdateConfiguration(existingEntry, userInput, request);
 };
 
-// Named export for the PATCH request handler
+/**
+ * Asynchronously handles the update of a configuration entry.
+ *
+ * This function performs the following steps:
+ * 1. Validates the content type of the incoming request against a list of allowed content types.
+ * 2. Validates the user's authorization by verifying the provided token.
+ * 3. Parses and validates the form data present in the request using the supplied schema.
+ * 4. Fetches the existing configuration entry from the database.
+ * 5. Processes and uploads banner or logo files if included in the request payload.
+ * 6. Updates the configuration entry in the database with the new data from the user input.
+ *    Commented-out sections handle optional updates for fields such as emails, contacts, and social links.
+ * 7. Returns a response indicating success or failure.
+ *
+ * @async
+ * @function handleUpdateConfiguration
+ * @param {Object} request - The incoming HTTP request object containing data for updating the configuration.
+ * @returns {Promise<Object>} A promise that resolves to the response object indicating the outcome of the operation.
+ *    The response may include a success message, error message, or updated entry data.
+ */
 const handleUpdateConfiguration = async (request) => {
     // Validate content type
     const contentValidation = validateUnsupportedContent(request, configurationConstants.allowedContentTypes);
@@ -170,7 +244,21 @@ const handleUpdateConfiguration = async (request) => {
     return OK("Configuration entry updated successfully.", updatedEntry, request);
 };
 
-// Named export for the DELETE request handler
+/**
+ * Deletes a configuration entry.
+ *
+ * This asynchronous function validates user authorization, retrieves an existing
+ * configuration entry, deletes associated files (e.g., logo and banner), and
+ * removes the entry from the database. Returns an appropriate response based on
+ * the operation outcome.
+ *
+ * @async
+ * @function deleteConfiguration
+ * @param {Object} request - The request object containing user authorization and
+ * operational details.
+ * @returns {Promise<Object>} A response object indicating the result of the
+ * deletion process.
+ */
 const deleteConfiguration = async (request) => {
     // Validate user authorization
     const authResult = await validateToken(request);
@@ -206,11 +294,44 @@ const deleteConfiguration = async (request) => {
     return OK("Configuration entry deleted successfully.", {}, request);
 };
 
-// Export the route wrapped with asyncHandler
+/**
+ * POST is an asynchronous handler function used to manage HTTP POST requests.
+ * It incorporates custom logic for creating configurations.
+ * The function is wrapped with an async handler to properly manage asynchronous
+ * operations and handle potential errors.
+ *
+ * This variable is assigned to a middleware, ensuring streamlined
+ * error handling for the associated operation.
+ *
+ * The wrapped function, handleCreateConfiguration, executes specific logic tied
+ * to creating configurations as part of the application's workflow.
+ */
 export const POST = asyncHandler(handleCreateConfiguration);
 
-// Export the route wrapped with asyncHandler
+/**
+ * The `PATCH` constant is an asynchronous middleware function designed
+ * to handle HTTP PATCH requests for updating a specific configuration.
+ * It utilizes `asyncHandler` to handle potential errors during asynchronous
+ * operations and executes the `handleUpdateConfiguration` function to
+ * perform the update logic.
+ *
+ * This middleware is suitable for use in routes where partial updates
+ * to configuration resources are required.
+ *
+ * Dependencies:
+ * - `asyncHandler`: A utility function to wrap asynchronous route handlers
+ *   to simplify error handling.
+ * - `handleUpdateConfiguration`: A function that contains the update logic
+ *   for processing incoming PATCH requests.
+ */
 export const PATCH = asyncHandler(handleUpdateConfiguration);
 
-// Export the route wrapped with asyncHandler
+/**
+ * DELETE is an asynchronous handler function used to process deletion requests for configuration data.
+ * It is wrapped with the `asyncHandler` utility to encapsulate asynchronous operations
+ * and to handle errors efficiently during the delete operation.
+ *
+ * The function performs operations to remove specific configuration settings or entities
+ * in the system based on the provided input.
+ */
 export const DELETE = asyncHandler(deleteConfiguration);
