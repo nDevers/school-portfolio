@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
+import { FaqModel } from "@/shared/prisma.model.shared";
 import serviceShared from "@/shared/service.shared";
 import faqSchema from "@/app/api/v1/faq/faq.schema";
 import faqConstants from "@/app/api/v1/faq/faq.constants";
@@ -11,30 +10,8 @@ import validateToken from "@/util/validateToken";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
 import faqSelectionCriteria from "@/app/api/v1/faq/faq.selection.criteria";
 
-/**
- * Instance of PrismaClient, the main entry point for interacting with the database using Prisma ORM.
- * Provides methods for accessing and manipulating database records based on defined schema models.
- *
- * Use this instance to perform database operations such as querying, creating, updating, and deleting records.
- * Ensures type safety and leverages Prisma's query engine for efficient and optimized database interactions.
- *
- * Note: Ensure that the PrismaClient instance is properly managed, especially in applications with long-living processes.
- * Avoid creating multiple instances unnecessarily to prevent exhaustion of database connections.
- */
-const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
-
-/**
- * Represents the FAQ model in the Prisma schema.
- *
- * This model is used to interact with the FAQ table in the database.
- * It typically includes fields such as questions, answers, and any metadata
- * associated with frequently asked questions.
- *
- * Use this model to perform CRUD operations and queries related to FAQs.
- */
-const model = prisma.faq;
 
 /**
  * Asynchronously updates an FAQ entry in the database based on the provided user input.
@@ -58,7 +35,7 @@ const updateFaqEntry = async (userInput, request) => {
     }, {});
 
     // Update the document with the filtered data
-    const updateDocument = await model.update({
+    const updateDocument = await FaqModel.update({
         where: { id: userInput?.id },
         data: fieldsToUpdate,
         select: {
@@ -68,7 +45,7 @@ const updateFaqEntry = async (userInput, request) => {
 
     const selectionCriteria = faqSelectionCriteria();
 
-    const updatedDocument = await model.findUnique({
+    const updatedDocument = await FaqModel.findUnique({
         where: {
             id: updateDocument?.id,
         },
@@ -111,7 +88,7 @@ const handleUpdateFaqById = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'update', faqSchema.updateSchema);
 
     // Check if FAQ entry with the same question already exists
-    const existingFaq = await model.findUnique({
+    const existingFaq = await FaqModel.findUnique({
         where: {
             id: userInput?.id,
         },
@@ -125,7 +102,7 @@ const handleUpdateFaqById = async (request, context) => {
 
     if (userInput?.question) {
         // Check if FAQ entry with the same question already exists
-        const existingQuestion = await model.findUnique({
+        const existingQuestion = await FaqModel.findUnique({
             where: {
                 question: userInput?.question,
             },
@@ -155,7 +132,7 @@ const handleUpdateFaqById = async (request, context) => {
  * @returns {Promise<any>} A promise that resolves when the FAQ entry has been successfully deleted.
  */
 const deleteFaqById = async (request, context) => {
-    return serviceShared.deleteEntryById(request, context, model, '', 'FAQ');
+    return serviceShared.deleteEntryById(request, context, FaqModel, '', 'FAQ');
 };
 
 /**

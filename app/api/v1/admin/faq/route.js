@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
+import { FaqModel } from "@/shared/prisma.model.shared";
 import faqSchema from "@/app/api/v1/faq/faq.schema";
 import faqConstants from "@/app/api/v1/faq/faq.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
@@ -10,45 +9,8 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import faqSelectionCriteria from "@/app/api/v1/faq/faq.selection.criteria";
 
-/**
- * The `prisma` variable is an instance of the PrismaClient, which serves as the primary
- * interface for interacting with the database. It provides methods to perform queries,
- * mutations, and transactions on the database configured in the Prisma schema.
- *
- * This instance is typically used in Node.js applications for seamless integration
- * with the database, offering type-safe and auto-completion features for supported
- * database operations.
- *
- * Note:
- * Ensure that the PrismaClient is properly configured with the correct
- * schema.prisma file and connection settings.
- *
- * Warning:
- * Make sure to properly manage the lifecycle of the PrismaClient. For instance,
- * always call the `prisma.$disconnect()` method when the client is no longer
- * needed to release database connections properly.
- */
-const prisma = new PrismaClient();
 
-const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED, NOT_FOUND } = sharedResponseTypes;
-
-/**
- * The `model` variable represents the Prisma model for `faq`.
- * This model is typically used to perform database operations such as create, read, update, and delete (CRUD)
- * related to the FAQ (Frequently Asked Questions) entity in the application's database.
- *
- * The `faq` model is defined in the Prisma schema and is mapped to a database table or collection.
- * It provides a structured way to interact with the FAQ data.
- *
- * Example use cases may include:
- * - Fetching a list of FAQs.
- * - Adding a new FAQ entry to the database.
- * - Updating an existing FAQ entry.
- * - Deleting an FAQ entry.
- *
- * This variable enables consistent and type-safe database operations for the FAQ model via Prisma Client.
- */
-const model = prisma.faq;
+const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
 
 /**
  * Asynchronously creates a new FAQ entry in the database based on the provided user input.
@@ -73,7 +35,7 @@ const model = prisma.faq;
  * - `findUnique` to retrieve the document based on its unique identifier.
  */
 const createFaqEntry = async (userInput, request) => {
-    const newDocument = await model.create({
+    const newDocument = await FaqModel.create({
         data: userInput,
         select: {
             id: true, // Only return the ID of the updated document
@@ -82,7 +44,7 @@ const createFaqEntry = async (userInput, request) => {
 
     const selectionCriteria = faqSelectionCriteria();
 
-    const createdDocument = await model.findUnique({
+    const createdDocument = await FaqModel.findUnique({
         where: {
             id: newDocument?.id,
         },
@@ -129,7 +91,7 @@ const handleCreateFaq = async (request, context) => {
     const userInput = await parseAndValidateFormData(request, context, 'create', faqSchema.createSchema);
 
     // Check if FAQ entry with the same question already exists
-    const existingQuestion = await model.findUnique({
+    const existingQuestion = await FaqModel.findUnique({
         where: {
             question: userInput?.question,
         },

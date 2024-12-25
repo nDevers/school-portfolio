@@ -1,27 +1,8 @@
-import {PrismaClient} from "@prisma/client";
-
+import { FaqModel } from "@/shared/prisma.model.shared";
 import serviceShared from "@/shared/service.shared";
 
 import asyncHandler from "@/util/asyncHandler";
 import faqSelectionCriteria from "@/app/api/v1/faq/faq.selection.criteria";
-
-/**
- * The `prisma` variable is an instance of the PrismaClient, which is used to interact with a connected database.
- * PrismaClient provides methods for querying, mutating, and managing data in the database in a type-safe manner.
- *
- * This instance is typically used to execute database operations such as creating, reading, updating, and deleting records.
- * It also supports raw SQL queries and includes middleware capabilities for extending or intercepting behavior.
- *
- * Ensure that the `prisma` instance is properly closed using `prisma.$disconnect()` when it is no longer needed,
- * especially in long-running applications, to prevent resource leaks.
- */
-const prisma = new PrismaClient();
-
-/**
- * Represents the FAQ (Frequently Asked Questions) model associated with the Prisma client.
- * This model is typically used to interact with the database table or entity that stores FAQ information.
- */
-const model = prisma.faq;
 
 /**
  * Handles the retrieval of a specific FAQ entry by its ID.
@@ -37,7 +18,7 @@ const model = prisma.faq;
 export const handleGetFaqById = async (request, context) => {
     const selectionCriteria = faqSelectionCriteria();
 
-    return serviceShared.fetchEntryById(request, context, model, selectionCriteria,  'FAQ');
+    return serviceShared.fetchEntryById(request, context, FaqModel, selectionCriteria,  'FAQ');
 };
 
 /**
