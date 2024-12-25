@@ -1,408 +1,677 @@
 /**
- * @fileoverview Defines common HTTP status codes for use in API responses.
- * These status codes represent various states of HTTP responses and are
- * commonly used to communicate the result of API requests.
- * Adjust these codes as needed to align with the APIs response requirements.
+ * A constant variable representing the value 100, commonly used to indicate
+ * the continuation or progression of a process within an application.
  *
- * @author Mohammad Montasim -Al- Mamun Shuvo
- * @date 2024-03-03
- */
-
-/**
- * Informational responses (100–199)
- */
-
-/**
- * Continue - The initial part of a requestBooks has been received and has not yet been rejected by the server.
- * @type {number}
+ * @constant {number} CONTINUE
+ * @default 100
  */
 const CONTINUE = 100;
 
 /**
- * Switching Protocols - The server understands and is willing to comply with the client's requestBooks to switch protocols.
- * @type {number}
+ * HTTP status code indicating that the server is switching protocols as requested by the client.
+ * This status code is used in response to an `Upgrade` request header and signals that the protocol
+ * change has been accepted and will be performed. The new protocol must be agreed upon between the client
+ * and the server.
+ *
+ * Value: 101
  */
 const SWITCHING_PROTOCOLS = 101;
 
 /**
- * Processing - The server has received and is processing the requestBooks, but no response is available yet.
- * @type {number}
+ * Represents the status code for a processing state.
+ *
+ * The `PROCESSING` variable is typically used to indicate that an operation or request
+ * is in progress and has not yet been completed. This can be useful in various
+ * contexts where tracking the state of execution or requests is necessary.
+ *
+ * Value: 102
  */
 const PROCESSING = 102;
 
 /**
- * Early Hints - Used to return some response headers before final HTTP message.
- * @type {number}
+ * The HTTP status code 103 represents "Early Hints".
+ *
+ * This status code is primarily used to hint the client, typically a browser, to start
+ * preloading resources while the server completes preparation and sending of the final response.
+ * It allows the client to perform certain tasks earlier, such as fetching linked resources,
+ * improving perceived performance and reducing latency.
+ *
+ * The value of `EARLY_HINTS` is set to the integer 103, corresponding to the HTTP status code.
  */
 const EARLY_HINTS = 103;
 
 /**
- * Successful responses (200–299)
- */
-
-/**
- * OK - The requestBooks has succeeded.
- * @type {number}
+ * The HTTP status code representing a successful request.
+ *
+ * Value: 200
  */
 const OK = 200;
 
 /**
- * Created - The requestBooks has been fulfilled, resulting in the creation of a new resource.
- * @type {number}
+ * Constant representing the HTTP status code for "Created".
+ *
+ * The value of this constant is 201, which signifies that the
+ * request has been fulfilled and resulted in the creation of a new resource.
+ * Typically used in HTTP responses for successful POST requests.
+ *
+ * @constant {number}
  */
 const CREATED = 201;
 
 /**
- * Accepted - The requestBooks has been accepted for processing, but the processing has not been completed.
- * @type {number}
+ * Represents the HTTP status code for "Accepted".
+ *
+ * The value 202 indicates that the request has been received and understood,
+ * and it has been accepted for processing, but the processing has not been
+ * completed. It is typically returned for asynchronous operations.
+ *
+ * @constant {number}
+ * @default 202
  */
 const ACCEPTED = 202;
 
 /**
- * Non-Authoritative Information - The requestBooks was successful but the enclosed payload has been modified by a transforming proxy from that of the origin server's 200 OK response.
- * @type {number}
+ * Represents the HTTP status code 203, which indicates that the request was successful but the
+ * information returned may come from a source other than the original server. This status
+ * is used when the returned meta-information in the response header is not identical to that
+ * available from the original server but collected from a local or a third-party copy.
  */
 const NON_AUTHORITATIVE_INFORMATION = 203;
 
 /**
- * No Content - The server successfully processed the requestBooks, but is not returning any content.
- * @type {number}
+ * Indicates that the server successfully processed the request,
+ * but is not returning any content.
+ * Commonly used as an HTTP status code (204 No Content).
+ *
+ * Value: 204
  */
 const NO_CONTENT = 204;
 
 /**
- * Reset Content - The server successfully processed the requestBooks, but is not returning any content and requires that the requester reset the document view.
+ * Represents the HTTP status code 205 Reset Content.
+ *
+ * This status code indicates that the server has successfully processed the request
+ * and the user agent should reset the view that caused the request to be sent.
+ * Typically used in cases where the response requires the user interface to be reset
+ * without changing the document content.
+ *
+ * Commonly associated with form submissions where a clear or reset action is needed
+ * after the server processes the request successfully.
+ *
+ * Defined by the HTTP/1.1 specification.
+ *
  * @type {number}
  */
 const RESET_CONTENT = 205;
 
 /**
- * Partial Content - The server is delivering only part of the resource (byte serving) due to a range header sent by the client.
- * @type {number}
+ * The PARTIAL_CONTENT constant represents the HTTP status code 206.
+ * It indicates that the server has successfully processed a partial GET request
+ * and is delivering only a portion of the requested resource.
+ *
+ * This status code is commonly used when a user requests a specific
+ * range of bytes from a file or when working with range headers to
+ * facilitate downloading parts of large files.
+ *
+ * Value: 206
  */
 const PARTIAL_CONTENT = 206;
 
 /**
- * Multi-Status - The message body that follows is by default an XML message and can contain a number of separate response codes, depending on how many sub-requests were made.
- * @type {number}
+ * Represents the HTTP status code for "207 Multi-Status".
+ * This status code is primarily used in WebDAV responses, indicating
+ * that multiple operations have been applied to a set of resources,
+ * and each operation may have resulted in different status codes.
+ * The response body typically contains an XML message providing detailed
+ * status for each resource involved.
+ *
+ * Value: 207
  */
 const MULTI_STATUS = 207;
 
 /**
- * Already Reported - The members of a DAV binding have already been enumerated in a previous reply to this requestBooks, and are not being included again.
- * @type {number}
+ * Represents the HTTP status code 208, which indicates that the members of a DAV binding have already been enumerated
+ * in a previous reply to this request, and are not being included again.
+ * Typically used in the context of WebDAV to reduce the size of a response when the same resources have already
+ * been reported in a preceding part of the multi-status response.
  */
 const ALREADY_REPORTED = 208;
 
 /**
- * IM Used - The server has fulfilled a requestBooks for the resource, and the response is a representation of the result of one or more instance-manipulations applied to the current instance.
+ * Represents a constant value used for a specific purpose within the application.
+ *
+ * The variable `IM_USED` holds the numeric value 226 which could be applied
+ * as a constant configuration, status code, identifier, or any other relevant
+ * semantic in the context of the application.
+ *
+ * Note: Modify with caution as this value may have significant implications
+ * in other parts of the application.
+ *
+ * @constant
  * @type {number}
+ * @default 226
  */
 const IM_USED = 226;
 
 /**
- * Redirection messages (300–399)
- */
-
-/**
- * Multiple Choices - Indicates multiple options for the resource from which the client may choose.
- * @type {number}
+ * HTTP status code indicating that multiple options for the requested resource
+ * are available, and the user-agent or user should choose one of them.
+ *
+ * Typically used to indicate that different formats or representations
+ * of the requested resource exist, such as varying file types.
+ *
+ * Value: 300
  */
 const MULTIPLE_CHOICES = 300;
 
 /**
- * Moved Permanently - This and all future requests should be directed to the given URI.
- * @type {number}
+ * Represents the HTTP status code for a resource that has been permanently moved to a new location.
+ *
+ * Value: 301
+ *
+ * This status code is typically used in HTTP redirection responses to indicate that the requested resource
+ * has been assigned a new permanent URI, and any future references should use the new URI.
+ *
+ * Developers can use this constant when implementing or handling HTTP redirection logic. It is a conventional
+ * way to signify the "301 Moved Permanently" HTTP status code instead of using the raw numeric value directly.
  */
 const MOVED_PERMANENTLY = 301;
 
 /**
- * Found - Tells the client to look at another URL.
- * @type {number}
+ * A constant representing the HTTP status code for "Found".
+ * Typically used in scenarios where a resource is temporarily
+ * redirected to another URL.
+ *
+ * Value: 302
  */
 const FOUND = 302;
 
 /**
- * See Other - The response to the requestBooks can be found under another URI using the GET method.
- * @type {number}
+ * A constant representing the HTTP status code 303 (See Other).
+ *
+ * This status code indicates that the server is redirecting the client
+ * to a different resource, typically using the `GET` method, even if
+ * the original request was made using a different method (e.g., `POST`).
+ *
+ * This is commonly used to redirect after a form submission to a different
+ * resource, preventing the form from being resubmitted upon page refresh.
+ *
+ * Value: 303
  */
 const SEE_OTHER = 303;
 
 /**
- * Not Modified - Indicates that the resource has not been modified since the version specified by the requestBooks headers.
- * @type {number}
+ * Represents the HTTP status code 304, which indicates that the resource has not been modified since the version specified by the request headers.
+ * This status code is commonly used in conjunction with caching mechanisms to optimize network performance by allowing the client to use a locally cached copy of the resource.
+ * It signifies that there is no need to retransmit the requested resource.
  */
 const NOT_MODIFIED = 304;
 
 /**
- * Use Proxy - The requested resource is available only through a proxy, the address for which is provided in the response.
- * @type {number}
+ * A constant representing the status code for the "Use Proxy" HTTP response.
+ * This status code indicates that the requested resource must be accessed through the proxy specified in the response.
+ * The server providing the proxy URL should be consulted for further details when this status code is returned.
+ * This is typically used in scenarios where a proxy server is required to handle client requests.
  */
 const USE_PROXY = 305;
 
 /**
- * Temporary Redirect - The server is currently responding to the requestBooks with a URI for a different resource.
- * @type {number}
+ * Represents the HTTP status code for a temporary redirect (307).
+ *
+ * A temporary redirect indicates that the requested resource resides temporarily under
+ * a different URI. This status code is used to instruct the client to issue a new request
+ * to the location provided by the response's "Location" header. Unlike a permanent redirect
+ * (HTTP status code 301), subsequent requests for the resource should continue to use the
+ * original URI.
+ *
+ * TEMPORARY_REDIRECT is typically used to handle temporary reorganizations, maintenance,
+ * or content updates without altering bookmarks or links permanently. It ensures that
+ * HTTP methods are preserved during the redirection process, meaning the method and body
+ * of the original request will be reused in the redirected request.
  */
 const TEMPORARY_REDIRECT = 307;
 
 /**
- * Permanent Redirect - The requestBooks and all future requests should be repeated using another URI.
- * @type {number}
+ * Represents the HTTP status code for a permanent redirect.
+ *
+ * This status code indicates that the resource requested
+ * has been permanently moved to a new URL. The client
+ * should update bookmarks, and future requests should
+ * be directed to the new URL provided in the response.
+ *
+ * Value: 308
  */
 const PERMANENT_REDIRECT = 308;
 
 /**
- * Client error responses (400–499)
- */
-
-/**
- * Bad Request - The server cannot process the requestBooks due to a client error.
- * @type {number}
+ * BAD_REQUEST is a constant representing the HTTP status code 400.
+ * This status code indicates that the server cannot process the request
+ * due to a client-side error, such as malformed syntax or invalid request parameters.
  */
 const BAD_REQUEST = 400;
 
 /**
- * Unauthorized - The client must authenticate itself to get the requested response.
- * @type {number}
+ * Represents the HTTP status code for unauthorized client access.
+ * This status code indicates that the request requires user authentication.
+ * Commonly used in scenarios where authentication credentials are absent
+ * or invalid, or the user does not have permission to access the requested resource.
+ *
+ * Value: 401
  */
 const UNAUTHORIZED = 401;
 
 /**
- * Payment Required - Reserved for future use.
- * @type {number}
+ * Represents the HTTP status code for "Payment Required".
+ * Typically used to indicate that the client must provide payment or meet payment requirements
+ * to access the requested resource.
+ *
+ * Value: 402
  */
 const PAYMENT_REQUIRED = 402;
 
 /**
- * Forbidden - The client does not have access rights to the content.
- * @type {number}
+ * A constant representing the HTTP status code for "Forbidden".
+ * This status code indicates that the server understood the request but refuses to authorize it.
+ * Commonly used to signify that access to the requested resource is not allowed.
  */
 const FORBIDDEN = 403;
 
 /**
- * Not Found - The server cannot find the requested resource.
- * @type {number}
+ * Represents the HTTP status code for "Not Found".
+ * Used to indicate that the requested resource could not be found on the server.
+ * Commonly associated with HTTP status code 404.
+ *
+ * Example scenarios where this might be used:
+ * - A user tries to access a webpage that does not exist.
+ * - An API endpoint is called with an invalid resource identifier.
+ *
+ * Value: 404
  */
 const NOT_FOUND = 404;
 
 /**
- * Method Not Allowed - The requestBooks method is known by the server but is not supported by the target resource.
- * @type {number}
+ * Represents the HTTP status code for "Method Not Allowed".
+ *
+ * This status code indicates that the method specified in the
+ * request is not allowed for the resource identified by the URI.
+ *
+ * Commonly used to signal that the request method is understood
+ * by the server but is not supported or valid in the current context.
+ *
+ * Value: 405
  */
 const METHOD_NOT_ALLOWED = 405;
 
 /**
- * Not Acceptable - The server cannot produce a response matching the list of acceptable values defined in the requestBooks's proactive content negotiation headers.
- * @type {number}
+ * Represents the HTTP status code for "Not Acceptable".
+ *
+ * This status code indicates that the server cannot produce a response matching the list
+ * of acceptable values defined in the request's proactive content negotiation headers,
+ * and the server is unwilling to supply a default response.
+ *
+ * Commonly used in RESTful APIs to indicate that the server cannot serve any of the
+ * representation(s) requested by the client.
+ *
+ * Value: 406
  */
 const NOT_ACCEPTABLE = 406;
 
 /**
- * Proxy Authentication Required - The client must first authenticate itself with the proxy.
- * @type {number}
+ * The HTTP 407 Proxy Authentication Required status code indicates that the client must first authenticate itself with the proxy.
+ * This status is sent along with a Proxy-Authenticate header, which provides information on how to authorize with the proxy.
+ * It is commonly used in proxy server scenarios where authentication is required before accessing the requested resource.
+ *
+ * Value: 407
  */
 const PROXY_AUTHENTICATION_REQUIRED = 407;
 
 /**
- * Request Timeout - The server would like to shut down this unused connection.
- * @type {number}
+ * REQUEST_TIMEOUT is a constant that represents the HTTP status code 408.
+ * It indicates that the server timed out waiting for the client's request.
+ *
+ * This status code is commonly used to inform the client that their request
+ * did not complete within the server's allotted time frame, prompting them
+ * to retry or take corrective actions.
  */
 const REQUEST_TIMEOUT = 408;
 
 /**
- * Conflict - The requestBooks could not be completed due to a conflict with the current state of the target resource.
- * @type {number}
+ * Represents the HTTP status code for a conflict error.
+ *
+ * The `CONFLICT` variable is a numerical constant set to 409,
+ * indicating that the request could not be processed because
+ * of a conflict in the request state, such as an edit conflict
+ * between multiple simultaneous updates.
+ *
+ * Commonly used in REST APIs to communicate conflict errors.
+ *
+ * Value: 409
  */
 const CONFLICT = 409;
 
 /**
- * Gone - The content has been permanently deleted from server, with no forwarding address.
- * @type {number}
+ * Represents the HTTP status code 410, which indicates that the resource
+ * requested is no longer available and will not be available again.
+ * This status is typically used to inform the client that the resource
+ * has been permanently removed and no forwarding address is provided.
  */
 const GONE = 410;
 
 /**
- * Length Required - The server rejects the requestBooks because the Content-Length header field is not defined and the server requires it.
+ * Represents an HTTP status code indicating that the server refuses to
+ * accept the request without a defined Content-Length header. This status
+ * code is typically returned when the server requires the client to specify
+ * the size of the request payload before proceeding.
+ *
+ * @constant
  * @type {number}
+ * @default 411
  */
 const LENGTH_REQUIRED = 411;
 
 /**
- * Precondition Failed - The server does not meet one of the preconditions that the requester put on the requestBooks header fields.
- * @type {number}
+ * Represents the HTTP status code 412 (Precondition Failed).
+ *
+ * This status code indicates that one or more conditions given in the request header fields
+ * were evaluated to be false when tested on the server.
+ * The server uses this response to notify the client that the conditions specified in the
+ * `If-Match`, `If-None-Match`, `If-Modified-Since`, `If-Unmodified-Since`, or `If-Range`
+ * headers were not met.
+ *
+ * Commonly used in RESTful APIs to handle client expectations and preconditions.
+ *
+ * Value: 412
  */
 const PRECONDITION_FAILED = 412;
 
 /**
- * Payload Too Large - The requestBooks is larger than the server is willing or able to process.
- * @type {number}
+ * Constant representing the HTTP status code for "Payload Too Large".
+ * This status code indicates that the server is refusing to process a request because
+ * the request payload is larger than the server is willing or able to process.
+ *
+ * Typically used in API responses when the client request exceeds the allowable size limits.
+ *
+ * Value: 413
  */
 const PAYLOAD_TOO_LARGE = 413;
 
 /**
- * URI Too Long - The URI provided was too long for the server to process.
- * @type {number}
+ * Represents the HTTP status code 414, which indicates that the URI requested by the client is too long for the server to process.
+ * This status code may occur when a client sends a GET request with an excessively large query string or when headers exceed acceptable limits.
+ * It is often used to signal clients to reduce the request size or consider alternative methods for data transfer.
  */
 const URI_TOO_LONG = 414;
 
 /**
- * Unsupported Media Type - The requestBooks entity has a media type which the server or resource does not support.
- * @type {number}
+ * Represents the HTTP status code for "Unsupported Media Type".
+ * This status code indicates that the server refuses to process the request
+ * because the request payload is in a format not supported by the server for the
+ * targeted resource.
+ *
+ * Value: 415
  */
 const UNSUPPORTED_MEDIA_TYPE = 415;
 
 /**
- * Range Not Satisfiable - The client has asked for a portion of the file (byte serving), but the server cannot supply that portion.
- * @type {number}
+ * Represents the HTTP status code for "Range Not Satisfiable".
+ * This status code indicates that the server cannot return the requested portion(s) of the resource
+ * due to either an invalid range specified in the "Range" header field or the resource's inability
+ * to fulfill the requested range.
+ *
+ * Common reasons for this status:
+ * - The range specified in the request does not overlap with the available content.
+ * - The resource does not support range requests.
+ *
+ * The corresponding HTTP status code is: 416.
  */
 const RANGE_NOT_SATISFIABLE = 416;
 
 /**
- * Expectation Failed - The server cannot meet the requirements of the Expect requestBooks-header field.
- * @type {number}
+ * Represents the HTTP status code 417 (Expectation Failed).
+ * This status code indicates that the server cannot meet the requirements
+ * of the Expect request-header field provided by the client.
+ *
+ * Commonly used in the context where the server is unable or unwilling to
+ * process the "Expect" header sent by the client, leading to a failed request.
+ *
+ * Value: 417
  */
 const EXPECTATION_FAILED = 417;
 
 /**
- * I'm a teapot - Defined in 1998 as an April Fools' joke in RFC 2324, Hyper Text Coffee Pot Control Protocol, and is not expected to be implemented by actual HTTP servers.
- * @type {number}
+ * Represents the HTTP status code 418, "I'm a teapot".
+ * This status code is primarily used as an Easter egg in reference to the
+ * Hyper Text Coffee Pot Control Protocol (HTCPCP), as defined in RFC 2324.
+ * It is not an actual error status used in standard web applications.
  */
 const IM_A_TEAPOT = 418;
 
 /**
- * Misdirected Request - The requestBooks was directed at a server that is not able to produce a response.
- * @type {number}
+ * HTTP status code 421, representing "Misdirected Request".
+ * This status code indicates that the request was directed at a server
+ * that is not able to produce a response. This can happen, for example,
+ * when the server being accessed does not support the functionality required
+ * to fulfill the request, or if a request is incorrectly routed.
+ *
+ * Assigned value: 421
  */
 const MISDIRECTED_REQUEST = 421;
 
 /**
- * Unprocessable Entity - The server understands the content type of the requestBooks entity,
- * and the syntax of the requestBooks entity is correct, but it was unable to process the contained instructions.
- * @type {number}
+ * HTTP status code representing "Unprocessable Entity".
+ * This status code indicates that the server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions.
+ *
+ * Commonly used in scenarios where validation errors occur or when the client sends a request that cannot be processed as-is by the server.
+ *
+ * Value: 422
  */
 const UNPROCESSABLE_ENTITY = 422;
 
 /**
- * Locked - The resource that is being accessed is locked.
- * @type {number}
+ * Represents a constant or fixed value indicating a specific locked state or condition.
+ * The value assigned to this variable is immutable and serves as a unique identifier
+ * for the locked status within the application logic.
+ *
+ * @constant {number} LOCKED
  */
 const LOCKED = 423;
 
 /**
- * Failed Dependency - The requestBooks failed due to failure of a previous requestBooks.
- * @type {number}
+ * Represents the HTTP status code 424, indicating that the request failed
+ * due to the failure of a previous request that the current request depends on.
+ *
+ * This status code is primarily used within the context of WebDAV, where
+ * it signifies that a method could not be performed because it depends on
+ * the success of another method that has failed.
+ *
+ * Commonly used to inform the client that the request cannot be fulfilled
+ * due to unmet dependencies or prerequisites.
  */
 const FAILED_DEPENDENCY = 424;
 
 /**
- * Too Early - Indicates that the server is unwilling to risk processing a requestBooks that might be replayed.
- * @type {number}
+ * A constant representing the HTTP status code 425, "Too Early".
+ *
+ * This status code indicates that the server is unwilling to risk
+ * processing a request that might be replayed due to early execution.
+ * Commonly used in scenarios involving cryptographic operations or
+ * transactions that require precise timing to avoid replay attacks.
  */
 const TOO_EARLY = 425;
 
 /**
- * Upgrade Required - The client should switch to a different protocol such as TLS/1.0, given in the Upgrade header field.
- * @type {number}
+ * Status code indicating that an upgrade is required to access the resource.
+ * Typically used in the context of HTTP, where the client must switch to
+ * a different protocol or upgrade their connection to a supported version.
+ *
+ * - Value: 426
+ * - Commonly associated with situations where the server demands protocol changes.
  */
 const UPGRADE_REQUIRED = 426;
 
 /**
- * Precondition Required - The origin server requires the requestBooks to be conditional.
- * @type {number}
+ * The HTTP status code 428 Precondition Required.
+ * This response indicates that the server requires the request to be conditional.
+ * It is sent when a request is expected to be made using conditional headers, such as `If-Match` or `If-Unmodified-Since`.
+ * This is typically used to prevent lost updates when multiple clients are concurrently modifying a resource.
  */
 const PRECONDITION_REQUIRED = 428;
 
 /**
- * Too Many Requests - The user has sent too many requests in a given amount of time ("rate limiting").
- * @type {number}
+ * Represents the HTTP status code for "Too Many Requests".
+ *
+ * This status code indicates that the user has sent too many requests
+ * in a given amount of time ("rate limiting"). It is typically returned
+ * by servers to signal that the server is temporarily unable to handle
+ * further requests from the client due to exceeding a defined threshold.
+ *
+ * Common usage scenarios include API rate limiting or to prevent abuse
+ * by limiting request frequencies.
+ *
+ * Value: 429
  */
 const TOO_MANY_REQUESTS = 429;
 
 /**
- * Request Header Fields Too Large - The server is unwilling to process the requestBooks because its header fields are too large.
- * @type {number}
+ * Represents the HTTP status code 431, "Request Header Fields Too Large".
+ * This status code is returned when the server refuses to process a request
+ * because the request's header fields are too large, either individually or collectively.
+ * The client may wish to reduce the size of the header fields and retry the request.
  */
 const REQUEST_HEADER_FIELDS_TOO_LARGE = 431;
 
 /**
- * Unavailable For Legal Reasons - The user requests an illegal resource, such as a web page censored by a government.
- * @type {number}
+ * Represents the HTTP status code 451: Unavailable For Legal Reasons.
+ * This status code indicates that the requested resource is unavailable
+ * due to legal restrictions, such as censorship, court orders, or other
+ * regulatory limitations imposed on the content.
  */
 const UNAVAILABLE_FOR_LEGAL_REASONS = 451;
 
 /**
- * Server error responses (500–599)
- */
-
-/**
- * Internal Server Error - A generic error message, given when an unexpected condition
- * was encountered and no more specific message is suitable.
- * @type {number}
+ * A constant representing the HTTP status code 500 - Internal Server Error.
+ * This status code indicates that the server encountered an unexpected condition
+ * that prevented it from fulfilling the request.
  */
 const INTERNAL_SERVER_ERROR = 500;
 
 /**
- * Not Implemented - The server either does not recognize the requestBooks method, or it lacks the ability to fulfil the requestBooks.
- * @type {number}
+ * A constant representing the HTTP status code 501, indicating that the server does not support
+ * the functionality required to fulfill the request.
+ * This status code is used when the server recognizes the request method, but it is not supported.
+ * It signifies "Not Implemented" as defined in the HTTP/1.1 standard (RFC 7231).
+ *
+ * Value: 501
  */
 const NOT_IMPLEMENTED = 501;
 
 /**
- * Bad Gateway - The server was acting as a gateway or proxy and received an invalid response from the upstream server.
- * @type {number}
+ * BAD_GATEWAY is a numeric constant that represents the HTTP status code 502.
+ * This status code indicates that the server, while acting as a gateway or proxy, received an invalid response from an upstream server.
  */
 const BAD_GATEWAY = 502;
 
 /**
- * Service Unavailable - The server is not ready to handle the requestBooks.
- * @type {number}
+ * Represents the HTTP status code for "Service Unavailable".
+ * This status code indicates that the server is currently unable
+ * to handle the request due to a temporary overload or scheduled
+ * maintenance, implying that the condition is temporary and will
+ * be alleviated after some time.
+ *
+ * Value: 503
  */
 const SERVICE_UNAVAILABLE = 503;
 
 /**
- * Gateway Timeout - The server was acting as a gateway or proxy and did not receive a timely response from the upstream server.
- * @type {number}
+ * GATEWAY_TIMEOUT is a constant that represents the HTTP status code 504.
+ * This status code indicates that a server acting as a gateway or proxy did not receive a timely response
+ * from the upstream server or some other auxiliary server it needed to access in order to complete the request.
  */
 const GATEWAY_TIMEOUT = 504;
 
 /**
- * HTTP Version Not Supported - The HTTP version used in the requestBooks is not supported by the server.
- * @type {number}
+ * Represents the HTTP status code for "HTTP Version Not Supported".
+ *
+ * This status code indicates that the server does not support the HTTP protocol version
+ * used in the request. The client may need to switch to a different version of HTTP or
+ * resolve compatibility issues with the server.
+ *
+ * Value: 505
+ *
+ * Commonly used in HTTP responses to signal protocol version mismatches.
  */
 const HTTP_VERSION_NOT_SUPPORTED = 505;
 
 /**
- * Variant Also Negotiates - The server has an internal configuration error: transparent content negotiation for the requestBooks results in a circular reference.
- * @type {number}
+ * The HTTP status code 506 represents "Variant Also Negotiates".
+ * This error indicates that the server has an internal configuration error:
+ * the chosen variant resource is configured to engage in content negotiation
+ * itself and is therefore not a proper end point in the negotiation process.
+ *
+ * This code is typically used in the context of transparent content negotiation
+ * when multiple variants are mistakenly configured to negotiate with the client,
+ * creating a negotiation loop.
+ *
+ * Value: 506
  */
 const VARIANT_ALSO_NEGOTIATES = 506;
 
 /**
- * Insufficient Storage - The method could not be performed on the resource because the server is unable to store the representation needed to successfully complete the requestBooks.
- * @type {number}
+ * A constant representing the HTTP status code for "Insufficient Storage".
+ *
+ * This status code indicates that the server is unable to store the
+ * representation needed to complete the request due to insufficient storage space.
+ *
+ * @constant {number}
+ * @default 507
  */
 const INSUFFICIENT_STORAGE = 507;
 
 /**
- * Loop Detected - The server detected an infinite loop while processing a requestBooks.
- * @type {number}
+ * The constant `LOOP_DETECTED` represents the HTTP status code 508,
+ * indicating that the server detected an infinite loop while processing the request.
+ *
+ * This status code is primarily used in the context of Web Distributed Authoring
+ * and Versioning (WebDAV) applications and signifies that the requested resource
+ * was unable to be delivered due to a server configuration or logical error
+ * involving recursive request processing.
+ *
+ * Value: 508
  */
 const LOOP_DETECTED = 508;
 
 /**
- * Not Extended - Further extensions to the requestBooks are required for the server to fulfil it.
- * @type {number}
+ * Represents the HTTP status code 510, indicating that the server requires further extensions
+ * to fulfill the request. This status is typically used when the server is unable to process the
+ * request due to missing extension(s) defined by a policy or configuration.
+ *
+ * Commonly associated with cases where the server has a policy that requires certain conditions
+ * to be met, such as protocol extensions, before processing a request.
  */
 const NOT_EXTENDED = 510;
 
 /**
- * Network Authentication Required - The client needs to authenticate to gain network access.
- * @type {number}
+ * Represents the HTTP status code '511 Network Authentication Required'.
+ * This status code indicates that the client needs to authenticate to
+ * gain network access. It is typically used by intercepting proxies
+ * that control access to the network.
+ *
+ * Value: 511
  */
 const NETWORK_AUTHENTICATION_REQUIRED = 511;
 
-// Export the status codes for use in other parts of the application
+/**
+ * An immutable object representing standard HTTP status codes.
+ *
+ * Each property of the object corresponds to a specific HTTP status code,
+ * as defined in the HTTP/1.1 standard and extensions.
+ *
+ * This object is frozen and cannot be modified after creation, ensuring that
+ * the status codes remain consistent and unchangeable throughout the application lifecycle.
+ *
+ * Common usage includes identifying and handling HTTP response statuses
+ * in web applications, APIs, and client-server communication protocols.
+ */
 const httpStatus = Object.freeze({
     CONTINUE,
     SWITCHING_PROTOCOLS,

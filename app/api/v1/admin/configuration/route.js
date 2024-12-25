@@ -121,47 +121,47 @@ const handleUpdateConfiguration = async (request) => {
         userInput.logoId = fileId;
     }
 
-    // Handle emails
-    let updatedEmails = existingEntry.emails || [];
-    if (userInput?.deleteEmails) {
-        updatedEmails = updatedEmails.filter(email => !userInput.deleteEmails.includes(email));
-
-        delete userInput.deleteEmails;
-    }
-    if (userInput?.emails) {
-        updatedEmails = [...updatedEmails, ...userInput.emails];
-    }
-
-    // Handle contacts
-    let updatedContacts = existingEntry.contacts || [];
-    if (userInput?.deleteContacts) {
-        updatedContacts = updatedContacts.filter(contact => !userInput.deleteContacts.includes(contact));
-
-        delete userInput.deleteContacts;
-    }
-    if (userInput?.contacts) {
-        updatedContacts = [...updatedContacts, ...userInput.contacts];
-    }
-
-    // Handle social links
-    let updatedSocialLinks = existingEntry.socialLinks || [];
-    if (userInput?.deleteSocialLinks) {
-        updatedSocialLinks = updatedSocialLinks.filter(link => !userInput.deleteSocialLinks.includes(link));
-
-        delete userInput.deleteSocialLinks;
-    }
-    if (userInput?.socialLinks) {
-        updatedSocialLinks = [...updatedSocialLinks, ...userInput.socialLinks];
-    }
+    // // Handle emails
+    // let updatedEmails = existingEntry.emails || [];
+    // if (userInput?.deleteEmails) {
+    //     updatedEmails = updatedEmails.filter(email => !userInput.deleteEmails.includes(email));
+    //
+    //     delete userInput.deleteEmails;
+    // }
+    // if (userInput?.emails) {
+    //     updatedEmails = [...updatedEmails, ...userInput.emails];
+    // }
+    //
+    // // Handle contacts
+    // let updatedContacts = existingEntry.contacts || [];
+    // if (userInput?.deleteContacts) {
+    //     updatedContacts = updatedContacts.filter(contact => !userInput.deleteContacts.includes(contact));
+    //
+    //     delete userInput.deleteContacts;
+    // }
+    // if (userInput?.contacts) {
+    //     updatedContacts = [...updatedContacts, ...userInput.contacts];
+    // }
+    //
+    // // Handle social links
+    // let updatedSocialLinks = existingEntry.socialLinks || [];
+    // if (userInput?.deleteSocialLinks) {
+    //     updatedSocialLinks = updatedSocialLinks.filter(link => !userInput.deleteSocialLinks.includes(link));
+    //
+    //     delete userInput.deleteSocialLinks;
+    // }
+    // if (userInput?.socialLinks) {
+    //     updatedSocialLinks = [...updatedSocialLinks, ...userInput.socialLinks];
+    // }
 
     // Perform the update
     const updatedEntry = await model.update({
         where: { id: existingEntry.id },
         data: {
             ...userInput,
-            emails: updatedEmails,
-            contacts: updatedContacts,
-            socialLinks: updatedSocialLinks,
+            // emails: updatedEmails,
+            // contacts: updatedContacts,
+            // socialLinks: updatedSocialLinks,
             updatedAt: new Date(),
         },
         select: selectionCriteria,

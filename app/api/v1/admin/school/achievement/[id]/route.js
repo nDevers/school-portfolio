@@ -12,13 +12,62 @@ import validateToken from "@/util/validateToken";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
 import schoolAchievementSelectionCriteria from "@/app/api/v1/school/achievement/school.achievement.selection.criteria";
 
+/**
+ * An instance of PrismaClient that provides a connection to the database and allows
+ * interaction with it using Prisma's query engine. PrismaClient is used for executing
+ * queries, performing CRUD operations, and managing database transactions.
+ *
+ * Creating an instance of PrismaClient establishes a connection to the database as
+ * defined in the Prisma schema file. Make sure to properly manage the lifecycle of
+ * this instance to avoid connection leaks.
+ *
+ * It is recommended to initialize the PrismaClient once and reuse the instance across
+ * your application to optimize database connections.
+ *
+ * For improved performance and predictable behavior, ensure that the schema file
+ * and database structure are in sync during development and production deployments.
+ *
+ * Example use cases:
+ * - Querying data from the database.
+ * - Executing mutations to create, update, or delete records.
+ * - Managing database transactions for business logic consistency.
+ */
 const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 
+/**
+ * Represents the SchoolAchievement model from Prisma schema.
+ * This model is typically used to manage and interact with data
+ * related to school achievements in the database.
+ *
+ * This object enables querying, creating, updating, and deleting
+ * entries for school achievements within the underlying database.
+ *
+ * The structure and fields of the SchoolAchievement model are defined
+ * in the Prisma schema file, and the model is integrated with the Prisma
+ * Client for seamless database operations.
+ *
+ * Note: The actual fields and their types are defined in the corresponding
+ * Prisma schema and should be referred to for details regarding the model structure.
+ */
 const model = prisma.SchoolAchievement;
 
-// Helper function to update and respond with the school achievement
+/**
+ * Updates a school achievement entry in the database based on user-provided input.
+ *
+ * Filters the `userInput` object to exclude null or undefined fields, as well as the "id" field,
+ * before proceeding to update the database. Retrieves and returns the updated document,
+ * or handles errors if the update fails.
+ *
+ * @async
+ * @function updateSchoolAchievementEntry
+ * @param {Object} userInput - An object containing the fields to update along with the corresponding values.
+ *                             The object must include an `id` field representing the target entry's ID.
+ * @param {Object} request - The request context for the operation, often used for generating server responses.
+ * @returns {Promise<Object>} A promise that resolves to the updated document along with a success message,
+ *                            or an error message if the update operation fails.
+ */
 const updateSchoolAchievementEntry = async (userInput, request) => {
     // Filter `userInput` to only include fields with non-null values
     const fieldsToUpdate = Object.keys(userInput).reduce((acc, key) => {
@@ -53,7 +102,23 @@ const updateSchoolAchievementEntry = async (userInput, request) => {
     return OK(`School achievement entry with the ID "${userInput?.id}" updated successfully.`, updatedDocument, request);
 };
 
-// Named export for the GET request handler
+/**
+ * Handles the update of a school achievement entry by its ID.
+ *
+ * This function validates the request payload, checks user authorization, processes the input data,
+ * and updates an existing achievement entry. It ensures that only authorized administrators can
+ * modify achievements, validates input data against a schema, checks for duplicate titles, and
+ * handles file replacement if a new file is provided.
+ *
+ * @param {Object} request - The HTTP request object containing user input and headers.
+ * @param {Object} context - The context object containing metadata or additional request details.
+ * @returns {Promise<Object>} - A response object containing the result of the update operation.
+ *
+ * @throws {ValidationError} If the input data fails validation.
+ * @throws {AuthorizationError} If the user is not authorized to perform the operation.
+ * @throws {ConflictError} If an achievement with the same title already exists.
+ * @throws {NotFoundError} If the achievement entry with the provided ID does not exist.
+ */
 const handleUpdateSchoolAchievementById = async (request, context) => {
     // Validate content type
     const contentValidationResult = validateUnsupportedContent(request, schoolAchievementConstants.allowedContentTypes);
@@ -114,12 +179,43 @@ const handleUpdateSchoolAchievementById = async (request, context) => {
     return updateSchoolAchievementEntry(userInput, request);
 };
 
+/**
+ * Asynchronously deletes a school achievement entry by its ID.
+ *
+ * This function interacts with the serviceShared module to remove a school
+ * achievement record from the database or the relevant data store. It utilizes
+ * the provided `request` and `context` parameters, which typically include
+ * details of the operation and the execution environment. The `model` and
+ * field name ('iconId') are used to identify and delete the specific school
+ * achievement.
+ *
+ * @param {Object} request - The request object containing parameters required for deleting the school achievement entry.
+ * @param {Object} context - The context of the execution, often containing additional metadata or execution-related information.
+ * @returns {Promise<Object>} A promise that resolves to the result of the deletion operation, typically indicating success or failure.
+ */
 const deleteSchoolAchievementById = async (request, context) => {
     return serviceShared.deleteEntryById(request, context, model, 'iconId', 'school achievement');
 };
 
-// Export the route wrapped with asyncHandler
+/**
+ * PATCH is an asynchronous function that handles the update of a school achievement
+ * identified by its ID. It uses an asynchronous handler to process the update operation.
+ *
+ * The function encapsulates the logic for processing the request, updating the corresponding
+ * school achievement data, and returning the appropriate response to the client.
+ *
+ * Typically utilized in routes where school achievement records need to be modified via a PATCH request.
+ */
 export const PATCH = asyncHandler(handleUpdateSchoolAchievementById);
 
-// Export the route wrapped with asyncHandler
+/**
+ * Asynchronous handler for deleting a school achievement by its ID.
+ *
+ * This variable uses an async handler to invoke the `deleteSchoolAchievementById` function,
+ * which performs the deletion operation. The handler ensures proper error handling
+ * and response management during the deletion process.
+ *
+ * @constant
+ * @type {Function}
+ */
 export const DELETE = asyncHandler(deleteSchoolAchievementById);

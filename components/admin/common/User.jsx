@@ -1,12 +1,19 @@
 'use client';
 import { useUser } from '@/contexts/UserContext';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ChevronUp, User2 } from 'lucide-react';
+import { User2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { logout } from "@/util/auth";
+import { useRouter } from 'next/navigation';
 
 export default function User() {
     const { user } = useUser();
+    const route = useRouter()
+    const handleSignout = () => {
+        logout(false, () => {
+            route.push('/admin/login');
+        });
+    };
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -16,7 +23,7 @@ export default function User() {
                 <DropdownMenuLabel className='capitalize'> {user ? user.userType : 'No user found'}</DropdownMenuLabel>
                 <DropdownMenuItem> Account </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout}> Sign out </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleSignout}> Sign out </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     );

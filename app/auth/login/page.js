@@ -14,6 +14,7 @@ import { RiSendPlaneLine } from 'react-icons/ri';
 import Link from 'next/link';
 import { login } from '@/util/auth';
 import { useUser } from '@/contexts/UserContext';
+import apiConfig from '@/configs/apiConfig';
 
 // Yup validation schema
 const validationSchema = Yup.object({
@@ -31,7 +32,7 @@ export default function LoginPage() {
     };
 
     const submit = async (data) => {
-        await login(data);
+        await login(data, apiConfig?.ADMIN_LOGIN);
     };
     
     const onSuccess = () => {

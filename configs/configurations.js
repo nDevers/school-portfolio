@@ -5,7 +5,26 @@ import environments from "@/constants/enviornments.constants";
 import readFileContent from "@/util/readFileContent";
 import getEnvironmentData from "@/util/getEnvironmentData";
 
-// Function to extract common author/contact details
+/**
+ * Extracts and returns the details of an author or their contact information.
+ *
+ * This function retrieves relevant data regarding an author, including their name,
+ * portfolio link, contact details such as email and mobile number, and social media links.
+ * If any of the fields are missing, default values such as `null` will be assigned.
+ *
+ * @param {Object} author - The object containing author information and their details.
+ * @param {string} [author.name] - The name of the author.
+ * @param {string} [author.portfolio] - The portfolio link of the author.
+ * @param {Object} [author.contact] - The object containing the author's contact information.
+ * @param {string} [author.contact.email] - The email address of the author.
+ * @param {string} [author.contact.mobile] - The mobile number of the author.
+ * @param {Object} [author.social] - The author's social media information.
+ * @returns {Object} An object containing the author's details:
+ *                   - `name`: The name of the author.
+ *                   - `portfolio`: The portfolio link or `null`.
+ *                   - `contact`: An object with `email` and `mobile` values or `null`.
+ *                   - `social`: The processed social media links.
+ */
 const getAuthorOrContactDetails = (author) => ({
   name: author?.name,
   portfolio: author?.portfolio || null,
@@ -18,7 +37,18 @@ const getAuthorOrContactDetails = (author) => ({
   social: getSocialLinks(author?.social),
 });
 
-// Function to extract social links
+/**
+ * Extracts and returns social media links from the provided object.
+ *
+ * @function
+ * @param {Object} social - An object containing social media links.
+ * @param {string} [social.linkedIn] - The LinkedIn profile link (optional).
+ * @param {string} [social.gitHub] - The GitHub profile link (optional).
+ * @param {string} [social.x] - The X (formerly Twitter) profile link (optional).
+ * @param {string} [social.facebook] - The Facebook profile link (optional).
+ * @param {string} [social.instagram] - The Instagram profile link (optional).
+ * @returns {Object} An object containing the extracted social media links with default values as null if not provided.
+ */
 const getSocialLinks = (social) => ({
   linkedIn: social?.linkedIn || null,
   gitHub: social?.gitHub || null,
@@ -27,12 +57,23 @@ const getSocialLinks = (social) => ({
   instagram: social?.instagram || null,
 });
 
-// Read package.json content
+/**
+ * Represents the content of the `package.json` file read from the file system.
+ *
+ * The variable holds a string containing the contents of the `package.json`
+ * file located at the defined path. The content is retrieved asynchronously
+ * using the `readFileContent` function.
+ *
+ * @type {string}
+ */
 const packageJsonFileContent = await readFileContent(
   "./package.json",
   true,
 );
 
+/**
+ * Asynchronous configuration object that provides data for various application configurations.
+ */
 const configurations = async () => ({
   // Environment Configuration
   env: getEnvironmentData("NODE_ENV") || environments.DEVELOPMENT,

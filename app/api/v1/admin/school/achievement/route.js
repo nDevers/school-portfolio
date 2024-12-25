@@ -11,13 +11,40 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import schoolAchievementSelectionCriteria from "@/app/api/v1/school/achievement/school.achievement.selection.criteria";
 
+/**
+ * An instance of the PrismaClient that allows for interaction with the database.
+ * PrismaClient is used to configure and execute queries, mutations, and other database operations.
+ * It acts as a database ORM, supporting various relational and non-relational databases.
+ *
+ * The instance should be initialized once and reused across the application
+ * to maintain an efficient connection to the database and prevent
+ * the exhaustion of database connections.
+ *
+ * Ensure proper lifecycle management of the PrismaClient, such as calling
+ * the `$disconnect` method to close the database connection when it is no
+ * longer needed, especially in long-living processes such as servers.
+ */
 const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED, NOT_FOUND } = sharedResponseTypes;
 
+/**
+ * Represents the `SchoolAchievement` model from Prisma.
+ * This model is used to interact with the `SchoolAchievement` table in the database.
+ * It defines the structure and relationships of the `SchoolAchievement` entity.
+ */
 const model = prisma.SchoolAchievement;
 
-// Helper function to create and respond with the FAQ
+/**
+ * Asynchronously creates a new school achievement entry in the database.
+ *
+ * @async
+ * @function createSchoolAchievementEntry
+ * @param {Object} userInput - The input data for the school achievement entry.
+ * @param {Object} request - The HTTP request object.
+ * @returns {Promise<Object>} A response object indicating the success or failure of the operation, including the created entry's details.
+ * @throws {Error} If the creation process fails or the created document cannot be retrieved.
+ */
 const createSchoolAchievementEntry = async (userInput, request) => {
     const newDocument = await model.create({
         data: userInput,
@@ -43,7 +70,26 @@ const createSchoolAchievementEntry = async (userInput, request) => {
     return CREATED(`School achievement entry with title "${userInput?.title}" created successfully.`, createdDocument, request);
 };
 
-// Named export for the POST request handler (Create FAQ)
+/**
+ * Asynchronous function to handle the creation of a school achievement entry.
+ *
+ * This function performs several steps to ensure the creation process is executed securely and correctly:
+ * 1. Validates the content type of the incoming request against allowed content types.
+ * 2. Validates the user's authorization to ensure they have sufficient permissions (admin).
+ * 3. Parses and validates the form data against the defined schema for creating school achievements.
+ * 4. Checks for the existence of a school achievement entry with the same title to prevent duplicate entries.
+ * 5. Handles file upload to associate an icon or file with the newly created school achievement entry.
+ * 6. Creates the school achievement entry with the validated and processed data.
+ *
+ * @name handleCreateSchoolAchievement
+ * @function
+ * @async
+ *
+ * @param {Object} request - The HTTP request object containing headers, body, and other request-related data.
+ * @param {Object} context - Contextual data that may include additional information for validation and processing.
+ *
+ * @returns {Promise<Object>} Returns a promise that resolves to an HTTP response object, either with the success of the operation or an error response in case of issues.
+ */
 const handleCreateSchoolAchievement = async (request, context) => {
     // Validate content type
     const contentValidationResult = validateUnsupportedContent(request, schoolAchievementConstants.allowedContentTypes);
@@ -84,5 +130,16 @@ const handleCreateSchoolAchievement = async (request, context) => {
     return createSchoolAchievementEntry(userInput, request);
 };
 
-// Export the route wrapped with asyncHandler
+/**
+ * The `POST` variable is an asynchronous handler function that processes HTTP POST requests.
+ * It utilizes the `asyncHandler` higher-order function to automatically handle errors in the `handleCreateSchoolAchievement` function.
+ * This enables efficient management of asynchronous operations and standardized error handling during the creation of school achievements.
+ *
+ * Usage:
+ * Typically used as the controller function in a route handling framework like Express.js to manage POST requests.
+ *
+ * Dependencies:
+ * - `asyncHandler`: A utility function for catching errors in asynchronous route handlers.
+ * - `handleCreateSchoolAchievement`: The specific function that contains the logic for creating a school achievement.
+ */
 export const POST = asyncHandler(handleCreateSchoolAchievement);
