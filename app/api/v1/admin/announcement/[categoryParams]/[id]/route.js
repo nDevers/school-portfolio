@@ -1,25 +1,72 @@
 import { PrismaClient } from '@prisma/client';
+import moment from "moment/moment";
 
 import announcementSchema from "@/app/api/v1/announcement/announcement.schema";
 import announcementConstants from "@/app/api/v1/announcement/announcement.constants";
 import sharedResponseTypes from "@/shared/shared.response.types";
 import localFileOperations from "@/util/localFileOperations";
+import careerConstants from "@/app/api/v1/career/career.constants";
 
 import asyncHandler from "@/util/asyncHandler";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
 import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import announcementSelectionCriteria from "@/app/api/v1/announcement/announcement.selection.criteria";
-import careerConstants from "@/app/api/v1/career/career.constants";
-import moment from "moment/moment";
 
+/**
+ * Represents an instance of the Prisma Client used to interact with the database.
+ * The Prisma Client provides a type-safe and efficient way to query and manipulate data
+ * within the underlying database, supporting operations such as reading, writing, updating,
+ * and deleting records.
+ *
+ * This variable is typically used as the gateway to all database interactions within the application.
+ * It is instantiated from the PrismaClient class, which is auto-generated based on the database schema.
+ *
+ * Note:
+ * - Ensure that the Prisma Client is properly generated using the `prisma generate` command before usage.
+ * - Close the client connection explicitly when your application terminates to avoid resource leaks.
+ *
+ * @type {PrismaClient}
+ */
 const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, OK, NOT_FOUND } = sharedResponseTypes;
 
+/**
+ * Represents the Announcement model from Prisma schema.
+ *
+ * This model corresponds to the `Announcement` table in the database and is used to define its structure,
+ * relationships, and interactions within the application. It serves as a data layer abstraction.
+ *
+ * Use this model to manage announcement-related operations, such as creating, reading, updating, and deleting announcements.
+ *
+ * This model includes various fields and properties defined in the Prisma schema that represent the data structure
+ * for announcements stored in the database. It may also contain relationships to other models.
+ *
+ * Note: The structure, fields, and relationships of this model depend on the specific design in the Prisma schema.
+ */
 const model = prisma.Announcement;
 
-// Helper function to create and respond with the announcement
+/**
+ * Updates an announcement entry in the database based on the provided user input.
+ *
+ * This function filters the provided `userInput` object to extract only the fields with non-null
+ * and non-undefined values, excluding the `id` field. It then updates the specific
+ * announcement entry in the database with the filtered data.
+ *
+ * After the update operation, it retrieves the updated entry using its ID and additional
+ * selection criteria. If the update fails or the entry cannot be retrieved, an error
+ * response is returned. Otherwise, a success response containing the updated data is returned.
+ *
+ * @async
+ * @param {Object} userInput - An object containing the fields to update and the identification
+ *                             information of the announcement entry (e.g., `id`, `categoryParams`).
+ *                             Fields with `undefined` or `null` values are ignored.
+ * @param {Object} request - The current request object for context and response construction.
+ * @returns {Object} - A response object indicating the success or failure of the update operation,
+ *                     along with the updated document if successful.
+ * @throws {Error} - Throws an error if the update fails or the announcement entry cannot be retrieved.
+ */
 const updateAnnouncementEntry = async (userInput, request) => {
     // Filter `userInput` to only include fields with non-null values
     const fieldsToUpdate = Object.keys(userInput).reduce((acc, key) => {
@@ -54,7 +101,19 @@ const updateAnnouncementEntry = async (userInput, request) => {
     return OK(`Announcement entry with CATEGORY "${userInput?.categoryParams}" and ID "${userInput?.id}" updated successfully.`, updatedDocument, request);
 };
 
-// Named export for the POST request handler (Create announcement)
+/**
+ * Handles the process of updating an announcement by its category and ID.
+ * This function includes several validations such as content type, user
+ * authorization, and presence of the announcement entry. It also processes
+ * file uploads, deletions, and updates corresponding database records.
+ *
+ * @async
+ * @param {Object} request - The request object containing payload data, headers, and other request-specific details.
+ * @param {Object} context - Context information that might be needed for specific operations, such as schema validations.
+ * @returns {Object} - The response result of the update operation, which includes success or failure output with appropriate status and messages.
+ *
+ * @throws {Error} - Throws an error if there are issues during the validation, file operations, or database interactions.
+ */
 const handleUpdateAnnouncementByCategoryAndId = async (request, context) => {
     // Validate content type
     const contentValidationResult = validateUnsupportedContent(request, announcementConstants.allowedContentTypes);
@@ -176,6 +235,18 @@ const handleUpdateAnnouncementByCategoryAndId = async (request, context) => {
     return updateAnnouncementEntry(userInput, request);
 };
 
+/**
+ * Asynchronously deletes an announcement based on the provided category and ID.
+ *
+ * This function validates the user's authorization, parses and validates form data, checks for
+ * the existence of the announcement, deletes associated files, and performs the deletion
+ * of the announcement entry. Returns a success response if the deletion is successful,
+ * or an appropriate error response in case of issues.
+ *
+ * @param {Object} request - The request object containing the necessary data for authorization and deletion.
+ * @param {Object} context - The context object containing additional parameters or configurations.
+ * @returns {Promise<Object>} A response object indicating the success or failure of the operation.
+ */
 const deleteAnnouncementByCategoryAndId = async (request, context) => {
     // Validate admin
     const authResult = await validateToken(request);
@@ -237,9 +308,31 @@ const deleteAnnouncementByCategoryAndId = async (request, context) => {
     return OK(`Announcement entry with ID "${userInput?.id}" and CATEGORY "${userInput?.categoryParams}" deleted successfully.`, {}, request);
 };
 
-// Export the route wrapped with asyncHandler
+/**
+ * PATCH is an asynchronous middleware function that handles HTTP PATCH requests
+ * to update an announcement identified by its category and ID.
+ * It utilizes an `asyncHandler` to manage asynchronous operations,
+ * ensuring proper error handling and response management during the update process.
+ *
+ * Dependencies:
+ * - `asyncHandler`: A wrapper to handle asynchronous route functions and errors.
+ * - `handleUpdateAnnouncementByCategoryAndId`: The specific handler logic that processes
+ *   the update operation based on the announcement's category and ID parameters.
+ *
+ * Usage:
+ * Assigns the provided `asyncHandler` and `handleUpdateAnnouncementByCategoryAndId` function
+ * to handle the PATCH route for announcements, allowing updates to specific entries.
+ */
 export const PATCH = asyncHandler(handleUpdateAnnouncementByCategoryAndId);
 
-// Export the route wrapped with asyncHandler
+/**
+ * DELETE is an asynchronous function wrapped with asyncHandler to handle exceptions.
+ *
+ * It is responsible for deleting an announcement by its category and ID.
+ * The functionality is executed by the deleteAnnouncementByCategoryAndId function
+ * that it encapsulates.
+ *
+ * Usage of this variable typically involves API request handling for deletion
+ * of a specific resource in the application.
+ */
 export const DELETE = asyncHandler(deleteAnnouncementByCategoryAndId);
-
