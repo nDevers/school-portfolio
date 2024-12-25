@@ -12,13 +12,53 @@ import parseAndValidateFormData from "@/util/parseAndValidateFormData";
 import validateToken from "@/util/validateToken";
 import careerSelectionCriteria from "@/app/api/v1/career/career.selection.criteria";
 
+/**
+ * An instance of the PrismaClient, which is used for interacting with a Prisma-connected database.
+ * Allows querying, creating, updating, and deleting records in the database using Prisma ORM.
+ * Provides a type-safe and auto-completable API for database operations.
+ *
+ * This client is typically used to interface with a database defined in a Prisma schema file.
+ * It should be properly instantiated and managed to maintain database connections efficiently.
+ *
+ * Ensure to `disconnect` the client instance when it is no longer needed or before application shutdown
+ * to prevent open connections from lingering.
+ */
 const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED, NOT_FOUND } = sharedResponseTypes;
 
+/**
+ * Represents the Career model in the Prisma schema.
+ *
+ * This model is typically used to interact with and manage career-related data
+ * within the application. It allows performing operations such as creating,
+ * reading, updating, and deleting records in the associated career database table.
+ *
+ * The structure and fields of the Career model are defined within the Prisma schema,
+ * and are mapped to a database table. Ensure proper schema synchronization and database
+ * migrations when modifying this model.
+ *
+ * Usage of this model involves accessing it through the Prisma Client.
+ *
+ * Note: Refer to the Prisma schema for detailed field definitions and relationships
+ * associated with this model.
+ */
 const model = prisma.Career;
 
-// Helper function to create and respond with the FAQ
+/**
+ * Asynchronous function to create a new career entry in the database.
+ *
+ * This function accepts user input, creates a new document in the database,
+ * retrieves the newly created document using specified selection criteria,
+ * and returns the created document along with a success message.
+ *
+ * If the creation or retrieval process fails, it returns an internal server
+ * error response with a failure message.
+ *
+ * @param {Object} userInput - The data input provided by the user for the new career entry.
+ * @param {Object} request - The incoming request object for context or additional data.
+ * @returns {Object} A response object indicating success or failure, and the data of the created career entry.
+ */
 const createCareerEntry = async (userInput, request) => {
     const newDocument = await model.create({
         data: userInput,
@@ -44,7 +84,23 @@ const createCareerEntry = async (userInput, request) => {
     return CREATED(`Career entry with title "${userInput?.title}" created successfully.`, createdDocument, request);
 };
 
-// Named export for the POST request handler (Create FAQ)
+/**
+ * Handles the creation of a new career entry.
+ *
+ * This function performs the following steps:
+ * 1. Validates the content type of the incoming request to ensure it matches allowed types.
+ * 2. Verifies the user authorization status, ensuring the user has administrative access.
+ * 3. Parses and validates the form data against a predefined schema for creating career entries.
+ * 4. Checks for potential conflicts by confirming that no existing career entry with the same title exists.
+ * 5. Processes file uploads associated with the career entry, stores the files, and populates the files array.
+ * 6. Parses and normalizes the date field into a valid Date object.
+ * 7. Creates a new career entry in the database and returns an appropriate response.
+ *
+ * @param {Object} request - The incoming HTTP request object containing career entry data and headers.
+ * @param {Object} context - Additional context or dependencies that may be required for processing the request.
+ * @returns {Object} - An HTTP response object indicating the success or failure of the operation.
+ * @throws {Error} - Throws an error if an unexpected issue occurs during processing.
+ */
 const handleCreateCareer = async (request, context) => {
     // Validate content type
     const contentValidationResult = validateUnsupportedContent(request, careerConstants.allowedContentTypes);
@@ -93,5 +149,16 @@ const handleCreateCareer = async (request, context) => {
     return createCareerEntry(userInput, request);
 };
 
-// Export the route wrapped with asyncHandler
+/**
+ * POST is an asynchronous handler function used for processing HTTP POST requests.
+ * It manages the creation of a career entity by invoking the handleCreateCareer function.
+ * This function is designed to streamline asynchronous request handling, ensuring errors are properly caught and handled.
+ *
+ * The main responsibilities of POST include:
+ * - Accepting and validating incoming POST requests
+ * - Delegating the handling of career creation logic to the handleCreateCareer function
+ * - Managing exceptions and providing error responses if necessary
+ *
+ * Utilizes an external asyncHandler wrapper for consistent error handling middleware.
+ */
 export const POST = asyncHandler(handleCreateCareer);

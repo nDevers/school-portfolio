@@ -13,14 +13,43 @@ import validateToken from "@/util/validateToken";
 import validateUnsupportedContent from "@/util/validateUnsupportedContent";
 import careerSelectionCriteria from "@/app/api/v1/career/career.selection.criteria";
 
+/**
+ * An instance of PrismaClient, which is used to interact with a database through Prisma's query engine.
+ *
+ * PrismaClient provides methods for performing CRUD operations, executing raw SQL queries, and managing database connections.
+ *
+ * This instance is typically used as the main access point for querying and manipulating data in a Prisma-managed database.
+ *
+ * Ensure to call the appropriate lifecycle methods (e.g., `$connect`, `$disconnect`) to manage database connections effectively in your application.
+ */
 const prisma = new PrismaClient();
 
 const { INTERNAL_SERVER_ERROR, NOT_FOUND, CONFLICT, OK } = sharedResponseTypes;
 const { idValidationSchema } = schemaShared;
 
+/**
+ * Represents the Prisma model `Career`.
+ * This model is typically used for interaction with the `Career` table in the database.
+ * Provides mechanisms to query, create, update, and delete `Career` records.
+ *
+ * The structure and fields of this model are defined in the Prisma schema.
+ * Use this model to perform database operations related to career data.
+ */
 const model = prisma.Career;
 
-// Helper function to update and respond with the FAQ
+/**
+ * Updates a career entry in the database based on the given user input.
+ *
+ * This function filters the provided user input to include only fields with non-null and non-undefined values,
+ * excluding the `id` field. It updates the database with these filtered values and retrieves the updated document
+ * using a pre-defined set of selection criteria. If the update or retrieval process fails, it returns an error response.
+ * Upon success, it returns a success response with the updated document.
+ *
+ * @param {Object} userInput - The user's input containing fields to update and the `id` of the career entry.
+ * @param {Object} request - The request object, typically representing the incoming request context.
+ * @returns {Promise<Object>} - A promise resolving to a server response indicating success or failure,
+ *                              including the updated document if successful.
+ */
 const updateCareerEntry = async (userInput, request) => {
     // Filter `userInput` to only include fields with non-null values
     const fieldsToUpdate = Object.keys(userInput).reduce((acc, key) => {
@@ -55,7 +84,24 @@ const updateCareerEntry = async (userInput, request) => {
     return OK(`Career entry with the ID "${userInput?.id}" updated successfully.`, updatedDocument, request);
 };
 
-// Named export for the GET request handler
+/**
+ * Handles the update operation for a career entry by its unique ID.
+ *
+ * This function performs the following operations:
+ * - Validates the content type of the request.
+ * - Authorizes the user to ensure they have necessary permissions.
+ * - Parses and validates the form data against a defined schema.
+ * - Checks if a career entry with the provided ID exists in the database.
+ * - Ensures that a career entry with the same title does not already exist.
+ * - Handles file uploads, including adding new files and deleting specified files.
+ * - Converts the provided date to a standard format using Moment.js.
+ * - Updates the career entry in the database and returns the response.
+ *
+ * @async
+ * @param {Object} request - The request object containing the data and metadata for the update operation.
+ * @param {Object} context - The context object, typically containing information about the current execution environment.
+ * @returns {Promise<Object>} A response object containing the status and any data or error messages related to the operation.
+ */
 const handleUpdateCareerById = async (request, context) => {
     // Validate content type
     const contentValidationResult = validateUnsupportedContent(request, careerConstants.allowedContentTypes);
@@ -164,6 +210,25 @@ const handleUpdateCareerById = async (request, context) => {
     return updateCareerEntry(userInput, request);
 };
 
+/**
+ * Asynchronously deletes a career entry by its unique identifier.
+ *
+ * Validates the provided request token to ensure the user has administrative access.
+ * Parses and validates the request data to retrieve a valid career ID. If the career entry
+ * corresponding to the provided ID does not exist, a "not found" response is returned.
+ *
+ * If the career entry associates any files, all associated files are deleted physically
+ * before deleting the career entry record from the database. The deletion is performed
+ * based on the specified career ID and ensures the record no longer exists in the database
+ * after the operation completes.
+ *
+ * Returns an appropriate response depending on whether the deletion was successful,
+ * failed, or if the resource was not found.
+ *
+ * @param {Object} request - The incoming HTTP request object containing authentication and data payload.
+ * @param {Object} context - The execution context for handling auxiliary operations.
+ * @returns {Object} A response object indicating the result of the deletion process (success or failure).
+ */
 const deleteCareerById = async (request, context) => {
     // Validate admin
     const authResult = await validateToken(request);
@@ -222,8 +287,29 @@ const deleteCareerById = async (request, context) => {
     return OK(`Career entry with ID "${userInput?.id}" deleted successfully.`, {}, request);
 };
 
-// Export the route wrapped with asyncHandler
+/**
+ * PATCH is an asynchronous handler function intended for managing updates to a specific career entry by its unique identifier.
+ *
+ * The function encapsulates the logic to process an update operation, ensuring any asynchronous errors are appropriately managed.
+ * It is leveraged within a route to handle HTTP PATCH requests aimed at modifying career-related data.
+ *
+ * The handler connects with the underlying service or database logic to perform the update operation,
+ * verifying and applying the necessary changes to the targeted resource by its ID.
+ *
+ * This function is designed to provide a robust and streamlined way to handle updates
+ * while maintaining a clean separation of asynchronous error-handling responsibilities with the use of `asyncHandler`.
+ *
+ * Dependencies or related functions:
+ * - `asyncHandler`: Utility to catch and process errors within asynchronous route handlers.
+ * - `handleUpdateCareerById`: The core function that contains the business logic for updating a career entry by ID.
+ */
 export const PATCH = asyncHandler(handleUpdateCareerById);
 
-// Export the route wrapped with asyncHandler
+/**
+ * DELETE is an asynchronous function handler that invokes the `deleteCareerById` function.
+ * It is typically used to handle requests for deleting a career record by its unique identifier.
+ * The function leverages `asyncHandler` to manage asynchronous operations and error handling.
+ *
+ * @type {Function}
+ */
 export const DELETE = asyncHandler(deleteCareerById);
