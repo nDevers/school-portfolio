@@ -60,21 +60,6 @@ const asyncHandler =
     async (...args) => {
         logger.info(`STARTED: ${fn.name}`);
 
-        // const [request] = args;
-        // // Log request data based on the content type
-        // const contentType = request.headers.get("content-type") || "";
-        // if (contentType.includes("application/json")) {
-        //     const jsonData = await request.json();
-        //     logger.info(`Request JSON: ${JSON.stringify(jsonData)}`);
-        // } else if (contentType.includes("multipart/form-data")) {
-        //     const formData = await request.formData();
-        //     const formDataObject = {};
-        //     formData.forEach((value, key) => {
-        //         formDataObject[key] = value instanceof File ? `File(${value.name})` : value;
-        //     });
-        //     logger.info(`Request FormData: ${JSON.stringify(formDataObject)}`);
-        // }
-
         try {
             return await fn(...args);
         } catch (error) {
