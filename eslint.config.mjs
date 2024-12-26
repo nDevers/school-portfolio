@@ -81,7 +81,13 @@ export default [
                 { avoidEscape: true, allowTemplateLiterals: true },
             ],
             semi: ['error', 'always'], // Requires semicolon termination for statements
-            'prefer-arrow-callback': ['error', { allowNamedFunctions: false }], // Prefer arrow functions for callbacks
+            'prefer-arrow-callback': [
+                'error',
+                {
+                    allowNamedFunctions: false, // Disallow named function expressions
+                    allowUnboundThis: true, // Allow using `this` context inside arrow functions
+                },
+            ],
             'prefer-const': 'error', // Prefer const for variables that are not reassigned
             'arrow-spacing': ['error', { before: true, after: true }], // Requires spaces around arrow operators
             'no-var': 'error', // Disallows the use of `var`

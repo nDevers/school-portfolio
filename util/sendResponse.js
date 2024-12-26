@@ -64,7 +64,7 @@ const sendResponse = (
     logger.info(`Response: ${JSON.stringify(response)}`);
 
     return new Response(JSON.stringify(response), {
-        status: status,
+        status,
         headers: { ...headers },
     });
 };

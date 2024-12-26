@@ -219,7 +219,7 @@ const handleUpdateGalleryPhotoById = async (request, context) => {
         await GalleryPhotoModel.update({
             where: { id: existingGalleryPhoto.id }, // Assuming the record is identified by id
             data: {
-                images: images, // Update the images field in the database, only keeping non-deleted images
+                images, // Update the images field in the database, only keeping non-deleted images
             },
         });
 
