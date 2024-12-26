@@ -5,7 +5,7 @@ const UNSPLASH_ACCESS_KEY = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
 
 const isServer = typeof window === 'undefined';
 
-export default {
+const apiConfig = {
     BASE_URL: isServer ? `${URL}/api/${VERSION}` : `/api/${VERSION}`, // Absolute URL for server, relative for client
 
     UNSPLASH_ACCESS_KEY,
@@ -92,3 +92,5 @@ export default {
     UPDATE_CAREER: '/admin/career/',
     DELETE_CAREER: '/admin/career/',
 };
+
+export default apiConfig;
