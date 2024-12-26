@@ -15,7 +15,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "next build",
+    "build": "npm run prettier:check && next build",
     "commitlint": "commitlint --edit",
     "dev": "next dev",
     "eslint:check": "eslint .",
