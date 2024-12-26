@@ -166,7 +166,7 @@ const DELETE_BY_CATEGORY_AND_ID = (type) => `delete-${type}-by-category-and-id`;
  * @property {string} school.info - Route path for the school information page.
  * @property {string} school.speech - Route path for the school speech page.
  */
-const routes = {
+export const routes = {
     aboutUs: 'about-us',
     academic: 'academic',
     announcement: 'announcement',

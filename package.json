@@ -6,32 +6,54 @@
     "node": ">=23.x",
     "npm": ">=10.x"
   },
+  "repository": "https://github.com/nDevers/school-portfolio",
+  "homepage": "https://github.com/nDevers/school-portfolio/",
+  "issues": "https://github.com/nDevers/school-portfolio/issues",
+  "bugs": "https://github.com/nDevers/school-portfolio/bugs",
+  "termsOfService": "https://github.com/nDevers/school-portfolio/terms-of-service",
+  "documentation": {
+    "docs": "https://github.com/nDevers/school-portfolio/docs",
+    "swagger": "https://github.com/nDevers/school-portfolio/docs",
+    "tutorials": "https://github.com/nDevers/school-portfolio/tutorials"
+  },
   "author": {
     "name": "Mohammad Montasim -Al- Mamun Shuvo",
-    "email": "montasimmamun@gmail.com",
-    "mobile": "+8801722815469",
     "portfolio": "https://montasim-dev.web.app",
-    "linkedin": "https://www.linkedin.com/in/montasim",
-    "github": "https://github.com/montasim"
+    "contact": {
+      "email": "montasimmamun@gmail.com",
+      "mobile": "+8801722815469"
+    },
+    "social": {
+      "linkedIn": "https://www.linkedin.com/in/montasim",
+      "gitHub": "https://github.com/montasim"
+    }
   },
   "contributors": [
     {
       "name": "Mohammad Montasim -Al- Mamun Shuvo",
-      "role": "Frontend Developer",
-      "email": "montasimmamun@gmail.com",
-      "mobile": "+8801722815469",
+      "role": "Backend Developer",
       "portfolio": "https://montasim-dev.web.app",
-      "linkedin": "https://www.linkedin.com/in/montasim",
-      "github": "https://github.com/montasim"
+      "contact": {
+        "email": "montasimmamun@gmail.com",
+        "mobile": "+8801722815469"
+      },
+      "social": {
+        "linkedIn": "https://www.linkedin.com/in/montasim",
+        "gitHub": "https://github.com/montasim"
+      }
     },
     {
       "name": "Abid Hasan",
       "role": "Frontend Developer",
-      "email": "mp.abidhasan@gmail.com",
-      "mobile": "+8801789507895",
-      "portfolio": "https://abidhasan.vercel.app/",
-      "linkedin": "https://www.linkedin.com/in/abidhasanpiash/",
-      "github": "https://github.com/AbidHasanPiash"
+      "portfolio": "https://abidhasan.vercel.app",
+      "contact": {
+        "email": "mp.abidhasan@gmail.com",
+        "mobile": "+8801789507895"
+      },
+      "social": {
+        "linkedin": "https://www.linkedin.com/in/abidhasanpiash/",
+        "github": "https://github.com/AbidHasanPiash"
+      }
     }
   ],
   "license": "MIT",
