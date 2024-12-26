@@ -1,18 +1,39 @@
 {
-  "name": "school-management",
+  "name": "school-portfolio",
   "version": "2.0.1",
   "private": true,
   "engines": {
-    "node": ">=20.x"
+    "node": ">=23.x",
+    "npm": ">=10.x"
   },
   "author": {
-    "name": "ABID HASAN",
-    "email": "mp.abidhasan@gmail.com",
-    "mobile": "+8801789507895",
-    "portfolio": "https://abidhasan.vercel.app/",
-    "linkedin": "https://www.linkedin.com/in/abidhasanpiash/",
-    "github": "https://github.com/AbidHasanPiash"
+    "name": "Mohammad Montasim -Al- Mamun Shuvo",
+    "email": "montasimmamun@gmail.com",
+    "mobile": "+8801722815469",
+    "portfolio": "https://montasim-dev.web.app",
+    "linkedin": "https://www.linkedin.com/in/montasim",
+    "github": "https://github.com/montasim"
   },
+  "contributors": [
+    {
+      "name": "Mohammad Montasim -Al- Mamun Shuvo",
+      "role": "Frontend Developer",
+      "email": "montasimmamun@gmail.com",
+      "mobile": "+8801722815469",
+      "portfolio": "https://montasim-dev.web.app",
+      "linkedin": "https://www.linkedin.com/in/montasim",
+      "github": "https://github.com/montasim"
+    },
+    {
+      "name": "Abid Hasan",
+      "role": "Frontend Developer",
+      "email": "mp.abidhasan@gmail.com",
+      "mobile": "+8801789507895",
+      "portfolio": "https://abidhasan.vercel.app/",
+      "linkedin": "https://www.linkedin.com/in/abidhasanpiash/",
+      "github": "https://github.com/AbidHasanPiash"
+    }
+  ],
   "license": "MIT",
   "scripts": {
     "build": "npm run prettier:check && next build",
