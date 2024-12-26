@@ -1,3 +1,5 @@
+'use strict';
+
 import { AboutUsModel } from '@/shared/prisma.model.shared';
 import aboutUsSchema from '@/app/api/v1/about-us/about.us.schema';
 import aboutUsConstants from '@/app/api/v1/about-us/about.us.constants';

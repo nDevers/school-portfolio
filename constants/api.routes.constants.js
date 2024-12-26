@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Generates a set of permission constants for a given resource type.
  *

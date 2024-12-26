@@ -1,3 +1,5 @@
+'use strict';
+
 import { Schema, model, models } from 'mongoose';
 
 import schemaModelShared from '@/shared/schema.model.shared';

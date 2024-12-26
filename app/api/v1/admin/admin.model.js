@@ -1,3 +1,5 @@
+'use strict';
+
 import { Schema, models, model } from 'mongoose';
 
 const adminSchema = new Schema(

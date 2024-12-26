@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * A function that defines criteria for selecting specific information about a blog.
  * The returned object determines the fields to include when querying or retrieving blog data.

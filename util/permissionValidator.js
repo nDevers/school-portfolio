@@ -1,3 +1,5 @@
+'use strict';
+
 import middlewareConstants from '@/constants/middleware.constants';
 import httpStatusConstants from '@/constants/httpStatus.constants';
 

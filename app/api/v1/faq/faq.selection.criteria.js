@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * A function that returns an object defining the criteria
  * for selecting fields in a FAQ (Frequently Asked Questions) entity.

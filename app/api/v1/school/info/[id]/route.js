@@ -1,3 +1,5 @@
+'use strict';
+
 import { SchoolInfoModel } from '@/shared/prisma.model.shared';
 import serviceShared from '@/shared/service.shared';
 

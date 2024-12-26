@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * A regular expression pattern to validate Mongoose ObjectId strings.
  *

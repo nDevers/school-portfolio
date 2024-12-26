@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Prepares form data for logging by transforming any `FormData` or object containing `File` instances
  * into a serialized structure that includes base64-encoded files. This method also includes query

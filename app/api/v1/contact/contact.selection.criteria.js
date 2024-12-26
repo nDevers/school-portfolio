@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Represents a function that returns the criteria used for selecting contact fields.
  *

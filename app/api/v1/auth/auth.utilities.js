@@ -1,3 +1,5 @@
+'use strict';
+
 import sharedResponseTypes from '@/shared/shared.response.types';
 
 const { UNAUTHORIZED, OK } = sharedResponseTypes;

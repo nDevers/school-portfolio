@@ -1,3 +1,5 @@
+'use strict';
+
 import { GalleryVideoModel } from '@/shared/prisma.model.shared';
 import galleryVideoSchema from '@/app/api/v1/gallery/video/gallery.video.schema';
 import galleryVideoConstants from '@/app/api/v1/gallery/video/gallery.video.constants';

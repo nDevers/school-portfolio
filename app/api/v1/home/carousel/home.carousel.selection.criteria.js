@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Defines the selection criteria for retrieving data for a home carousel.
  * The returned object specifies which fields should be included in the data:

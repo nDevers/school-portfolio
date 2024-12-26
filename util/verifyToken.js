@@ -1,6 +1,7 @@
+'use strict';
+
 import jwt from 'jsonwebtoken';
 
-// import configuration from '@/configs/configuration.js';
 import configurations from '@/configs/configurations';
 
 /**

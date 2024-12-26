@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * A function that defines the criteria for academic selection by returning an object
  * containing a set of properties with boolean values set to `true`.

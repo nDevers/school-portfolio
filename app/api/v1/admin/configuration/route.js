@@ -1,3 +1,5 @@
+'use strict';
+
 import { ConfigurationModel } from '@/shared/prisma.model.shared';
 import configurationSchema from '@/app/api/v1/configuration/configuration.schema';
 import configurationConstants from '@/app/api/v1/configuration/configuration.constants';

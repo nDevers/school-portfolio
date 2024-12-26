@@ -1,3 +1,5 @@
+'use strict';
+
 // Define a function to return the schema definition for required string fields
 /**
  * Function that generates a configuration object for a required string field.

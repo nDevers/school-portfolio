@@ -1,3 +1,5 @@
+'use strict';
+
 import { GalleryPhotoModel } from '@/shared/prisma.model.shared';
 import serviceShared from '@/shared/service.shared';
 import galleryPhotoSchema from '@/app/api/v1/gallery/photo/gallery.photo.schema';

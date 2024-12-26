@@ -1,3 +1,5 @@
+'use strict';
+
 import CryptoJS from 'crypto-js';
 
 import { CryptoError } from '@/util/asyncHandler';

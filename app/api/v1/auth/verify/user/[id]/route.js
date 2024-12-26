@@ -1,3 +1,5 @@
+'use strict';
+
 import AdminModel from '@/app/api/v1/admin/admin.model';
 import sharedResponseTypes from '@/shared/shared.response.types';
 

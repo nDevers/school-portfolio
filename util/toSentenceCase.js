@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Converts the given text to sentence case.
  *

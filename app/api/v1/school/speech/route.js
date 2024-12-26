@@ -1,3 +1,5 @@
+'use strict';
+
 import { SchoolSpeechModel } from '@/shared/prisma.model.shared';
 import serviceShared from '@/shared/service.shared';
 import schoolSpeechSchema from '@/app/api/v1/school/speech/school.speech.schema';

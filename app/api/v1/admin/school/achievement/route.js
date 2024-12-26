@@ -1,3 +1,5 @@
+'use strict';
+
 import { SchoolAchievementModel } from '@/shared/prisma.model.shared';
 import schoolAchievementSchema from '@/app/api/v1/school/achievement/school.achievement.schema';
 import schoolAchievementConstants from '@/app/api/v1/school/achievement/school.achievement.constants';

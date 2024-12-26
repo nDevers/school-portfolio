@@ -1,4 +1,5 @@
-// Helper function to detect device type from User-Agent
+'use strict';
+
 /**
  * Determines the device type based on the user agent string.
  *

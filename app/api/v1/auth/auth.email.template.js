@@ -1,3 +1,5 @@
+'use strict';
+
 import sendEmail from '@/lib/email';
 
 /**

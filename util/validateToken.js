@@ -1,3 +1,5 @@
+'use strict';
+
 import { PrismaClient } from '@prisma/client';
 import { CryptoError } from '@/util/asyncHandler';
 

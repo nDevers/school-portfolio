@@ -1,3 +1,5 @@
+'use strict';
+
 import serviceShared from '@/shared/service.shared';
 
 import asyncHandler from '@/util/asyncHandler';

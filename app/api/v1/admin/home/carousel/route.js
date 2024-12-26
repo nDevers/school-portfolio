@@ -1,3 +1,5 @@
+'use strict';
+
 import { HomeCarouselModel } from '@/shared/prisma.model.shared';
 import homeCarouselSchema from '@/app/api/v1/home/carousel/home.carousel.schema';
 import homeCarouselConstants from '@/app/api/v1/home/carousel/home.carousel.constants';

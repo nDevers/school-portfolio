@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * A function that defines the criteria for selecting school achievements by specifying which properties should be included.
  *

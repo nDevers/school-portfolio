@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Represents a function that defines the criteria used for selecting specific properties
  * of school speech records.
