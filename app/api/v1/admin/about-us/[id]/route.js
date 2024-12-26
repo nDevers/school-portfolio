@@ -368,16 +368,18 @@ const deleteCareerById = async (request, context) => {
 
 /**
  * @swagger
- * /about-us:
+ * /api/v1/about-us/{id}:
  *   patch:
  *     summary: Update an About Us entry by its ID
  *     description: Updates an existing About Us entry in the database by its ID. This includes validating the request, handling file uploads/deletions, and updating the entry with the provided data.
+ *
  *     tags:
  *       - About Us
+ *
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
@@ -413,31 +415,71 @@ const deleteCareerById = async (request, context) => {
  *                 items:
  *                   type: string
  *                   description: IDs of images to be deleted from the About Us entry.
+ *
+ *
  *     responses:
  *       200:
  *         description: Success response with the updated About Us entry.
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                 message:
- *                   type: string
- *                 data:
- *                   type: object
- *                   description: The updated About Us entry.
+ *               $ref: '#/components/schemas/AboutUs'
+ *
  *       400:
- *         description: Bad Request - Invalid input data.
+ *         description: Bad Request - Invalid input.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/400'
+ *
  *       401:
  *         description: Unauthorized - User is not authorized to perform this operation.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/401'
+ *
+ *       403:
+ *         description: Forbidden - User is not authorized to perform this operation.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/403'
+ *
  *       404:
- *         description: Not Found - The specified About Us entry could not be found.
+ *         description: Entry not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 message:
+ *                   type: string
+ *                   example: "No About us entry with the ID: '123' available at this time."
+ *
+ *       409:
+ *         description: Conflict - Entry with the same title already exists.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/409'
+ *
  *       415:
  *         description: Unsupported Media Type - Unsupported content type.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/415'
+ *
  *       500:
- *         description: Internal Server Error - Failed to update the About Us entry.
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/500'
  */
 
 /**
@@ -451,12 +493,14 @@ export const PATCH = asyncHandler(handleUpdateAboutUsById);
 
 /**
  * @swagger
- * /about-us:
+ * /api/v1/about-us/{id}:
  *   delete:
  *     summary: Delete an About Us entry by its ID
  *     description: Deletes a specific About Us entry by its unique identifier and removes any associated files or images.
+ *
  *     tags:
  *       - About Us
+ *
  *     parameters:
  *       - in: query
  *         name: id
@@ -464,11 +508,13 @@ export const PATCH = asyncHandler(handleUpdateAboutUsById);
  *         schema:
  *           type: string
  *         description: The unique identifier of the About Us entry to delete.
+ *
+ *
  *     responses:
  *       200:
  *         description: Successfully deleted the About Us entry.
  *         content:
- *           application/json:
+ *           application/:
  *             schema:
  *               type: object
  *               properties:
@@ -479,14 +525,55 @@ export const PATCH = asyncHandler(handleUpdateAboutUsById);
  *                 data:
  *                   type: object
  *                   description: Details of the deleted About Us entry.
+ *
  *       400:
- *         description: Bad Request - Invalid input data.
+ *         description: Bad Request - Invalid input.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/400'
+ *
  *       401:
- *         description: Unauthorized - User is not authorized to delete the entry.
+ *         description: Unauthorized - User is not authorized to perform this operation.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/401'
+ *
+ *       403:
+ *         description: Forbidden - User is not authorized to perform this operation.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/403'
+ *
  *       404:
- *         description: Not Found - The specified About Us entry could not be found.
+ *         description: Entry not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 message:
+ *                   type: string
+ *                   example: "No About us entry with the ID: '123' available at this time."
+ *
+ *       415:
+ *         description: Unsupported Media Type - Unsupported content type.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/415'
+ *
  *       500:
- *         description: Internal Server Error - Failed to delete the About Us entry.
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/500'
  */
 
 /**

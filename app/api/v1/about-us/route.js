@@ -39,8 +39,10 @@ const handleGetCareerList = async (request, context) => {
  *   get:
  *     summary: Retrieve a list of "About Us" entries.
  *     description: Fetches a list of entries based on the "About Us" selection criteria. The response includes the relevant data formatted according to the schema.
+ *
  *     tags:
  *       - About Us
+ *
  *     parameters:
  *       - in: query
  *         name: id
@@ -69,6 +71,8 @@ const handleGetCareerList = async (request, context) => {
  *           type: string
  *           format: date-time
  *         description: Filter by the last update timestamp of the "About Us" entry.
+ *
+ *
  *     responses:
  *       200:
  *         description: Successfully retrieved the list of entries.
@@ -83,28 +87,18 @@ const handleGetCareerList = async (request, context) => {
  *                 data:
  *                   type: array
  *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: string
- *                         description: The ID of the "About Us" entry.
- *                       title:
- *                         type: string
- *                         description: The title of the "About Us" entry.
- *                       description:
- *                         type: string
- *                         description: The description of the "About Us" entry.
- *                       createdAt:
- *                         type: string
- *                         format: date-time
- *                         description: The creation time of the "About Us" entry.
- *                       updatedAt:
- *                         type: string
- *                         format: date-time
- *                         description: The last update time of the "About Us" entry.
+ *                     $ref: '#/components/schemas/AboutUs'
  *                 total:
  *                   type: integer
  *                   description: The total number of matching "About Us" entries.
+ *
+ *       400:
+ *         description: Bad Request - Invalid input.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/400'
+ *
  *       404:
  *         description: No "About Us" entries found.
  *         content:
@@ -112,19 +106,26 @@ const handleGetCareerList = async (request, context) => {
  *             schema:
  *               type: object
  *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
  *                 message:
  *                   type: string
- *                   description: The error message.
+ *                   example: "About us entry fetched successfully."
+ *
+ *       415:
+ *         description: Unsupported Media Type - Unsupported content type.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/415'
+ *
  *       500:
  *         description: Internal server error.
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: The error message.
+ *               $ref: '#/components/errors/500'
  */
 
 /**

@@ -31,6 +31,18 @@ export const handleGetAboutUsById = async (request, context) => {
  *   get:
  *     summary: Retrieve "About Us" entry by ID
  *     description: Fetches a specific "About Us" entry from the database using a unique identifier.
+ *
+ *     tags:
+ *       - About Us
+ *
+ *     query:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The unique ID of the "About Us" entry to retrieve.
+ *
  *     parameters:
  *       - in: path
  *         name: id
@@ -38,23 +50,23 @@ export const handleGetAboutUsById = async (request, context) => {
  *         schema:
  *           type: string
  *         description: The unique ID of the "About Us" entry to retrieve.
+ *
+ *
  *     responses:
  *       200:
  *         description: Successfully retrieved "About Us" entry.
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: "success"
- *                 message:
- *                   type: string
- *                   example: "About us entry with the ID: '123' retrieved successfully."
- *                 data:
- *                   type: object
- *                   description: The detailed information of the "About Us" entry.
+ *               $ref: '#/components/schemas/AboutUs'
+ *
+ *       400:
+ *         description: Bad Request - Invalid input.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/400'
+ *
  *       404:
  *         description: Entry not found.
  *         content:
@@ -68,19 +80,20 @@ export const handleGetAboutUsById = async (request, context) => {
  *                 message:
  *                   type: string
  *                   example: "No About us entry with the ID: '123' available at this time."
- *       500:
- *         description: Server error.
+ *
+ *       415:
+ *         description: Unsupported Media Type - Unsupported content type.
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: "error"
- *                 message:
- *                   type: string
- *                   example: "An error occurred while processing the request."
+ *               $ref: '#/components/errors/415'
+ *
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/500'
  */
 
 /**
