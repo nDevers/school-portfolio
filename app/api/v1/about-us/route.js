@@ -34,6 +34,100 @@ const handleGetCareerList = async (request, context) => {
 };
 
 /**
+ * @swagger
+ * /api/v1/about-us:
+ *   get:
+ *     summary: Retrieve a list of "About Us" entries.
+ *     description: Fetches a list of entries based on the "About Us" selection criteria. The response includes the relevant data formatted according to the schema.
+ *     tags:
+ *       - About Us
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: Filter by the ID of the "About Us" entry.
+ *       - in: query
+ *         name: title
+ *         schema:
+ *           type: string
+ *         description: Filter by the title of the "About Us" entry.
+ *       - in: query
+ *         name: description
+ *         schema:
+ *           type: string
+ *         description: Filter by the description of the "About Us" entry.
+ *       - in: query
+ *         name: createdAt
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *         description: Filter by the creation timestamp of the "About Us" entry.
+ *       - in: query
+ *         name: updatedAt
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *         description: Filter by the last update timestamp of the "About Us" entry.
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the list of entries.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Success message.
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         description: The ID of the "About Us" entry.
+ *                       title:
+ *                         type: string
+ *                         description: The title of the "About Us" entry.
+ *                       description:
+ *                         type: string
+ *                         description: The description of the "About Us" entry.
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *                         description: The creation time of the "About Us" entry.
+ *                       updatedAt:
+ *                         type: string
+ *                         format: date-time
+ *                         description: The last update time of the "About Us" entry.
+ *                 total:
+ *                   type: integer
+ *                   description: The total number of matching "About Us" entries.
+ *       404:
+ *         description: No "About Us" entries found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: The error message.
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: The error message.
+ */
+
+/**
  * GET is an async function used to handle HTTP GET requests.
  * It leverages the `asyncHandler` utility to manage asynchronous
  * operations and error handling for the `handleGetCareerList` function.

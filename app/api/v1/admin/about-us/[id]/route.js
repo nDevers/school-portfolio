@@ -367,21 +367,117 @@ const deleteCareerById = async (request, context) => {
 };
 
 /**
- * PATCH variable assigned to an asynchronous route handler for updating an "About Us" entry by its ID.
- *
- * This handler leverages an async error-handling middleware (`asyncHandler`) to manage execution flow
- * and ensure proper error handling during the update process. It uses the `handleUpdateAboutUsById`
- * function which encapsulates the logic for updating the specified resource in a data store or database.
+ * @swagger
+ * /about-us:
+ *   patch:
+ *     summary: Update an About Us entry by its ID
+ *     description: Updates an existing About Us entry in the database by its ID. This includes validating the request, handling file uploads/deletions, and updating the entry with the provided data.
+ *     tags:
+ *       - About Us
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 description: The unique identifier of the About Us entry to update.
+ *                 example: "abc123"
+ *               title:
+ *                 type: string
+ *                 description: The updated title of the About Us entry.
+ *                 example: "New Title"
+ *               description:
+ *                 type: string
+ *                 description: The updated description of the About Us entry.
+ *                 example: "Updated description about the entity."
+ *               files:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     fileId:
+ *                       type: string
+ *                     fileLink:
+ *                       type: string
+ *                   description: Additional files to attach to the About Us entry.
+ *               deleteFiles:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   description: IDs of files to be deleted from the About Us entry.
+ *               deleteImages:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   description: IDs of images to be deleted from the About Us entry.
+ *     responses:
+ *       200:
+ *         description: Success response with the updated About Us entry.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *                   description: The updated About Us entry.
+ *       400:
+ *         description: Bad Request - Invalid input data.
+ *       401:
+ *         description: Unauthorized - User is not authorized to perform this operation.
+ *       404:
+ *         description: Not Found - The specified About Us entry could not be found.
+ *       415:
+ *         description: Unsupported Media Type - Unsupported content type.
+ *       500:
+ *         description: Internal Server Error - Failed to update the About Us entry.
  */
 export const PATCH = asyncHandler(handleUpdateAboutUsById);
 
 /**
- * DELETE is a constant that represents an asynchronous handler function for deleting a career entry by its identifier.
- * The function utilizes an asyncHandler utility to handle any asynchronous operations and errors during the process.
- *
- * The primary purpose of this variable is to encapsulate the logic for deleting a specific career record using its unique ID.
- * It ensures that the operation is handled asynchronously with proper error handling.
- *
- * The handler is expected to be used in an Express.js route or similar framework to handle HTTP DELETE requests.
+ * @swagger
+ * /about-us:
+ *   delete:
+ *     summary: Delete an About Us entry by its ID
+ *     description: Deletes a specific About Us entry by its unique identifier and removes any associated files or images.
+ *     tags:
+ *       - About Us
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The unique identifier of the About Us entry to delete.
+ *     responses:
+ *       200:
+ *         description: Successfully deleted the About Us entry.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *                   description: Details of the deleted About Us entry.
+ *       400:
+ *         description: Bad Request - Invalid input data.
+ *       401:
+ *         description: Unauthorized - User is not authorized to delete the entry.
+ *       404:
+ *         description: Not Found - The specified About Us entry could not be found.
+ *       500:
+ *         description: Internal Server Error - Failed to delete the About Us entry.
  */
 export const DELETE = asyncHandler(deleteCareerById);

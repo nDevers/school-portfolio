@@ -170,6 +170,71 @@ const handleCreateAboutUs = async (request, context) => {
 };
 
 /**
+ * @swagger
+ * components:
+ *   schemas:
+ *     AboutUs:
+ *       type: object
+ *       properties:
+ *         title:
+ *           type: string
+ *           description: Title of the "About Us" entry.
+ *         content:
+ *           type: string
+ *           description: Content of the "About Us" entry.
+ *         files:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               fileId:
+ *                 type: string
+ *                 description: Unique ID of the uploaded file.
+ *               file:
+ *                 type: string
+ *                 description: URL of the uploaded file.
+ *         images:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               imageId:
+ *                 type: string
+ *                 description: Unique ID of the uploaded image.
+ *               image:
+ *                 type: string
+ *                 description: URL of the uploaded image.
+ *
+ * tags:
+ *   - name: AboutUs
+ *     description: Operations to manage "About Us" entries.
+ *
+ * /api/v1/about-us:
+ *   post:
+ *     summary: Create a new "About Us" entry
+ *     tags: [AboutUs]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             $ref: '#/components/schemas/AboutUs'
+ *     responses:
+ *       201:
+ *         description: Successfully created a new "About Us" entry.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AboutUs'
+ *       400:
+ *         description: Bad Request - Invalid input.
+ *       409:
+ *         description: Conflict - Entry with the same title already exists.
+ *       500:
+ *         description: Internal Server Error.
+ */
+
+/**
  * POST is a variable that holds an asynchronous function wrapped with the `asyncHandler` utility function.
  * The wrapped function, `handleCreateAboutUs`, manages the creation of an "About Us" resource.
  *
