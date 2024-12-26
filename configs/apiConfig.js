@@ -1,7 +1,7 @@
 const URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 const VERSION = process.env.NEXT_PUBLIC_VERSION || 'v1';
 
-const UNSPLASH_ACCESS_KEY = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
+const UNSPLASH_ACCESS_KEY = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY || '';
 
 const isServer = typeof window === 'undefined';
 
