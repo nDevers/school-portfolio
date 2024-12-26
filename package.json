@@ -65,6 +65,7 @@
     "embla-carousel-react": "^8.5.1",
     "formik": "^2.4.6",
     "framer-motion": "^11.9.0",
+    "globals": "^15.14.0",
     "input-otp": "^1.2.4",
     "jose": "^5.9.6",
     "jsonwebtoken": "^9.0.2",

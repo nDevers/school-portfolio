@@ -15,12 +15,14 @@ export default {
     //────────────────────────────────────────────
     ADMIN_LOGIN: '/auth/admin/login',
     REFRESH_TOKEN: '/auth/refresh-token',
+
     //────────────────────────────────────────────
     //? API: ---- Setting
     //────────────────────────────────────────────
     GET_CONFIGURATION: '/configuration',
     CREATE_CONFIGURATION: '/admin/configuration',
     UPDATE_CONFIGURATION: '/admin/configuration',
+
     //────────────────────────────────────────────
     //? API: ---- About
     //────────────────────────────────────────────
@@ -59,6 +61,7 @@ export default {
     CREATE_MORE_ABOUT_US: '/admin/about-us',
     UPDATE_MORE_ABOUT_US: '/admin/about-us/',
     DELETE_MORE_ABOUT_US: '/admin/about-us/',
+
     //────────────────────────────────────────────
     //? API: ---- Faculty
     //────────────────────────────────────────────
