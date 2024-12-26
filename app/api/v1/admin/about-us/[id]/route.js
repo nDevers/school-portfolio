@@ -67,7 +67,7 @@ const updateAboutUsEntry = async (userInput, request) => {
     }
 
     return OK(
-        `AboutUs entry with the ID "${userInput?.id}" updated successfully.`,
+        `About us entry with the ID "${userInput?.id}" updated successfully.`,
         updatedDocument,
         request
     );
