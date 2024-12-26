@@ -51,7 +51,7 @@ export default function Intro() {
                 >
                     <div className="h-full gap-2">
                         <div className="text-xs md:text-sm">
-                            Don't Hestitate to Ask
+                            Don&apos;t Hesitate to Ask
                         </div>
                         <div className="uppercase flex items-center space-x-2 font-bold text-lg md:text-3xl">
                             <span>Contact us</span>

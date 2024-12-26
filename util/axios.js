@@ -82,7 +82,7 @@ export const handleAxiosError = (error) => {
     } else if (error.request) {
         toast.error('Network error: No response received from server.');
     } else {
-        toast.error('Axios error: ' + error.message);
+        toast.error(`Axios error: ${error.message}`);
     }
 
     throw error; // Propagate the error for further handling
@@ -115,7 +115,7 @@ export const handleAxiosErrorAsServer = (error) => {
     } else if (error.request) {
         console.error('Network error: No response received from server.');
     } else {
-        console.error('Axios error: ' + error.message);
+        console.error(`Axios error: ${error.message}`);
     }
 
     throw error; // Propagate error if necessary
@@ -215,7 +215,7 @@ async function axiosRefreshToken() {
             apiConfig.REFRESH_TOKEN
         );
         const { accessToken, refreshToken: newRefreshToken } =
-            response.data?.data;
+            response?.data?.data || {};
 
         if (accessToken)
             setCookie(appConfig.CurrentUserToken, accessToken, { path: '/' });

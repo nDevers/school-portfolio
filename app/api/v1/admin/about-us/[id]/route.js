@@ -162,7 +162,7 @@ const handleUpdateAboutUsById = async (request, context) => {
                             fileEntry
                         );
                     return {
-                        fileId: fileId,
+                        fileId,
                         file: fileLink,
                     };
                 }
@@ -207,7 +207,7 @@ const handleUpdateAboutUsById = async (request, context) => {
         await AboutUsModel.update({
             where: { id: existingCareer.id }, // Assuming the record is identified by id
             data: {
-                files: files, // Update the files field in the database, only keeping non-deleted files
+                files, // Update the files field in the database, only keeping non-deleted files
             },
         });
     }
@@ -247,7 +247,7 @@ const handleUpdateAboutUsById = async (request, context) => {
         await AboutUsModel.update({
             where: { id: existingCareer.id }, // Assuming the record is identified by id
             data: {
-                images: images, // Update the images field in the database, only keeping non-deleted images
+                images, // Update the images field in the database, only keeping non-deleted images
             },
         });
     }

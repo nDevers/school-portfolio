@@ -164,7 +164,7 @@ const handleUpdateAnnouncementByCategoryAndId = async (request, context) => {
                             fileEntry
                         );
                     return {
-                        fileId: fileId,
+                        fileId,
                         file: fileLink,
                     };
                 }
@@ -208,7 +208,7 @@ const handleUpdateAnnouncementByCategoryAndId = async (request, context) => {
         await AnnouncementModel.update({
             where: { id: existingEntry.id }, // Assuming the record is identified by id
             data: {
-                files: files, // Update the files field in the database, only keeping non-deleted files
+                files, // Update the files field in the database, only keeping non-deleted files
             },
         });
     }

@@ -27,7 +27,7 @@ export async function middleware(request) {
                 payload?.currentUser?.userType === 'admin' ||
                 payload?.currentUser?.userType === 'super-admin';
 
-            console.log(
+            console.info(
                 `######## Current user: ${payload?.currentUser?.userType} ########`
             );
         } catch (error) {

@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function SectionTitle({ title, designation }) {
     return (
         <div className="flex flex-col items-start space-y-1 mb-5 w-full">

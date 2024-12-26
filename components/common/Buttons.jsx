@@ -1,5 +1,4 @@
 'use client';
-import React from 'react';
 
 const Button = ({ className, title, children, ...props }) => (
     <button className={className} {...props}>

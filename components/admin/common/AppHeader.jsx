@@ -1,5 +1,4 @@
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import React from 'react';
 import User from './User';
 
 export function AppHeader() {

@@ -1,4 +1,3 @@
-import React from 'react';
 import AnimatedCounter from '@/components/common/AnimatedCounter';
 import { FaAward, FaChalkboardTeacher, FaUserGraduate } from 'react-icons/fa';
 import { MdSportsSoccer, MdLibraryBooks } from 'react-icons/md';

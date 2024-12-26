@@ -1,4 +1,5 @@
 'use client';
+
 import * as React from 'react';
 import { ArrowLeftIcon, ArrowRightIcon } from '@radix-ui/react-icons';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -97,7 +98,7 @@ const Carousel = React.forwardRef(
             <CarouselContext.Provider
                 value={{
                     carouselRef,
-                    api: api,
+                    api,
                     opts,
                     orientation:
                         orientation ||

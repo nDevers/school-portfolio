@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 
-// import configuration from '@/configs/configuration.js';
+import logger from '@/lib/logger';
+
 import configurations from '@/configs/configurations';
 
 /**
@@ -46,6 +47,7 @@ const verifyToken = async (token, type) => {
             );
         }
     } catch (error) {
+        logger.error('Token verification failed:', error.message);
         return false;
     }
 };

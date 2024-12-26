@@ -47,6 +47,8 @@ export function decryptData(data) {
 
         return decryptedData;
     } catch (error) {
+        console.error(error);
+
         throw new CryptoError('Bad encrypted data.');
     }
 }

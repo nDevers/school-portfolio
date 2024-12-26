@@ -192,7 +192,7 @@ const handleUpdateBlogById = async (request, context) => {
                             fileEntry
                         );
                     return {
-                        fileId: fileId,
+                        fileId,
                         file: fileLink,
                     };
                 }
@@ -259,7 +259,7 @@ const handleUpdateBlogById = async (request, context) => {
         await BlogModel.update({
             where: { id: existingBlog.id }, // Assuming the record is identified by id
             data: {
-                files: files, // Update the files field in the database, only keeping non-deleted files
+                files, // Update the files field in the database, only keeping non-deleted files
             },
         });
     }
@@ -299,7 +299,7 @@ const handleUpdateBlogById = async (request, context) => {
         await BlogModel.update({
             where: { id: existingBlog.id }, // Assuming the record is identified by id
             data: {
-                images: images, // Update the images field in the database, only keeping non-deleted images
+                images, // Update the images field in the database, only keeping non-deleted images
             },
         });
     }

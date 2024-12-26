@@ -118,7 +118,7 @@ const handleGeneralError = (error) => {
             name: error?.name || 'Error',
             stack: error?.stack || 'No stack trace available',
             code: error?.code || null,
-            status: status,
+            status,
             cause: error?.cause || null,
             isOperational: error?.isOperational || false,
             fileName: error?.fileName || null,
@@ -213,7 +213,6 @@ const handleZodError = (error) => ({
  * - Provides specific HTTP status codes (e.g., 400, 500, etc.) depending on the error nature.
  */
 const handleMongooseError = (error) => {
-    console.log(error);
     let message = 'Database error occurred.';
     let status = httpStatusConstants.INTERNAL_SERVER_ERROR;
 
@@ -256,7 +255,7 @@ const handleMongooseError = (error) => {
 
     return {
         success: false,
-        message: message,
+        message,
         errors: [error.message],
         status,
     };

@@ -18,7 +18,6 @@ const permissionValidator = async (request) => {
         const userAgent = request.headers.get('user-agent') || '';
         const referer = request.headers.get('referer');
         const origin = request.headers.get('origin') ?? '';
-        const requestedSite = request.headers.get('X-Site-Identifier') ?? '';
 
         // Block requests from specific user agents or missing headers
         const isBlockedUserAgent = middlewareConstants.blockedUserAgents.some(
@@ -32,6 +31,8 @@ const permissionValidator = async (request) => {
         // If everything passes, return null
         return null;
     } catch (error) {
+        console.error('Permission validation error:', error.message);
+
         return new Response('Service unavailable', {
             status: httpStatusConstants.SERVICE_UNAVAILABLE,
         });

@@ -132,7 +132,7 @@ const handleCreateAboutUs = async (request, context) => {
                 const { fileId, fileLink } =
                     await localFileOperations.uploadFile(request, fileEntry);
                 return {
-                    fileId: fileId,
+                    fileId,
                     file: fileLink,
                 };
             }

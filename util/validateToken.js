@@ -8,6 +8,7 @@ import { decryptData } from '@/util/crypto';
 import verifyToken from '@/util/verifyToken';
 import convertToObjectId from '@/util/convertToObjectId';
 import getDeviceType from '@/util/getDeviceType';
+import logger from '@/lib/logger';
 
 /**
  * An instance of the PrismaClient used to interact with the database.
@@ -44,6 +45,8 @@ const validateToken = async (request, type = 'access') => {
     try {
         token = decryptData(encryptedToken);
     } catch (error) {
+        logger.error('Token decryption failed:', error.message);
+
         throw new CryptoError('Invalid token provided.');
     }
 
@@ -86,7 +89,6 @@ const validateToken = async (request, type = 'access') => {
         });
 
         existingUser.userType = tokenDetails?.currentUser?.userType;
-    } else {
     }
 
     if (!existingUser) {

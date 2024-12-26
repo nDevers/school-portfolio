@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function CoverAbout({ data }) {
     return (
         <div className="relative w-full h-[100px] sm:h-[150px] md:h-[200px] lg:h-[300px] xl:h-[350px] overflow-hidden bg-gray-200">

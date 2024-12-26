@@ -4,7 +4,6 @@ import logger from '@/lib/logger';
 import contentTypesConstants from '@/constants/contentTypes.constants';
 
 import prepareFormDataForLogging from '@/util/prepareFormDataForLogging';
-import convertToObjectId from '@/util/convertToObjectId';
 import getQueryParams from '@/util/getQueryParams';
 import toSentenceCase from '@/util/toSentenceCase';
 
@@ -75,7 +74,7 @@ const parseAndValidateFormData = async (request, context, mode, schema) => {
 
     // Automatically detect and parse JSON or FormData
     const contentType = request.headers.get('Content-Type');
-    const method = request.method.toUpperCase();
+    // const method = request.method.toUpperCase();
 
     // if (method === 'GET' && contentType && contentType?.includes(contentTypesConstants.JSON) || contentType?.includes(contentTypesConstants.FORM_DATA)) {
     //     // Check if there is any body content
@@ -95,6 +94,8 @@ const parseAndValidateFormData = async (request, context, mode, schema) => {
                 );
             }
         } catch (error) {
+            logger.error('JSON parsing error:', error.message);
+
             // Handle JSON parsing error, typically for an empty body
             throw new BadRequestError(
                 'Invalid JSON body or empty request body.'

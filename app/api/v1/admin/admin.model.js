@@ -22,7 +22,7 @@ const adminSchema = new Schema(
             required: [true, 'Password is required'],
             minlength: [8, 'Password must be at least 8 characters'],
             validate: {
-                validator: function (value) {
+                validator(value) {
                     return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/.test(
                         value
                     );

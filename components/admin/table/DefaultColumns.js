@@ -86,8 +86,10 @@ export const FacultyTableColumn = [
                             <DropdownMenuItem>
                                 <Link
                                     href={
-                                        `${data?.category}/edit/${data?.id || data?._id}` ||
-                                        '#'
+                                        data?.category &&
+                                        (data?.id || data?._id)
+                                            ? `${data?.category}/edit/${data?.id || data?._id}`
+                                            : '#'
                                     }
                                     className="w-full"
                                 >
@@ -188,8 +190,10 @@ export const AcademicTableColumn = [
                             <DropdownMenuItem>
                                 <Link
                                     href={
-                                        `${data?.category}/edit/${data?.id || data?._id}` ||
-                                        '#'
+                                        data?.category &&
+                                        (data?.id || data?._id)
+                                            ? `${data?.category}/edit/${data?.id || data?._id}`
+                                            : '#'
                                     }
                                     className="w-full"
                                 >
@@ -301,8 +305,10 @@ export const AnnouncementTableColumn = [
                             <DropdownMenuItem>
                                 <Link
                                     href={
-                                        `${data?.category}/edit/${data?.id || data?._id}` ||
-                                        '#'
+                                        data?.category &&
+                                        (data?.id || data?._id)
+                                            ? `${data?.category}/edit/${data?.id || data?._id}`
+                                            : '#'
                                     }
                                     className="w-full"
                                 >
@@ -367,8 +373,9 @@ export const FawTableColumn = [
                             <DropdownMenuItem>
                                 <Link
                                     href={
-                                        `faq/edit/${data?.id || data?._id}` ||
-                                        '#'
+                                        data?.id || data?._id
+                                            ? `faq/edit/${data?.id || data?._id}`
+                                            : '#'
                                     }
                                     className="w-full"
                                 >
@@ -443,8 +450,9 @@ export const MoreAboutUsTableColumn = [
                             <DropdownMenuItem>
                                 <Link
                                     href={
-                                        `more-about-us/edit/${data?.id || data?._id}` ||
-                                        '#'
+                                        data?.id || data?._id
+                                            ? `more-about-us/edit/${data?.id || data?._id}`
+                                            : '#'
                                     }
                                     className="w-full"
                                 >
@@ -522,8 +530,9 @@ export const CareerTableColumn = [
                             <DropdownMenuItem>
                                 <Link
                                     href={
-                                        `career/edit/${data?.id || data?._id}` ||
-                                        '#'
+                                        data?.id || data?._id
+                                            ? `career/edit/${data?.id || data?._id}`
+                                            : '#'
                                     }
                                     className="w-full"
                                 >
@@ -605,8 +614,9 @@ export const SchoolInfoTableColumn = [
                             <DropdownMenuItem>
                                 <Link
                                     href={
-                                        `info/edit/${data?.id || data?._id}` ||
-                                        '#'
+                                        data?.id || data?._id
+                                            ? `info/edit/${data?.id || data?._id}`
+                                            : '#'
                                     }
                                     className="w-full"
                                 >
@@ -688,8 +698,9 @@ export const SchoolAchievementTableColumn = [
                             <DropdownMenuItem>
                                 <Link
                                     href={
-                                        `achievement/edit/${data?.id || data?._id}` ||
-                                        '#'
+                                        data?.id || data?._id
+                                            ? `achievement/edit/${data?.id || data?._id}`
+                                            : '#'
                                     }
                                     className="w-full"
                                 >
@@ -767,8 +778,9 @@ export const SchoolSpeechTableColumn = [
                             <DropdownMenuItem>
                                 <Link
                                     href={
-                                        `speech/edit/${data?.id || data?._id}` ||
-                                        '#'
+                                        data?.id || data?._id
+                                            ? `speech/edit/${data?.id || data?._id}`
+                                            : '#'
                                     }
                                     className="w-full"
                                 >

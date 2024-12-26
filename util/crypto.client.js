@@ -43,6 +43,8 @@ export function decryptData(data) {
         const bytes = CryptoJS.AES.decrypt(data, SECRET_KEY);
         return bytes.toString(CryptoJS.enc.Utf8);
     } catch (error) {
+        console.error(error);
+
         throw new Error('Bad encrypted data.');
     }
 }

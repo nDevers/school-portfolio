@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+
 import InputWrapper from '@/components/ui/input-wrapper';
 import Reset from '@/components/button/Reset';
 import Submit from '@/components/button/Submit';
@@ -24,7 +24,7 @@ export default function VideoAlbumForm({ data }) {
         title: Yup.string().required('Required field'),
         link: Yup.string()
             .matches(
-                /^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/,
+                /^(https?\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/,
                 'Must be a valid YouTube link'
             )
             .required('YouTube link is required'),
