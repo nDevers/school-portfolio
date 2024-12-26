@@ -439,6 +439,14 @@ const deleteCareerById = async (request, context) => {
  *       500:
  *         description: Internal Server Error - Failed to update the About Us entry.
  */
+
+/**
+ * PATCH variable assigned to an asynchronous route handler for updating an "About Us" entry by its ID.
+ *
+ * This handler leverages an async error-handling middleware (`asyncHandler`) to manage execution flow
+ * and ensure proper error handling during the update process. It uses the `handleUpdateAboutUsById`
+ * function which encapsulates the logic for updating the specified resource in a data store or database.
+ */
 export const PATCH = asyncHandler(handleUpdateAboutUsById);
 
 /**
@@ -479,5 +487,15 @@ export const PATCH = asyncHandler(handleUpdateAboutUsById);
  *         description: Not Found - The specified About Us entry could not be found.
  *       500:
  *         description: Internal Server Error - Failed to delete the About Us entry.
+ */
+
+/**
+ * DELETE is a constant that represents an asynchronous handler function for deleting a career entry by its identifier.
+ * The function utilizes an asyncHandler utility to handle any asynchronous operations and errors during the process.
+ *
+ * The primary purpose of this variable is to encapsulate the logic for deleting a specific career record using its unique ID.
+ * It ensures that the operation is handled asynchronously with proper error handling.
+ *
+ * The handler is expected to be used in an Express.js route or similar framework to handle HTTP DELETE requests.
  */
 export const DELETE = asyncHandler(deleteCareerById);

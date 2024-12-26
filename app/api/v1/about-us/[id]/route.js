@@ -48,10 +48,10 @@ export const handleGetAboutUsById = async (request, context) => {
  *               properties:
  *                 status:
  *                   type: string
- *                   example: success
+ *                   example: "success"
  *                 message:
  *                   type: string
- *                   example: About us entry with the ID: "123" retrieved successfully.
+ *                   example: "About us entry with the ID: '123' retrieved successfully."
  *                 data:
  *                   type: object
  *                   description: The detailed information of the "About Us" entry.
@@ -64,10 +64,10 @@ export const handleGetAboutUsById = async (request, context) => {
  *               properties:
  *                 status:
  *                   type: string
- *                   example: error
+ *                   example: "error"
  *                 message:
  *                   type: string
- *                   example: No About us entry with the ID: "123" available at this time.
+ *                   example: "No About us entry with the ID: '123' available at this time."
  *       500:
  *         description: Server error.
  *         content:
@@ -77,10 +77,10 @@ export const handleGetAboutUsById = async (request, context) => {
  *               properties:
  *                 status:
  *                   type: string
- *                   example: error
+ *                   example: "error"
  *                 message:
  *                   type: string
- *                   example: An error occurred while processing the request.
+ *                   example: "An error occurred while processing the request."
  */
 
 /**
