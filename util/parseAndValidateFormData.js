@@ -1,6 +1,6 @@
 'use strict';
 
-import { BadRequestError } from '@/util/asyncHandler';
+import { BadRequestError } from '@/lib/customError';
 
 import logger from '@/lib/logger';
 import contentTypesConstants from '@/constants/contentTypes.constants';

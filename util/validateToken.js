@@ -1,7 +1,8 @@
 'use strict';
 
+import { CryptoError } from '@/lib/customError';
+
 import { PrismaClient } from '@prisma/client';
-import { CryptoError } from '@/util/asyncHandler';
 
 import sharedResponseTypes from '@/shared/shared.response.types';
 
