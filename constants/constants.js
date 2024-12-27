@@ -140,6 +140,83 @@ const bangladeshNidRegex = /^\d{10}$/;
 const bloodGroupTypes = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
 /**
+ * An object containing regular expressions to match various types of YouTube video URLs.
+ *
+ * Properties:
+ * - `standard`: Matches standard YouTube video URLs in the format
+ *   `https://www.youtube.com/watch?v=VIDEO_ID`. Optionally allows additional query parameters.
+ * - `shortened`: Matches shortened YouTube video URLs in the format
+ *   `https://youtu.be/VIDEO_ID`.
+ * - `embedded`: Matches embedded YouTube video URLs in the format
+ *   `https://www.youtube.com/embed/VIDEO_ID`.
+ */
+const youtubeVideoUrlRegex = {
+    standard: /^https?:\/\/(www\.)?youtube\.com\/watch\?v=[\w-]+(&.*)?$/,
+    shortened: /^https?:\/\/youtu\.be\/[\w-]+$/,
+    embedded: /^https?:\/\/(www\.)?youtube\.com\/embed\/[\w-]+$/,
+};
+
+/**
+ * A regular expression pattern to validate Facebook profile or page URLs.
+ *
+ * This regex matches URLs that:
+ * - Start with "http" or "https".
+ * - Optionally contain "www." after the protocol.
+ * - Contain "facebook.com" as the domain.
+ * - Have a path consisting of word characters, dots, hyphens, and underscores.
+ * - Optionally end with a trailing slash.
+ *
+ * Examples of URLs that match:
+ * - https://facebook.com/username
+ * - http://www.facebook.com/page.name
+ *
+ * Note: This regex does not validate the authenticity of the Facebook profile or page,
+ * only the structure of the URL.
+ */
+const facebookUrlRegex = /^https?:\/\/(www\.)?facebook\.com\/[\w.-]+\/?$/;
+
+/**
+ * Regular expression to validate LinkedIn profile URLs.
+ *
+ * This regex ensures the URL starts with either "http" or "https", optionally includes "www.",
+ * and specifically matches URLs structured as a LinkedIn profile (e.g., "linkedin.com/in/").
+ * It allows alphanumeric characters, hyphens in the profile identifier, and optionally ends
+ * with a trailing slash.
+ *
+ * Valid LinkedIn profile URL structure:
+ * - Starts with "http" or "https"
+ * - Optional "www." subdomain
+ * - Domain name "linkedin.com"
+ * - Path starting with "/in/"
+ * - User identifier consisting of alphanumeric characters or hyphens
+ * - Optional trailing slash
+ */
+const linkedinUrlRegex = /^https?:\/\/(www\.)?linkedin\.com\/in\/[\w-]+\/?$/;
+
+/**
+ * A regular expression pattern to validate Instagram profile URLs.
+ * Matches a URL structure that can begin with "http://" or "https://",
+ * optionally include "www.", followed by "instagram.com/", and a valid username
+ * containing alphanumeric characters, dots, underscores, or hyphens.
+ * The URL may or may not end with a forward slash.
+ */
+const instagramUrlRegex = /^https?:\/\/(www\.)?instagram\.com\/[\w.-]+\/?$/;
+
+/**
+ * A regular expression pattern to validate or match URLs specific to the "x.com" domain.
+ *
+ * The regex ensures the URL:
+ * - Starts with either "http://" or "https://".
+ * - Optionally includes "www." as a subdomain.
+ * - Is specific to "x.com".
+ * - Allows alphanumeric characters, dots, dashes, and underscores in the path.
+ * - Optionally ends with a forward slash (/).
+ *
+ * Use this pattern to verify that a given URL conforms to the structure of "x.com".
+ */
+const xUrlRegex = /^https?:\/\/(www\.)?x\.com\/[\w.-]+\/?$/;
+
+/**
  * Regular expression for validating Mongoose Object IDs.
  * Matches 24-character hexadecimal strings.
  */
@@ -156,6 +233,12 @@ const constants = {
     englishLanguageRegex,
     bangladeshNidRegex,
     bloodGroupTypes,
+
+    youtubeVideoUrlRegex,
+    facebookUrlRegex,
+    linkedinUrlRegex,
+    instagramUrlRegex,
+    xUrlRegex,
 };
 
 export default constants;

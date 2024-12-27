@@ -393,26 +393,37 @@ const idValidationSchema = z
 const validMongooseIdArray = (fieldName) => z.array(validMongooseId(fieldName));
 
 /**
- * Validates that a string is a valid URL and begins with "https://".
+ * Validates that a string is a valid URL, begins with "https://", and matches specified URL patterns if provided.
  *
  * @param {string} fieldName - The name of the field being validated.
+ * @param {RegExp[]} [regexPatterns=[]] - Optional array of regex patterns to validate specific URL structures (e.g., Facebook, YouTube).
  * @returns {Object} A validation rule that ensures the string is non-empty,
- *                   a valid URL, and starts with "https://".
+ *                   a valid URL, starts with "https://", and optionally matches provided regex patterns.
  */
-const validUrl = (fieldName) =>
+const validUrl = (fieldName, regexPatterns) =>
     nonEmptyString(fieldName)
         .url(`${fieldName} must be a valid URL`)
         .refine((url) => url.startsWith('https://'), {
             message: `${fieldName} must start with "https://"`,
-        });
+        })
+        .refine(
+            (url) =>
+                regexPatterns.length === 0 ||
+                regexPatterns.some((regex) => regex.test(url)),
+            {
+                message: `${fieldName} must match one of the specified URL patterns.`,
+            }
+        );
 
 /**
- * A function that returns a Zod schema definition for an array of valid URLs.
+ * A function that returns a Zod schema definition for validating an array of valid URLs.
  *
- * @param {string} fieldName - The name of the field to be validated, used for error messages or schema construction.
- * @returns {ZodArray} A Zod schema representing an array of validated URL strings.
+ * @param {string} fieldName - The name of the field being validated. This is used in the error messages.
+ * @param {RegExp[]} [regexPatterns] - Optional array of regular expressions to validate specific URL structures.
+ * @returns {import('zod').ZodArray} A Zod schema representing an array of validated URL strings.
  */
-const validUrlArray = (fieldName) => z.array(validUrl(fieldName));
+const validUrlArray = (fieldName, regexPatterns = []) =>
+    z.array(validUrl(fieldName, regexPatterns));
 
 /**
  * A schema validation function for bank information.

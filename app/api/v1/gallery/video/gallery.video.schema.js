@@ -4,9 +4,15 @@ import { z } from 'zod';
 
 import schemaShared from '@/shared/schema.shared';
 import careerConstants from '@/app/api/v1/career/career.constants';
+import constants from '@/constants/constants';
 
-const { nonEmptyString, nonEmptyStringArray, validMongooseId, validDate } =
-    schemaShared;
+const {
+    nonEmptyString,
+    nonEmptyStringArray,
+    validMongooseId,
+    validUrlArray,
+    validDate,
+} = schemaShared;
 const { titleMaxCharacter } = careerConstants;
 
 /**
@@ -39,7 +45,11 @@ const id = validMongooseId('Gallery video ID');
  *
  * This is expected to only contain valid non-empty YouTube video URLs.
  */
-const youtubeLinks = nonEmptyStringArray('Gallery video youtube links');
+const youtubeLinks = validUrlArray('Gallery video youtube links', [
+    constants.youtubeVideoUrlRegex.standard,
+    constants.youtubeVideoUrlRegex.shortened,
+    constants.youtubeVideoUrlRegex.embedded,
+]);
 
 /**
  * A variable representing a schema created using the `zod` library.
