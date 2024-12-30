@@ -3,6 +3,7 @@ import httpStatusConstants from '@/constants/httpStatus.constants';
 import configurations from '@/configs/configurations';
 import sendResponse from '@/util/sendResponse';
 import asyncHandler from '@/util/asyncHandler';
+import scheduleCronJob from '@/lib/scheduleCronJob';
 
 /**
  * Asynchronously retrieves and stores the application's configuration settings.
@@ -39,6 +40,8 @@ const configuration = await configurations();
  * @returns {Object} A standardized response object wrapping the API index data.
  */
 const getIndexData = async (request) => {
+    scheduleCronJob();
+
     const indexData = {
         ...(configuration.api.name && {
             message: `Welcome to ${configuration.api.name} API.`,
