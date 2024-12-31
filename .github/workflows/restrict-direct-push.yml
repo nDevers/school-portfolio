@@ -1,0 +1,16 @@
+name: Restrict Direct Push to Main
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    restrict-push:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Fail direct push to main branch
+              run: |
+                  echo "Direct pushes to the 'main' branch are not allowed."
+                  exit 1
