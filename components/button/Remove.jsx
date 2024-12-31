@@ -7,14 +7,14 @@ import { HiTrash } from 'react-icons/hi';
 export default function Remove({ className, ...props }) {
     return (
         <Button
-            size="icon"
-            type="button"
+            size='icon'
+            type='button'
             tabIndex={-1}
-            variant="destructive"
+            variant='destructive'
             className={cn('', className)}
             {...props}
         >
-            <HiTrash className="h-4 w-4" />
+            <HiTrash className='h-4 w-4' />
         </Button>
     );
 }

@@ -85,7 +85,7 @@ export default function PhotoAlbumForm({ data }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
             <div>
                 <div
                     className={`gap-2 ${data?.image && 'grid md:grid-cols-2'}`}
@@ -94,27 +94,27 @@ export default function PhotoAlbumForm({ data }) {
                         className={`gap-2 ${!data?.image && 'grid md:grid-cols-2'}`}
                     >
                         <InputWrapper
-                            label="Profile Image"
+                            label='Profile Image'
                             error={formik.errors?.image}
                             touched={formik.touched?.image}
                         >
                             <Input
-                                type="file"
-                                name="image"
-                                accept="image/png, image/gif, image/jpeg, image/jpg, image/jpg"
+                                type='file'
+                                name='image'
+                                accept='image/png, image/gif, image/jpeg, image/jpg, image/jpg'
                                 onChange={handleImageChange(formik, 'image')}
                                 onBlur={formik.handleBlur}
                             />
                         </InputWrapper>
 
                         <InputWrapper
-                            label="Date"
+                            label='Date'
                             error={formik.errors?.date}
                             touched={formik.touched?.date}
                         >
                             <Input
-                                type="date"
-                                name="date"
+                                type='date'
+                                name='date'
                                 value={formik.values?.date}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
@@ -122,33 +122,33 @@ export default function PhotoAlbumForm({ data }) {
                         </InputWrapper>
                     </div>
                     {data?.image && (
-                        <div className="flex items-center justify-end relative">
+                        <div className='flex items-center justify-end relative'>
                             <img
                                 src={data?.image}
-                                alt="Selected Image"
-                                className="w-24 h-24 object-cover border border-dashed rounded-md p-1"
+                                alt='Selected Image'
+                                className='w-24 h-24 object-cover border border-dashed rounded-md p-1'
                             />
                             <Button
-                                type="button"
-                                size="icon"
+                                type='button'
+                                size='icon'
                                 onClick={() => clearField(formik, 'image')}
-                                className="absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full"
+                                className='absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full'
                             >
                                 <GoX />
                             </Button>
                         </div>
                     )}
                 </div>
-                <div className="grid md:grid-cols-2 gap-2 w-full">
+                <div className='grid md:grid-cols-2 gap-2 w-full'>
                     <InputWrapper
-                        label="Title"
+                        label='Title'
                         error={formik.errors?.title}
                         touched={formik.touched?.title}
                         className={'md:col-span-2'}
                     >
                         <Input
-                            name="title"
-                            placeholder="Photo Title"
+                            name='title'
+                            placeholder='Photo Title'
                             value={formik.values?.title}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -156,14 +156,14 @@ export default function PhotoAlbumForm({ data }) {
                     </InputWrapper>
 
                     <InputWrapper
-                        label="Description"
+                        label='Description'
                         error={formik.errors?.description}
                         touched={formik.touched?.description}
                         className={'md:col-span-2'}
                     >
                         <Textarea
-                            name="description"
-                            placeholder="Description"
+                            name='description'
+                            placeholder='Description'
                             value={formik.values?.description}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -172,7 +172,7 @@ export default function PhotoAlbumForm({ data }) {
                 </div>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending} />
             </div>

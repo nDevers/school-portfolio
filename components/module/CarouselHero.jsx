@@ -38,25 +38,25 @@ export default function CarouselHero() {
     ];
 
     return (
-        <div className="w-full h-[200px] sm:h-[250px] md:h-[300px] lg:h-[400px] xl:h-[450px]">
+        <div className='w-full h-[200px] sm:h-[250px] md:h-[300px] lg:h-[400px] xl:h-[450px]'>
             <Carousel
                 opts={{ loop: true }}
                 plugins={[plugin.current]}
-                className="w-full h-full grid"
+                className='w-full h-full grid'
             >
-                <div className="w-full relative">
-                    <CarouselPrevious className="absolute z-10 top-1/2 left-10 opacity-30 hover:opacity-100" />
-                    <CarouselNext className="absolute z-10 top-1/2 right-10 opacity-30 hover:opacity-100" />
+                <div className='w-full relative'>
+                    <CarouselPrevious className='absolute z-10 top-1/2 left-10 opacity-30 hover:opacity-100' />
+                    <CarouselNext className='absolute z-10 top-1/2 right-10 opacity-30 hover:opacity-100' />
                     <CarouselContent>
                         {data.map((item) => (
                             <CarouselItem key={item?.id}>
-                                <div className="w-full h-full">
-                                    <Card className="w-full h-full overflow-hidden rounded-none">
-                                        <div className="relative w-full h-full flex flex-col">
+                                <div className='w-full h-full'>
+                                    <Card className='w-full h-full overflow-hidden rounded-none'>
+                                        <div className='relative w-full h-full flex flex-col'>
                                             <img
                                                 src={item?.image}
                                                 alt={`${item?.title}'s image`}
-                                                className="flex-grow object-cover h-48 w-full" // Adjust height as needed
+                                                className='flex-grow object-cover h-48 w-full' // Adjust height as needed
                                             />
                                         </div>
                                     </Card>

@@ -63,8 +63,8 @@ export default function DefaultTable({
     };
 
     return (
-        <div className="space-y-4">
-            <div className="flex items-center justify-between space-x-4">
+        <div className='space-y-4'>
+            <div className='flex items-center justify-between space-x-4'>
                 <GlobalSearchBox
                     filtering={filtering}
                     setFiltering={setFiltering}

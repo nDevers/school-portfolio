@@ -24,9 +24,9 @@ export default function Gallery() {
     });
 
     return (
-        <div className="w-full h-full pt-10">
-            <div className="space-y-10">
-                <h1 className="whitespace-nowrap text-3xl md:text-4xl text-center text-primary font-bold">
+        <div className='w-full h-full pt-10'>
+            <div className='space-y-10'>
+                <h1 className='whitespace-nowrap text-3xl md:text-4xl text-center text-primary font-bold'>
                     এক নজরে আমাদের স্কুল
                 </h1>
 
@@ -34,7 +34,7 @@ export default function Gallery() {
                 {imageUrls && (
                     <PhotoGallery
                         imageUrls={imageUrls}
-                        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1"
+                        className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1'
                     />
                 )}
             </div>

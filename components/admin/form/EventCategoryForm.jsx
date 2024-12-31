@@ -54,24 +54,24 @@ export default function EventCategoryForm({ data }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
-            <div className="grid md:grid-cols-2 gap-2 w-full">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+            <div className='grid md:grid-cols-2 gap-2 w-full'>
                 <InputWrapper
-                    label="Category"
+                    label='Category'
                     error={formik.errors?.category}
                     touched={formik.touched?.category}
                 >
                     <Input
-                        name="category"
-                        placeholder="Category"
+                        name='category'
+                        placeholder='Category'
                         value={formik.values?.category}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                     />
                 </InputWrapper>
 
-                <InputWrapper label="Is this special ?">
-                    <label className="flex items-center space-x-2 border border-border p-2 rounded-md text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                <InputWrapper label='Is this special ?'>
+                    <label className='flex items-center space-x-2 border border-border p-2 rounded-md text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'>
                         <span>Make this category as special</span>
                         <Checkbox
                             checked={formik.values.isSpecial}
@@ -84,7 +84,7 @@ export default function EventCategoryForm({ data }) {
                 </InputWrapper>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
                 <Submit disabled={mutation.isPending || mutation.isSuccess} />
             </div>
         </form>

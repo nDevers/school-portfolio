@@ -147,16 +147,16 @@ export default function CurrentNewsForm({ data }) {
             onSubmit={onSubmit}
         >
             {({ errors, touched, values, setFieldValue, resetForm }) => (
-                <Form className="space-y-4">
+                <Form className='space-y-4'>
                     <InputWrapper
-                        label="Event Title"
+                        label='Event Title'
                         error={errors.title}
                         touched={touched.title}
                     >
                         <Field
                             as={Input}
-                            name="title"
-                            placeholder="Enter title"
+                            name='title'
+                            placeholder='Enter title'
                         />
                     </InputWrapper>
 
@@ -165,18 +165,18 @@ export default function CurrentNewsForm({ data }) {
                             <img
                                 src={data?.banner}
                                 alt={data?.title}
-                                className="w-full h-40 object-cover rounded-lg border border-dashed"
+                                className='w-full h-40 object-cover rounded-lg border border-dashed'
                             />
                         )}
                         <InputWrapper
-                            label="Banner"
+                            label='Banner'
                             error={errors.banner}
                             touched={touched.banner}
                         >
                             <Input
-                                type="file"
-                                name="banner"
-                                accept="image/*"
+                                type='file'
+                                name='banner'
+                                accept='image/*'
                                 onChange={(event) =>
                                     setFieldValue(
                                         'banner',
@@ -188,14 +188,14 @@ export default function CurrentNewsForm({ data }) {
                     </div>
 
                     {/* files Field Array */}
-                    <div className="space-y-2">
-                        <InputWrapper label="PDF files">
+                    <div className='space-y-2'>
+                        <InputWrapper label='PDF files'>
                             {values.files.map((file, index) => (
                                 <div
                                     key={index}
-                                    className="flex gap-2 items-start justify-between"
+                                    className='flex gap-2 items-start justify-between'
                                 >
-                                    <div className="w-full">
+                                    <div className='w-full'>
                                         <Input
                                             name={`files[${index}].name`}
                                             placeholder={`File Name ${index + 1}`}
@@ -214,17 +214,17 @@ export default function CurrentNewsForm({ data }) {
                                             }
                                         />
                                     </div>
-                                    <div className="w-full">
+                                    <div className='w-full'>
                                         <Input
-                                            type="file"
-                                            accept="application/pdf"
+                                            type='file'
+                                            accept='application/pdf'
                                             onChange={(e) =>
                                                 handleImageChangeForForm(
                                                     setFieldValue,
                                                     `files[${index}].file`
                                                 )(e)
                                             }
-                                            className="file-input"
+                                            className='file-input'
                                         />
                                         <Error
                                             error={errors.files?.[index]?.file}
@@ -233,7 +233,7 @@ export default function CurrentNewsForm({ data }) {
                                             }
                                         />
                                     </div>
-                                    <div className="max-w-12 flex items-center">
+                                    <div className='max-w-12 flex items-center'>
                                         <Remove
                                             disabled={values.files.length === 1}
                                             onClick={() =>
@@ -250,7 +250,7 @@ export default function CurrentNewsForm({ data }) {
                             ))}
                         </InputWrapper>
                         <Add
-                            label="Add File"
+                            label='Add File'
                             onClick={() =>
                                 handleArrayFieldChangeForForm(
                                     { values, setFieldValue },
@@ -262,14 +262,14 @@ export default function CurrentNewsForm({ data }) {
                     </div>
 
                     {/* links Field Array */}
-                    <div className="space-y-2">
-                        <InputWrapper label="Additional Links">
+                    <div className='space-y-2'>
+                        <InputWrapper label='Additional Links'>
                             {values.links.map((link, index) => (
                                 <div
                                     key={index}
-                                    className="flex gap-2 items-start justify-between"
+                                    className='flex gap-2 items-start justify-between'
                                 >
-                                    <div className="w-full">
+                                    <div className='w-full'>
                                         <Input
                                             name={`links[${index}].name`}
                                             placeholder={`Link Name ${index + 1}`}
@@ -288,9 +288,9 @@ export default function CurrentNewsForm({ data }) {
                                             }
                                         />
                                     </div>
-                                    <div className="w-full">
+                                    <div className='w-full'>
                                         <Input
-                                            type="link"
+                                            type='link'
                                             name={`links[${index}].name`}
                                             placeholder={`Link Name ${index + 1}`}
                                             value={link.link}
@@ -308,7 +308,7 @@ export default function CurrentNewsForm({ data }) {
                                             }
                                         />
                                     </div>
-                                    <div className="max-w-12 flex items-center">
+                                    <div className='max-w-12 flex items-center'>
                                         <Remove
                                             disabled={values.files.length === 1}
                                             onClick={() =>
@@ -325,7 +325,7 @@ export default function CurrentNewsForm({ data }) {
                             ))}
                         </InputWrapper>
                         <Add
-                            label="Add Link"
+                            label='Add Link'
                             onClick={() =>
                                 handleArrayFieldChangeForForm(
                                     { values, setFieldValue },
@@ -337,14 +337,14 @@ export default function CurrentNewsForm({ data }) {
                     </div>
 
                     <InputWrapper
-                        label="Description"
+                        label='Description'
                         error={errors.description}
                         touched={touched.description}
                     >
-                        <FormikSunEditor name="description" />
+                        <FormikSunEditor name='description' />
                     </InputWrapper>
 
-                    <div className="flex items-center space-x-2">
+                    <div className='flex items-center space-x-2'>
                         <Reset onClick={resetForm} />
                         <Submit disabled={isLoading} />
                     </div>

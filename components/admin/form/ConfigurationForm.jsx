@@ -149,41 +149,41 @@ export default function ConfigurationForm({ data }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
             {(formik?.values?.logo || formik?.values?.dataImage) && (
-                <div className="flex items-center justify-end relative">
+                <div className='flex items-center justify-end relative'>
                     <img
                         src={
                             formik.values.logo instanceof File
                                 ? URL.createObjectURL(formik.values.logo)
                                 : formik?.values?.dataImage
                         }
-                        alt="Selected Image"
-                        className="w-24 h-24 object-cover border border-dashed rounded-md p-1"
+                        alt='Selected Image'
+                        className='w-24 h-24 object-cover border border-dashed rounded-md p-1'
                     />
                     <Button
-                        type="button"
-                        size="icon"
+                        type='button'
+                        size='icon'
                         disabled={!formik.values.logo}
                         onClick={() => {
                             clearField(formik, 'logo');
                             formik.setFieldValue('dataImage', '');
                         }}
-                        className="absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full"
+                        className='absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full'
                     >
                         <GoX />
                     </Button>
                 </div>
             )}
-            <div className="grid gap-2 w-full">
+            <div className='grid gap-2 w-full'>
                 <InputWrapper
-                    label="Name"
+                    label='Name'
                     error={formik.errors?.name}
                     touched={formik.touched?.name}
                 >
                     <Input
-                        name="name"
-                        placeholder="Your Name"
+                        name='name'
+                        placeholder='Your Name'
                         value={formik.values?.name}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -191,13 +191,13 @@ export default function ConfigurationForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Description"
+                    label='Description'
                     error={formik.errors?.description}
                     touched={formik.touched?.description}
                 >
                     <Textarea
-                        name="description"
-                        placeholder="Description of the Organization"
+                        name='description'
+                        placeholder='Description of the Organization'
                         rows={3}
                         value={formik.values?.description}
                         onChange={formik.handleChange}
@@ -206,27 +206,27 @@ export default function ConfigurationForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Logo URL"
+                    label='Logo URL'
                     error={formik.errors?.logo}
                     touched={formik.touched?.logo}
                 >
                     <Input
-                        name="logo"
-                        type="file"
-                        accept="image/png, image/gif, image/jpeg, image/jpg"
+                        name='logo'
+                        type='file'
+                        accept='image/png, image/gif, image/jpeg, image/jpg'
                         onChange={handleImageChange(formik, 'logo')}
                         onBlur={formik.handleBlur}
                     />
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Address"
+                    label='Address'
                     error={formik.errors?.address}
                     touched={formik.touched?.address}
                 >
                     <Input
-                        name="address"
-                        placeholder="Address"
+                        name='address'
+                        placeholder='Address'
                         value={formik.values?.address}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -234,16 +234,16 @@ export default function ConfigurationForm({ data }) {
                 </InputWrapper>
 
                 {/* Emails Field Array */}
-                <div className="space-y-2">
+                <div className='space-y-2'>
                     <InputWrapper
-                        label="Emails"
+                        label='Emails'
                         error={formik.errors?.emails}
                         touched={formik.touched?.emails}
                     >
                         {formik.values.emails.map((_, index) => (
                             <div
                                 key={index}
-                                className="flex gap-2 items-center"
+                                className='flex gap-2 items-center'
                             >
                                 <Input
                                     name={`emails[${index}]`}
@@ -251,7 +251,7 @@ export default function ConfigurationForm({ data }) {
                                     value={formik.values.emails[index]}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
-                                    className="flex-1"
+                                    className='flex-1'
                                 />
                                 <Remove
                                     disabled={formik.values.emails.length === 1}
@@ -269,7 +269,7 @@ export default function ConfigurationForm({ data }) {
                         ))}
                     </InputWrapper>
                     <Add
-                        label="Add Email"
+                        label='Add Email'
                         onClick={() =>
                             handleArrayFieldChange(formik, 'add', 'emails')
                         }
@@ -277,16 +277,16 @@ export default function ConfigurationForm({ data }) {
                 </div>
 
                 {/* Contacts Field Array */}
-                <div className="space-y-2">
+                <div className='space-y-2'>
                     <InputWrapper
-                        label="Contact Numbers"
+                        label='Contact Numbers'
                         error={formik.errors?.contacts}
                         touched={formik.touched?.contacts}
                     >
                         {formik.values.contacts.map((_, index) => (
                             <div
                                 key={index}
-                                className="flex gap-2 items-center"
+                                className='flex gap-2 items-center'
                             >
                                 <Input
                                     name={`contacts[${index}]`}
@@ -294,7 +294,7 @@ export default function ConfigurationForm({ data }) {
                                     value={formik.values.contacts[index]}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
-                                    className="flex-1"
+                                    className='flex-1'
                                 />
                                 <Remove
                                     disabled={
@@ -314,7 +314,7 @@ export default function ConfigurationForm({ data }) {
                         ))}
                     </InputWrapper>
                     <Add
-                        label="Add Contact"
+                        label='Add Contact'
                         onClick={() =>
                             handleArrayFieldChange(formik, 'add', 'contacts')
                         }
@@ -322,16 +322,16 @@ export default function ConfigurationForm({ data }) {
                 </div>
 
                 {/* Social Links Field Array */}
-                <div className="space-y-2">
+                <div className='space-y-2'>
                     <InputWrapper
-                        label="Social Links"
+                        label='Social Links'
                         error={formik.errors?.socialLinks}
                         touched={formik.touched?.socialLinks}
                     >
                         {formik.values.socialLinks.map((_, index) => (
                             <div
                                 key={index}
-                                className="flex gap-2 items-center"
+                                className='flex gap-2 items-center'
                             >
                                 <Input
                                     name={`socialLinks[${index}]`}
@@ -339,7 +339,7 @@ export default function ConfigurationForm({ data }) {
                                     value={formik.values.socialLinks[index]}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
-                                    className="flex-1"
+                                    className='flex-1'
                                 />
                                 <Remove
                                     disabled={
@@ -359,7 +359,7 @@ export default function ConfigurationForm({ data }) {
                         ))}
                     </InputWrapper>
                     <Add
-                        label="Add Social Link"
+                        label='Add Social Link'
                         onClick={() =>
                             handleArrayFieldChange(formik, 'add', 'socialLinks')
                         }
@@ -367,7 +367,7 @@ export default function ConfigurationForm({ data }) {
                 </div>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending} />
             </div>

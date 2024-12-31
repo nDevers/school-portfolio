@@ -111,49 +111,49 @@ export default function AcademicForm({ data, category }) {
             onSubmit={mutation.mutate}
         >
             {({ errors, touched, values, setFieldValue, resetForm }) => (
-                <Form className="grid md:grid-cols-2 gap-4">
+                <Form className='grid md:grid-cols-2 gap-4'>
                     <InputWrapper
-                        label="Title"
+                        label='Title'
                         error={errors.title}
                         touched={touched.title}
                     >
                         <Field
                             as={Input}
-                            name="title"
+                            name='title'
                             placeholder={`Title of the ${category}`}
                         />
                     </InputWrapper>
 
                     <InputWrapper
-                        label="Badge"
+                        label='Badge'
                         error={errors.badge}
                         touched={touched.badge}
                     >
                         <Field
                             as={Input}
-                            name="badge"
+                            name='badge'
                             placeholder={`Badge of the ${category}`}
                         />
                     </InputWrapper>
 
                     <InputWrapper
-                        label="Publish Date"
+                        label='Publish Date'
                         error={errors.publishDate}
                         touched={touched.publishDate}
                     >
-                        <Field as={Input} name="publishDate" type="date" />
+                        <Field as={Input} name='publishDate' type='date' />
                     </InputWrapper>
 
                     <InputWrapper
-                        label="Attachment"
+                        label='Attachment'
                         error={errors.file}
                         touched={touched.file}
                     >
                         <Field
                             as={Input}
-                            type="file"
-                            name="image"
-                            accept="application/pdf, image/png, image/gif, image/jpeg, image/jpg"
+                            type='file'
+                            name='image'
+                            accept='application/pdf, image/png, image/gif, image/jpeg, image/jpg'
                             onChange={(e) =>
                                 handleImageChangeForForm(
                                     setFieldValue,
@@ -164,15 +164,15 @@ export default function AcademicForm({ data, category }) {
                     </InputWrapper>
 
                     <InputWrapper
-                        label="Description"
+                        label='Description'
                         error={errors.description}
                         touched={touched.description}
                         className={'md:col-span-2'}
                     >
-                        <FormikSunEditor name="description" />
+                        <FormikSunEditor name='description' />
                     </InputWrapper>
 
-                    <div className="flex items-center space-x-2 md:col-span-2">
+                    <div className='flex items-center space-x-2 md:col-span-2'>
                         <Reset onClick={resetForm} />
                         <Submit
                             disabled={mutation.isPending}
@@ -181,7 +181,7 @@ export default function AcademicForm({ data, category }) {
                             } // Dynamic label
                             icon={
                                 mutation.isPending ? (
-                                    <Spinner size="4" />
+                                    <Spinner size='4' />
                                 ) : (
                                     <RiSendPlaneLine />
                                 )

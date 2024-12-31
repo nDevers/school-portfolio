@@ -98,22 +98,22 @@ export default function MoreAboutUsForm({ data }) {
             onSubmit={mutation.mutate}
         >
             {({ errors, touched, values, setFieldValue, resetForm }) => (
-                <Form className="space-y-4">
+                <Form className='space-y-4'>
                     <InputWrapper
-                        label="Title"
+                        label='Title'
                         error={errors.title}
                         touched={touched.title}
                     >
                         <Field
                             as={Input}
-                            name="title"
-                            placeholder="Title of the topic"
+                            name='title'
+                            placeholder='Title of the topic'
                         />
                     </InputWrapper>
 
-                    <div className="space-y-2">
+                    <div className='space-y-2'>
                         <InputWrapper
-                            label="Files"
+                            label='Files'
                             error={errors?.files}
                             touched={touched?.files}
                         >
@@ -121,18 +121,18 @@ export default function MoreAboutUsForm({ data }) {
                                 values?.files?.map((_, index) => (
                                     <div
                                         key={index}
-                                        className="flex gap-2 items-center"
+                                        className='flex gap-2 items-center'
                                     >
                                         <Input
-                                            type="file"
-                                            accept="application/pdf"
+                                            type='file'
+                                            accept='application/pdf'
                                             onChange={(e) =>
                                                 handleImageChangeForForm(
                                                     setFieldValue,
                                                     `files[${index}]`
                                                 )(e)
                                             }
-                                            className="file-input"
+                                            className='file-input'
                                         />
                                         <Remove
                                             disabled={
@@ -152,7 +152,7 @@ export default function MoreAboutUsForm({ data }) {
                                 ))}
                         </InputWrapper>
                         <Add
-                            label="Add File"
+                            label='Add File'
                             onClick={() =>
                                 handleArrayFieldChangeForForm(
                                     { values, setFieldValue },
@@ -163,9 +163,9 @@ export default function MoreAboutUsForm({ data }) {
                         />
                     </div>
 
-                    <div className="space-y-2">
+                    <div className='space-y-2'>
                         <InputWrapper
-                            label="Images"
+                            label='Images'
                             error={errors?.images}
                             touched={touched?.images}
                         >
@@ -173,18 +173,18 @@ export default function MoreAboutUsForm({ data }) {
                                 values?.images?.map((_, index) => (
                                     <div
                                         key={index}
-                                        className="flex gap-2 items-center"
+                                        className='flex gap-2 items-center'
                                     >
                                         <Input
-                                            type="file"
-                                            accept="image/*"
+                                            type='file'
+                                            accept='image/*'
                                             onChange={(e) =>
                                                 handleImageChangeForForm(
                                                     setFieldValue,
                                                     `images[${index}]`
                                                 )(e)
                                             }
-                                            className="file-input"
+                                            className='file-input'
                                         />
                                         <Remove
                                             disabled={
@@ -204,7 +204,7 @@ export default function MoreAboutUsForm({ data }) {
                                 ))}
                         </InputWrapper>
                         <Add
-                            label="Add Image"
+                            label='Add Image'
                             onClick={() =>
                                 handleArrayFieldChangeForForm(
                                     { values, setFieldValue },
@@ -216,14 +216,14 @@ export default function MoreAboutUsForm({ data }) {
                     </div>
 
                     <InputWrapper
-                        label="Description"
+                        label='Description'
                         error={errors.description}
                         touched={touched.description}
                     >
-                        <FormikSunEditor name="description" />
+                        <FormikSunEditor name='description' />
                     </InputWrapper>
 
-                    <div className="flex items-center space-x-2">
+                    <div className='flex items-center space-x-2'>
                         <Reset onClick={resetForm} />
                         <Submit
                             disabled={mutation.isPending || mutation.isSuccess}
@@ -232,7 +232,7 @@ export default function MoreAboutUsForm({ data }) {
                             } // Dynamic label
                             icon={
                                 mutation.isPending ? (
-                                    <Spinner size="4" />
+                                    <Spinner size='4' />
                                 ) : (
                                     <RiSendPlaneLine />
                                 )

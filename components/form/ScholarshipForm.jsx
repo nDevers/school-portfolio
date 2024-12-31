@@ -176,41 +176,41 @@ export default function ScholarshipForm() {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
-            <div className="flex flex-col items-center justify-center text-base">
-                <p className="text-xl md:text-2xl text-primary uppercase font-bold">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+            <div className='flex flex-col items-center justify-center text-base'>
+                <p className='text-xl md:text-2xl text-primary uppercase font-bold'>
                     {formInfo?.organizer?.name}
                 </p>
-                <p className="font-bold">{formInfo?.organizer?.address}</p>
-                <p className="font-bold">
+                <p className='font-bold'>{formInfo?.organizer?.address}</p>
+                <p className='font-bold'>
                     Since - {formInfo?.organizer?.founded}
                 </p>
-                <p className="text-lg md:text-xl font-bold">
+                <p className='text-lg md:text-xl font-bold'>
                     {formInfo?.eventName}
                 </p>
-                <p className="text-lg md:text-xl border-4 mt-2 border-double p-2 w-fit">
+                <p className='text-lg md:text-xl border-4 mt-2 border-double p-2 w-fit'>
                     {formInfo?.formName}
                 </p>
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className='flex items-center justify-between'>
                 <div>
                     <p>Date: {currentDate}</p>
                     <p>SL No: {formik?.values?.slNo && formik?.values?.slNo}</p>
                 </div>
                 <div>
                     {formik?.values?.image && (
-                        <div className="flex items-center justify-end relative">
+                        <div className='flex items-center justify-end relative'>
                             <img
                                 src={URL.createObjectURL(formik.values.image)}
-                                alt="Selected Image"
-                                className="w-24 h-24 object-cover border border-dashed rounded-md p-1"
+                                alt='Selected Image'
+                                className='w-24 h-24 object-cover border border-dashed rounded-md p-1'
                             />
                             <Button
-                                type="button"
-                                size="icon"
+                                type='button'
+                                size='icon'
                                 onClick={() => clearField(formik, 'image')}
-                                className="absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full"
+                                className='absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full'
                             >
                                 <GoX />
                             </Button>
@@ -219,15 +219,15 @@ export default function ScholarshipForm() {
                 </div>
             </div>
 
-            <div className="grid gap-2 md:grid-cols-2 w-full">
+            <div className='grid gap-2 md:grid-cols-2 w-full'>
                 <InputWrapper
-                    label="Applicant Name Bangla"
+                    label='Applicant Name Bangla'
                     error={formik.errors.applicantNameBn}
                     touched={formik.touched.applicantNameBn}
                 >
                     <Input
-                        name="applicantNameBn"
-                        placeholder="Applicant Name Bangla"
+                        name='applicantNameBn'
+                        placeholder='Applicant Name Bangla'
                         value={formik.values.applicantNameBn}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -235,27 +235,27 @@ export default function ScholarshipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Image"
+                    label='Image'
                     error={formik.errors.image}
                     touched={formik.touched.image}
                 >
                     <Input
-                        name="image"
-                        type="file"
-                        accept="image/*"
+                        name='image'
+                        type='file'
+                        accept='image/*'
                         onChange={handleImageChange(formik, 'image')}
                         onBlur={formik.handleBlur}
                     />
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Applicant Name English"
+                    label='Applicant Name English'
                     error={formik.errors.applicantNameEn}
                     touched={formik.touched.applicantNameEn}
                 >
                     <Input
-                        name="applicantNameEn"
-                        placeholder="Applicant Name English"
+                        name='applicantNameEn'
+                        placeholder='Applicant Name English'
                         value={formik.values.applicantNameEn}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -263,13 +263,13 @@ export default function ScholarshipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Father / Mother Phone Number"
+                    label='Father / Mother Phone Number'
                     error={formik.errors.contact}
                     touched={formik.touched.contact}
                 >
                     <Input
-                        name="contact"
-                        placeholder="Phone"
+                        name='contact'
+                        placeholder='Phone'
                         value={formik.values.contact}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -282,7 +282,7 @@ export default function ScholarshipForm() {
                     touched={formik.touched.fatherName}
                 >
                     <Input
-                        name="fatherName"
+                        name='fatherName'
                         placeholder="Father's Name"
                         value={formik.values.fatherName}
                         onChange={formik.handleChange}
@@ -296,7 +296,7 @@ export default function ScholarshipForm() {
                     touched={formik.touched.motherName}
                 >
                     <Input
-                        name="motherName"
+                        name='motherName'
                         placeholder="Mother's Name"
                         value={formik.values.motherName}
                         onChange={formik.handleChange}
@@ -305,27 +305,27 @@ export default function ScholarshipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="School Name"
+                    label='School Name'
                     error={formik.errors?.schoolName}
                     touched={formik.touched?.schoolName}
                 >
                     <ComboboxFormik
-                        select="id"
-                        display="name"
-                        name="schoolName"
+                        select='id'
+                        display='name'
+                        name='schoolName'
                         formik={formik}
                         data={formInfo?.eligibleSchools}
                     />
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Class Roll No"
+                    label='Class Roll No'
                     error={formik.errors.classRollNo}
                     touched={formik.touched.classRollNo}
                 >
                     <Input
-                        name="classRollNo"
-                        placeholder="Class Roll No"
+                        name='classRollNo'
+                        placeholder='Class Roll No'
                         value={formik.values.classRollNo}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -334,8 +334,8 @@ export default function ScholarshipForm() {
             </div>
 
             {/* Permanent Address */}
-            <h2 className="font-bold text-lg md:text-xl">Permanent Address</h2>
-            <div className="grid gap-2 md:grid-cols-2">
+            <h2 className='font-bold text-lg md:text-xl'>Permanent Address</h2>
+            <div className='grid gap-2 md:grid-cols-2'>
                 {['village', 'postOffice', 'subdistrict', 'district'].map(
                     (field) => (
                         <InputWrapper
@@ -362,11 +362,11 @@ export default function ScholarshipForm() {
             </div>
 
             {/* Checkbox for current address */}
-            <div className="flex items-center space-x-10">
-                <h2 className="font-bold text-lg md:text-xl">
+            <div className='flex items-center space-x-10'>
+                <h2 className='font-bold text-lg md:text-xl'>
                     Current Address
                 </h2>
-                <label className="flex items-center space-x-2">
+                <label className='flex items-center space-x-2'>
                     <Checkbox
                         checked={
                             formik.values.isCurrentAddressSameAsPermanentAddress
@@ -383,7 +383,7 @@ export default function ScholarshipForm() {
             {/* Current Address */}
             {!formik.values.isCurrentAddressSameAsPermanentAddress && (
                 <>
-                    <div className="grid gap-2 md:grid-cols-2">
+                    <div className='grid gap-2 md:grid-cols-2'>
                         {[
                             'village',
                             'postOffice',
@@ -417,7 +417,7 @@ export default function ScholarshipForm() {
                 </>
             )}
 
-            <div className="flex items-center justify-end space-x-2">
+            <div className='flex items-center justify-end space-x-2'>
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending || mutation.isSuccess} />
             </div>

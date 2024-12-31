@@ -8,6 +8,8 @@
 # or where formatting is otherwise unnecessary or undesirable, maintaining a clean
 # and consistent code style where it matters most.
 
+
+
 ####################################################
 # IDE AND CODE EDITOR SETTINGS
 ####################################################
@@ -19,11 +21,9 @@
 # JetBrains IDEA/Android Studio project settings.
 .idea/
 
-# Visual Studio Code workspace settings.
-.vscode/
-
 # macOS-specific file created by Finder for file metadata.
 .DS_Store
+
 
 ####################################################
 # DEPENDENCY DIRECTORIES
@@ -46,6 +46,7 @@
 # Cached install state for Yarn berry.
 .yarn/install-state.gz
 
+
 ####################################################
 # BUILD OUTPUTS
 ####################################################
@@ -62,6 +63,7 @@
 # Generic folder for production deployments.
 .out/
 
+
 ####################################################
 # LOG FILES
 ####################################################
@@ -76,7 +78,7 @@ logs*.json
 docker.log
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
+
 
 ####################################################
 # ENVIRONMENT VARIABLE CONFIGURATIONS
@@ -94,6 +96,7 @@ yarn-error.log*
 .env.production
 .env*.local
 
+
 ####################################################
 # DOCUMENTATION
 ####################################################
@@ -103,9 +106,10 @@ yarn-error.log*
 
 # General documentation directory and specific documentation files.
 /documentation/
-LICENSE
 SECURITY.md
+CHANGELOG.md
 src/modules/api/documentation/
+
 
 ####################################################
 # VERCEL CONFIGURATION
@@ -117,15 +121,6 @@ src/modules/api/documentation/
 # Vercel configuration files.
 .vercel
 
-####################################################
-# DEPENDENCY LOCK FILES
-####################################################
-# Purpose:
-# Dependency lock files like `yarn.lock` ensure consistent installations and
-# should not be reformatted.
-
-# Yarn lock file.
-yarn.lock
 
 ####################################################
 # MISCELLANEOUS
@@ -141,26 +136,6 @@ next-env.d.ts
 # Private keys and sensitive files.
 *.pem
 
-####################################################
-# CONFIGURATION FILES
-####################################################
-# Purpose:
-# Configuration files for tools and applications dictate the behavior
-# and setup and should remain unaltered by formatting tools.
-
-# Babel configuration and Yarn directory.
-.babelrc
-.yarn/
-
-####################################################
-# NEXT.JS BUILD OUTPUT
-####################################################
-# Purpose:
-# Build output directories for Next.js contain generated code that is
-# recreated with each build and should not be formatted.
-
-# Next.js build output directory.
-.next/
 
 ####################################################
 # LOCAL FILE UPLOADS

@@ -25,8 +25,8 @@ export default function Back3() {
     }, [router]);
 
     return (
-        <Button size="icon" variant="outline" onClick={() => router?.back()}>
-            <GoChevronLeft className="w-5 h-5" />
+        <Button size='icon' variant='outline' onClick={() => router?.back()}>
+            <GoChevronLeft className='w-5 h-5' />
         </Button>
     );
 }

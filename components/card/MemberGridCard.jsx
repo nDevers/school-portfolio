@@ -10,49 +10,49 @@ import {
 
 export default function MemberGridCard({ member }) {
     return (
-        <div className="relative w-full h-full shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out rounded-2xl">
+        <div className='relative w-full h-full shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out rounded-2xl'>
             {/* Modern card with sleek borders and background pattern */}
-            <Card className="w-full h-full relative overflow-hidden rounded-xl bg-gradient-to-tr from-card via-secondary/5 to-card/50">
+            <Card className='w-full h-full relative overflow-hidden rounded-xl bg-gradient-to-tr from-card via-secondary/5 to-card/50'>
                 {/* Circular subtle background shape */}
-                <div className="absolute top-1/3 -right-1/4 bg-primary/20 blur-lg rounded-full h-48 w-48" />
-                <div className="absolute -bottom-5 -left-5 bg-accent/20 blur-lg rounded-full h-32 w-32" />
+                <div className='absolute top-1/3 -right-1/4 bg-primary/20 blur-lg rounded-full h-48 w-48' />
+                <div className='absolute -bottom-5 -left-5 bg-accent/20 blur-lg rounded-full h-32 w-32' />
 
-                <CardHeader className="relative z-20">
+                <CardHeader className='relative z-20'>
                     {/* Avatar with a gradient background */}
-                    <Avatar className="z-10 w-20 h-20 md:w-28 md:h-28 aspect-square bg-gradient-to-br from-primary to-accent border-4 border-white rounded-full shadow-md">
+                    <Avatar className='z-10 w-20 h-20 md:w-28 md:h-28 aspect-square bg-gradient-to-br from-primary to-accent border-4 border-white rounded-full shadow-md'>
                         <AvatarImage src={member?.img} />
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
-                    <CardTitle className="text-lg md:text-xl font-semibold">
+                    <CardTitle className='text-lg md:text-xl font-semibold'>
                         {member?.name}
                     </CardTitle>
                 </CardHeader>
 
                 {/* Modern badges and member information */}
-                <CardContent className="relative z-20 flex flex-wrap gap-2">
-                    <Badge className="text-sm md:text-base px-3 py-1 rounded-full">
+                <CardContent className='relative z-20 flex flex-wrap gap-2'>
+                    <Badge className='text-sm md:text-base px-3 py-1 rounded-full'>
                         {member?.designation}
                     </Badge>
                     <Badge
-                        variant="solid"
-                        className="text-xs rounded-full shadow-md tracking-widest"
+                        variant='solid'
+                        className='text-xs rounded-full shadow-md tracking-widest'
                     >
                         {member?.code}
                     </Badge>
                 </CardContent>
 
                 {/* Footer with detailed information */}
-                <CardFooter className="relative z-20">
-                    <div className="text-xs md:text-sm text-muted-foreground">
-                        <p className="font-medium">
+                <CardFooter className='relative z-20'>
+                    <div className='text-xs md:text-sm text-muted-foreground'>
+                        <p className='font-medium'>
                             Email:{' '}
-                            <span className="text-primary">
+                            <span className='text-primary'>
                                 {member?.email}
                             </span>
                         </p>
-                        <p className="font-medium">
+                        <p className='font-medium'>
                             Organization:{' '}
-                            <span className="text-primary">
+                            <span className='text-primary'>
                                 {member?.organization}
                             </span>
                         </p>

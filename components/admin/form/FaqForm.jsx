@@ -57,28 +57,28 @@ export default function FaqForm({ data }) {
             onSubmit={mutation.mutate}
         >
             {({ errors, touched, setFieldValue, resetForm }) => (
-                <Form className="space-y-4">
+                <Form className='space-y-4'>
                     <InputWrapper
-                        label="Question"
+                        label='Question'
                         error={errors.question}
                         touched={touched.question}
                     >
                         <Field
                             as={Input}
-                            name="question"
-                            placeholder="Write your question"
+                            name='question'
+                            placeholder='Write your question'
                         />
                     </InputWrapper>
 
                     <InputWrapper
-                        label="Answer"
+                        label='Answer'
                         error={errors.answer}
                         touched={touched.answer}
                     >
-                        <FormikSunEditor name="answer" />
+                        <FormikSunEditor name='answer' />
                     </InputWrapper>
 
-                    <div className="flex items-center space-x-2">
+                    <div className='flex items-center space-x-2'>
                         <Reset onClick={resetForm} />
                         <Submit
                             disabled={mutation.isPending}
@@ -87,7 +87,7 @@ export default function FaqForm({ data }) {
                             } // Dynamic label
                             icon={
                                 mutation.isPending ? (
-                                    <Spinner size="4" />
+                                    <Spinner size='4' />
                                 ) : (
                                     <RiSendPlaneLine />
                                 )

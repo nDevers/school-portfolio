@@ -179,8 +179,8 @@ export function AppSidebar() {
         subItems.some((subItem) => isActive(subItem.url));
 
     return (
-        <Sidebar variant="floating">
-            <SidebarContent className="sidebar-scroll">
+        <Sidebar variant='floating'>
+            <SidebarContent className='sidebar-scroll'>
                 {/* Dynamic Sidebar Groups */}
                 {initialSidebarData.map((group) => (
                     <SidebarGroup key={group.label}>
@@ -191,7 +191,7 @@ export function AppSidebar() {
                                     item.subItems ? (
                                         <Collapsible
                                             key={item.title}
-                                            className="group/collapsible"
+                                            className='group/collapsible'
                                         >
                                             <SidebarMenuItem>
                                                 <CollapsibleTrigger asChild>
@@ -204,9 +204,9 @@ export function AppSidebar() {
                                                                 : ''
                                                         )}
                                                     >
-                                                        <item.icon className="mr-1" />
+                                                        <item.icon className='mr-1' />
                                                         {item.title}
-                                                        <Dot className="ml-auto" />
+                                                        <Dot className='ml-auto' />
                                                     </SidebarMenuButton>
                                                 </CollapsibleTrigger>
                                                 <CollapsibleContent>
@@ -256,7 +256,7 @@ export function AppSidebar() {
                                                 )}
                                             >
                                                 <Link href={item.url}>
-                                                    <item.icon className="mr-1" />
+                                                    <item.icon className='mr-1' />
                                                     <span>{item.title}</span>
                                                 </Link>
                                             </SidebarMenuButton>

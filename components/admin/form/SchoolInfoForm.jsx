@@ -97,42 +97,42 @@ export default function SchoolInfoForm({ data }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
             <div>
                 {(formik?.values?.icon || formik?.values?.dataIcon) && (
-                    <div className="flex items-center justify-end relative">
+                    <div className='flex items-center justify-end relative'>
                         <img
                             src={
                                 formik.values.icon instanceof File
                                     ? URL.createObjectURL(formik.values.icon)
                                     : formik?.values?.dataIcon
                             }
-                            alt="Selected Image"
-                            className="w-24 h-24 object-cover border border-dashed rounded-md p-1"
+                            alt='Selected Image'
+                            className='w-24 h-24 object-cover border border-dashed rounded-md p-1'
                         />
                         <Button
-                            type="button"
-                            size="icon"
+                            type='button'
+                            size='icon'
                             disabled={!formik.values.icon}
                             onClick={() => {
                                 clearField(formik, 'icon');
                                 formik.setFieldValue('dataIcon', '');
                             }}
-                            className="absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full"
+                            className='absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full'
                         >
                             <GoX />
                         </Button>
                     </div>
                 )}
-                <div className="grid gap-2 w-full">
+                <div className='grid gap-2 w-full'>
                     <InputWrapper
-                        label="Title"
+                        label='Title'
                         error={formik.errors?.title}
                         touched={formik.touched?.title}
                     >
                         <Input
-                            name="title"
-                            placeholder="Title"
+                            name='title'
+                            placeholder='Title'
                             value={formik.values?.title}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -140,13 +140,13 @@ export default function SchoolInfoForm({ data }) {
                     </InputWrapper>
 
                     <InputWrapper
-                        label="Description"
+                        label='Description'
                         error={formik.errors?.description}
                         touched={formik.touched?.description}
                     >
                         <Input
-                            name="description"
-                            placeholder="Description"
+                            name='description'
+                            placeholder='Description'
                             value={formik.values?.description}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -154,14 +154,14 @@ export default function SchoolInfoForm({ data }) {
                     </InputWrapper>
 
                     <InputWrapper
-                        label="icon"
+                        label='icon'
                         error={formik.errors?.icon}
                         touched={formik.touched?.icon}
                     >
                         <Input
-                            type="file"
-                            name="icon"
-                            accept="image/png, image/gif, image/jpeg, image/jpg"
+                            type='file'
+                            name='icon'
+                            accept='image/png, image/gif, image/jpeg, image/jpg'
                             onChange={handleImageChange(formik, 'icon')}
                             onBlur={formik.handleBlur}
                         />
@@ -169,7 +169,7 @@ export default function SchoolInfoForm({ data }) {
                 </div>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending} />
             </div>

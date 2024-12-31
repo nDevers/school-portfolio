@@ -61,16 +61,16 @@ export default function EventSubcategoryForm({ data }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
-            <div className="grid md:grid-cols-2 gap-2 w-full">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+            <div className='grid md:grid-cols-2 gap-2 w-full'>
                 <InputWrapper
-                    label="Subcategory"
+                    label='Subcategory'
                     error={formik.errors?.subCategory}
                     touched={formik.touched?.subCategory}
                 >
                     <Input
-                        name="subCategory"
-                        placeholder="Subcategory"
+                        name='subCategory'
+                        placeholder='Subcategory'
                         value={formik.values?.subCategory}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -78,21 +78,21 @@ export default function EventSubcategoryForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Category"
+                    label='Category'
                     error={formik.errors?.category}
                     touched={formik.touched?.category}
                 >
                     <ComboboxFormik
-                        select="_id"
-                        display="category"
-                        name="category"
+                        select='_id'
+                        display='category'
+                        name='category'
                         formik={formik}
                         data={category}
                     />
                 </InputWrapper>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
                 <Submit disabled={mutation.isPending} />
             </div>
         </form>

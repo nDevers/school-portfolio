@@ -37,19 +37,19 @@ export default function Combobox({
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button
-                    variant="outline"
-                    role="combobox"
+                    variant='outline'
+                    role='combobox'
                     aria-expanded={open}
-                    className="w-[200px] justify-between"
+                    className='w-[200px] justify-between'
                 >
                     {icon && icon}
                     {selectedItem ? selectedItem[display] : placeholder}
-                    <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    <CaretSortIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[200px] p-0">
+            <PopoverContent className='w-[200px] p-0'>
                 <Command>
-                    <CommandInput placeholder="Search..." className="h-9" />
+                    <CommandInput placeholder='Search...' className='h-9' />
                     <CommandList>
                         <CommandEmpty>No framework found.</CommandEmpty>
                         <CommandGroup>

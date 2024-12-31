@@ -7,11 +7,11 @@ export default function PageTitle({
     back = true,
 }) {
     return (
-        <div className="flex items-center space-x-2">
+        <div className='flex items-center space-x-2'>
             {back && <Back3 />}
-            <div className="flex items-end w-fit space-x-2">
-                <h2 className="text-lg md:text-xl">{title}</h2>
-                <p className="pb-px">{description}</p>
+            <div className='flex items-end w-fit space-x-2'>
+                <h2 className='text-lg md:text-xl'>{title}</h2>
+                <p className='pb-px'>{description}</p>
             </div>
         </div>
     );

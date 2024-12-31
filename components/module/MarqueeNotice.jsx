@@ -31,9 +31,9 @@ export default function MarqueeNotice() {
     ];
 
     return (
-        <div className="flex items-center text-sm md:text-base">
+        <div className='flex items-center text-sm md:text-base'>
             {/* Notice Label */}
-            <div className="hidden sm:block px-3 md:px-6 py-1 md:py-2 bg-secondary text-white font-bold">
+            <div className='hidden sm:block px-3 md:px-6 py-1 md:py-2 bg-secondary text-white font-bold'>
                 ঘোষণা
             </div>
 
@@ -43,14 +43,14 @@ export default function MarqueeNotice() {
                 delay={2}
                 autoFill
                 pauseOnHover
-                direction="left"
+                direction='left'
             >
                 {notices.map((notice) => (
                     <Link
                         key={notice.id}
                         href={notice.link}
                         aria-label={`Link to notice ${notice.title}`}
-                        className="hover:underline px-2 space-x-2"
+                        className='hover:underline px-2 space-x-2'
                     >
                         <span>{notice.title}</span> <span>•</span>
                     </Link>

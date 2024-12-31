@@ -12,9 +12,9 @@ export default function Reset({
 }) {
     return (
         <Button
-            size="sm"
-            type="reset"
-            variant="outline"
+            size='sm'
+            type='reset'
+            variant='outline'
             className={cn('', className)}
             {...props}
         >

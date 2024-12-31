@@ -97,17 +97,17 @@ export default function NoticeForm({ data }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
-            <div className="grid md:grid-cols-2 gap-2 w-full">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+            <div className='grid md:grid-cols-2 gap-2 w-full'>
                 {/* Title Field */}
                 <InputWrapper
-                    label="Title"
+                    label='Title'
                     error={formik.errors?.title}
                     touched={formik.touched?.title}
                 >
                     <Input
-                        name="title"
-                        placeholder="Title"
+                        name='title'
+                        placeholder='Title'
                         value={formik.values?.title}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -116,13 +116,13 @@ export default function NoticeForm({ data }) {
 
                 {/* Publish Date Field */}
                 <InputWrapper
-                    label="Publish Date"
+                    label='Publish Date'
                     error={formik.errors?.publishDate}
                     touched={formik.touched?.publishDate}
                 >
                     <Input
-                        type="date"
-                        name="publishDate"
+                        type='date'
+                        name='publishDate'
                         value={formik.values?.publishDate}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -131,16 +131,16 @@ export default function NoticeForm({ data }) {
             </div>
 
             {/* File Upload Section */}
-            <div className="grid md:grid-cols-2 gap-2 w-full">
+            <div className='grid md:grid-cols-2 gap-2 w-full'>
                 <InputWrapper
-                    label="File Name"
+                    label='File Name'
                     error={formik.errors?.file?.name}
                     touched={formik.touched?.file?.name}
                 >
                     <Input
-                        name="file.name"
-                        placeholder="File Name"
-                        accept="file/pdf"
+                        name='file.name'
+                        placeholder='File Name'
+                        accept='file/pdf'
                         value={formik.values?.file?.name}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -148,13 +148,13 @@ export default function NoticeForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Upload File"
+                    label='Upload File'
                     error={formik.errors?.file?.file}
                     touched={formik.touched?.file?.file}
                 >
                     <Input
-                        type="file"
-                        name="file.file"
+                        type='file'
+                        name='file.file'
                         onChange={(event) => {
                             formik.setFieldValue(
                                 'file.file',
@@ -166,15 +166,15 @@ export default function NoticeForm({ data }) {
             </div>
 
             {/* Link Section */}
-            <div className="grid md:grid-cols-2 gap-2 w-full">
+            <div className='grid md:grid-cols-2 gap-2 w-full'>
                 <InputWrapper
-                    label="Link Name"
+                    label='Link Name'
                     error={formik.errors?.link?.name}
                     touched={formik.touched?.link?.name}
                 >
                     <Input
-                        name="link.name"
-                        placeholder="Link Name"
+                        name='link.name'
+                        placeholder='Link Name'
                         value={formik.values?.link?.name}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -182,13 +182,13 @@ export default function NoticeForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Link URL"
+                    label='Link URL'
                     error={formik.errors?.link?.link}
                     touched={formik.touched?.link?.link}
                 >
                     <Input
-                        name="link.link"
-                        placeholder="Link URL"
+                        name='link.link'
+                        placeholder='Link URL'
                         value={formik.values?.link?.link}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -197,7 +197,7 @@ export default function NoticeForm({ data }) {
             </div>
 
             {/* Submit and Reset Buttons */}
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending} />
             </div>

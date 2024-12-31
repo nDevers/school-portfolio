@@ -97,16 +97,16 @@ export default function ScholarshipInfoForm({ data }) {
     );
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
-            <div className="grid md:grid-cols-2 gap-2 w-full">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+            <div className='grid md:grid-cols-2 gap-2 w-full'>
                 <InputWrapper
-                    label="Form Title"
+                    label='Form Title'
                     error={formik.errors?.formTitle}
                     touched={formik.touched?.formTitle}
                 >
                     <Input
-                        name="formTitle"
-                        placeholder="Form Title"
+                        name='formTitle'
+                        placeholder='Form Title'
                         value={formik.values?.formTitle}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -114,13 +114,13 @@ export default function ScholarshipInfoForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Form Name"
+                    label='Form Name'
                     error={formik.errors?.formName}
                     touched={formik.touched?.formName}
                 >
                     <Input
-                        name="formName"
-                        placeholder="Form Name"
+                        name='formName'
+                        placeholder='Form Name'
                         value={formik.values?.formName}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -128,13 +128,13 @@ export default function ScholarshipInfoForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Venue"
+                    label='Venue'
                     error={formik.errors?.venue}
                     touched={formik.touched?.venue}
                 >
                     <Input
-                        name="venue"
-                        placeholder="Venue"
+                        name='venue'
+                        placeholder='Venue'
                         value={formik.values?.venue}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -142,13 +142,13 @@ export default function ScholarshipInfoForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Last Date"
+                    label='Last Date'
                     error={formik.errors?.lastDate}
                     touched={formik.touched?.lastDate}
                 >
                     <Input
-                        type="date"
-                        name="lastDate"
+                        type='date'
+                        name='lastDate'
                         value={formik.values?.lastDate}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -156,28 +156,28 @@ export default function ScholarshipInfoForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Eligible Schools"
+                    label='Eligible Schools'
                     error={formik.errors?.eligibleSchools}
                     touched={formik.touched?.eligibleSchools}
                     className={'md:col-span-2'}
                 >
                     <ComboboxFormikMultiSelect
-                        select="_id"
-                        display="name"
-                        name="eligibleSchools"
+                        select='_id'
+                        display='name'
+                        name='eligibleSchools'
                         formik={formik}
                         data={eligibleSchool}
                     />
                 </InputWrapper>
 
-                <div className="space-y-2 md:col-span-2">
-                    <InputWrapper label="Exam Details">
+                <div className='space-y-2 md:col-span-2'>
+                    <InputWrapper label='Exam Details'>
                         {formik?.values?.exam.map((exam, index) => (
                             <div
                                 key={index}
-                                className="flex gap-2 items-start justify-between"
+                                className='flex gap-2 items-start justify-between'
                             >
-                                <div className="w-full">
+                                <div className='w-full'>
                                     <Input
                                         name={`exam[${index}].subject`}
                                         placeholder={`Subject Name ${index + 1}`}
@@ -200,9 +200,9 @@ export default function ScholarshipInfoForm({ data }) {
                                         }
                                     />
                                 </div>
-                                <div className="w-full">
+                                <div className='w-full'>
                                     <Input
-                                        type="date"
+                                        type='date'
                                         name={`exam[${index}].date`}
                                         value={exam.date}
                                         onChange={(e) =>
@@ -221,9 +221,9 @@ export default function ScholarshipInfoForm({ data }) {
                                         }
                                     />
                                 </div>
-                                <div className="w-full">
+                                <div className='w-full'>
                                     <Input
-                                        type="time"
+                                        type='time'
                                         name={`exam[${index}].time`}
                                         value={exam.time}
                                         onChange={(e) =>
@@ -242,7 +242,7 @@ export default function ScholarshipInfoForm({ data }) {
                                         }
                                     />
                                 </div>
-                                <div className="max-w-12 flex items-center">
+                                <div className='max-w-12 flex items-center'>
                                     <Remove
                                         disabled={
                                             formik?.values.exam.length === 1
@@ -261,21 +261,21 @@ export default function ScholarshipInfoForm({ data }) {
                         ))}
                     </InputWrapper>
                     <Add
-                        label="Add Exam"
+                        label='Add Exam'
                         onClick={() =>
                             handleArrayFieldChange(formik, 'add', 'exam')
                         }
                     />
                 </div>
 
-                <div className="space-y-2 md:col-span-2">
-                    <InputWrapper label="Exam Details">
+                <div className='space-y-2 md:col-span-2'>
+                    <InputWrapper label='Exam Details'>
                         {formik?.values?.note.map((note, index) => (
                             <div
                                 key={index}
-                                className="flex gap-2 items-start justify-between"
+                                className='flex gap-2 items-start justify-between'
                             >
-                                <div className="w-full">
+                                <div className='w-full'>
                                     <Input
                                         name={`note[${index}]`}
                                         placeholder={`Note ${index + 1}`}
@@ -292,7 +292,7 @@ export default function ScholarshipInfoForm({ data }) {
                                         touched={formik?.touched.note?.[index]}
                                     />
                                 </div>
-                                <div className="max-w-12 flex items-center">
+                                <div className='max-w-12 flex items-center'>
                                     <Remove
                                         disabled={
                                             formik?.values.note.length === 1
@@ -311,7 +311,7 @@ export default function ScholarshipInfoForm({ data }) {
                         ))}
                     </InputWrapper>
                     <Add
-                        label="Add Exam"
+                        label='Add Exam'
                         onClick={() =>
                             handleArrayFieldChange(formik, 'add', 'note')
                         }
@@ -319,7 +319,7 @@ export default function ScholarshipInfoForm({ data }) {
                 </div>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending} />
             </div>

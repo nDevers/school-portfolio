@@ -39,17 +39,17 @@ export default function Blog() {
         },
     ];
     return (
-        <section className="sp">
-            <div className="max-w-7xl mx-auto py-10">
+        <section className='sp'>
+            <div className='max-w-7xl mx-auto py-10'>
                 <SectionTitle title={'Blogs'} />
-                <div className="flex flex-col md:flex-row items-center justify-between pb-4">
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className='flex flex-col md:flex-row items-center justify-between pb-4'>
+                    <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
                         {blogs.map((item) => (
                             <BlogCard key={item?.id} item={item} />
                         ))}
                     </div>
                 </div>
-                <InvertButton title="View more" />
+                <InvertButton title='View more' />
             </div>
         </section>
     );

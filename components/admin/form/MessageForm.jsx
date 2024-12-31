@@ -82,16 +82,16 @@ export default function MessageForm({ data }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
-            <div className="grid md:grid-cols-3 gap-2 w-full">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+            <div className='grid md:grid-cols-3 gap-2 w-full'>
                 <InputWrapper
-                    label="Title"
+                    label='Title'
                     error={formik.errors?.title}
                     touched={formik.touched?.title}
                 >
                     <Input
-                        name="title"
-                        placeholder="Title"
+                        name='title'
+                        placeholder='Title'
                         value={formik.values?.title}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -99,13 +99,13 @@ export default function MessageForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Name"
+                    label='Name'
                     error={formik.errors?.name}
                     touched={formik.touched?.name}
                 >
                     <Input
-                        name="name"
-                        placeholder="Name"
+                        name='name'
+                        placeholder='Name'
                         value={formik.values?.name}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -113,28 +113,28 @@ export default function MessageForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Image"
+                    label='Image'
                     error={formik.errors?.image}
                     touched={formik.touched?.image}
                 >
                     <Input
-                        type="file"
-                        name="image"
-                        accept="image/png, image/gif, image/jpeg, image/jpg"
+                        type='file'
+                        name='image'
+                        accept='image/png, image/gif, image/jpeg, image/jpg'
                         onChange={handleImageChange(formik, 'image')}
                         onBlur={formik.handleBlur}
                     />
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Message"
+                    label='Message'
                     error={formik.errors?.message}
                     touched={formik.touched?.message}
                     className={'md:col-span-3'}
                 >
                     <Textarea
-                        name="message"
-                        placeholder="Message"
+                        name='message'
+                        placeholder='Message'
                         value={formik.values?.message}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -142,7 +142,7 @@ export default function MessageForm({ data }) {
                 </InputWrapper>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
                 <Reset />
                 <Submit disabled={mutation.isPending} />
             </div>

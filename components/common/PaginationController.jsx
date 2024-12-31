@@ -75,9 +75,9 @@ export default function PaginationController({
             <PaginationContent>
                 <PaginationItem>
                     <PaginationPrevious
-                        href="#"
+                        href='#'
                         onClick={() => goToPage(currentPage - 1)}
-                        aria-label="Previous page"
+                        aria-label='Previous page'
                         className={
                             currentPage <= 1
                                 ? 'pointer-events-none cursor-not-allowed'
@@ -92,7 +92,7 @@ export default function PaginationController({
                             <PaginationEllipsis />
                         ) : (
                             <PaginationLink
-                                href="#"
+                                href='#'
                                 onClick={() => goToPage(page)}
                                 aria-current={
                                     currentPage === page ? 'page' : undefined
@@ -111,9 +111,9 @@ export default function PaginationController({
 
                 <PaginationItem>
                     <PaginationNext
-                        href="#"
+                        href='#'
                         onClick={() => goToPage(currentPage + 1)}
-                        aria-label="Previous page"
+                        aria-label='Previous page'
                         className={
                             currentPage === totalPages
                                 ? 'pointer-events-none cursor-not-allowed'

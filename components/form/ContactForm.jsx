@@ -47,17 +47,17 @@ export default function ContactForm() {
         onSuccess: () => reset(),
     });
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
-            <div className="grid gap-2 w-full">
-                <div className="flex gap-2">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+            <div className='grid gap-2 w-full'>
+                <div className='flex gap-2'>
                     <InputWrapper
-                        label="Name"
+                        label='Name'
                         error={formik.errors?.name}
                         touched={formik.touched?.name}
                     >
                         <Input
-                            name="name"
-                            placeholder="Your Name"
+                            name='name'
+                            placeholder='Your Name'
                             value={formik.values?.name}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -65,14 +65,14 @@ export default function ContactForm() {
                     </InputWrapper>
 
                     <InputWrapper
-                        label="Email"
+                        label='Email'
                         error={formik.errors?.email}
                         touched={formik.touched?.email}
                     >
                         <Input
-                            name="email"
-                            type="email"
-                            placeholder="Email"
+                            name='email'
+                            type='email'
+                            placeholder='Email'
                             value={formik.values?.email}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -81,13 +81,13 @@ export default function ContactForm() {
                 </div>
 
                 <InputWrapper
-                    label="Subject"
+                    label='Subject'
                     error={formik.errors?.subject}
                     touched={formik.touched?.subject}
                 >
                     <Input
-                        name="subject"
-                        placeholder="Subject"
+                        name='subject'
+                        placeholder='Subject'
                         value={formik.values?.subject}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -95,13 +95,13 @@ export default function ContactForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Message"
+                    label='Message'
                     error={formik.errors?.message}
                     touched={formik.touched?.message}
                 >
                     <Textarea
-                        name="message"
-                        placeholder="Your Message"
+                        name='message'
+                        placeholder='Your Message'
                         rows={4}
                         value={formik.values?.message}
                         onChange={formik.handleChange}
@@ -110,7 +110,7 @@ export default function ContactForm() {
                 </InputWrapper>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
                 {/* <Reset onClick={reset} /> */}
                 <Submit disabled={mutation.isPending || mutation.isSuccess} />
             </div>

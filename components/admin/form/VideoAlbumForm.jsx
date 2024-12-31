@@ -62,16 +62,16 @@ export default function VideoAlbumForm({ data }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
-            <div className="grid md:grid-cols-2 gap-2 w-full">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+            <div className='grid md:grid-cols-2 gap-2 w-full'>
                 <InputWrapper
-                    label="Youtube video link"
+                    label='Youtube video link'
                     error={formik.errors?.link}
                     touched={formik.touched?.link}
                 >
                     <Input
-                        name="link"
-                        placeholder="Youtube video link"
+                        name='link'
+                        placeholder='Youtube video link'
                         value={formik.values?.link}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -79,13 +79,13 @@ export default function VideoAlbumForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Date"
+                    label='Date'
                     error={formik.errors?.date}
                     touched={formik.touched?.date}
                 >
                     <Input
-                        type="date"
-                        name="date"
+                        type='date'
+                        name='date'
                         value={formik.values?.date}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -93,14 +93,14 @@ export default function VideoAlbumForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Title"
+                    label='Title'
                     error={formik.errors?.title}
                     touched={formik.touched?.title}
                     className={'md:col-span-2'}
                 >
                     <Input
-                        name="title"
-                        placeholder="Photo Title"
+                        name='title'
+                        placeholder='Photo Title'
                         value={formik.values?.title}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -108,14 +108,14 @@ export default function VideoAlbumForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Description"
+                    label='Description'
                     error={formik.errors?.description}
                     touched={formik.touched?.description}
                     className={'md:col-span-2'}
                 >
                     <Textarea
-                        name="description"
-                        placeholder="Description"
+                        name='description'
+                        placeholder='Description'
                         value={formik.values?.description}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -123,7 +123,7 @@ export default function VideoAlbumForm({ data }) {
                 </InputWrapper>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending} />
             </div>

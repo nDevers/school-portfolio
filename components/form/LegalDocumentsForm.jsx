@@ -47,36 +47,36 @@ export default function LegalDocumentsForm({ data, onSubmit }) {
             onSubmit={onSubmit}
         >
             {({ errors, touched, values, setFieldValue, resetForm }) => (
-                <Form className="space-y-4">
+                <Form className='space-y-4'>
                     <InputWrapper
-                        label="Title"
+                        label='Title'
                         error={errors.title}
                         touched={touched.title}
                     >
                         <Field
                             as={Input}
-                            name="title"
-                            placeholder="Enter title"
+                            name='title'
+                            placeholder='Enter title'
                         />
                     </InputWrapper>
 
                     <InputWrapper
-                        label="Effective Date"
+                        label='Effective Date'
                         error={errors.effectiveDate}
                         touched={touched.effectiveDate}
                     >
-                        <Field as={Input} type="date" name="effectiveDate" />
+                        <Field as={Input} type='date' name='effectiveDate' />
                     </InputWrapper>
 
                     {/* Documents Field Array */}
-                    <div className="space-y-2">
-                        <InputWrapper label="PDF Documents">
+                    <div className='space-y-2'>
+                        <InputWrapper label='PDF Documents'>
                             {values.documents.map((document, index) => (
                                 <div
                                     key={index}
-                                    className="flex gap-2 items-start justify-between"
+                                    className='flex gap-2 items-start justify-between'
                                 >
-                                    <div className="w-full">
+                                    <div className='w-full'>
                                         <Input
                                             name={`documents[${index}].name`}
                                             placeholder={`Document Name ${index + 1}`}
@@ -97,17 +97,17 @@ export default function LegalDocumentsForm({ data, onSubmit }) {
                                             }
                                         />
                                     </div>
-                                    <div className="w-full">
+                                    <div className='w-full'>
                                         <Input
-                                            type="file"
-                                            accept="application/pdf"
+                                            type='file'
+                                            accept='application/pdf'
                                             onChange={(e) =>
                                                 handleImageChangeForForm(
                                                     setFieldValue,
                                                     `documents[${index}].file`
                                                 )(e)
                                             }
-                                            className="file-input"
+                                            className='file-input'
                                         />
                                         <Error
                                             error={
@@ -118,7 +118,7 @@ export default function LegalDocumentsForm({ data, onSubmit }) {
                                             }
                                         />
                                     </div>
-                                    <div className="max-w-12 flex items-center">
+                                    <div className='max-w-12 flex items-center'>
                                         <Remove
                                             disabled={
                                                 values.documents.length === 1
@@ -137,7 +137,7 @@ export default function LegalDocumentsForm({ data, onSubmit }) {
                             ))}
                         </InputWrapper>
                         <Add
-                            label="Add Document"
+                            label='Add Document'
                             onClick={() =>
                                 handleArrayFieldChangeForForm(
                                     { values, setFieldValue },
@@ -149,14 +149,14 @@ export default function LegalDocumentsForm({ data, onSubmit }) {
                     </div>
 
                     <InputWrapper
-                        label="Description"
+                        label='Description'
                         error={errors.description}
                         touched={touched.description}
                     >
-                        <FormikSunEditor name="description" />
+                        <FormikSunEditor name='description' />
                     </InputWrapper>
 
-                    <div className="flex items-center space-x-2">
+                    <div className='flex items-center space-x-2'>
                         <Reset onClick={resetForm} />
                         <Submit />
                     </div>

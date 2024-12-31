@@ -86,31 +86,31 @@ export default function DonationForm({ data }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
-            <div className="grid md:grid-cols-3 gap-2 w-full">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+            <div className='grid md:grid-cols-3 gap-2 w-full'>
                 <InputWrapper
-                    label="Donor Name"
+                    label='Donor Name'
                     error={formik.errors?.memberId}
                     touched={formik.touched?.memberId}
                 >
                     <ComboboxFormik
-                        select="_id"
-                        display="name"
-                        name="memberId"
+                        select='_id'
+                        display='name'
+                        name='memberId'
                         formik={formik}
                         data={member}
                     />
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Amount"
+                    label='Amount'
                     error={formik.errors?.amount}
                     touched={formik.touched?.amount}
                 >
                     <Input
-                        name="amount"
-                        type="number"
-                        placeholder="Amount"
+                        name='amount'
+                        type='number'
+                        placeholder='Amount'
                         value={formik.values?.amount}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -118,21 +118,21 @@ export default function DonationForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Payment Method"
+                    label='Payment Method'
                     error={formik.errors?.paymentMethodId}
                     touched={formik.touched?.paymentMethodId}
                 >
                     <ComboboxFormik
-                        select="_id"
-                        display="type"
-                        name="paymentMethodId"
+                        select='_id'
+                        display='type'
+                        name='paymentMethodId'
                         formik={formik}
                         data={method}
                     />
                 </InputWrapper>
             </div>
 
-            <label className="w-fit flex items-center space-x-2">
+            <label className='w-fit flex items-center space-x-2'>
                 <span>Has bank details</span>
                 <Checkbox
                     checked={formik.values.hasBankDetails}
@@ -145,7 +145,7 @@ export default function DonationForm({ data }) {
 
             {formik.values.hasBankDetails && (
                 <>
-                    <div className="grid gap-2 md:grid-cols-2">
+                    <div className='grid gap-2 md:grid-cols-2'>
                         {['bankName', 'branchName'].map((field) => (
                             <InputWrapper
                                 key={field}
@@ -172,7 +172,7 @@ export default function DonationForm({ data }) {
                 </>
             )}
 
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending || mutation.isSuccess} />
             </div>
