@@ -8,7 +8,6 @@ import sharedResponseTypes from '@/shared/shared.response.types';
 import getAuthToken from './getAuthToken';
 import { decryptData } from '@/util/crypto';
 import verifyToken from '@/util/verifyToken';
-import convertToObjectId from '@/util/convertToObjectId';
 import getDeviceType from '@/util/getDeviceType';
 
 const { FORBIDDEN } = sharedResponseTypes;
@@ -51,7 +50,7 @@ const validateToken = async (request, type = 'access') => {
     }
 
     let existingUser = {};
-    const userId = convertToObjectId(tokenDetails?.currentUser?._id);
+    const userId = tokenDetails?.currentUser?._id;
 
     if (tokenDetails?.currentUser?.userType === 'admin') {
         existingUser = await AdminModel.findUnique({
