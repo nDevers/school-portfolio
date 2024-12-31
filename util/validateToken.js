@@ -2,8 +2,7 @@
 
 import { CryptoError } from '@/lib/customError';
 
-import { PrismaClient } from '@prisma/client';
-
+import { AdminModel } from '@/shared/prisma.model.shared';
 import sharedResponseTypes from '@/shared/shared.response.types';
 
 import getAuthToken from './getAuthToken';
@@ -12,17 +11,6 @@ import verifyToken from '@/util/verifyToken';
 import convertToObjectId from '@/util/convertToObjectId';
 import getDeviceType from '@/util/getDeviceType';
 
-/**
- * An instance of the PrismaClient used to interact with the database.
- *
- * The PrismaClient allows querying, creating, updating, and deleting
- * records in the connected database through generated methods for the defined
- * schema.
- *
- * This variable is typically used throughout the application for database operations,
- * ensuring centralized access to Prisma's functionality.
- */
-const prisma = new PrismaClient();
 const { FORBIDDEN } = sharedResponseTypes;
 
 /**
@@ -66,7 +54,7 @@ const validateToken = async (request, type = 'access') => {
     const userId = convertToObjectId(tokenDetails?.currentUser?._id);
 
     if (tokenDetails?.currentUser?.userType === 'admin') {
-        existingUser = await prisma.admin.findUnique({
+        existingUser = await AdminModel.findUnique({
             where: {
                 id: userId,
             },
@@ -79,7 +67,7 @@ const validateToken = async (request, type = 'access') => {
 
         existingUser.userType = tokenDetails?.currentUser?.userType;
     } else if (tokenDetails?.currentUser?.userType === 'super-admin') {
-        existingUser = await prisma.admin.findUnique({
+        existingUser = await AdminModel.findUnique({
             where: {
                 id: userId,
             },

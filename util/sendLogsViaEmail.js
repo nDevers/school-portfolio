@@ -25,9 +25,10 @@ const sendLogsViaEmail = async () => {
     const logsDir = path.resolve(process.cwd(), 'logs');
     const currentDate = new Date().toISOString().split('T')[0];
     const currentHour = new Date().getHours();
+    const logFileHour = currentHour - 1;
     const logFilePath = path.join(
         logsDir,
-        `combined_${currentDate}_${currentHour}.log`
+        `combined_${currentDate}_${logFileHour}.log`
     );
 
     console.log(`Looking for log file: ${logFilePath}`);
@@ -39,11 +40,11 @@ const sendLogsViaEmail = async () => {
     }
 
     if (fs.existsSync(logFilePath)) {
-        const subject = `Hourly Logs for ${currentDate}, Hour ${currentHour}`;
+        const subject = `Hourly Logs for ${currentDate}, Hour ${logFileHour}`;
         const html = `
             <div style="font-family: Arial, sans-serif; line-height: 1.5; color: #333;">
                 <h3 style="color: #2c3e50;">Hello,</h3>
-                <p>Attached, you will find the log file for <strong>${currentDate}, Hour ${currentHour}</strong>. Please review it for further details.</p>
+                <p>Attached, you will find the log file for <strong>${currentDate}, Hour ${logFileHour}</strong>. Please review it for further details.</p>
 
                 <p>If you encounter any issues or have questions, please feel free to reach out to our support team.</p>
 

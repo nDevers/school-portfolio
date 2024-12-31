@@ -4,6 +4,7 @@ import configurations from '@/configs/configurations';
 import sendResponse from '@/util/sendResponse';
 import asyncHandler from '@/util/asyncHandler';
 import scheduleCronJob from '@/lib/scheduleCronJob';
+import createDefaultAdmin from '@/util/createDefaultAdmin';
 
 /**
  * Asynchronously retrieves and stores the application's configuration settings.
@@ -41,6 +42,8 @@ const configuration = await configurations();
  */
 const getIndexData = async (request) => {
     scheduleCronJob();
+
+    await createDefaultAdmin();
 
     const indexData = {
         ...(configuration.api.name && {
