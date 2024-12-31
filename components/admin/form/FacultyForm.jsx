@@ -114,42 +114,42 @@ export default function FacultyForm({ data, category }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
             <div>
                 {(formik?.values?.image || formik?.values?.dataImage) && (
-                    <div className="flex items-center justify-end relative">
+                    <div className='flex items-center justify-end relative'>
                         <img
                             src={
                                 formik.values.image instanceof File
                                     ? URL.createObjectURL(formik.values.image)
                                     : formik?.values?.dataImage
                             }
-                            alt="Selected Image"
-                            className="w-24 h-24 object-cover border border-dashed rounded-md p-1"
+                            alt='Selected Image'
+                            className='w-24 h-24 object-cover border border-dashed rounded-md p-1'
                         />
                         <Button
-                            type="button"
-                            size="icon"
+                            type='button'
+                            size='icon'
                             disabled={!formik.values.image}
                             onClick={() => {
                                 clearField(formik, 'image');
                                 formik.setFieldValue('dataImage', '');
                             }}
-                            className="absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full"
+                            className='absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full'
                         >
                             <GoX />
                         </Button>
                     </div>
                 )}
-                <div className="grid md:grid-cols-2 gap-2 w-full">
+                <div className='grid md:grid-cols-2 gap-2 w-full'>
                     <InputWrapper
-                        label="Name"
+                        label='Name'
                         error={formik.errors?.name}
                         touched={formik.touched?.name}
                     >
                         <Input
-                            name="name"
-                            placeholder="Name"
+                            name='name'
+                            placeholder='Name'
                             value={formik.values?.name}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -157,27 +157,27 @@ export default function FacultyForm({ data, category }) {
                     </InputWrapper>
 
                     <InputWrapper
-                        label="Profile Image"
+                        label='Profile Image'
                         error={formik.errors?.image}
                         touched={formik.touched?.image}
                     >
                         <Input
-                            type="file"
-                            name="image"
-                            accept="image/png, image/gif, image/jpeg, image/jpg"
+                            type='file'
+                            name='image'
+                            accept='image/png, image/gif, image/jpeg, image/jpg'
                             onChange={handleImageChange(formik, 'image')}
                             onBlur={formik.handleBlur}
                         />
                     </InputWrapper>
 
                     <InputWrapper
-                        label="Designation"
+                        label='Designation'
                         error={formik.errors?.designation}
                         touched={formik.touched?.designation}
                     >
                         <Input
-                            name="designation"
-                            placeholder="Designation"
+                            name='designation'
+                            placeholder='Designation'
                             value={formik.values?.designation}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -185,13 +185,13 @@ export default function FacultyForm({ data, category }) {
                     </InputWrapper>
 
                     <InputWrapper
-                        label="Mobile"
+                        label='Mobile'
                         error={formik.errors?.mobile}
                         touched={formik.touched?.mobile}
                     >
                         <Input
-                            name="mobile"
-                            placeholder="Mobile"
+                            name='mobile'
+                            placeholder='Mobile'
                             value={formik.values?.mobile}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -199,14 +199,14 @@ export default function FacultyForm({ data, category }) {
                     </InputWrapper>
 
                     <InputWrapper
-                        label="Email"
+                        label='Email'
                         error={formik.errors?.email}
                         touched={formik.touched?.email}
                     >
                         <Input
-                            type="email"
-                            name="email"
-                            placeholder="Email"
+                            type='email'
+                            name='email'
+                            placeholder='Email'
                             value={formik.values?.email}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -214,14 +214,14 @@ export default function FacultyForm({ data, category }) {
                     </InputWrapper>
 
                     <InputWrapper
-                        label="Portfolio"
+                        label='Portfolio'
                         error={formik.errors?.portfolio}
                         touched={formik.touched?.portfolio}
                     >
                         <Input
-                            type="url"
-                            name="portfolio"
-                            placeholder="Portfolio"
+                            type='url'
+                            name='portfolio'
+                            placeholder='Portfolio'
                             value={formik.values?.portfolio}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -230,7 +230,7 @@ export default function FacultyForm({ data, category }) {
                 </div>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending} />
             </div>

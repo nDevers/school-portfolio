@@ -12,8 +12,8 @@ export default function Submit({
 }) {
     return (
         <Button
-            size="sm"
-            type="submit"
+            size='sm'
+            type='submit'
             className={cn('space-x-2', className)}
             {...props}
         >

@@ -51,16 +51,16 @@ export default function BenefitForm({ data }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
-            <div className="grid gap-2 w-full">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+            <div className='grid gap-2 w-full'>
                 <InputWrapper
-                    label="Benefit"
+                    label='Benefit'
                     error={formik.errors?.text}
                     touched={formik.touched?.text}
                 >
                     <Input
-                        name="text"
-                        placeholder="Benefit"
+                        name='text'
+                        placeholder='Benefit'
                         value={formik.values?.text}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -68,7 +68,7 @@ export default function BenefitForm({ data }) {
                 </InputWrapper>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
                 <Reset />
                 <Submit disabled={mutation.isPending} />
             </div>

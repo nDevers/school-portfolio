@@ -74,16 +74,16 @@ export default function CarouselForm({ data }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
-            <div className="grid gap-2 w-full">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+            <div className='grid gap-2 w-full'>
                 <InputWrapper
-                    label="Title"
+                    label='Title'
                     error={formik.errors?.title}
                     touched={formik.touched?.title}
                 >
                     <Input
-                        name="title"
-                        placeholder="Title"
+                        name='title'
+                        placeholder='Title'
                         value={formik.values?.title}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -91,21 +91,21 @@ export default function CarouselForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Profile Image"
+                    label='Profile Image'
                     error={formik.errors?.image}
                     touched={formik.touched?.image}
                 >
                     <Input
-                        type="file"
-                        name="image"
-                        accept="image/png, image/gif, image/jpeg, image/jpg"
+                        type='file'
+                        name='image'
+                        accept='image/png, image/gif, image/jpeg, image/jpg'
                         onChange={handleImageChange(formik, 'image')}
                         onBlur={formik.handleBlur}
                     />
                 </InputWrapper>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
                 <Reset />
                 <Submit disabled={mutation.isPending} />
             </div>

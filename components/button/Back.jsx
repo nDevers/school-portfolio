@@ -16,15 +16,15 @@ export default function Back() {
             <Tooltip>
                 <TooltipTrigger asChild>
                     <Button
-                        size="icon"
-                        variant="outline"
+                        size='icon'
+                        variant='outline'
                         onClick={() => route?.back()}
                     >
                         <GoChevronLeft />
                     </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                    <p className="z-50">Go back</p>
+                    <p className='z-50'>Go back</p>
                 </TooltipContent>
             </Tooltip>
         </TooltipProvider>

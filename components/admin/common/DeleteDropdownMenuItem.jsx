@@ -44,7 +44,7 @@ export default function DeleteDropdownMenuItem({ api, id, message, query }) {
         <DropdownMenuItem onClick={(e) => e.preventDefault()}>
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <button className="w-full h-full text-start text-red-500">
+                    <button className='w-full h-full text-start text-red-500'>
                         {mutation.isPending ? 'Deleting...' : 'Delete'}
                     </button>
                 </AlertDialogTrigger>

@@ -59,16 +59,16 @@ export default function EligibleSchoolForm({ data }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
-            <div className="grid gap-2 w-full">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+            <div className='grid gap-2 w-full'>
                 <InputWrapper
-                    label="School Name"
+                    label='School Name'
                     error={formik.errors?.name}
                     touched={formik.touched?.name}
                 >
                     <Input
-                        name="name"
-                        placeholder="School Name"
+                        name='name'
+                        placeholder='School Name'
                         value={formik.values?.name}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -76,13 +76,13 @@ export default function EligibleSchoolForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="School Address"
+                    label='School Address'
                     error={formik.errors?.address}
                     touched={formik.touched?.address}
                 >
                     <Input
-                        name="address"
-                        placeholder="School Address"
+                        name='address'
+                        placeholder='School Address'
                         value={formik.values?.address}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -90,7 +90,7 @@ export default function EligibleSchoolForm({ data }) {
                 </InputWrapper>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending} />
             </div>

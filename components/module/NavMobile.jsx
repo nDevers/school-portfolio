@@ -14,15 +14,15 @@ import {
 
 export default function NavMobile() {
     return (
-        <nav className="md:hidden">
-            <Drawer direction="left">
-                <DrawerTrigger className="h-9 w-9 flex items-center justify-center rounded-md hover:bg-muted">
-                    <HamburgerMenuIcon className="h-[1.2rem] w-[1.2rem]" />
+        <nav className='md:hidden'>
+            <Drawer direction='left'>
+                <DrawerTrigger className='h-9 w-9 flex items-center justify-center rounded-md hover:bg-muted'>
+                    <HamburgerMenuIcon className='h-[1.2rem] w-[1.2rem]' />
                 </DrawerTrigger>
                 <DrawerContent>
                     <DrawerHeader>
                         <DrawerTitle>
-                            <div className="text-lg sm:text-xl md:text-2xl font-bold text-primary">
+                            <div className='text-lg sm:text-xl md:text-2xl font-bold text-primary'>
                                 LOGO
                             </div>
                         </DrawerTitle>
@@ -32,7 +32,7 @@ export default function NavMobile() {
                     </DrawerHeader>
                     <DrawerFooter>
                         <DrawerClose>
-                            <Button variant="outline">Cancel</Button>
+                            <Button variant='outline'>Cancel</Button>
                         </DrawerClose>
                     </DrawerFooter>
                 </DrawerContent>

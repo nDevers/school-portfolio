@@ -304,41 +304,41 @@ export default function TalentPoolScholarshipForm() {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
-            <div className="flex flex-col items-center justify-center text-base">
-                <p className="text-xl md:text-2xl text-primary uppercase font-bold">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+            <div className='flex flex-col items-center justify-center text-base'>
+                <p className='text-xl md:text-2xl text-primary uppercase font-bold'>
                     {formInfo?.organizer?.name}
                 </p>
-                <p className="font-bold">{formInfo?.organizer?.address}</p>
-                <p className="font-bold">
+                <p className='font-bold'>{formInfo?.organizer?.address}</p>
+                <p className='font-bold'>
                     Since - {formInfo?.organizer?.founded}
                 </p>
-                <p className="text-lg md:text-xl font-bold">
+                <p className='text-lg md:text-xl font-bold'>
                     {formInfo?.formTitle}
                 </p>
-                <p className="text-lg md:text-xl border-4 mt-2 border-double p-2 w-fit">
+                <p className='text-lg md:text-xl border-4 mt-2 border-double p-2 w-fit'>
                     {formInfo?.formName}
                 </p>
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className='flex items-center justify-between'>
                 <div>
                     <p>Date: {currentDate}</p>
                     <p>SL No: {formik?.values?.slNo && formik?.values?.slNo}</p>
                 </div>
                 <div>
                     {formik?.values?.image && (
-                        <div className="flex items-center justify-end relative">
+                        <div className='flex items-center justify-end relative'>
                             <img
                                 src={URL.createObjectURL(formik.values.image)}
-                                alt="Selected Image"
-                                className="w-24 h-24 object-cover border border-dashed rounded-md p-1"
+                                alt='Selected Image'
+                                className='w-24 h-24 object-cover border border-dashed rounded-md p-1'
                             />
                             <Button
-                                type="button"
-                                size="icon"
+                                type='button'
+                                size='icon'
                                 onClick={() => clearField(formik, 'image')}
-                                className="absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full"
+                                className='absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full'
                             >
                                 <GoX />
                             </Button>
@@ -347,15 +347,15 @@ export default function TalentPoolScholarshipForm() {
                 </div>
             </div>
 
-            <div className="grid gap-2 md:grid-cols-2 w-full">
+            <div className='grid gap-2 md:grid-cols-2 w-full'>
                 <InputWrapper
-                    label="Applicant Name Bangla"
+                    label='Applicant Name Bangla'
                     error={formik.errors.applicantNameBn}
                     touched={formik.touched.applicantNameBn}
                 >
                     <Input
-                        name="applicantNameBn"
-                        placeholder="Applicant Name Bangla"
+                        name='applicantNameBn'
+                        placeholder='Applicant Name Bangla'
                         value={formik.values.applicantNameBn}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -363,27 +363,27 @@ export default function TalentPoolScholarshipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Image"
+                    label='Image'
                     error={formik.errors.image}
                     touched={formik.touched.image}
                 >
                     <Input
-                        name="image"
-                        type="file"
-                        accept="image/*"
+                        name='image'
+                        type='file'
+                        accept='image/*'
                         onChange={handleImageChange(formik, 'image')}
                         onBlur={formik.handleBlur}
                     />
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Applicant Name English"
+                    label='Applicant Name English'
                     error={formik.errors.applicantNameEn}
                     touched={formik.touched.applicantNameEn}
                 >
                     <Input
-                        name="applicantNameEn"
-                        placeholder="Applicant Name English"
+                        name='applicantNameEn'
+                        placeholder='Applicant Name English'
                         value={formik.values.applicantNameEn}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -391,13 +391,13 @@ export default function TalentPoolScholarshipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Date of Birth"
+                    label='Date of Birth'
                     error={formik.errors.dob}
                     touched={formik.touched.dob}
                 >
                     <Input
-                        name="dob"
-                        type="date"
+                        name='dob'
+                        type='date'
                         value={formik.values.dob}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -405,13 +405,13 @@ export default function TalentPoolScholarshipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Blood Group"
+                    label='Blood Group'
                     error={formik.errors.bloodGroup}
                     touched={formik.touched.bloodGroup}
                 >
                     <Input
-                        name="bloodGroup"
-                        placeholder="Blood Group"
+                        name='bloodGroup'
+                        placeholder='Blood Group'
                         value={formik.values.bloodGroup}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -424,7 +424,7 @@ export default function TalentPoolScholarshipForm() {
                     touched={formik.touched.fatherName}
                 >
                     <Input
-                        name="fatherName"
+                        name='fatherName'
                         placeholder="Father's Name"
                         value={formik.values.fatherName}
                         onChange={formik.handleChange}
@@ -438,7 +438,7 @@ export default function TalentPoolScholarshipForm() {
                     touched={formik.touched.motherName}
                 >
                     <Input
-                        name="motherName"
+                        name='motherName'
                         placeholder="Mother's Name"
                         value={formik.values.motherName}
                         onChange={formik.handleChange}
@@ -447,13 +447,13 @@ export default function TalentPoolScholarshipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Alternative Guardian Name"
+                    label='Alternative Guardian Name'
                     error={formik.errors.alternativeGuardianName}
                     touched={formik.touched.alternativeGuardianName}
                 >
                     <Input
-                        name="alternativeGuardianName"
-                        placeholder="Alternative Guardian Name"
+                        name='alternativeGuardianName'
+                        placeholder='Alternative Guardian Name'
                         value={formik.values.alternativeGuardianName}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -461,13 +461,13 @@ export default function TalentPoolScholarshipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Alternative Guardian Address"
+                    label='Alternative Guardian Address'
                     error={formik.errors.alternativeGuardianAddress}
                     touched={formik.touched.alternativeGuardianAddress}
                 >
                     <Input
-                        name="alternativeGuardianAddress"
-                        placeholder="Alternative Guardian Address"
+                        name='alternativeGuardianAddress'
+                        placeholder='Alternative Guardian Address'
                         value={formik.values.alternativeGuardianAddress}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -475,13 +475,13 @@ export default function TalentPoolScholarshipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Contact Number"
+                    label='Contact Number'
                     error={formik.errors.contact}
                     touched={formik.touched.contact}
                 >
                     <Input
-                        name="contact"
-                        placeholder="Phone"
+                        name='contact'
+                        placeholder='Phone'
                         value={formik.values.contact}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -494,8 +494,8 @@ export default function TalentPoolScholarshipForm() {
                     touched={formik.touched.fatherOrGuardianOccupation}
                 >
                     <Input
-                        name="fatherOrGuardianOccupation"
-                        placeholder="Occupation"
+                        name='fatherOrGuardianOccupation'
+                        placeholder='Occupation'
                         value={formik.values.fatherOrGuardianOccupation}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -508,8 +508,8 @@ export default function TalentPoolScholarshipForm() {
                     touched={formik.touched.fatherOrGuardianMonthlyIncome}
                 >
                     <Input
-                        name="fatherOrGuardianMonthlyIncome"
-                        placeholder="Monthly Income"
+                        name='fatherOrGuardianMonthlyIncome'
+                        placeholder='Monthly Income'
                         value={formik.values.fatherOrGuardianMonthlyIncome}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -518,8 +518,8 @@ export default function TalentPoolScholarshipForm() {
             </div>
 
             {/* Permanent Address */}
-            <PageTitle title="Permanent Address" back={false} />
-            <div className="grid gap-2 md:grid-cols-2">
+            <PageTitle title='Permanent Address' back={false} />
+            <div className='grid gap-2 md:grid-cols-2'>
                 {['village', 'postOffice', 'subdistrict', 'district'].map(
                     (field) => (
                         <InputWrapper
@@ -546,9 +546,9 @@ export default function TalentPoolScholarshipForm() {
             </div>
 
             {/* Checkbox for current address */}
-            <div className="flex items-center space-x-10">
-                <PageTitle title="Current Address" back={false} />
-                <label className="flex items-center space-x-2">
+            <div className='flex items-center space-x-10'>
+                <PageTitle title='Current Address' back={false} />
+                <label className='flex items-center space-x-2'>
                     <Checkbox
                         checked={
                             formik.values.isCurrentAddressSameAsPermanentAddress
@@ -565,7 +565,7 @@ export default function TalentPoolScholarshipForm() {
             {/* Current Address */}
             {!formik.values.isCurrentAddressSameAsPermanentAddress && (
                 <>
-                    <div className="grid gap-2 md:grid-cols-2">
+                    <div className='grid gap-2 md:grid-cols-2'>
                         {[
                             'village',
                             'postOffice',
@@ -599,9 +599,9 @@ export default function TalentPoolScholarshipForm() {
                 </>
             )}
 
-            <div className="grid gap-2 md:grid-cols-2 w-full">
-                <InputWrapper label="Previous Scholarship ?">
-                    <label className="flex items-center space-x-2 border border-border p-2 rounded-md text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+            <div className='grid gap-2 md:grid-cols-2 w-full'>
+                <InputWrapper label='Previous Scholarship ?'>
+                    <label className='flex items-center space-x-2 border border-border p-2 rounded-md text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'>
                         <span>Do you have any Previous Scholarship ?</span>
                         <Checkbox
                             checked={formik.values?.hasPreviousScholarship}
@@ -614,13 +614,13 @@ export default function TalentPoolScholarshipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Previous Scholarship Amount"
+                    label='Previous Scholarship Amount'
                     error={formik.errors.previousScholarshipAmount}
                     touched={formik.touched.previousScholarshipAmount}
                 >
                     <Input
-                        name="previousScholarshipAmount"
-                        placeholder="Previous Scholarship Amount"
+                        name='previousScholarshipAmount'
+                        placeholder='Previous Scholarship Amount'
                         value={formik.values.previousScholarshipAmount}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -628,27 +628,27 @@ export default function TalentPoolScholarshipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="School Name"
+                    label='School Name'
                     error={formik.errors?.schoolName}
                     touched={formik.touched?.schoolName}
                 >
                     <ComboboxFormik
-                        select="id"
-                        display="name"
-                        name="schoolName"
+                        select='id'
+                        display='name'
+                        name='schoolName'
                         formik={formik}
                         data={formInfo?.eligibleSchools}
                     />
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Aim in Life"
+                    label='Aim in Life'
                     error={formik.errors.aimInLife}
                     touched={formik.touched.aimInLife}
                 >
                     <Input
-                        name="aimInLife"
-                        placeholder="Aim in Life"
+                        name='aimInLife'
+                        placeholder='Aim in Life'
                         value={formik.values.aimInLife}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -657,7 +657,7 @@ export default function TalentPoolScholarshipForm() {
             </div>
 
             {/* lastFinalExaminationDetails */}
-            <div className="grid md:grid-cols-2 gap-2">
+            <div className='grid md:grid-cols-2 gap-2'>
                 {[
                     'examName',
                     'examYear',
@@ -697,15 +697,15 @@ export default function TalentPoolScholarshipForm() {
             </div>
 
             {/* lastFinalExaminationResult */}
-            <div className="space-y-2">
-                <InputWrapper label="Subjects and Marks">
+            <div className='space-y-2'>
+                <InputWrapper label='Subjects and Marks'>
                     {formik.values.lastFinalExaminationResults.map(
                         (result, index) => (
                             <div
                                 key={index}
-                                className="flex gap-2 items-start justify-between"
+                                className='flex gap-2 items-start justify-between'
                             >
-                                <div className="w-full">
+                                <div className='w-full'>
                                     <Input
                                         name={`lastFinalExaminationResults[${index}].subject`}
                                         placeholder={`Subject ${index + 1}`}
@@ -732,11 +732,11 @@ export default function TalentPoolScholarshipForm() {
                                         }
                                     />
                                 </div>
-                                <div className="w-full">
+                                <div className='w-full'>
                                     <Input
                                         name={`lastFinalExaminationResults[${index}].marks`}
-                                        placeholder="Marks"
-                                        type="number"
+                                        placeholder='Marks'
+                                        type='number'
                                         value={result.marks}
                                         onChange={(e) =>
                                             formik.setFieldValue(
@@ -760,7 +760,7 @@ export default function TalentPoolScholarshipForm() {
                                         }
                                     />
                                 </div>
-                                <div className="max-w-12 flex items-center">
+                                <div className='max-w-12 flex items-center'>
                                     <Remove
                                         disabled={
                                             formik.values
@@ -782,7 +782,7 @@ export default function TalentPoolScholarshipForm() {
                     )}
                 </InputWrapper>
                 <Add
-                    label="Add Subject"
+                    label='Add Subject'
                     onClick={() =>
                         handleArrayFieldChange(
                             formik,
@@ -793,7 +793,7 @@ export default function TalentPoolScholarshipForm() {
                 />
             </div>
 
-            <div className="grid gap-2 md:grid-cols-3">
+            <div className='grid gap-2 md:grid-cols-3'>
                 {['bankName', 'bankBranchName', 'bKashNumber'].map((field) => (
                     <InputWrapper
                         key={field}
@@ -814,15 +814,15 @@ export default function TalentPoolScholarshipForm() {
                 ))}
             </div>
 
-            <div className="grid gap-2 md:grid-cols-2 w-full">
+            <div className='grid gap-2 md:grid-cols-2 w-full'>
                 <InputWrapper
-                    label="Monthly Educational Cost"
+                    label='Monthly Educational Cost'
                     error={formik.errors.monthlyEducationalCost}
                     touched={formik.touched.monthlyEducationalCost}
                 >
                     <Input
-                        name="monthlyEducationalCost"
-                        placeholder="Monthly Educational Cost"
+                        name='monthlyEducationalCost'
+                        placeholder='Monthly Educational Cost'
                         value={formik.values.monthlyEducationalCost}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -830,13 +830,13 @@ export default function TalentPoolScholarshipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Total Family Member"
+                    label='Total Family Member'
                     error={formik.errors.familyMemberCount}
                     touched={formik.touched.familyMemberCount}
                 >
                     <Input
-                        name="familyMemberCount"
-                        placeholder="Total Family Member"
+                        name='familyMemberCount'
+                        placeholder='Total Family Member'
                         value={formik.values.familyMemberCount}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -844,14 +844,14 @@ export default function TalentPoolScholarshipForm() {
                 </InputWrapper>
             </div>
 
-            <div className="space-y-2">
-                <InputWrapper label="Brother and Sister Details">
+            <div className='space-y-2'>
+                <InputWrapper label='Brother and Sister Details'>
                     {formik.values.siblings.map((sibling, index) => (
                         <div
                             key={index}
-                            className="flex gap-2 items-start justify-between"
+                            className='flex gap-2 items-start justify-between'
                         >
-                            <div className="w-full">
+                            <div className='w-full'>
                                 <Input
                                     name={`siblings[${index}].name`}
                                     placeholder={`Sibling name`}
@@ -872,7 +872,7 @@ export default function TalentPoolScholarshipForm() {
                                     }
                                 />
                             </div>
-                            <div className="w-full">
+                            <div className='w-full'>
                                 <Input
                                     name={`siblings[${index}].age`}
                                     placeholder={`Sibling age`}
@@ -893,7 +893,7 @@ export default function TalentPoolScholarshipForm() {
                                     }
                                 />
                             </div>
-                            <div className="w-full">
+                            <div className='w-full'>
                                 <Input
                                     name={`siblings[${index}].class`}
                                     placeholder={`Sibling class`}
@@ -915,7 +915,7 @@ export default function TalentPoolScholarshipForm() {
                                     }
                                 />
                             </div>
-                            <div className="w-full">
+                            <div className='w-full'>
                                 <Input
                                     name={`siblings[${index}].occupation`}
                                     placeholder={`Sibling occupation`}
@@ -938,7 +938,7 @@ export default function TalentPoolScholarshipForm() {
                                     }
                                 />
                             </div>
-                            <div className="max-w-12 flex items-center">
+                            <div className='max-w-12 flex items-center'>
                                 <Remove
                                     disabled={
                                         formik.values.siblings.length === 1
@@ -957,22 +957,22 @@ export default function TalentPoolScholarshipForm() {
                     ))}
                 </InputWrapper>
                 <Add
-                    label="Add Sibling"
+                    label='Add Sibling'
                     onClick={() =>
                         handleArrayFieldChange(formik, 'add', 'siblings')
                     }
                 />
             </div>
 
-            <div className="grid gap-2 md:grid-cols-2 w-full">
+            <div className='grid gap-2 md:grid-cols-2 w-full'>
                 <InputWrapper
-                    label="Extracurricular Skills"
+                    label='Extracurricular Skills'
                     error={formik.errors.extracurricularSkills}
                     touched={formik.touched.extracurricularSkills}
                 >
                     <Input
-                        name="extracurricularSkills"
-                        placeholder="Monthly Educational Cost"
+                        name='extracurricularSkills'
+                        placeholder='Monthly Educational Cost'
                         value={formik.values.extracurricularSkills}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -980,13 +980,13 @@ export default function TalentPoolScholarshipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Future Thoughts About Our Organization"
+                    label='Future Thoughts About Our Organization'
                     error={formik.errors.futureThoughtsAboutOurOrganization}
                     touched={formik.touched.futureThoughtsAboutOurOrganization}
                 >
                     <Input
-                        name="futureThoughtsAboutOurOrganization"
-                        placeholder="Future Thoughts About Our Organization"
+                        name='futureThoughtsAboutOurOrganization'
+                        placeholder='Future Thoughts About Our Organization'
                         value={formik.values.futureThoughtsAboutOurOrganization}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -994,7 +994,7 @@ export default function TalentPoolScholarshipForm() {
                 </InputWrapper>
             </div>
 
-            <div className="flex items-center justify-end space-x-2">
+            <div className='flex items-center justify-end space-x-2'>
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending || mutation.isSuccess} />
             </div>

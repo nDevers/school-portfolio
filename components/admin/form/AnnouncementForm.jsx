@@ -133,29 +133,29 @@ export default function AnnouncementForm({ data, category }) {
             onSubmit={mutation.mutate}
         >
             {({ errors, touched, values, setFieldValue, resetForm }) => (
-                <Form className="grid gap-4">
+                <Form className='grid gap-4'>
                     <InputWrapper
-                        label="Title"
+                        label='Title'
                         error={errors.title}
                         touched={touched.title}
                     >
                         <Field
                             as={Input}
-                            name="title"
+                            name='title'
                             placeholder={`Title of the ${category}`}
                         />
                     </InputWrapper>
 
-                    <div className="grid md:grid-cols-2 gap-4">
+                    <div className='grid md:grid-cols-2 gap-4'>
                         <InputWrapper
-                            label="Is this Headline ?"
+                            label='Is this Headline ?'
                             error={errors.isHeadline}
                             touched={touched.isHeadline}
                             className={'space-x-2'}
                         >
                             {/* <Field as={Checkbox} name="isHeadline" /> */}
                             <Checkbox
-                                name="isHeadline"
+                                name='isHeadline'
                                 checked={values.isHeadline}
                                 onCheckedChange={(e) =>
                                     setFieldValue('isHeadline', e)
@@ -164,14 +164,14 @@ export default function AnnouncementForm({ data, category }) {
                         </InputWrapper>
 
                         <InputWrapper
-                            label="Advertise It ?"
+                            label='Advertise It ?'
                             error={errors.isAdvertise}
                             touched={touched.isAdvertise}
                             className={'space-x-2'}
                         >
                             {/* <Field as={Checkbox} name="isAdvertise" /> */}
                             <Checkbox
-                                name="isAdvertise"
+                                name='isAdvertise'
                                 checked={values.isAdvertise}
                                 onCheckedChange={(e) =>
                                     setFieldValue('isAdvertise', e)
@@ -180,30 +180,30 @@ export default function AnnouncementForm({ data, category }) {
                         </InputWrapper>
 
                         <InputWrapper
-                            label="Publish Date"
+                            label='Publish Date'
                             error={errors.date}
                             touched={touched.date}
                         >
-                            <Field as={Input} name="date" type="date" />
+                            <Field as={Input} name='date' type='date' />
                         </InputWrapper>
 
                         <InputWrapper
-                            label="Advertise Mail Time"
+                            label='Advertise Mail Time'
                             error={errors.advertiseMailTime}
                             touched={touched.advertiseMailTime}
                         >
                             <Field
                                 as={Input}
-                                name="advertiseMailTime"
-                                type="date"
+                                name='advertiseMailTime'
+                                type='date'
                                 disabled={!values?.isAdvertise}
                             />
                         </InputWrapper>
                     </div>
 
-                    <div className="space-y-2">
+                    <div className='space-y-2'>
                         <InputWrapper
-                            label="Files"
+                            label='Files'
                             error={errors?.files}
                             touched={touched?.files}
                         >
@@ -211,18 +211,18 @@ export default function AnnouncementForm({ data, category }) {
                                 values?.files?.map((_, index) => (
                                     <div
                                         key={index}
-                                        className="flex gap-2 items-center"
+                                        className='flex gap-2 items-center'
                                     >
                                         <Input
-                                            type="file"
-                                            accept="application/pdf"
+                                            type='file'
+                                            accept='application/pdf'
                                             onChange={(e) =>
                                                 handleImageChangeForForm(
                                                     setFieldValue,
                                                     `files[${index}]`
                                                 )(e)
                                             }
-                                            className="file-input"
+                                            className='file-input'
                                         />
                                         <Remove
                                             disabled={
@@ -242,7 +242,7 @@ export default function AnnouncementForm({ data, category }) {
                                 ))}
                         </InputWrapper>
                         <Add
-                            label="Add File"
+                            label='Add File'
                             onClick={() =>
                                 handleArrayFieldChangeForForm(
                                     { values, setFieldValue },
@@ -254,14 +254,14 @@ export default function AnnouncementForm({ data, category }) {
                     </div>
 
                     <InputWrapper
-                        label="Description"
+                        label='Description'
                         error={errors.description}
                         touched={touched.description}
                     >
-                        <FormikSunEditor name="description" />
+                        <FormikSunEditor name='description' />
                     </InputWrapper>
 
-                    <div className="flex items-center space-x-2">
+                    <div className='flex items-center space-x-2'>
                         <Reset onClick={resetForm} />
                         <Submit
                             disabled={mutation.isPending}
@@ -270,7 +270,7 @@ export default function AnnouncementForm({ data, category }) {
                             } // Dynamic label
                             icon={
                                 mutation.isPending ? (
-                                    <Spinner size="4" />
+                                    <Spinner size='4' />
                                 ) : (
                                     <RiSendPlaneLine />
                                 )

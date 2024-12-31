@@ -8,15 +8,15 @@ import {
 
 const InfoCard = ({ title, icon: Icon, items }) => (
     <Card>
-        <CardHeader className="text-lg md:text-xl font-bold border-b p-4 px-8">
+        <CardHeader className='text-lg md:text-xl font-bold border-b p-4 px-8'>
             {title}
         </CardHeader>
-        <CardContent className="flex space-x-3">
+        <CardContent className='flex space-x-3'>
             <Icon
-                className="text-primary text-9xl"
+                className='text-primary text-9xl'
                 aria-label={`${title} আইকন`}
             />
-            <ul className="space-y-2 pt-5">
+            <ul className='space-y-2 pt-5'>
                 {items.map((item, index) => (
                     <li key={index}>{item}</li>
                 ))}
@@ -45,12 +45,12 @@ export default function Info() {
     ];
 
     return (
-        <section className="sp">
-            <div className="max-w-7xl mx-auto py-10 font-bengali">
-                <h2 className="text-center text-2xl font-semibold md:text-3xl mb-8">
+        <section className='sp'>
+            <div className='max-w-7xl mx-auto py-10 font-bengali'>
+                <h2 className='text-center text-2xl font-semibold md:text-3xl mb-8'>
                     গুরুত্বপূর্ণ তথ্য
                 </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>
                     {cardData.map((card, index) => (
                         <InfoCard
                             key={index}

@@ -141,8 +141,8 @@ export default function DonorMembershipForm() {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
-            <div className="grid gap-2 md:grid-cols-2 w-full">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+            <div className='grid gap-2 md:grid-cols-2 w-full'>
                 <div>
                     <p>Date: {currentDate}</p>
                     <p>
@@ -152,17 +152,17 @@ export default function DonorMembershipForm() {
                 </div>
                 <div>
                     {formik?.values?.image && (
-                        <div className="flex items-center justify-end relative">
+                        <div className='flex items-center justify-end relative'>
                             <img
                                 src={URL.createObjectURL(formik.values.image)}
-                                alt="Selected Image"
-                                className="w-24 h-24 object-cover border border-dashed rounded-md p-1"
+                                alt='Selected Image'
+                                className='w-24 h-24 object-cover border border-dashed rounded-md p-1'
                             />
                             <Button
-                                type="button"
-                                size="icon"
+                                type='button'
+                                size='icon'
                                 onClick={() => clearField(formik, 'image')}
-                                className="absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full"
+                                className='absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full'
                             >
                                 <GoX />
                             </Button>
@@ -171,13 +171,13 @@ export default function DonorMembershipForm() {
                 </div>
 
                 <InputWrapper
-                    label="Name"
+                    label='Name'
                     error={formik.errors.name}
                     touched={formik.touched.name}
                 >
                     <Input
-                        name="name"
-                        placeholder="Your Name"
+                        name='name'
+                        placeholder='Your Name'
                         value={formik.values.name}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -185,28 +185,28 @@ export default function DonorMembershipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Image"
+                    label='Image'
                     error={formik.errors.image}
                     touched={formik.touched.image}
                 >
                     <Input
-                        name="image"
-                        type="file"
-                        accept="image/*"
+                        name='image'
+                        type='file'
+                        accept='image/*'
                         onChange={handleImageChange(formik, 'image')}
                         onBlur={formik.handleBlur}
                     />
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Email"
+                    label='Email'
                     error={formik.errors.email}
                     touched={formik.touched.email}
                 >
                     <Input
-                        name="email"
-                        type="email"
-                        placeholder="Email"
+                        name='email'
+                        type='email'
+                        placeholder='Email'
                         value={formik.values.email}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -214,13 +214,13 @@ export default function DonorMembershipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Phone"
+                    label='Phone'
                     error={formik.errors.phone}
                     touched={formik.touched.phone}
                 >
                     <Input
-                        name="phone"
-                        placeholder="Phone"
+                        name='phone'
+                        placeholder='Phone'
                         value={formik.values.phone}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -228,13 +228,13 @@ export default function DonorMembershipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Educational Background"
+                    label='Educational Background'
                     error={formik.errors.educationalBackground}
                     touched={formik.touched.educationalBackground}
                 >
                     <Input
-                        name="educationalBackground"
-                        placeholder="Educational Background"
+                        name='educationalBackground'
+                        placeholder='Educational Background'
                         value={formik.values.educationalBackground}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -242,13 +242,13 @@ export default function DonorMembershipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Occupation"
+                    label='Occupation'
                     error={formik.errors.occupation}
                     touched={formik.touched.occupation}
                 >
                     <Input
-                        name="occupation"
-                        placeholder="Occupation"
+                        name='occupation'
+                        placeholder='Occupation'
                         value={formik.values.occupation}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -256,13 +256,13 @@ export default function DonorMembershipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Workplace"
+                    label='Workplace'
                     error={formik.errors.workplace}
                     touched={formik.touched.workplace}
                 >
                     <Input
-                        name="workplace"
-                        placeholder="Workplace"
+                        name='workplace'
+                        placeholder='Workplace'
                         value={formik.values.workplace}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -270,13 +270,13 @@ export default function DonorMembershipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Designation"
+                    label='Designation'
                     error={formik.errors.designation}
                     touched={formik.touched.designation}
                 >
                     <Input
-                        name="designation"
-                        placeholder="Designation"
+                        name='designation'
+                        placeholder='Designation'
                         value={formik.values.designation}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -284,13 +284,13 @@ export default function DonorMembershipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Blood Group"
+                    label='Blood Group'
                     error={formik.errors.bloodGroup}
                     touched={formik.touched.bloodGroup}
                 >
                     <Input
-                        name="bloodGroup"
-                        placeholder="Blood Group"
+                        name='bloodGroup'
+                        placeholder='Blood Group'
                         value={formik.values.bloodGroup}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -303,7 +303,7 @@ export default function DonorMembershipForm() {
                     touched={formik.touched.fatherName}
                 >
                     <Input
-                        name="fatherName"
+                        name='fatherName'
                         placeholder="Father's Name"
                         value={formik.values.fatherName}
                         onChange={formik.handleChange}
@@ -317,7 +317,7 @@ export default function DonorMembershipForm() {
                     touched={formik.touched.husbandName}
                 >
                     <Input
-                        name="husbandName"
+                        name='husbandName'
                         placeholder="Husband's Name"
                         value={formik.values.husbandName}
                         onChange={formik.handleChange}
@@ -331,7 +331,7 @@ export default function DonorMembershipForm() {
                     touched={formik.touched.motherName}
                 >
                     <Input
-                        name="motherName"
+                        name='motherName'
                         placeholder="Mother's Name"
                         value={formik.values.motherName}
                         onChange={formik.handleChange}
@@ -340,14 +340,14 @@ export default function DonorMembershipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Date of Birth"
+                    label='Date of Birth'
                     error={formik.errors.dob}
                     touched={formik.touched.dob}
                 >
                     <Input
-                        name="dob"
-                        type="date"
-                        placeholder="Date of Birth"
+                        name='dob'
+                        type='date'
+                        placeholder='Date of Birth'
                         value={formik.values.dob}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -355,7 +355,7 @@ export default function DonorMembershipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="NID Number"
+                    label='NID Number'
                     error={formik.errors.nid}
                     touched={formik.touched.nid}
                 >
@@ -368,14 +368,14 @@ export default function DonorMembershipForm() {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Initial Donation"
+                    label='Initial Donation'
                     error={formik.errors.initialDonation}
                     touched={formik.touched.initialDonation}
                 >
                     <Input
-                        name="initialDonation"
-                        type="number"
-                        placeholder="Initial Donation"
+                        name='initialDonation'
+                        type='number'
+                        placeholder='Initial Donation'
                         value={formik.values.initialDonation}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -384,8 +384,8 @@ export default function DonorMembershipForm() {
             </div>
 
             {/* Permanent Address */}
-            <h2 className="font-bold text-lg md:text-xl">Permanent Address</h2>
-            <div className="grid gap-2 md:grid-cols-2">
+            <h2 className='font-bold text-lg md:text-xl'>Permanent Address</h2>
+            <div className='grid gap-2 md:grid-cols-2'>
                 {['village', 'postOffice', 'subdistrict', 'district'].map(
                     (field) => (
                         <InputWrapper
@@ -412,11 +412,11 @@ export default function DonorMembershipForm() {
             </div>
 
             {/* Checkbox for current address */}
-            <div className="flex items-center space-x-10">
-                <h2 className="font-bold text-lg md:text-xl">
+            <div className='flex items-center space-x-10'>
+                <h2 className='font-bold text-lg md:text-xl'>
                     Current Address
                 </h2>
-                <label className="flex items-center space-x-2">
+                <label className='flex items-center space-x-2'>
                     <Checkbox
                         checked={
                             formik.values.isCurrentAddressSameAsPermanentAddress
@@ -433,7 +433,7 @@ export default function DonorMembershipForm() {
             {/* Current Address */}
             {!formik.values.isCurrentAddressSameAsPermanentAddress && (
                 <>
-                    <div className="grid gap-2 md:grid-cols-2">
+                    <div className='grid gap-2 md:grid-cols-2'>
                         {[
                             'village',
                             'postOffice',
@@ -467,7 +467,7 @@ export default function DonorMembershipForm() {
                 </>
             )}
 
-            <div className="flex items-center justify-end space-x-2">
+            <div className='flex items-center justify-end space-x-2'>
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending || mutation.isSuccess} />
             </div>

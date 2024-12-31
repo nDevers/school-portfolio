@@ -39,7 +39,7 @@ export default function SideNav({ subNav }) {
     // Recursive function to render menu and submenus with expand/collapse logic
     const renderMenuItems = (items, parentIndex = null) => {
         return (
-            <ul className="ml-2">
+            <ul className='ml-2'>
                 {items.map((item, index) => {
                     const currentIndex =
                         parentIndex !== null
@@ -72,7 +72,7 @@ export default function SideNav({ subNav }) {
                                 // If the item has no href, render it as a clickable element for expanding/collapsing
                                 <div
                                     onClick={() => toggleExpand(currentIndex)}
-                                    className="cursor-pointer w-full p-1 md:p-2 pr-4 flex items-center md:border-l-2 space-x-2"
+                                    className='cursor-pointer w-full p-1 md:p-2 pr-4 flex items-center md:border-l-2 space-x-2'
                                 >
                                     <VscDebugBreakpointLogUnverified />
                                     <span>{item.title}</span>
@@ -82,7 +82,7 @@ export default function SideNav({ subNav }) {
                             {/* Render subitems if present and item is expanded, with animation */}
                             {item.subItems && (
                                 <motion.div
-                                    initial="collapsed"
+                                    initial='collapsed'
                                     animate={
                                         expandedItems[currentIndex]
                                             ? 'expanded'
@@ -90,7 +90,7 @@ export default function SideNav({ subNav }) {
                                     }
                                     variants={variants}
                                     transition={{ duration: 0.3 }}
-                                    className="ml-4"
+                                    className='ml-4'
                                 >
                                     {renderMenuItems(
                                         item.subItems,
@@ -106,9 +106,9 @@ export default function SideNav({ subNav }) {
     };
 
     return (
-        <nav className="w-full md:max-w-60 lg:max-w-72">
-            <Card className="overflow-hidden p-4">
-                <h1 className="text-base sm:text-lg md:text-xl xl:text-2xl font-bold">
+        <nav className='w-full md:max-w-60 lg:max-w-72'>
+            <Card className='overflow-hidden p-4'>
+                <h1 className='text-base sm:text-lg md:text-xl xl:text-2xl font-bold'>
                     {subNav?.title}
                 </h1>
                 {subNav?.subItems && renderMenuItems(subNav.subItems)}

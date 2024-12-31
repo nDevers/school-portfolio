@@ -113,16 +113,16 @@ export default function TeamForm({ data }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
-            <div className="grid md:grid-cols-2 gap-2 w-full">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+            <div className='grid md:grid-cols-2 gap-2 w-full'>
                 <InputWrapper
-                    label="Name"
+                    label='Name'
                     error={formik.errors?.name}
                     touched={formik.touched?.name}
                 >
                     <Input
-                        name="name"
-                        placeholder="Your Name"
+                        name='name'
+                        placeholder='Your Name'
                         value={formik.values?.name}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -130,28 +130,28 @@ export default function TeamForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Profile Image"
+                    label='Profile Image'
                     error={formik.errors?.image}
                     touched={formik.touched?.image}
                 >
                     <Input
-                        type="file"
-                        name="image"
-                        accept="image/png, image/gif, image/jpeg, image/jpg"
+                        type='file'
+                        name='image'
+                        accept='image/png, image/gif, image/jpeg, image/jpg'
                         onChange={handleImageChange(formik, 'image')}
                         onBlur={formik.handleBlur}
                     />
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Email"
+                    label='Email'
                     error={formik.errors?.email}
                     touched={formik.touched?.email}
                 >
                     <Input
-                        type="email"
-                        name="email"
-                        placeholder="Your Email"
+                        type='email'
+                        name='email'
+                        placeholder='Your Email'
                         value={formik.values?.email}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -159,13 +159,13 @@ export default function TeamForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Join Date"
+                    label='Join Date'
                     error={formik.errors?.joinDate}
                     touched={formik.touched?.joinDate}
                 >
                     <Input
-                        type="date"
-                        name="joinDate"
+                        type='date'
+                        name='joinDate'
                         value={formik.values?.joinDate}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -173,13 +173,13 @@ export default function TeamForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Designation"
+                    label='Designation'
                     error={formik.errors?.designation}
                     touched={formik.touched?.designation}
                 >
                     <Input
-                        name="designation"
-                        placeholder="Your Designation"
+                        name='designation'
+                        placeholder='Your Designation'
                         value={formik.values?.designation}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -187,13 +187,13 @@ export default function TeamForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Organization"
+                    label='Organization'
                     error={formik.errors?.organization}
                     touched={formik.touched?.organization}
                 >
                     <Input
-                        name="organization"
-                        placeholder="Your Organization"
+                        name='organization'
+                        placeholder='Your Organization'
                         value={formik.values?.organization}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -201,35 +201,35 @@ export default function TeamForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Team Type"
+                    label='Team Type'
                     error={formik.errors?.typeId}
                     touched={formik.touched?.typeId}
                 >
                     <ComboboxFormik
-                        select="_id"
-                        display="type"
-                        name="typeId"
+                        select='_id'
+                        display='type'
+                        name='typeId'
                         formik={formik}
                         data={teamType}
                     />
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Status"
+                    label='Status'
                     error={formik.errors?.statusId}
                     touched={formik.touched?.statusId}
                 >
                     <ComboboxFormik
-                        select="_id"
-                        display="status"
-                        name="statusId"
+                        select='_id'
+                        display='status'
+                        name='statusId'
                         formik={formik}
                         data={teamStatus}
                     />
                 </InputWrapper>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending || mutation.isSuccess} />
             </div>

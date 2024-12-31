@@ -23,7 +23,7 @@ export default function CustomMenu({ children }) {
     return (
         <ContextMenu>
             <ContextMenuTrigger>{children}</ContextMenuTrigger>
-            <ContextMenuContent className="w-64">
+            <ContextMenuContent className='w-64'>
                 <ContextMenuItem inset onClick={() => route.back()}>
                     Back
                     <ContextMenuShortcut>⌘[</ContextMenuShortcut>
@@ -40,7 +40,7 @@ export default function CustomMenu({ children }) {
                     <ContextMenuSubTrigger inset>
                         More Tools
                     </ContextMenuSubTrigger>
-                    <ContextMenuSubContent className="w-48">
+                    <ContextMenuSubContent className='w-48'>
                         <ContextMenuItem>
                             Save Page As...
                             <ContextMenuShortcut>⇧⌘S</ContextMenuShortcut>
@@ -60,13 +60,13 @@ export default function CustomMenu({ children }) {
                     Show Full URLs
                 </ContextMenuCheckboxItem>
                 <ContextMenuSeparator />
-                <ContextMenuRadioGroup value="pedro">
+                <ContextMenuRadioGroup value='pedro'>
                     <ContextMenuLabel inset>People</ContextMenuLabel>
                     <ContextMenuSeparator />
-                    <ContextMenuRadioItem value="pedro">
+                    <ContextMenuRadioItem value='pedro'>
                         Pedro Duarte
                     </ContextMenuRadioItem>
-                    <ContextMenuRadioItem value="colm">
+                    <ContextMenuRadioItem value='colm'>
                         Colm Tuite
                     </ContextMenuRadioItem>
                 </ContextMenuRadioGroup>

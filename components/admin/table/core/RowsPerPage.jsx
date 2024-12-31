@@ -24,7 +24,7 @@ export default function RowsPerPage({ table, pagination }) {
             onValueChange={handleSelectionChange}
             defaultValue={selectedKey}
         >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className='w-[180px]'>
                 <SelectValue placeholder={`Rows per page: ${selectedKey}`} />
             </SelectTrigger>
             <SelectContent>

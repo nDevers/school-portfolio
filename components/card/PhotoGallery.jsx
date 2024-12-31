@@ -26,11 +26,11 @@ export default function PhotoGallery({
                 {imageUrls.map((src, index) => (
                     <div
                         key={index}
-                        className="relative w-full h-full aspect-square overflow-hidden cursor-pointer"
+                        className='relative w-full h-full aspect-square overflow-hidden cursor-pointer'
                     >
                         {/* Loading Placeholder */}
                         {loading[index] && (
-                            <div className="absolute inset-0 flex items-center justify-center bg-muted animate-pulse">
+                            <div className='absolute inset-0 flex items-center justify-center bg-muted animate-pulse'>
                                 <Spinner />
                             </div>
                         )}

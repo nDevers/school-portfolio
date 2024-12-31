@@ -64,11 +64,11 @@ export default function ComboboxFormikMultiSelect({
             <PopoverTrigger asChild>
                 <Button
                     ref={triggerRef}
-                    variant="outline"
-                    role="combobox"
+                    variant='outline'
+                    role='combobox'
                     disabled={disable}
                     aria-expanded={open}
-                    className="w-full justify-between text-sm font-normal disabled:cursor-not-allowed"
+                    className='w-full justify-between text-sm font-normal disabled:cursor-not-allowed'
                 >
                     {icon && icon}
                     {selectedValues.length > 0
@@ -79,16 +79,16 @@ export default function ComboboxFormikMultiSelect({
                           // )
                           // .join(", ")
                           placeholder}
-                    <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    <CaretSortIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                 </Button>
             </PopoverTrigger>
             <PopoverContent
                 ref={popoverRef}
-                className="p-0"
+                className='p-0'
                 style={{ width: triggerWidth }}
             >
                 <Command>
-                    <CommandInput placeholder="Search..." className="h-9" />
+                    <CommandInput placeholder='Search...' className='h-9' />
                     <CommandList>
                         <CommandEmpty>No item found.</CommandEmpty>
                         <CommandGroup>

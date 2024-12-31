@@ -18,7 +18,7 @@ export default function FormikSunEditor({ name, ...props }) {
         <Suspense fallback={<div>Loading...</div>}>
             <SunEditor
                 {...props}
-                height="280px"
+                height='280px'
                 defaultValue={field?.value || ''}
                 onChange={handleEditorChange}
                 hideToolbar={false}

@@ -97,40 +97,40 @@ export default function CareerForm({ data }) {
             onSubmit={mutation.mutate}
         >
             {({ errors, touched, values, setFieldValue, resetForm }) => (
-                <Form className="space-y-4">
+                <Form className='space-y-4'>
                     <InputWrapper
-                        label="Title"
+                        label='Title'
                         error={errors.title}
                         touched={touched.title}
                     >
                         <Field
                             as={Input}
-                            name="title"
-                            placeholder="Title of the circular"
+                            name='title'
+                            placeholder='Title of the circular'
                         />
                     </InputWrapper>
                     <InputWrapper
-                        label="Sub Title"
+                        label='Sub Title'
                         error={errors.subTitle}
                         touched={touched.subTitle}
                     >
                         <Field
                             as={Input}
-                            name="subTitle"
-                            placeholder="Sub Title of the circular"
+                            name='subTitle'
+                            placeholder='Sub Title of the circular'
                         />
                     </InputWrapper>
                     <InputWrapper
-                        label="Submission Last Date"
+                        label='Submission Last Date'
                         error={errors.date}
                         touched={touched.date}
                     >
-                        <Field as={Input} type="date" name="date" />
+                        <Field as={Input} type='date' name='date' />
                     </InputWrapper>
 
-                    <div className="space-y-2">
+                    <div className='space-y-2'>
                         <InputWrapper
-                            label="Files"
+                            label='Files'
                             error={errors?.files}
                             touched={touched?.files}
                         >
@@ -138,18 +138,18 @@ export default function CareerForm({ data }) {
                                 values?.files?.map((_, index) => (
                                     <div
                                         key={index}
-                                        className="flex gap-2 items-center"
+                                        className='flex gap-2 items-center'
                                     >
                                         <Input
-                                            type="file"
-                                            accept="application/pdf"
+                                            type='file'
+                                            accept='application/pdf'
                                             onChange={(e) =>
                                                 handleImageChangeForForm(
                                                     setFieldValue,
                                                     `files[${index}]`
                                                 )(e)
                                             }
-                                            className="file-input"
+                                            className='file-input'
                                         />
                                         <Remove
                                             disabled={
@@ -169,7 +169,7 @@ export default function CareerForm({ data }) {
                                 ))}
                         </InputWrapper>
                         <Add
-                            label="Add File"
+                            label='Add File'
                             onClick={() =>
                                 handleArrayFieldChangeForForm(
                                     { values, setFieldValue },
@@ -181,14 +181,14 @@ export default function CareerForm({ data }) {
                     </div>
 
                     <InputWrapper
-                        label="Description"
+                        label='Description'
                         error={errors.description}
                         touched={touched.description}
                     >
-                        <FormikSunEditor name="description" />
+                        <FormikSunEditor name='description' />
                     </InputWrapper>
 
-                    <div className="flex items-center space-x-2">
+                    <div className='flex items-center space-x-2'>
                         <Reset onClick={resetForm} />
                         <Submit
                             disabled={mutation.isPending}
@@ -197,7 +197,7 @@ export default function CareerForm({ data }) {
                             } // Dynamic label
                             icon={
                                 mutation.isPending ? (
-                                    <Spinner size="4" />
+                                    <Spinner size='4' />
                                 ) : (
                                     <RiSendPlaneLine />
                                 )

@@ -20,8 +20,8 @@ export default function List({ category }) {
     }
 
     return (
-        <div className="space-y-4">
-            <div className="flex justify-between items-center">
+        <div className='space-y-4'>
+            <div className='flex justify-between items-center'>
                 <PageTitle title={capitalize(category)} />
                 <AddButton link={`${category}/add`} />
             </div>

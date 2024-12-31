@@ -13,12 +13,12 @@ export default function Back2() {
     const route = useRouter();
     return (
         <button
-            size="sm"
-            variant="link"
+            size='sm'
+            variant='link'
             onClick={() => route?.back()}
-            className="flex items-center space-x-1"
+            className='flex items-center space-x-1'
         >
-            <GoChevronLeft className="h-4 w-4" />
+            <GoChevronLeft className='h-4 w-4' />
             <span>Back</span>
         </button>
     );

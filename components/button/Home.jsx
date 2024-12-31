@@ -16,8 +16,8 @@ export default function Home() {
             <Tooltip>
                 <TooltipTrigger asChild>
                     <Button
-                        size="icon"
-                        variant="outline"
+                        size='icon'
+                        variant='outline'
                         onClick={() => route.push('/')}
                     >
                         <GoHome />

@@ -24,16 +24,16 @@ export default function User() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button size="icon">
+                <Button size='icon'>
                     {' '}
-                    <User2 className="w-4 h-4" />{' '}
+                    <User2 className='w-4 h-4' />{' '}
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-                side="bottom"
-                className="mr-4 w-[--radix-popper-anchor-width]"
+                side='bottom'
+                className='mr-4 w-[--radix-popper-anchor-width]'
             >
-                <DropdownMenuLabel className="capitalize">
+                <DropdownMenuLabel className='capitalize'>
                     {' '}
                     {user ? user.userType : 'No user found'}
                 </DropdownMenuLabel>

@@ -46,19 +46,19 @@ export default function Notice() {
 
     return (
         <section>
-            <div className="max-w-7xl mx-auto">
-                <div className="w-full h-full max-w-7xl mx-auto grid md:grid-cols-4 gap-4 md:gap-0">
-                    <div className="md:col-span-3 space-y-4 sp font-bengali">
+            <div className='max-w-7xl mx-auto'>
+                <div className='w-full h-full max-w-7xl mx-auto grid md:grid-cols-4 gap-4 md:gap-0'>
+                    <div className='md:col-span-3 space-y-4 sp font-bengali'>
                         <SectionTitle title={'নোটিশ'} />
-                        <div className="grid gap-2 md:gap-4 mb-4">
+                        <div className='grid gap-2 md:gap-4 mb-4'>
                             {data?.map((item) => (
                                 <FileCard key={item?.id} item={item} />
                             ))}
                         </div>
                     </div>
-                    <div className="flex flex-col">
-                        <div className="bg-muted divide-y flex flex-col flex-grow">
-                            <h1 className="p-2 md:p-4 uppercase whitespace-nowrap text-lg md:text-xl text-primary">
+                    <div className='flex flex-col'>
+                        <div className='bg-muted divide-y flex flex-col flex-grow'>
+                            <h1 className='p-2 md:p-4 uppercase whitespace-nowrap text-lg md:text-xl text-primary'>
                                 Open Now
                             </h1>
                             {links.map((link, index) => (
@@ -74,7 +74,7 @@ export default function Notice() {
                         <div>
                             <Link
                                 href={'#'}
-                                className="bg-foreground/15 hover:bg-foreground/20 w-full p-2 md:p-4 flex"
+                                className='bg-foreground/15 hover:bg-foreground/20 w-full p-2 md:p-4 flex'
                             >
                                 Read More +
                             </Link>

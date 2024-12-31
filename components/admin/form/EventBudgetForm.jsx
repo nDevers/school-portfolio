@@ -126,31 +126,31 @@ export default function EventBudgetForm({ data }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
-            <div className="grid md:grid-cols-3 gap-2 w-full">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+            <div className='grid md:grid-cols-3 gap-2 w-full'>
                 <InputWrapper
-                    label="Event"
+                    label='Event'
                     error={formik.errors?.eventId}
                     touched={formik.touched?.eventId}
                 >
                     <ComboboxFormik
-                        select="_id"
-                        display="title"
-                        name="eventId"
+                        select='_id'
+                        display='title'
+                        name='eventId'
                         formik={formik}
                         data={event}
                     />
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Budget"
+                    label='Budget'
                     error={formik.errors?.budget}
                     touched={formik.touched?.budget}
                 >
                     <Input
-                        name="budget"
-                        type="number"
-                        placeholder="Budget"
+                        name='budget'
+                        type='number'
+                        placeholder='Budget'
                         value={formik.values?.budget}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -158,21 +158,21 @@ export default function EventBudgetForm({ data }) {
                 </InputWrapper>
 
                 <InputWrapper
-                    label="Transaction Type"
+                    label='Transaction Type'
                     error={formik.errors?.transactionType}
                     touched={formik.touched?.transactionType}
                 >
                     <ComboboxFormik
-                        select="id"
-                        display="type"
-                        name="transactionType"
+                        select='id'
+                        display='type'
+                        name='transactionType'
                         formik={formik}
                         data={transactionTypes}
                     />
                 </InputWrapper>
             </div>
 
-            <label className="w-fit flex items-center space-x-2">
+            <label className='w-fit flex items-center space-x-2'>
                 <span>Bank details required</span>
                 <Checkbox
                     checked={formik.values.hasBankDetails}
@@ -184,7 +184,7 @@ export default function EventBudgetForm({ data }) {
             </label>
 
             {formik.values.hasBankDetails && (
-                <div className="grid gap-2 md:grid-cols-2">
+                <div className='grid gap-2 md:grid-cols-2'>
                     {['bankName', 'branchName'].map((field) => (
                         <InputWrapper
                             key={field}
@@ -209,7 +209,7 @@ export default function EventBudgetForm({ data }) {
                 </div>
             )}
 
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending || mutation.isSuccess} />
             </div>
@@ -217,7 +217,7 @@ export default function EventBudgetForm({ data }) {
             {selectedEvent && (
                 <Card>
                     <CardHeader>
-                        <h2 className="text-lg font-semibold">
+                        <h2 className='text-lg font-semibold'>
                             Selected Event Details:
                         </h2>
                         <p>

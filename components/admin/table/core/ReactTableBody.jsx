@@ -27,7 +27,7 @@ export default function ReactTableBody({
     const rows = table.getRowModel().rows;
 
     return (
-        <Table className="w-full border text-xs">
+        <Table className='w-full border text-xs'>
             <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                     <TableRow key={headerGroup.id}>
@@ -43,7 +43,7 @@ export default function ReactTableBody({
                                 onClick={header.column.getToggleSortingHandler()}
                             >
                                 {header.isPlaceholder ? null : (
-                                    <div className="flex gap-2">
+                                    <div className='flex gap-2'>
                                         <span>
                                             {flexRender(
                                                 header.column.columnDef.header,
@@ -92,7 +92,7 @@ export default function ReactTableBody({
                             colSpan={
                                 table.getHeaderGroups()[0]?.headers.length || 1
                             }
-                            className="text-center"
+                            className='text-center'
                         >
                             {isLoading ? <Spinner /> : <NoDataFound />}
                         </TableCell>

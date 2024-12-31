@@ -29,8 +29,8 @@ export default function LinkGradient({
                 className
             )}
         >
-            <span className="text-lg">{title}</span>
-            <span className="text-xs">{description && description}</span>
+            <span className='text-lg'>{title}</span>
+            <span className='text-xs'>{description && description}</span>
         </Link>
     );
 }

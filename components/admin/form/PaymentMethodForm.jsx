@@ -51,16 +51,16 @@ export default function PaymentMethodForm({ data }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
-            <div className="grid gap-2 w-full">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
+            <div className='grid gap-2 w-full'>
                 <InputWrapper
-                    label="Payment Method"
+                    label='Payment Method'
                     error={formik.errors?.type}
                     touched={formik.touched?.type}
                 >
                     <Input
-                        name="type"
-                        placeholder="Payment Method"
+                        name='type'
+                        placeholder='Payment Method'
                         value={formik.values?.type}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -68,7 +68,7 @@ export default function PaymentMethodForm({ data }) {
                 </InputWrapper>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
                 <Reset />
                 <Submit disabled={mutation.isPending} />
             </div>

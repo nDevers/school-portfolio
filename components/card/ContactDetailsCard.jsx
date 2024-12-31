@@ -7,11 +7,11 @@ export default function ContactDetailsCard() {
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="text-primary">More about us</CardTitle>
+                <CardTitle className='text-primary'>More about us</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className='space-y-4'>
                 <div>
-                    <h1 className="text-primary text-base md:text-lg lg:text-xl font-bold flex items-center space-x-2 pb-1">
+                    <h1 className='text-primary text-base md:text-lg lg:text-xl font-bold flex items-center space-x-2 pb-1'>
                         {' '}
                         <GoLocation /> <span>Company Location</span>
                     </h1>
@@ -21,7 +21,7 @@ export default function ContactDetailsCard() {
                     </p>
                 </div>
                 <div>
-                    <h1 className="text-primary text-base md:text-lg lg:text-xl font-bold flex items-center space-x-2 pb-1">
+                    <h1 className='text-primary text-base md:text-lg lg:text-xl font-bold flex items-center space-x-2 pb-1'>
                         {' '}
                         <GoMail /> <span>Email us directly</span>
                     </h1>
@@ -29,7 +29,7 @@ export default function ContactDetailsCard() {
                     <p>info@bcsbd.org.bd</p>
                 </div>
                 <div>
-                    <h1 className="text-primary text-base md:text-lg lg:text-xl font-bold flex items-center space-x-2 pb-1">
+                    <h1 className='text-primary text-base md:text-lg lg:text-xl font-bold flex items-center space-x-2 pb-1'>
                         {' '}
                         <GoDeviceMobile /> <span>Phone Number</span>
                     </h1>
@@ -37,11 +37,11 @@ export default function ContactDetailsCard() {
                     <p>01836794381</p>
                 </div>
                 <div>
-                    <h1 className="text-primary text-base md:text-lg lg:text-xl font-bold flex items-center space-x-2 pb-1">
+                    <h1 className='text-primary text-base md:text-lg lg:text-xl font-bold flex items-center space-x-2 pb-1'>
                         {' '}
                         <GoLink /> <span>Social Link</span>
                     </h1>
-                    <p className="space-x-2">
+                    <p className='space-x-2'>
                         <Facebook />
                         <Youtube />
                         <Linkedin />
@@ -54,24 +54,24 @@ export default function ContactDetailsCard() {
 
 export const Facebook = () => {
     return (
-        <Button size="icon" variant="outline">
-            <FaFacebook className="h-6 w-6 text-blue-500" />
+        <Button size='icon' variant='outline'>
+            <FaFacebook className='h-6 w-6 text-blue-500' />
         </Button>
     );
 };
 
 export const Youtube = () => {
     return (
-        <Button size="icon" variant="outline">
-            <FaYoutube className="h-6 w-6 text-rose-500" />
+        <Button size='icon' variant='outline'>
+            <FaYoutube className='h-6 w-6 text-rose-500' />
         </Button>
     );
 };
 
 export const Linkedin = () => {
     return (
-        <Button size="icon" variant="outline">
-            <FaLinkedin className="h-6 w-6 text-indigo-500" />
+        <Button size='icon' variant='outline'>
+            <FaLinkedin className='h-6 w-6 text-indigo-500' />
         </Button>
     );
 };

@@ -67,16 +67,16 @@ export default function AboutForm({ data, refetch, updateAPI, createAPI }) {
             onSubmit={mutation.mutate}
         >
             {({ errors, touched, setFieldValue, resetForm }) => (
-                <Form className="space-y-4">
+                <Form className='space-y-4'>
                     <InputWrapper
-                        label="Title"
+                        label='Title'
                         error={errors.title}
                         touched={touched.title}
                     >
                         <Field
                             as={Input}
-                            name="title"
-                            placeholder="Enter title"
+                            name='title'
+                            placeholder='Enter title'
                         />
                     </InputWrapper>
 
@@ -84,18 +84,18 @@ export default function AboutForm({ data, refetch, updateAPI, createAPI }) {
                         <img
                             src={data?.banner}
                             alt={data?.title}
-                            className="w-full h-40 object-cover rounded-lg border border-dashed"
+                            className='w-full h-40 object-cover rounded-lg border border-dashed'
                         />
                     )}
                     <InputWrapper
-                        label="Banner"
+                        label='Banner'
                         error={errors.banner}
                         touched={touched.banner}
                     >
                         <Input
-                            type="file"
-                            name="banner"
-                            accept="image/*"
+                            type='file'
+                            name='banner'
+                            accept='image/*'
                             onChange={(event) =>
                                 setFieldValue(
                                     'banner',
@@ -106,14 +106,14 @@ export default function AboutForm({ data, refetch, updateAPI, createAPI }) {
                     </InputWrapper>
 
                     <InputWrapper
-                        label="Description"
+                        label='Description'
                         error={errors.description}
                         touched={touched.description}
                     >
-                        <FormikSunEditor name="description" />
+                        <FormikSunEditor name='description' />
                     </InputWrapper>
 
-                    <div className="flex items-center space-x-2">
+                    <div className='flex items-center space-x-2'>
                         <Reset onClick={resetForm} />
                         <Submit
                             disabled={mutation.isPending || mutation.isSuccess}
@@ -122,7 +122,7 @@ export default function AboutForm({ data, refetch, updateAPI, createAPI }) {
                             } // Dynamic label
                             icon={
                                 mutation.isPending ? (
-                                    <Spinner size="4" />
+                                    <Spinner size='4' />
                                 ) : (
                                     <RiSendPlaneLine />
                                 )

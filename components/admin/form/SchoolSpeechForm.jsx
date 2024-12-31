@@ -98,42 +98,42 @@ export default function SchoolSpeechForm({ data }) {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} className="w-full space-y-10">
+        <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
             <div>
                 {(formik?.values?.image || formik?.values?.dataIcon) && (
-                    <div className="flex items-center justify-end relative">
+                    <div className='flex items-center justify-end relative'>
                         <img
                             src={
                                 formik.values.image instanceof File
                                     ? URL.createObjectURL(formik.values.image)
                                     : formik?.values?.dataIcon
                             }
-                            alt="Selected Image"
-                            className="w-24 h-24 object-cover border border-dashed rounded-md p-1"
+                            alt='Selected Image'
+                            className='w-24 h-24 object-cover border border-dashed rounded-md p-1'
                         />
                         <Button
-                            type="button"
-                            size="icon"
+                            type='button'
+                            size='icon'
                             disabled={!formik.values.image}
                             onClick={() => {
                                 clearField(formik, 'image');
                                 formik.setFieldValue('dataIcon', '');
                             }}
-                            className="absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full"
+                            className='absolute -top-1 -right-1 w-6 h-6 bg-rose-500 hover:bg-rose-600 rounded-full'
                         >
                             <GoX />
                         </Button>
                     </div>
                 )}
-                <div className="grid gap-2 w-full">
+                <div className='grid gap-2 w-full'>
                     <InputWrapper
-                        label="Name Of the Speaker"
+                        label='Name Of the Speaker'
                         error={formik.errors?.title}
                         touched={formik.touched?.title}
                     >
                         <Input
-                            name="title"
-                            placeholder="Name"
+                            name='title'
+                            placeholder='Name'
                             value={formik.values?.title}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -141,28 +141,28 @@ export default function SchoolSpeechForm({ data }) {
                     </InputWrapper>
 
                     <InputWrapper
-                        label="Image Of the Speaker"
+                        label='Image Of the Speaker'
                         error={formik.errors?.image}
                         touched={formik.touched?.image}
                     >
                         <Input
-                            type="file"
-                            name="image"
-                            accept="image/png, image/gif, image/jpeg, image/jpg"
+                            type='file'
+                            name='image'
+                            accept='image/png, image/gif, image/jpeg, image/jpg'
                             onChange={handleImageChange(formik, 'image')}
                             onBlur={formik.handleBlur}
                         />
                     </InputWrapper>
 
                     <InputWrapper
-                        label="Speech"
+                        label='Speech'
                         error={formik.errors?.description}
                         touched={formik.touched?.description}
                     >
                         <Textarea
                             rows={10}
-                            name="description"
-                            placeholder="Description"
+                            name='description'
+                            placeholder='Description'
                             value={formik.values?.description}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -171,7 +171,7 @@ export default function SchoolSpeechForm({ data }) {
                 </div>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
                 <Reset onClick={reset} />
                 <Submit disabled={mutation.isPending} />
             </div>
