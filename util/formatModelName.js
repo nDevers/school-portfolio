@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Formats a given model name by capitalizing the first letter and validating its content.
  *

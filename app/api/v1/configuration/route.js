@@ -1,3 +1,5 @@
+'use strict';
+
 import { ConfigurationModel } from '@/shared/prisma.model.shared';
 import sharedResponseTypes from '@/shared/shared.response.types';
 

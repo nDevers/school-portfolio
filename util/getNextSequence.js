@@ -1,6 +1,7 @@
+'use strict';
+
 import CounterModel from '@/app/api/v1/(counter)/counter.model';
 
-// Function to get the next sequence number
 /**
  * Asynchronously fetches and increments a sequence value in the database.
  *

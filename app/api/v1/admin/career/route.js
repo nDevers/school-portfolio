@@ -1,3 +1,5 @@
+'use strict';
+
 import moment from 'moment';
 
 import { CareerModel } from '@/shared/prisma.model.shared';
@@ -125,7 +127,7 @@ const handleCreateCareer = async (request, context) => {
                 const { fileId, fileLink } =
                     await localFileOperations.uploadFile(request, fileEntry);
                 return {
-                    fileId: fileId,
+                    fileId,
                     file: fileLink,
                 };
             }

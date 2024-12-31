@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * A function that defines the criteria for selecting career-related data.
  * It returns an object with properties set to `true` to indicate

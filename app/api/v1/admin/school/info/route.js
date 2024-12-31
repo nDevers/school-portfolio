@@ -1,3 +1,5 @@
+'use strict';
+
 import { SchoolInfoModel } from '@/shared/prisma.model.shared';
 import schoolInfoSchema from '@/app/api/v1/school/info/school.info.schema';
 import schoolInfoConstants from '@/app/api/v1/school/info/school.info.constants';

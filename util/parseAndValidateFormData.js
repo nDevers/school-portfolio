@@ -1,10 +1,11 @@
-import { BadRequestError } from '@/util/asyncHandler';
+'use strict';
+
+import { BadRequestError } from '@/lib/customError';
 
 import logger from '@/lib/logger';
 import contentTypesConstants from '@/constants/contentTypes.constants';
 
 import prepareFormDataForLogging from '@/util/prepareFormDataForLogging';
-import convertToObjectId from '@/util/convertToObjectId';
 import getQueryParams from '@/util/getQueryParams';
 import toSentenceCase from '@/util/toSentenceCase';
 

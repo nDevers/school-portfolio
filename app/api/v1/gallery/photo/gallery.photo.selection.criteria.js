@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Represents criteria for selecting photo attributes in a gallery.
  *

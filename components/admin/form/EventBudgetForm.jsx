@@ -42,7 +42,7 @@ export default function EventBudgetForm({ data }) {
             .test(
                 'budget-limit',
                 'Budget exceeds the allowed Budget',
-                function (value) {
+                (value) => {
                     // Check if previous budget is present
                     if (selectedEvent?.previousBudget) {
                         return value <= selectedEvent.previousBudget;
@@ -55,7 +55,7 @@ export default function EventBudgetForm({ data }) {
             .test(
                 'restrict-return',
                 'Return action is not allowed without a previous budget',
-                function (value) {
+                (value) => {
                     // Restrict "Return" action if there's no previous budget
                     if (!selectedEvent?.previousBudget && value === 'return') {
                         return false;

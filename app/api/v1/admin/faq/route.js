@@ -1,3 +1,5 @@
+'use strict';
+
 import { FaqModel } from '@/shared/prisma.model.shared';
 import faqSchema from '@/app/api/v1/faq/faq.schema';
 import faqConstants from '@/app/api/v1/faq/faq.constants';

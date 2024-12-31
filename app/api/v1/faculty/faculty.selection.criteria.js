@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * A function that defines the selection criteria for faculty members.
  * It returns an object with specific properties set to true to indicate

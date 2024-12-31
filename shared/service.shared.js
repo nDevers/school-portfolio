@@ -1,3 +1,5 @@
+'use strict';
+
 import localFileOperations from '@/util/localFileOperations';
 import authConstants from '@/app/api/v1/auth/auth.constants';
 import authSchema from '@/app/api/v1/auth/auth.schema';

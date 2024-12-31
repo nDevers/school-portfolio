@@ -1,3 +1,5 @@
+'use strict';
+
 import httpStatusConstants from '@/constants/httpStatus.constants';
 import contentTypesConstants from '@/constants/contentTypes.constants';
 import logger from '@/lib/logger';
@@ -62,7 +64,7 @@ const sendResponse = (
     logger.info(`Response: ${JSON.stringify(response)}`);
 
     return new Response(JSON.stringify(response), {
-        status: status,
+        status,
         headers: { ...headers },
     });
 };

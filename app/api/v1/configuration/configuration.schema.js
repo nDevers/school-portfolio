@@ -1,7 +1,10 @@
+'use strict';
+
 import { z } from 'zod';
 
 import schemaShared from '@/shared/schema.shared';
 import configurationConstants from '@/app/api/v1/configuration/configuration.constants';
+import constants from '@/constants/constants';
 
 const {
     nonEmptyString,
@@ -123,7 +126,12 @@ const contacts = validMobileNumberArray('Configuration contacts');
  *
  * This variable is initialized and validated using the `validUrlArray` function.
  */
-const socialLinks = validUrlArray('Configuration social links');
+const socialLinks = validUrlArray('Configuration social links', [
+    constants.facebookUrlRegex,
+    constants.instagramUrlRegex,
+    constants.xUrlRegex,
+    constants.linkedinUrlRegex,
+]);
 
 /**
  * A schema definition for validating and enforcing the structure of an object.

@@ -1,3 +1,5 @@
+'use strict';
+
 import moment from 'moment';
 
 import { AcademicModel } from '@/shared/prisma.model.shared';

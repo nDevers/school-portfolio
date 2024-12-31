@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * A function that defines the selection criteria for videos in a gallery.
  * It specifies the fields that should be included when selecting videos.

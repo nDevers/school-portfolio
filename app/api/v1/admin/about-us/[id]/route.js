@@ -1,3 +1,5 @@
+'use strict';
+
 import { AboutUsModel } from '@/shared/prisma.model.shared';
 import aboutUsSchema from '@/app/api/v1/about-us/about.us.schema';
 import aboutUsConstants from '@/app/api/v1/about-us/about.us.constants';
@@ -65,7 +67,7 @@ const updateAboutUsEntry = async (userInput, request) => {
     }
 
     return OK(
-        `AboutUs entry with the ID "${userInput?.id}" updated successfully.`,
+        `About us entry with the ID "${userInput?.id}" updated successfully.`,
         updatedDocument,
         request
     );
@@ -162,7 +164,7 @@ const handleUpdateAboutUsById = async (request, context) => {
                             fileEntry
                         );
                     return {
-                        fileId: fileId,
+                        fileId,
                         file: fileLink,
                     };
                 }
@@ -207,7 +209,7 @@ const handleUpdateAboutUsById = async (request, context) => {
         await AboutUsModel.update({
             where: { id: existingCareer.id }, // Assuming the record is identified by id
             data: {
-                files: files, // Update the files field in the database, only keeping non-deleted files
+                files, // Update the files field in the database, only keeping non-deleted files
             },
         });
     }
@@ -247,7 +249,7 @@ const handleUpdateAboutUsById = async (request, context) => {
         await AboutUsModel.update({
             where: { id: existingCareer.id }, // Assuming the record is identified by id
             data: {
-                images: images, // Update the images field in the database, only keeping non-deleted images
+                images, // Update the images field in the database, only keeping non-deleted images
             },
         });
     }
@@ -365,6 +367,122 @@ const deleteCareerById = async (request, context) => {
 };
 
 /**
+ * @swagger
+ * /api/v1/about-us/{id}:
+ *   patch:
+ *     summary: Update an About Us entry by its ID
+ *     description: Updates an existing About Us entry in the database by its ID. This includes validating the request, handling file uploads/deletions, and updating the entry with the provided data.
+ *
+ *     tags:
+ *       - About Us
+ *
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 description: The unique identifier of the About Us entry to update.
+ *                 example: "abc123"
+ *               title:
+ *                 type: string
+ *                 description: The updated title of the About Us entry.
+ *                 example: "New Title"
+ *               description:
+ *                 type: string
+ *                 description: The updated description of the About Us entry.
+ *                 example: "Updated description about the entity."
+ *               files:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     fileId:
+ *                       type: string
+ *                     fileLink:
+ *                       type: string
+ *                   description: Additional files to attach to the About Us entry.
+ *               deleteFiles:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   description: IDs of files to be deleted from the About Us entry.
+ *               deleteImages:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   description: IDs of images to be deleted from the About Us entry.
+ *
+ *
+ *     responses:
+ *       200:
+ *         description: Success response with the updated About Us entry.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AboutUs'
+ *
+ *       400:
+ *         description: Bad Request - Invalid input.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/400'
+ *
+ *       401:
+ *         description: Unauthorized - User is not authorized to perform this operation.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/401'
+ *
+ *       403:
+ *         description: Forbidden - User is not authorized to perform this operation.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/403'
+ *
+ *       404:
+ *         description: Entry not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 message:
+ *                   type: string
+ *                   example: "No About us entry with the ID: '123' available at this time."
+ *
+ *       409:
+ *         description: Conflict - Entry with the same title already exists.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/409'
+ *
+ *       415:
+ *         description: Unsupported Media Type - Unsupported content type.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/415'
+ *
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/500'
+ */
+
+/**
  * PATCH variable assigned to an asynchronous route handler for updating an "About Us" entry by its ID.
  *
  * This handler leverages an async error-handling middleware (`asyncHandler`) to manage execution flow
@@ -372,6 +490,91 @@ const deleteCareerById = async (request, context) => {
  * function which encapsulates the logic for updating the specified resource in a data store or database.
  */
 export const PATCH = asyncHandler(handleUpdateAboutUsById);
+
+/**
+ * @swagger
+ * /api/v1/about-us/{id}:
+ *   delete:
+ *     summary: Delete an About Us entry by its ID
+ *     description: Deletes a specific About Us entry by its unique identifier and removes any associated files or images.
+ *
+ *     tags:
+ *       - About Us
+ *
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The unique identifier of the About Us entry to delete.
+ *
+ *
+ *     responses:
+ *       200:
+ *         description: Successfully deleted the About Us entry.
+ *         content:
+ *           application/:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *                   description: Details of the deleted About Us entry.
+ *
+ *       400:
+ *         description: Bad Request - Invalid input.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/400'
+ *
+ *       401:
+ *         description: Unauthorized - User is not authorized to perform this operation.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/401'
+ *
+ *       403:
+ *         description: Forbidden - User is not authorized to perform this operation.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/403'
+ *
+ *       404:
+ *         description: Entry not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 message:
+ *                   type: string
+ *                   example: "No About us entry with the ID: '123' available at this time."
+ *
+ *       415:
+ *         description: Unsupported Media Type - Unsupported content type.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/415'
+ *
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/errors/500'
+ */
 
 /**
  * DELETE is a constant that represents an asynchronous handler function for deleting a career entry by its identifier.

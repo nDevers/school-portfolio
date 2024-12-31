@@ -1,11 +1,14 @@
+'use strict';
+
 import path from 'path';
 import fs from 'fs/promises';
 import { v4 as uuidv4 } from 'uuid';
 
+import { BadRequestError } from '@/lib/customError';
+
 import logger from '@/lib/logger';
 
 import generateFileLink from './generateFileLink';
-import { BadRequestError } from '@/util/asyncHandler';
 
 /**
  * Generates a unique file name based on the provided name, ensuring uniqueness

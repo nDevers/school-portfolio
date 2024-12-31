@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * A list of user agent strings that are blocked from accessing the system.
  *

@@ -1,3 +1,5 @@
+'use strict';
+
 import httpStatusConstants from '@/constants/httpStatus.constants';
 
 import sendResponse from '@/util/sendResponse';

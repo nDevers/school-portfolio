@@ -1,3 +1,5 @@
+'use strict';
+
 import { AnnouncementModel } from '@/shared/prisma.model.shared';
 import serviceShared from '@/shared/service.shared';
 import announcementSchema from '@/app/api/v1/announcement/announcement.schema';

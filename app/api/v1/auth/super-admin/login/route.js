@@ -1,3 +1,5 @@
+'use strict';
+
 import SuperAdminModel from '@/app/api/v1/auth/super-admin/super.admin.model';
 import serviceShared from '@/shared/service.shared';
 

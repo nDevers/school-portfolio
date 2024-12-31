@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Retrieves the content type from the headers of the provided request object.
  *

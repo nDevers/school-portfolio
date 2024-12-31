@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Function representing the selection criteria for newsletters.
  * Returns an object specifying which fields to include in the selection.

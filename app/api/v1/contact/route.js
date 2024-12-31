@@ -1,3 +1,5 @@
+'use strict';
+
 import { ContactModel } from '@/shared/prisma.model.shared';
 import contactSchema from '@/app/api/v1/contact/contact.schema';
 import contactConstants from '@/app/api/v1/contact/contact.constants';

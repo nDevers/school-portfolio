@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * A constant variable representing the development environment.
  * Typically used to specify or check the context in which the application is running.

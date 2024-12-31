@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * A function that returns an object defining the selection criteria for school information.
  *

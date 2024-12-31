@@ -1,3 +1,5 @@
+'use strict';
+
 import sharedResponseTypes from '@/shared/shared.response.types';
 
 import getContentType from '@/util/getContentType';

@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * A function that defines the selection criteria for announcements.
  * This criteria specifies the fields that should be included when retrieving announcement data.

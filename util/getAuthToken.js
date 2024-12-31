@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Extracts the authentication token from the Authorization header in the request.
  *

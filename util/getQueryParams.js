@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Parses a URL query string into an object of key-value pairs.
  *

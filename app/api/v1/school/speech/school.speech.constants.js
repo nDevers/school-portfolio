@@ -1,3 +1,5 @@
+'use strict';
+
 import contentTypesConstants from '@/constants/contentTypes.constants';
 import mimeTypesConstants from '@/constants/mimeTypes.constants';
 

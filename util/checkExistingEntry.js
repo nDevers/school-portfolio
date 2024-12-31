@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Asynchronously checks if an entry exists in a given model that matches the specified criteria.
  *

@@ -1,3 +1,5 @@
+'use strict';
+
 import { CareerModel } from '@/shared/prisma.model.shared';
 import serviceShared from '@/shared/service.shared';
 

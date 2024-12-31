@@ -1,6 +1,8 @@
+'use strict';
+
 import CryptoJS from 'crypto-js';
 
-import { CryptoError } from '@/util/asyncHandler';
+import { CryptoError } from '@/lib/customError';
 
 /**
  * A constant variable that holds the secret key used for cryptographic operations.

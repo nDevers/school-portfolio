@@ -1,9 +1,12 @@
 'use server';
 
+import { routes } from '@/constants/api.routes.constants';
 import environments from '@/constants/enviornments.constants';
 
 import readFileContent from '@/util/readFileContent';
 import getEnvironmentData from '@/util/getEnvironmentData';
+
+const BASE_URL = '/api/v1';
 
 /**
  * Extracts and returns the details of an author or their contact information.
@@ -68,6 +71,20 @@ const getSocialLinks = (social) => ({
  */
 const packageJsonFileContent = await readFileContent('./package.json', true);
 
+const generateEndpoints = (base, routesObj) => {
+    const endpoints = {};
+
+    Object.entries(routesObj).forEach(([key, value]) => {
+        if (typeof value === 'string') {
+            endpoints[key] = `${base}/${value}`;
+        } else if (typeof value === 'object') {
+            endpoints[key] = generateEndpoints(base, value);
+        }
+    });
+
+    return endpoints;
+};
+
 /**
  * Asynchronous configuration object that provides data for various application configurations.
  */
@@ -100,6 +117,8 @@ const configurations = async () => ({
                 tutorials:
                     packageJsonFileContent?.documentation?.tutorials || null,
             },
+
+            endpoints: generateEndpoints(BASE_URL, routes),
         },
     },
 

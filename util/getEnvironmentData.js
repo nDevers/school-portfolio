@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Retrieves the value of an environment variable.
  *

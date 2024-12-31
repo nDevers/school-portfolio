@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Retrieves the name of the function that called the current function.
  *

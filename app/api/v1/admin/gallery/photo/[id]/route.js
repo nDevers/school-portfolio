@@ -1,3 +1,5 @@
+'use strict';
+
 import { GalleryPhotoModel } from '@/shared/prisma.model.shared';
 import galleryPhotoSchema from '@/app/api/v1/gallery/photo/gallery.photo.schema';
 import galleryPhotoConstants from '@/app/api/v1/gallery/photo/gallery.photo.constants';
@@ -217,7 +219,7 @@ const handleUpdateGalleryPhotoById = async (request, context) => {
         await GalleryPhotoModel.update({
             where: { id: existingGalleryPhoto.id }, // Assuming the record is identified by id
             data: {
-                images: images, // Update the images field in the database, only keeping non-deleted images
+                images, // Update the images field in the database, only keeping non-deleted images
             },
         });
 

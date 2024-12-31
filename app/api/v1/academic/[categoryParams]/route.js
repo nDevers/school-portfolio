@@ -1,3 +1,5 @@
+'use strict';
+
 import { AcademicModel } from '@/shared/prisma.model.shared';
 import serviceShared from '@/shared/service.shared';
 import academicSchema from '@/app/api/v1/academic/academic.schema';

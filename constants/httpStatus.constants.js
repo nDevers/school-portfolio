@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * A constant variable representing the value 100, commonly used to indicate
  * the continuation or progression of a process within an application.

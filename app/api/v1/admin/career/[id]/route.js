@@ -1,3 +1,5 @@
+'use strict';
+
 import moment from 'moment';
 
 import { CareerModel } from '@/shared/prisma.model.shared';
@@ -163,7 +165,7 @@ const handleUpdateCareerById = async (request, context) => {
                             fileEntry
                         );
                     return {
-                        fileId: fileId,
+                        fileId,
                         file: fileLink,
                     };
                 }
@@ -207,7 +209,7 @@ const handleUpdateCareerById = async (request, context) => {
         await CareerModel.update({
             where: { id: existingCareer.id }, // Assuming the record is identified by id
             data: {
-                files: files, // Update the files field in the database, only keeping non-deleted files
+                files, // Update the files field in the database, only keeping non-deleted files
             },
         });
     }

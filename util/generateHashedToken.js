@@ -1,3 +1,5 @@
+'use strict';
+
 import SHA256 from 'crypto-js/sha256';
 
 /**

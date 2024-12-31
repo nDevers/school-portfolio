@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Specifies the MIME type for JPEG image format.
  * This string constant is commonly used to represent the

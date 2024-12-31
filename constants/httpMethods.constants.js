@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Represents the HTTP GET method as a string.
  * The GET method requests a representation of the specified resource.

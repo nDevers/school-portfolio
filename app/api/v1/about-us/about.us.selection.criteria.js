@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Represents a function that defines the selection criteria for
  * the "About Us" section in a database query or data retrieval process.

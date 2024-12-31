@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Generates a complete file URL based on the server's address and the provided file path.
  *

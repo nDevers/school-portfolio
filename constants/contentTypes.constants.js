@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Represents the MIME type for JSON data format.
  * Used to specify the content type in HTTP requests or responses

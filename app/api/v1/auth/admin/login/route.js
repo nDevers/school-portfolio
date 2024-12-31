@@ -1,3 +1,5 @@
+'use strict';
+
 import { AdminModel } from '@/shared/prisma.model.shared';
 import authSchema from '@/app/api/v1/auth/auth.schema';
 import authConstants from '@/app/api/v1/auth/auth.constants';

@@ -1,3 +1,5 @@
+'use strict';
+
 import { NewsletterModel } from '@/shared/prisma.model.shared';
 import newsletterSchema from '@/app/api/v1/newsletter/newsletter.schema';
 import newsletterConstants from '@/app/api/v1/newsletter/newsletter.constants';

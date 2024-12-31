@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { decryptData } from '@/util/crypto.client';
 import { jwtVerify } from 'jose';
+
 import appConfig from '@/configs/appConfig';
 
 export async function middleware(request) {

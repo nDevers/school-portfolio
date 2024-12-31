@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Represents a function that returns the selection criteria for the home carousel.
  * The returned object defines the properties to be included in the selection.
