@@ -70,6 +70,7 @@
 
 # Generic folder for production deployments.
 .out/
+/out
 
 
 ####################################################
@@ -196,3 +197,5 @@ next-env.d.ts
 
 # User-uploaded files stored temporarily.
 /public/assets
+# Sentry Config File
+.env.sentry-build-plugin
