@@ -1,20 +1,33 @@
 import { NextResponse } from 'next/server';
-import { decryptData } from '@/util/crypto.client';
 import { jwtVerify } from 'jose';
 
 import appConfig from '@/configs/appConfig';
+
+import { decryptData } from '@/util/crypto.client';
+import corsMiddleware from '@/middlewares/cors.middleare';
 
 export async function middleware(request) {
     const { cookies, nextUrl } = request;
     const { pathname } = nextUrl;
     const token = cookies.get(appConfig?.CurrentUserToken)?.value;
 
+    const isAPI = pathname.startsWith('/api');
     const adminURL = pathname.startsWith('/admin');
     const authURL = pathname.startsWith('/auth');
     const mainURL = pathname === '/';
 
     let userData = null;
     let isAdmin = false;
+
+    // API routes: CORS and permissions
+    if (isAPI) {
+        // Run CORS handling
+        const corsResponse = corsMiddleware(request);
+        if (corsResponse) return corsResponse;
+
+        // If all checks pass, allow the request to proceed
+        return null;
+    }
 
     if (token) {
         try {
@@ -80,6 +93,6 @@ export const config = {
          * - _next/image (image optimization files)
          * - favicon.ico, sitemap.xml, robots.txt (metadata files)
          */
-        '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+        '/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
     ],
 };
