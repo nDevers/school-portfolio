@@ -1,23 +1,33 @@
 import axios from 'axios';
-import apiConfig from '@/configs/apiConfig';
 import { toast } from 'sonner';
-import { getRefreshTokenFromCookie, getTokenFromCookie, logout } from './auth';
 import { setCookie } from 'cookies-next';
+
+import apiConfig from '@/configs/apiConfig';
 import appConfig from '@/configs/appConfig';
+
+import { getRefreshTokenFromCookie, getTokenFromCookie, logout } from './auth';
+
+const NEXT_PUBLIC_TIMEOUT_IN_MILI_SECONDS = parseInt(
+    process.env.NEXT_PUBLIC_TIMEOUT_IN_MILI_SECONDS
+);
+const NEXT_PUBLIC_AUTH_X_SITE_IDENTIFIER =
+    process.env.NEXT_PUBLIC_AUTH_X_SITE_IDENTIFIER;
 
 const axiosInstance = axios.create({
     baseURL: apiConfig?.BASE_URL,
-    timeout: 15000,
+    timeout: NEXT_PUBLIC_TIMEOUT_IN_MILI_SECONDS,
     headers: {
         // 'Content-Type': 'application/json',
+        'X-Site-Identifier': NEXT_PUBLIC_AUTH_X_SITE_IDENTIFIER,
     },
 });
 
 const refreshAxiosInstance = axios.create({
     baseURL: apiConfig?.BASE_URL,
-    timeout: 15000,
+    timeout: NEXT_PUBLIC_TIMEOUT_IN_MILI_SECONDS,
     headers: {
         // 'Content-Type': 'application/json',
+        'X-Site-Identifier': NEXT_PUBLIC_AUTH_X_SITE_IDENTIFIER,
     },
 });
 
