@@ -1,9 +1,11 @@
 import { withSentryConfig } from '@sentry/nextjs';
 
+import getEnvironmentData from '@/util/getEnvironmentData.js';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
-    distDir: 'out',
+    distDir: getEnvironmentData('NEXT_DIST_DIR'),
 
     images: {
         domains: ['localhost'], // Add the hostname here
@@ -14,8 +16,8 @@ export default withSentryConfig(nextConfig, {
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options
 
-    org: 'ndevers',
-    project: 'school-portfolio',
+    org: getEnvironmentData('SENTRY_ORG'),
+    project: getEnvironmentData('SENTRY_PROJECT'),
 
     // Only print logs for uploading source maps in CI
     silent: !process.env.CI,
@@ -35,7 +37,7 @@ export default withSentryConfig(nextConfig, {
     // This can increase your server load as well as your hosting bill.
     // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
     // side errors will fail.
-    tunnelRoute: '/monitoring',
+    tunnelRoute: getEnvironmentData('SENTRY_TUNNEL_ROUTE'),
 
     // Hides source maps from generated client bundles
     hideSourceMaps: true,
