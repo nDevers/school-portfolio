@@ -130,8 +130,11 @@ yarn-error.log*
 # Environment variables for production builds.
 .env.production
 
-# Local variations of environment files.
+# Local variables of environment files.
 .env*.local
+
+# Local variables of sentry environment files.
+.env.sentry-build-plugin
 
 
 ####################################################
@@ -197,5 +200,3 @@ next-env.d.ts
 
 # User-uploaded files stored temporarily.
 /public/assets
-# Sentry Config File
-.env.sentry-build-plugin

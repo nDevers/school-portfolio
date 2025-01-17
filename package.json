@@ -58,7 +58,8 @@
   ],
   "license": "MIT",
   "scripts": {
-    "start": "next start",
+    "start": "pm2 start ecosystem.config.js",
+    "start:watch": "pm2 start ecosystem.config.js --watch",
     "build": "npm run prettier:check && next build",
     "dev": "next dev",
     "commitlint": "commitlint --edit",
@@ -126,6 +127,7 @@
     "nextjs-toploader": "^3.6.15",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.16",
+    "pm2": "^5.4.3",
     "prisma": "^6.0.1",
     "react": "^18",
     "react-dom": "^18",
