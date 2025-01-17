@@ -71,6 +71,7 @@
 # Generic folder for production deployments.
 .out/
 /out
+/dist
 
 
 ####################################################
