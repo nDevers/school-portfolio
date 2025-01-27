@@ -8,8 +8,6 @@ import constants from '@/constants/constants';
 
 const {
     nonEmptyString,
-    nonEmptyStringArray,
-    validMongooseId,
     validDate,
     filesValidator,
     validEmailArray,

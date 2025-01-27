@@ -1,4 +1,3 @@
-import React from 'react';
 import { cn } from '@/lib/utils';
 import { flexRender } from '@tanstack/react-table';
 import {

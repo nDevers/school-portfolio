@@ -1,5 +1,6 @@
 'use client';
-import React, { useState } from 'react';
+
+import { useState } from 'react';
 import InputWrapper from '@/components/ui/input-wrapper';
 import FormikSunEditor from '@/components/admin/sun-editor/FormikSunEditor';
 import Submit from '@/components/button/Submit';
@@ -14,10 +15,9 @@ import {
 import Add from '@/components/button/Add';
 import Remove from '@/components/button/Remove';
 import { Error } from '@/components/ui/error';
-import ComboboxFormik from '@/components/ui/ComboboxFormik';
 import apiConfig from '@/configs/apiConfig';
-import { fetchData, postData, updateData } from '@/util/axios';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { postData, updateData } from '@/util/axios';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 export default function CurrentNewsForm({ data }) {

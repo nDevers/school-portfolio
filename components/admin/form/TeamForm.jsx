@@ -1,10 +1,9 @@
 'use client';
-import React from 'react';
+
 import InputWrapper from '@/components/ui/input-wrapper';
 import Reset from '@/components/button/Reset';
 import Submit from '@/components/button/Submit';
 import * as Yup from 'yup';
-import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useFormik } from 'formik';
@@ -102,12 +101,12 @@ export default function TeamForm({ data }) {
         onSuccess: () => reset(),
     });
 
-    const { isLoading: teamTypeLoading, data: teamType } = useQuery({
+    const { data: teamType } = useQuery({
         queryKey: ['team-type'],
         queryFn: async () => await fetchData(apiConfig?.GET_TEAM_TYPE),
     });
 
-    const { isLoading: teamStatusLoading, data: teamStatus } = useQuery({
+    const { data: teamStatus } = useQuery({
         queryKey: ['team-status'],
         queryFn: async () => await fetchData(apiConfig?.GET_TEAM_STATUS),
     });

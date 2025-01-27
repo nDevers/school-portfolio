@@ -1,8 +1,12 @@
 import Wrapper from '@/providers/Wrapper';
 import appConfig from '@/configs/appConfig';
 import { Toaster } from '@/components/ui/sonner';
-import { Inter, Satisfy } from 'next/font/google';
-import { Noto_Sans_Bengali, Noto_Serif_Bengali } from 'next/font/google'; // Import the Bangla font
+import {
+    Inter,
+    Satisfy,
+    Noto_Sans_Bengali,
+    Noto_Serif_Bengali,
+} from 'next/font/google';
 
 import './globals.css';
 import 'react-photo-view/dist/react-photo-view.css';

@@ -1,9 +1,5 @@
 import BlogCard from '@/components/card/BlogCard';
-import {
-    InvertButton,
-    SimpleButton,
-    SketchButton,
-} from '@/components/common/Buttons';
+import { InvertButton } from '@/components/common/Buttons';
 import SectionTitle from '@/components/common/SectionTitle';
 
 export default function Blog() {

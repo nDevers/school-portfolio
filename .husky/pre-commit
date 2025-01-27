@@ -33,13 +33,13 @@ fi
 # anti-patterns, and potential bugs, contributing to cleaner and more reliable code.
 
 #echo "Running ESLint checks..."
-#npm run eslint:check
+npm run eslint:check
 
 # Check the exit code of the ESLint command to determine if it succeeded.
-#if [ $? -ne 0 ]; then
-#  echo "ESLint checks failed. Please fix the linting errors and try again."
-#  exit 1  # Exit with a non-zero status to abort the commit if ESLint checks fail.
-#fi
+if [ $? -ne 0 ]; then
+  echo "ESLint checks failed. Please fix the linting errors and try again."
+  exit 1  # Exit with a non-zero status to abort the commit if ESLint checks fail.
+fi
 
 ####################################################
 # FINAL MESSAGE

@@ -76,13 +76,17 @@ const parseAndValidateFormData = async (request, context, mode, schema) => {
                     'Request body is empty, expected data in JSON format.'
                 );
             }
-        } catch {
+        } catch (error) {
+            logger.error('JSON parsing error:', error.message);
+
+            // Handle JSON parsing error, typically for an empty body
             throw new BadRequestError(
                 'Invalid JSON body or empty request body.'
             );
         }
     } else if (
-        contentType?.includes(contentTypesConstants.FORM_DATA) &&
+        contentType &&
+        contentType.includes(contentTypesConstants.FORM_DATA) &&
         typeof request.formData === 'function'
     ) {
         const formData = await request.formData();

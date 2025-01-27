@@ -1,5 +1,7 @@
 'use strict';
 
+import logger from '@/lib/logger';
+
 /**
  * Formats a given model name by capitalizing the first letter and validating its content.
  *
@@ -14,7 +16,7 @@ const formatModelName = (name) => {
     const modelName = name.charAt(0).toUpperCase() + name.slice(1);
 
     if (!modelName.match(/^[A-Za-z]+$/)) {
-        console.debug(
+        logger.debug(
             `Invalid model name provided: ${modelName}. Only alphabetic characters without spaces or special characters are allowed.`
         );
         return false;

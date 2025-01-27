@@ -1,4 +1,3 @@
-import React from 'react';
 import { cn } from '@/lib/utils';
 
 export default function Spinner({ size = '8', color = 'blue-600' }) {
@@ -6,7 +5,7 @@ export default function Spinner({ size = '8', color = 'blue-600' }) {
     const sizeClasses = `w-${size} h-${size}`;
 
     // Set fill color dynamically
-    const fillColor = `fill-${color}`;
+    // const fillColor = `fill-${color}`;
 
     return (
         <div className='w-full h-full grid place-content-center'>

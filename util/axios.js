@@ -225,7 +225,7 @@ async function axiosRefreshToken() {
             apiConfig.REFRESH_TOKEN
         );
         const { accessToken, refreshToken: newRefreshToken } =
-            response.data?.data;
+            response?.data?.data || {};
 
         if (accessToken)
             setCookie(appConfig.CurrentUserToken, accessToken, { path: '/' });
@@ -240,7 +240,7 @@ async function axiosRefreshToken() {
     }
 }
 
-// axiosRefreshToken();
-// setInterval(axiosRefreshToken, 1 * 60 * 1000)
+await axiosRefreshToken();
+setInterval(axiosRefreshToken, 1 * 60 * 1000);
 
 export default axiosInstance;

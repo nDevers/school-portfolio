@@ -40,7 +40,7 @@ import prepareSearchQuery from '@/util/prepareSearchQuery';
 const configuration = await configurations();
 const { NOT_FOUND, OK, CREATED, CONFLICT, BAD_REQUEST, INTERNAL_SERVER_ERROR } =
     sharedResponseTypes;
-const { idValidationSchema, categoryValidationSchema } = schemaShared;
+const { idValidationSchema } = schemaShared;
 
 // Common function for fetching and projecting MongoDB data with custom aggregation
 /**
@@ -822,7 +822,7 @@ const handlePasswordResetRequest = async (request, context, userModel) => {
     }
 
     // Generate reset password token
-    const { verifyToken, token } = await generateVerificationToken();
+    const { token } = await generateVerificationToken();
 
     // Calculate token expiration
     const expirationTime = configuration.jwt.resetPasswordToken.expiration;

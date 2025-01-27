@@ -1,11 +1,10 @@
-import React from 'react';
+import * as React from 'react';
 import {
     Select,
     SelectTrigger,
     SelectContent,
     SelectItem,
     SelectValue,
-    SelectLabel,
 } from '@/components/ui/select';
 
 export default function RowsPerPage({ table, pagination }) {

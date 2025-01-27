@@ -1,6 +1,5 @@
 import PageTitle from '@/components/admin/common/PageTitle';
 import FileCard from '@/components/card/FileCard';
-import React from 'react';
 
 export default function RoutinePage() {
     const data = [

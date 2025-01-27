@@ -14,8 +14,7 @@ import parseAndValidateFormData from '@/util/parseAndValidateFormData';
 import validateToken from '@/util/validateToken';
 import blogSelectionCriteria from '@/app/api/v1/blog/blog.selection.criteria';
 
-const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED, NOT_FOUND } =
-    sharedResponseTypes;
+const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
 
 /**
  * Asynchronously creates an "About Us" blog entry in the database and retrieves the created document with specific selection criteria.
@@ -167,8 +166,6 @@ const handleCreateAboutUs = async (request, context) => {
         ['DD/MM/YYYY', moment.ISO_8601],
         true
     ).toDate();
-
-    console.log(userInput);
 
     // Create the FAQ entry and send the response
     return createAboutUsEntry(userInput, request);

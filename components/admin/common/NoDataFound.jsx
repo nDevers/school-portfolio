@@ -1,4 +1,3 @@
-import React from 'react';
 import { AiOutlineInbox } from 'react-icons/ai'; // Example: React Icons
 
 export default function NoDataFound() {
@@ -9,8 +8,8 @@ export default function NoDataFound() {
                 No Data Found
             </h1>
             <p className='text-muted-foreground'>
-                We couldn't find any relevant data at the moment. Please check
-                back later.
+                We couldn&apos;t find any relevant data at the moment. Please
+                check back later.
             </p>
         </div>
     );

@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import InputWrapper from '@/components/ui/input-wrapper';
 import FormikSunEditor from '@/components/admin/sun-editor/FormikSunEditor';
 import Submit from '@/components/button/Submit';
@@ -167,17 +167,15 @@ export default function EventForm({
         route.back();
     };
 
-    const { isLoading: eventStatusLoading, data: eventStatus } = useQuery({
+    const { data: eventStatus } = useQuery({
         queryKey: ['eventStatus'],
         queryFn: async () => await fetchData(apiConfig?.GET_EVENT_STATUS),
     });
 
-    const { isLoading: eventSpecialFormLoading, data: eventSpecialForm } =
-        useQuery({
-            queryKey: ['eventSpecialForm'],
-            queryFn: async () =>
-                await fetchData(apiConfig?.GET_SCHOLARSHIP_FORM),
-        });
+    const { data: eventSpecialForm } = useQuery({
+        queryKey: ['eventSpecialForm'],
+        queryFn: async () => await fetchData(apiConfig?.GET_SCHOLARSHIP_FORM),
+    });
 
     return (
         <Formik

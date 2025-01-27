@@ -226,8 +226,6 @@ const handleUpdateGalleryPhotoById = async (request, context) => {
         delete userInput.deleteImages; // Remove deleteImages field from userInput
     }
 
-    console.log(userInput);
-
     // Create the FAQ entry and send the response
     return updateGalleryPhotoEntry(userInput, request);
 };

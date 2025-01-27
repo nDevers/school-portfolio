@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+
 import Reset from '@/components/button/Reset';
 import Submit from '@/components/button/Submit';
 import InputWrapper from '@/components/ui/input-wrapper';
@@ -223,12 +223,12 @@ export default function MembershipForm({ data }) {
         onSuccess: () => reset(),
     });
 
-    const { isLoading: memberTypeLoading, data: memberType } = useQuery({
+    const { data: memberType } = useQuery({
         queryKey: ['member-type'],
         queryFn: async () => await fetchData(apiConfig?.GET_MEMBER_TYPE),
     });
 
-    const { isLoading: memberStatusLoading, data: memberStatus } = useQuery({
+    const { data: memberStatus } = useQuery({
         queryKey: ['member-status'],
         queryFn: async () => await fetchData(apiConfig?.GET_MEMBER_STATUS),
     });

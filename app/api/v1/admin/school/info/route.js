@@ -12,8 +12,7 @@ import parseAndValidateFormData from '@/util/parseAndValidateFormData';
 import validateToken from '@/util/validateToken';
 import schoolInfoSelectionCriteria from '@/app/api/v1/school/info/school.info.selection.criteria';
 
-const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED, NOT_FOUND } =
-    sharedResponseTypes;
+const { INTERNAL_SERVER_ERROR, CONFLICT, CREATED } = sharedResponseTypes;
 
 /**
  * Creates a new school information entry in the database and retrieves the created document with specified selection criteria.

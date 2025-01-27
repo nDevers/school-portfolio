@@ -1,7 +1,8 @@
+import apiConfig from '@/configs/apiConfig';
+
 import NoDataFound from '@/components/admin/common/NoDataFound';
 import PageTitle from '@/components/admin/common/PageTitle';
 import CarouselForm from '@/components/admin/form/CarouselForm';
-import apiConfig from '@/configs/apiConfig';
 import { fetchDataAsServer } from '@/util/axios';
 
 export default async function CategoryEditPage({ params }) {

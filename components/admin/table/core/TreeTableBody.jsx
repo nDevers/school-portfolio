@@ -1,6 +1,5 @@
 import { Checkbox } from '@nextui-org/react';
 import { flexRender } from '@tanstack/react-table';
-import React from 'react';
 
 export default function TreeTableBody({
     table,
@@ -54,10 +53,10 @@ export default function TreeTableBody({
                                     key={cell.id}
                                     className='px-4 py-2 text-left flex items-center'
                                 >
-                                    {/* <input 
-                                    type="checkbox" 
-                                    name="" 
-                                    id={`checkbox-${cell.id}`} 
+                                    {/* <input
+                                    type="checkbox"
+                                    name=""
+                                    id={`checkbox-${cell.id}`}
                                     value={cell.getContext().row.original.id}
                                     checked={extractedIds.some(({ menu_id }) => menu_id === cell.getContext().row.original.id)}
                                     onChange={(e)=>handlePermissionId(e.target.value, e.target.checked)}
@@ -107,30 +106,30 @@ export default function TreeTableBody({
     );
 }
 
-function IndeterminateCheckbox({
-    indeterminate,
-    parentRowId,
-    className = '',
-    ...rest
-}) {
-    const ref = useRef(null);
-
-    useEffect(() => {
-        if (typeof indeterminate === 'boolean') {
-            ref.current.indeterminate = !rest.checked && indeterminate;
-        }
-    }, [ref, indeterminate]);
-
-    return (
-        <input
-            type='checkbox'
-            ref={ref}
-            className={`${className} cursor-pointer`}
-            {...rest}
-            data-parent-row-id={parentRowId}
-        />
-    );
-}
+// function IndeterminateCheckbox({
+//     indeterminate,
+//     parentRowId,
+//     className = '',
+//     ...rest
+// }) {
+//     const ref = useRef(null);
+//
+//     useEffect(() => {
+//         if (typeof indeterminate === 'boolean') {
+//             ref.current.indeterminate = !rest.checked && indeterminate;
+//         }
+//     }, [ref, indeterminate]);
+//
+//     return (
+//         <input
+//             type='checkbox'
+//             ref={ref}
+//             className={`${className} cursor-pointer`}
+//             {...rest}
+//             data-parent-row-id={parentRowId}
+//         />
+//     );
+// }
 
 function Filter({ column, table }) {
     const firstValue = table

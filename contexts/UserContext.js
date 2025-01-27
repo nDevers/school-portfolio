@@ -1,5 +1,5 @@
 'use client';
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import appConfig from '@/configs/appConfig';
 import { getCookie } from 'cookies-next';
 import jwt from 'jsonwebtoken';

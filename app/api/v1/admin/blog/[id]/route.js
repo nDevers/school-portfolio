@@ -268,7 +268,6 @@ const handleUpdateBlogById = async (request, context) => {
 
     if (userInput?.deleteImages && Array.isArray(userInput.deleteImages)) {
         // Check if all images in deleteImages actually exist in the current images array
-        console.log(existingBlog?.images);
         const nonExistingImages = userInput.deleteImages.filter(
             (imageId) =>
                 !existingBlog?.images?.some(
