@@ -90,6 +90,7 @@ const resetPassword = z
             decodedPassword = decryptData(data?.password); // Decode password
             decodedConfirmPassword = decryptData(data?.confirmPassword); // Decode confirmPassword
         } catch (err) {
+            console.error('Error decoding password or confirmPassword:', err);
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
                 message: 'Invalid encrypted password or confirmPassword',

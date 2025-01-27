@@ -1,11 +1,11 @@
 const URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 const VERSION = process.env.NEXT_PUBLIC_VERSION || 'v1';
 
-const UNSPLASH_ACCESS_KEY = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
+const UNSPLASH_ACCESS_KEY = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY || '';
 
 const isServer = typeof window === 'undefined';
 
-export default {
+const apiConfig = {
     BASE_URL: isServer ? `${URL}/api/${VERSION}` : `/api/${VERSION}`, // Absolute URL for server, relative for client
 
     UNSPLASH_ACCESS_KEY,
@@ -15,12 +15,14 @@ export default {
     //────────────────────────────────────────────
     ADMIN_LOGIN: '/auth/admin/login',
     REFRESH_TOKEN: '/auth/refresh-token',
+
     //────────────────────────────────────────────
     //? API: ---- Setting
     //────────────────────────────────────────────
     GET_CONFIGURATION: '/configuration',
     CREATE_CONFIGURATION: '/admin/configuration',
     UPDATE_CONFIGURATION: '/admin/configuration',
+
     //────────────────────────────────────────────
     //? API: ---- About
     //────────────────────────────────────────────
@@ -59,6 +61,7 @@ export default {
     CREATE_MORE_ABOUT_US: '/admin/about-us',
     UPDATE_MORE_ABOUT_US: '/admin/about-us/',
     DELETE_MORE_ABOUT_US: '/admin/about-us/',
+
     //────────────────────────────────────────────
     //? API: ---- Faculty
     //────────────────────────────────────────────
@@ -89,3 +92,5 @@ export default {
     UPDATE_CAREER: '/admin/career/',
     DELETE_CAREER: '/admin/career/',
 };
+
+export default apiConfig;

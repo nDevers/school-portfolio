@@ -1,9 +1,12 @@
-import appConfig from '@/configs/appConfig';
-import { postData } from './axios';
-import { deleteCookie, getCookie, hasCookie, setCookie } from 'cookies-next';
 import { toast } from 'sonner';
-import { decryptData } from './crypto.client';
 import { jwtVerify } from 'jose';
+import { deleteCookie, getCookie, hasCookie, setCookie } from 'cookies-next';
+
+import appConfig from '@/configs/appConfig';
+
+import { postData } from './axios';
+import { decryptData } from './crypto.client';
+import App from 'next/app';
 
 const isProduction = process.env.NODE_ENV === 'production';
 

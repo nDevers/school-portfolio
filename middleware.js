@@ -1,20 +1,33 @@
 import { NextResponse } from 'next/server';
-import { decryptData } from '@/util/crypto.client';
 import { jwtVerify } from 'jose';
 
 import appConfig from '@/configs/appConfig';
+
+import { decryptData } from '@/util/crypto.client';
+import corsMiddleware from '@/middlewares/cors.middleare';
 
 export async function middleware(request) {
     const { cookies, nextUrl } = request;
     const { pathname } = nextUrl;
     const token = cookies.get(appConfig?.CurrentUserToken)?.value;
 
+    const isAPI = pathname.startsWith('/api');
     const adminURL = pathname.startsWith('/admin');
     const authURL = pathname.startsWith('/auth');
-    const mainURL = pathname === '/';
+    // const mainURL = pathname === '/';
 
-    let userData = null;
+    // let userData = null;
     let isAdmin = false;
+
+    // API routes: CORS and permissions
+    if (isAPI) {
+        // Run CORS handling
+        const corsResponse = corsMiddleware(request);
+        if (corsResponse) return corsResponse;
+
+        // If all checks pass, allow the request to proceed
+        return null;
+    }
 
     if (token) {
         try {
@@ -23,17 +36,17 @@ export async function middleware(request) {
                 process?.env?.JWT_ACCESS_TOKEN_SECRET
             );
             const { payload } = await jwtVerify(decryptedToken, secret);
-            userData = payload?.currentUser;
+            // userData = payload?.currentUser;
             isAdmin =
                 payload?.currentUser?.userType === 'admin' ||
                 payload?.currentUser?.userType === 'super-admin';
 
-            console.log(
+            console.info(
                 `######## Current user: ${payload?.currentUser?.userType} ########`
             );
         } catch (error) {
             console.error('Invalid or expired token:', error.message);
-            userData = null;
+            // userData = null;
 
             // Clear both the token and refreshToken cookies
             const response = NextResponse.next();
@@ -53,7 +66,7 @@ export async function middleware(request) {
 
     // Handle Authentication for /admin routes
     if (adminURL && !isAdmin) {
-        console.log(
+        console.info(
             'Redirecting to /auth/login: Unauthenticated access attempt'
         );
         return NextResponse.redirect(new URL('/auth/login', request.url));
@@ -61,7 +74,7 @@ export async function middleware(request) {
 
     // Redirect authenticated users trying to access login page
     if (isAdmin && authURL) {
-        console.log(
+        console.info(
             'Redirecting to /admin: Authenticated user trying to access auth URL'
         );
         return NextResponse.redirect(new URL('/admin', request.url));
@@ -80,6 +93,6 @@ export const config = {
          * - _next/image (image optimization files)
          * - favicon.ico, sitemap.xml, robots.txt (metadata files)
          */
-        '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+        '/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
     ],
 };

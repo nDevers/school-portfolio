@@ -32,6 +32,8 @@ const allowedMimeTypes = [
     mimeTypesConstants.JPG,
     mimeTypesConstants.PNG,
     mimeTypesConstants.GIF,
+
+    mimeTypesConstants.PDF,
 ];
 
 /**

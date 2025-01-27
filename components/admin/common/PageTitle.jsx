@@ -1,5 +1,4 @@
 import Back3 from '@/components/button/Back-3';
-import React from 'react';
 
 export default function PageTitle({
     title = '',

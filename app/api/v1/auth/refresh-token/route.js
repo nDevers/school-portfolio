@@ -41,9 +41,6 @@ const handleRefreshToken = async (request) => {
     const { accessToken, refreshToken } =
         await createAuthenticationToken(userTokenData);
 
-    console.log(accessToken);
-    console.log(refreshToken);
-
     // Encrypt the token for response
     const returnData = {
         accessToken: encryptData(accessToken),

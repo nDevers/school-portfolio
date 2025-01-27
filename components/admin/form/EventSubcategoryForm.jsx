@@ -1,7 +1,6 @@
 'use client';
-import React from 'react';
+
 import InputWrapper from '@/components/ui/input-wrapper';
-import Reset from '@/components/button/Reset';
 import Submit from '@/components/button/Submit';
 import * as Yup from 'yup';
 import { Input } from '@/components/ui/input';
@@ -9,8 +8,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import { fetchData, postData, updateData } from '@/util/axios';
 import apiConfig from '@/configs/apiConfig';
-import { Checkbox } from '@/components/ui/checkbox';
-import { handleCheckboxChange } from '@/util/formikHelpers';
 import ComboboxFormik from '@/components/ui/ComboboxFormik';
 
 export default function EventSubcategoryForm({ data }) {
@@ -55,7 +52,7 @@ export default function EventSubcategoryForm({ data }) {
         onSuccess: () => reset(),
     });
 
-    const { isLoading: categoryLoading, data: category } = useQuery({
+    const { data: category } = useQuery({
         queryKey: ['category'],
         queryFn: async () => await fetchData(apiConfig?.GET_EVENT_CATEGORY),
     });

@@ -71,7 +71,7 @@ const addUseStrictToFile = (filePath) => {
                 if (err) {
                     console.error(`Error writing to file: ${filePath}`, err);
                 } else {
-                    console.log(`Added 'use strict'; to ${filePath}`);
+                    console.info(`Added 'use strict'; to ${filePath}`);
                 }
             });
         }

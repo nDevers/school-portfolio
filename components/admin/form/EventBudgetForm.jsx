@@ -1,11 +1,10 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import InputWrapper from '@/components/ui/input-wrapper';
 import ComboboxFormik from '@/components/ui/ComboboxFormik';
 import Reset from '@/components/button/Reset';
 import Submit from '@/components/button/Submit';
 import * as Yup from 'yup';
-import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useFormik } from 'formik';
@@ -22,6 +21,8 @@ const transactionTypes = [
 
 export default function EventBudgetForm({ data }) {
     const [selectedEvent, setSelectedEvent] = useState(null);
+
+    console.info(setSelectedEvent);
 
     const initialValues = {
         eventId: data?.eventId || '',
@@ -107,23 +108,23 @@ export default function EventBudgetForm({ data }) {
         onSuccess: () => reset(),
     });
 
-    const { isLoading: eventLoading, data: event } = useQuery({
+    const { data: event } = useQuery({
         queryKey: ['events'],
         queryFn: async () => await fetchData(apiConfig?.GET_EVENT),
     });
 
-    const { isLoading: eventDetailsLoading, data: eventDetails } = useQuery({
-        queryKey: ['events', formik.values?.eventId],
-        queryFn: async () => {
-            const data = await fetchData(
-                apiConfig?.GET_EVENT_BY_ID + formik.values?.eventId
-            );
-            if (data) {
-                setSelectedEvent(data);
-            }
-        },
-        enabled: !!formik.values?.eventId,
-    });
+    // const { isLoading: eventDetailsLoading, data: eventDetails } = useQuery({
+    //     queryKey: ['events', formik.values?.eventId],
+    //     queryFn: async () => {
+    //         const data = await fetchData(
+    //             apiConfig?.GET_EVENT_BY_ID + formik.values?.eventId
+    //         );
+    //         if (data) {
+    //             setSelectedEvent(data);
+    //         }
+    //     },
+    //     enabled: !!formik.values?.eventId,
+    // });
 
     return (
         <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>

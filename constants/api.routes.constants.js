@@ -1,19 +1,19 @@
 'use strict';
 
-/**
- * Generates a set of permission constants for a given resource type.
- *
- * @param {string} type - The type of resource for which permission constants are created.
- * @returns {Object} An object containing permission constants for various actions that can be performed on the resource type.
- */
-const permissionsConstants = (type) => ({
-    create: `create-${type}`,
-    getList: `get-${type}-list`,
-    getById: `get-${type}-by-id`,
-    updateById: `update-${type}-by-id`,
-    deleteById: `delete-${type}-by-id`,
-    deleteByList: `delete-${type}-by-list`,
-});
+// /**
+//  * Generates a set of permission constants for a given resource type.
+//  *
+//  * @param {string} type - The type of resource for which permission constants are created.
+//  * @returns {Object} An object containing permission constants for various actions that can be performed on the resource type.
+//  */
+// const permissionsConstants = (type) => ({
+//     create: `create-${type}`,
+//     getList: `get-${type}-list`,
+//     getById: `get-${type}-by-id`,
+//     updateById: `update-${type}-by-id`,
+//     deleteById: `delete-${type}-by-id`,
+//     deleteByList: `delete-${type}-by-list`,
+// });
 
 /**
  * A function to generate a string identifier for creating a specific type of entity.
@@ -125,15 +125,15 @@ const DELETE_BY_ID = (type) => `delete-${type}-by-id`;
  */
 const DELETE_BY_EMAIL = (type) => `delete-${type}-by-email`;
 
-/**
- * A function that generates a string used as an identifier for deletion
- * operations based on the provided type. The resulting string follows the
- * pattern `delete-{type}-by-list`.
- *
- * @param {string} type - The type of the entity to be deleted.
- * @returns {string} A formatted string for deletion identification.
- */
-const DELETE_BY_LIST = (type) => `delete-${type}-by-list`;
+// /**
+//  * A function that generates a string used as an identifier for deletion
+//  * operations based on the provided type. The resulting string follows the
+//  * pattern `delete-{type}-by-list`.
+//  *
+//  * @param {string} type - The type of the entity to be deleted.
+//  * @returns {string} A formatted string for deletion identification.
+//  */
+// const DELETE_BY_LIST = (type) => `delete-${type}-by-list`;
 
 /**
  * A constant function that generates a string following the pattern "delete-{type}-by-category-and-id".

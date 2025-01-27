@@ -1,5 +1,4 @@
 import PageTitle from '@/components/admin/common/PageTitle';
-import React from 'react';
 
 export default function SpeechPage() {
     return (

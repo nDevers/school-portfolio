@@ -216,7 +216,6 @@ const handleUpdateAboutUsById = async (request, context) => {
 
     if (userInput?.deleteImages && Array.isArray(userInput.deleteImages)) {
         // Check if all images in deleteImages actually exist in the current images array
-        console.log(existingCareer?.images);
         const nonExistingImages = userInput.deleteImages.filter(
             (imageId) =>
                 !existingCareer?.images?.some(

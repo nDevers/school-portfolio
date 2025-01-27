@@ -1,27 +1,15 @@
 'use client';
 import {
-    Calendar,
     Home,
-    Inbox,
     Settings,
-    File,
     Info,
     CircleUserRound,
     ImagePlay,
-    ChevronDown,
-    UsersRound,
-    Settings2,
-    Tag,
-    FileText,
-    School,
-    CircleDollarSign,
-    Wallet,
     Dot,
 } from 'lucide-react';
 import {
     Sidebar,
     SidebarContent,
-    SidebarFooter,
     SidebarGroup,
     SidebarGroupContent,
     SidebarGroupLabel,

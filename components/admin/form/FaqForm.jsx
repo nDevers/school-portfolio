@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+
 import InputWrapper from '@/components/ui/input-wrapper';
 import FormikSunEditor from '@/components/admin/sun-editor/FormikSunEditor';
 import Submit from '@/components/button/Submit';
@@ -56,7 +56,7 @@ export default function FaqForm({ data }) {
             validationSchema={validationSchema}
             onSubmit={mutation.mutate}
         >
-            {({ errors, touched, setFieldValue, resetForm }) => (
+            {({ errors, touched, resetForm }) => (
                 <Form className='space-y-4'>
                     <InputWrapper
                         label='Question'

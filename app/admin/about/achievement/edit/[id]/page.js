@@ -1,7 +1,8 @@
+import apiConfig from '@/configs/apiConfig';
+
 import NoDataFound from '@/components/admin/common/NoDataFound';
 import PageTitle from '@/components/admin/common/PageTitle';
 import SchoolAchievementForm from '@/components/admin/form/SchoolAchievementForm';
-import apiConfig from '@/configs/apiConfig';
 import { fetchDataAsServer } from '@/util/axios';
 
 export default async function SchoolAchievementEditPage({ params }) {

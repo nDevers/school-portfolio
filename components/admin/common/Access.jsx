@@ -1,7 +1,6 @@
 'use client';
 
 import Back from '@/components/button/Back';
-import { Card } from '@/components/ui/card';
 import { useUser } from '@/contexts/UserContext';
 import { Lock } from 'lucide-react';
 

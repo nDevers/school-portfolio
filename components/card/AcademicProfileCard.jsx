@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+
 import { HiLocationMarker, HiPhone, HiStar } from 'react-icons/hi';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 

@@ -11,7 +11,7 @@
  * Note: Matching is typically performed as a partial match against the user agent string.
  */
 const blockedUserAgents = [
-    'PostmanRuntime',
+    'PostmanRuntime/',
     'Insomnia',
     'RapidAPI-Client',
     'Paw/',

@@ -1,4 +1,3 @@
-import React from 'react';
 import Link from 'next/link';
 import SectionTitle from '@/components/common/SectionTitle';
 import FileCard from '@/components/card/FileCard';

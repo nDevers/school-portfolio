@@ -1,11 +1,10 @@
 'use client';
-import React from 'react';
+
 import InputWrapper from '@/components/ui/input-wrapper';
 import ComboboxFormik from '@/components/ui/ComboboxFormik';
 import Reset from '@/components/button/Reset';
 import Submit from '@/components/button/Submit';
 import * as Yup from 'yup';
-import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useFormik } from 'formik';
@@ -75,12 +74,12 @@ export default function DonationForm({ data }) {
         onSuccess: () => reset(),
     });
 
-    const { isLoading: memberLoading, data: member } = useQuery({
+    const { data: member } = useQuery({
         queryKey: ['member'],
         queryFn: async () => await fetchData(apiConfig?.GET_MEMBER_LIST),
     });
 
-    const { isLoading: methodLoading, data: method } = useQuery({
+    const { data: method } = useQuery({
         queryKey: ['payment-method'],
         queryFn: async () => await fetchData(apiConfig?.GET_PAYMENT_METHOD),
     });

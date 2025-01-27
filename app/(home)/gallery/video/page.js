@@ -1,4 +1,3 @@
-import React from 'react';
 import PageTitle from '@/components/admin/common/PageTitle';
 import VideoPlayer from '@/components/card/VideoPlayer';
 

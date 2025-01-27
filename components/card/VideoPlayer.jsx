@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import ReactPlayer from 'react-player';
 import getYoutubeVideo from '@/util/getYoutubeVideo';
 import { HiPlay } from 'react-icons/hi';
@@ -14,7 +14,7 @@ export default function VideoPlayer({ videoUrl }) {
     const [selectedVideo, setSelectedVideo] = useState(null);
 
     // Memoize video ID and thumbnail generation
-    const { videoId, thumbnailUrl } = useMemo(() => {
+    const { thumbnailUrl } = useMemo(() => {
         const id = getYoutubeVideo.id(videoUrl);
         const thumbnail = getYoutubeVideo.thumbnail(id);
         return { videoId: id, thumbnailUrl: thumbnail };

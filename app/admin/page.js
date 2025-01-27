@@ -1,10 +1,4 @@
-import React from 'react';
-import {
-    Card,
-    CardHeader,
-    CardContent,
-    CardFooter,
-} from '@/components/ui/card';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
 
 export default function Dashboard() {
     return (

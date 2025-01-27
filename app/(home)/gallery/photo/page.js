@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+
 import apiConfig from '@/configs/apiConfig';
 import PageTitle from '@/components/admin/common/PageTitle';
 import PhotoGallery from '@/components/card/PhotoGallery';

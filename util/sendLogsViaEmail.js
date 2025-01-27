@@ -31,7 +31,7 @@ const sendLogsViaEmail = async () => {
         `combined_${currentDate}_${logFileHour}.log`
     );
 
-    console.log(`Looking for log file: ${logFilePath}`);
+    console.info(`Looking for log file: ${logFilePath}`);
     if (!fs.existsSync(logsDir)) {
         console.warn(
             `Logs directory does not exist. Creating directory at: ${logsDir}`
@@ -77,7 +77,7 @@ const sendLogsViaEmail = async () => {
         logger.warn(
             `No logs found for ${currentDate}, Hour ${currentHour} to send.`
         );
-        console.log(`Logs directory content: ${fs.readdirSync(logsDir)}`);
+        console.info(`Logs directory content: ${fs.readdirSync(logsDir)}`);
     }
 };
 

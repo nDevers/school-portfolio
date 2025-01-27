@@ -70,6 +70,8 @@
 
 # Generic folder for production deployments.
 .out/
+/out
+/dist
 
 
 ####################################################
@@ -129,8 +131,11 @@ yarn-error.log*
 # Environment variables for production builds.
 .env.production
 
-# Local variations of environment files.
+# Local variables of environment files.
 .env*.local
+
+# Local variables of sentry environment files.
+.env.sentry-build-plugin
 
 
 ####################################################

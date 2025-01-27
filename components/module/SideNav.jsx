@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { VscDebugBreakpointLogUnverified } from 'react-icons/vsc';
 import { usePathname } from 'next/navigation';

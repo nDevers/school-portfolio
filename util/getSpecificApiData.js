@@ -20,7 +20,7 @@ export default async function getSpecificApiData(api, fields) {
         // Extract only the specified fields from the response data
         const extractedData = {};
         fields.forEach((field) => {
-            if (responseData.hasOwnProperty(field)) {
+            if (Object.prototype.hasOwnProperty.call(responseData, field)) {
                 extractedData[field] = responseData[field];
             }
         });

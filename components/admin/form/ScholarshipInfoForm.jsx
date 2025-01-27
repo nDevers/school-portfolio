@@ -1,16 +1,17 @@
 'use client';
-import React from 'react';
+
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+
+import apiConfig from '@/configs/apiConfig';
+import { Input } from '@/components/ui/input';
+
 import InputWrapper from '@/components/ui/input-wrapper';
 import Reset from '@/components/button/Reset';
 import Submit from '@/components/button/Submit';
-import * as Yup from 'yup';
-import { Input } from '@/components/ui/input';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useFormik } from 'formik';
 import { fetchData, postData, updateData } from '@/util/axios';
-import apiConfig from '@/configs/apiConfig';
 import ComboboxFormikMultiSelect from '@/components/ui/ComboboxFormikMultiSelect';
-import { toast } from 'sonner';
 import { handleArrayFieldChange } from '@/util/formikHelpers';
 import { Error } from '@/components/ui/error';
 import Remove from '@/components/button/Remove';
@@ -88,13 +89,10 @@ export default function ScholarshipInfoForm({ data }) {
         onSuccess: () => reset(),
     });
 
-    const { isLoading: eligibleSchoolLoading, data: eligibleSchool } = useQuery(
-        {
-            queryKey: ['eligibleSchool'],
-            queryFn: async () =>
-                await fetchData(apiConfig?.GET_ELIGIBLE_SCHOOL),
-        }
-    );
+    const { data: eligibleSchool } = useQuery({
+        queryKey: ['eligibleSchool'],
+        queryFn: async () => await fetchData(apiConfig?.GET_ELIGIBLE_SCHOOL),
+    });
 
     return (
         <form onSubmit={formik.handleSubmit} className='w-full space-y-10'>
