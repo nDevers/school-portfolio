@@ -71,7 +71,7 @@ export default [
             // Allows usage of console.warn, console.error, and console.table
             'no-console': [
                 'warn',
-                { allow: ['info', 'error', 'warn', 'table'] },
+                { allow: ['info', 'debug', 'error', 'warn', 'table'] },
             ],
             'func-names': 'off', // Disables the requirement to name function expressions
             'no-underscore-dangle': 'off', // Allows variable names starting with underscores

@@ -6,6 +6,7 @@ import apiConfig from '@/configs/apiConfig';
 import appConfig from '@/configs/appConfig';
 
 import { getRefreshTokenFromCookie, getTokenFromCookie, logout } from './auth';
+// import getEnvironmentData from '@/util/getEnvironmentData';
 
 const NEXT_PUBLIC_TIMEOUT_IN_MILI_SECONDS = parseInt(
     process.env.NEXT_PUBLIC_TIMEOUT_IN_MILI_SECONDS
@@ -240,7 +241,11 @@ async function axiosRefreshToken() {
     }
 }
 
-await axiosRefreshToken();
-setInterval(axiosRefreshToken, 1 * 60 * 1000);
+(async () => {
+    await axiosRefreshToken();
+
+    // setInterval(axiosRefreshToken, parseInt(getEnvironmentData('NEXT_PUBLIC_REFRESH_TOKEN_INTERVAL'), 10));
+    setInterval(axiosRefreshToken, 60000);
+})();
 
 export default axiosInstance;
