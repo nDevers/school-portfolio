@@ -6,7 +6,8 @@ import middlewareConstants from '@/constants/middleware.constants';
 import getEnvironmentData from '@/util/getEnvironmentData';
 
 /**
- * Middleware function to handle CORS (Cross-Origin Resource Sharing) validation and other security checks.
+ * Middleware function to handle CORS (Cross-Origin Resource Sharing) validation,
+ * other security checks, and detect if the API is being accessed via browser URL.
  *
  * @param {Request} request - The incoming HTTP request object.
  * @returns {Promise<Response>} - A Next.js Response object with appropriate headers and status codes.
@@ -29,8 +30,20 @@ const corsMiddleware = async (request) => {
     // Extract headers from the request
     const origin = headers.get('origin') ?? '';
     const userAgent = headers.get('user-agent') || '';
+    const referer = headers.get('referer') || '';
+
     const requestedSiteIdentifier = headers.get('X-Site-Identifier') ?? '';
     const requestedSiteDebugKey = headers.get('X-Site-Debug-Key') ?? '';
+
+    // Detect if the request is being accessed through a browser
+    const isBrowserAccess =
+        userAgent.includes('Mozilla/') && (referer || origin);
+
+    if (isBrowserAccess) {
+        console.warn('Request accessed via browser URL.');
+    } else {
+        console.info('Request accessed programmatically.');
+    }
 
     // Define CORS response headers
     const corsOptions = {
