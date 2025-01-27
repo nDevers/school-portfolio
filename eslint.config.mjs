@@ -125,6 +125,7 @@ export default [
             '.yarn/**', // Ignore Yarn cache, configuration, and installation-related files
             'node_modules/**', // Ignore third-party dependency files (handled by package manager)
             'build/**', // Ignore build output directory (e.g., production-ready files)
+            'dist/**', // Ignore build output directory (e.g., production-ready files)
             'logs/**', // Ignore application log files (e.g., error or debug logs)
             'src/modules/api/documentation/**', // Ignore auto-generated API documentation files
 

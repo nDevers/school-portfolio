@@ -30,20 +30,20 @@ const corsMiddleware = async (request) => {
     // Extract headers from the request
     const origin = headers.get('origin') ?? '';
     const userAgent = headers.get('user-agent') || '';
-    const referer = headers.get('referer') || '';
+    // const referer = headers.get('referer') || '';
 
     const requestedSiteIdentifier = headers.get('X-Site-Identifier') ?? '';
     const requestedSiteDebugKey = headers.get('X-Site-Debug-Key') ?? '';
 
-    // Detect if the request is being accessed through a browser
-    const isBrowserAccess =
-        userAgent.includes('Mozilla/') && (referer || origin);
-
-    if (isBrowserAccess) {
-        console.warn('Request accessed via browser URL.');
-    } else {
-        console.info('Request accessed programmatically.');
-    }
+    // // Detect if the request is being accessed through a browser
+    // const isBrowserAccess =
+    //     userAgent.includes('Mozilla/') && (referer || origin);
+    //
+    // if (isBrowserAccess) {
+    //     console.warn('Request accessed via browser URL.');
+    // } else {
+    //     console.info('Request accessed programmatically.');
+    // }
 
     // Define CORS response headers
     const corsOptions = {

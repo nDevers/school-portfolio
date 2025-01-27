@@ -2,7 +2,7 @@ module.exports = {
     apps: [
         {
             name: 'school-portfolio',
-            script: 'npm start',
+            script: 'npm',
             args: 'start',
             instances: 1,
             autorestart: true,
