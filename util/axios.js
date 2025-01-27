@@ -217,35 +217,35 @@ export async function deleteData(endpoint, id) {
     }
 }
 
-async function axiosRefreshToken() {
-    const refreshToken = getRefreshTokenFromCookie();
-    if (!refreshToken) return;
+// async function axiosRefreshToken() {
+//     const refreshToken = getRefreshTokenFromCookie();
+//     if (!refreshToken) return;
+//
+//     try {
+//         const response = await refreshAxiosInstance.get(
+//             apiConfig.REFRESH_TOKEN
+//         );
+//         const { accessToken, refreshToken: newRefreshToken } =
+//             response?.data?.data || {};
+//
+//         if (accessToken)
+//             setCookie(appConfig.CurrentUserToken, accessToken, { path: '/' });
+//         if (newRefreshToken)
+//             setCookie(appConfig.CurrentUserRefToken, newRefreshToken, {
+//                 path: '/',
+//             });
+//     } catch (error) {
+//         console.error('Error refreshing token:', error.message);
+//         handleAxiosError(error);
+//         throw error;
+//     }
+// }
 
-    try {
-        const response = await refreshAxiosInstance.get(
-            apiConfig.REFRESH_TOKEN
-        );
-        const { accessToken, refreshToken: newRefreshToken } =
-            response?.data?.data || {};
-
-        if (accessToken)
-            setCookie(appConfig.CurrentUserToken, accessToken, { path: '/' });
-        if (newRefreshToken)
-            setCookie(appConfig.CurrentUserRefToken, newRefreshToken, {
-                path: '/',
-            });
-    } catch (error) {
-        console.error('Error refreshing token:', error.message);
-        handleAxiosError(error);
-        throw error;
-    }
-}
-
-(async () => {
-    await axiosRefreshToken();
-
-    // setInterval(axiosRefreshToken, parseInt(getEnvironmentData('NEXT_PUBLIC_REFRESH_TOKEN_INTERVAL'), 10));
-    setInterval(axiosRefreshToken, 60000);
-})();
+// (async () => {
+//     await axiosRefreshToken();
+//
+//     // setInterval(axiosRefreshToken, parseInt(getEnvironmentData('NEXT_PUBLIC_REFRESH_TOKEN_INTERVAL'), 10));
+//     setInterval(axiosRefreshToken, 60000);
+// })();
 
 export default axiosInstance;
